@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dad7fkhmsooc6"]
+[gd_scene format=3 uid="uid://dad7fkhmsooc6"]
 
 [ext_resource type="Script" uid="uid://csvfi4sy8ky68" path="res://src/ui_widgets/number_edit.gd" id="1_dywrg"]
 
-[node name="NumberEdit" type="LineEdit"]
+[node name="NumberEdit" type="LineEdit" unique_id=2109030887]
 custom_minimum_size = Vector2(0, 22)
 offset_right = 35.8125
 offset_bottom = 21.0

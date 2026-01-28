@@ -21,22 +21,26 @@ func _ready() -> void:
 	
 	close_button.text = Translator.translate("Close")
 	retry_button.tooltip_text = Translator.translate("Retry")
+	retry_button.hide()
 	prereleases_button.text = Translator.translate("Show prereleases")
 	current_version_label.text = Translator.translate("Current Version") + ": " + current_version
 	request()
+	
+	HandlerGUI.register_focus_sequence(self, [prereleases_button, retry_button, close_button])
+	prereleases_button.grab_focus(true)
 
 func request() -> void:
-	retry_button.hide()
 	status_label.text = Translator.translate("Retrieving information...")
 	var err := http.request("https://api.github.com/repos/MewPurPur/GodSVG/releases", ["User-Agent: MewPurPur/GodSVG"])
 	if err != OK:
 		display_error_message(error_string(err))
 
 # Do not internationalize the errors.
-func _on_request_completed(http_result: HTTPRequest.Result, response_code: int,
-_headers: PackedStringArray, body: PackedByteArray) -> void:
+func _on_request_completed(http_result: HTTPRequest.Result, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	match http_result:
 		http.RESULT_SUCCESS:
+			retry_button.hide()
+			
 			if response_code != 200:
 				display_error_message("Response code %d" % response_code)
 				return

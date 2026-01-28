@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" uid="uid://csl2me44lu3yd" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
 [ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_element_editor.tscn" id="2_jnl50"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="3_vo6hf"]
 [ext_resource type="Script" uid="uid://b04padjc3w1s8" path="res://src/ui_parts/move_to_overlay.gd" id="5_otlmf"]
 
-[node name="Inspector" type="Container"]
+[node name="Inspector" type="Container" unique_id=392717453]
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 460.0
@@ -22,10 +22,10 @@ corner_radius_bottom_right = 5
 title_margin = 4
 panel_margin = 2
 
-[node name="ActionContainer" type="HBoxContainer" parent="."]
+[node name="ActionContainer" type="HBoxContainer" parent="." unique_id=1696606219]
 layout_mode = 2
 
-[node name="AddButton" type="Button" parent="ActionContainer"]
+[node name="AddButton" type="Button" parent="ActionContainer" unique_id=1909487695]
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
@@ -33,13 +33,13 @@ mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 4
 icon = ExtResource("3_vo6hf")
 
-[node name="ElementContainer" type="Control" parent="."]
+[node name="ElementContainer" type="Control" parent="." unique_id=1033239844]
 custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_qeptj")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="ElementContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="ElementContainer" unique_id=2040003202]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,28 +48,28 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="ElementContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ElementContainer/ScrollContainer" unique_id=1411764180]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="AllElements" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer"]
+[node name="AllElements" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer" unique_id=871090977]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="RootElementEditor" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements" instance=ExtResource("2_jnl50")]
+[node name="RootElementEditor" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements" unique_id=585846375 instance=ExtResource("2_jnl50")]
 layout_mode = 2
 
-[node name="RootChildren" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements"]
+[node name="RootChildren" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements" unique_id=1091344959]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="MoveToOverlay" type="Control" parent="ElementContainer"]
+[node name="MoveToOverlay" type="Control" parent="ElementContainer" unique_id=1420441031]
 visible = false
 layout_mode = 1
 anchors_preset = 15

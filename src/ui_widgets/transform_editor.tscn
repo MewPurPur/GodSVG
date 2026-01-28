@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7xhf7bodwnl1"]
+[gd_scene format=3 uid="uid://c7xhf7bodwnl1"]
 
 [ext_resource type="Script" uid="uid://cdipr84aqj703" path="res://src/ui_widgets/transform_editor.gd" id="1_q14io"]
 [ext_resource type="FontVariation" uid="uid://pup5vmxl1t6m" path="res://assets/fonts/MonoFont.tres" id="2_futq3"]
@@ -14,16 +14,16 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="TransformEditor" type="PanelContainer"]
+[node name="TransformEditor" type="PanelContainer" unique_id=1038850379]
 offset_right = 31.0
 offset_bottom = 24.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_af5dq")
 script = ExtResource("1_q14io")
 
-[node name="TransformList" type="VBoxContainer" parent="."]
+[node name="TransformList" type="VBoxContainer" parent="." unique_id=1572513316]
 layout_mode = 2
 
-[node name="TopButton" type="Button" parent="TransformList"]
+[node name="TopButton" type="Button" parent="TransformList" unique_id=265043913]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0

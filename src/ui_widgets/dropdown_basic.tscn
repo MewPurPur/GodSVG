@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bpr5yv7pbv13g"]
+[gd_scene format=3 uid="uid://bpr5yv7pbv13g"]
 
 [ext_resource type="Script" uid="uid://bvh3i8ytaohao" path="res://src/ui_widgets/dropdown_basic.gd" id="1_1wr00"]
 
-[node name="DropdownBasic" type="Control"]
+[node name="DropdownBasic" type="Control" unique_id=265034956]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 3
 anchors_preset = 0

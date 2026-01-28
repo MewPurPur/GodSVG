@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://mr2c1hti43k4"]
+[gd_scene format=3 uid="uid://mr2c1hti43k4"]
 
 [ext_resource type="Script" uid="uid://dk0q2mcxvxiwt" path="res://src/ui_widgets/unrecognized_field.gd" id="1_decfb"]
 [ext_resource type="Texture2D" uid="uid://crx4kcj4o01bs" path="res://assets/icons/SmallQuestionMark.svg" id="1_sd7sr"]
 
-[node name="UnrecognizedField" type="LineEdit"]
+[node name="UnrecognizedField" type="LineEdit" unique_id=1958426252]
 custom_minimum_size = Vector2(78, 22)
 offset_right = 48.8125
 offset_bottom = 21.0

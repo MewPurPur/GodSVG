@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxmrx6t4jkhyj"]
+[gd_scene format=3 uid="uid://cxmrx6t4jkhyj"]
 
 [ext_resource type="Script" uid="uid://cgbgw4ok5jxk5" path="res://src/ui_parts/global_actions.gd" id="1_x4rqo"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://assets/icons/More.svg" id="2_71075"]
@@ -10,27 +10,25 @@
 [ext_resource type="Texture2D" uid="uid://b6mqp088ef65" path="res://assets/icons/Layouts.svg" id="5_tx4gi"]
 [ext_resource type="FontVariation" uid="uid://o6egawwljhgy" path="res://assets/fonts/BoldFont.tres" id="6_tx4gi"]
 
-[node name="GlobalActions" type="HBoxContainer"]
+[node name="GlobalActions" type="HBoxContainer" unique_id=1389794128]
 offset_right = 52.0
 offset_bottom = 24.0
 script = ExtResource("1_x4rqo")
 
-[node name="LeftSide" type="HBoxContainer" parent="."]
+[node name="LeftSide" type="HBoxContainer" parent="." unique_id=585455217]
 layout_mode = 2
 size_flags_horizontal = 2
 
-[node name="MoreOptions" type="Button" parent="LeftSide"]
+[node name="MoreOptions" type="Button" parent="LeftSide" unique_id=540049138]
 layout_mode = 2
 size_flags_horizontal = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_71075")
 
-[node name="SettingsButton" type="Button" parent="LeftSide"]
+[node name="SettingsButton" type="Button" parent="LeftSide" unique_id=8083245]
 layout_mode = 2
 size_flags_horizontal = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("3_xl5uh")
@@ -38,36 +36,32 @@ script = ExtResource("4_f81d5")
 action = "open_settings"
 metadata/_custom_type_script = "uid://ynx3s1jc6bwq"
 
-[node name="LayoutButton" type="Button" parent="LeftSide"]
+[node name="LayoutButton" type="Button" parent="LeftSide" unique_id=490612813]
 layout_mode = 2
 size_flags_horizontal = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_tx4gi")
 
-[node name="RightSide" type="HBoxContainer" parent="."]
+[node name="RightSide" type="HBoxContainer" parent="." unique_id=819453751]
 layout_mode = 2
 
-[node name="SizeButton" type="Button" parent="RightSide"]
+[node name="SizeButton" type="Button" parent="RightSide" unique_id=416771547]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 theme_override_fonts/font = ExtResource("6_tx4gi")
 
-[node name="CurrentFileButton" type="Button" parent="RightSide"]
+[node name="CurrentFileButton" type="Button" parent="RightSide" unique_id=1221356021]
 layout_mode = 2
 size_flags_horizontal = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 text_overrun_behavior = 3
 script = ExtResource("5_14xct")
 
-[node name="ImportButton" type="Button" parent="RightSide"]
+[node name="ImportButton" type="Button" parent="RightSide" unique_id=1555007215]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_giwu1")
@@ -75,9 +69,8 @@ script = ExtResource("4_f81d5")
 action = "import"
 metadata/_custom_type_script = "uid://ynx3s1jc6bwq"
 
-[node name="ExportButton" type="Button" parent="RightSide"]
+[node name="ExportButton" type="Button" parent="RightSide" unique_id=1726797605]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("3_4ckhj")

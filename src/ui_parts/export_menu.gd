@@ -97,7 +97,7 @@ func _on_export_button_pressed() -> void:
 
 func _on_clipboard_button_pressed() -> void:
 	var error := ClipboardUtils.copy_image(export_data)
-	if error.type != ClipboardUtils.ErrorType.Ok:
+	if error.type != ClipboardUtils.ErrorType.OK:
 		var alert_dialog := HandlerGUI.AlertDialogScene.instantiate()
 		HandlerGUI.add_dialog(alert_dialog)
 		alert_dialog.setup(error.message)

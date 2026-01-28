@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhskf8yrulqtj"]
+[gd_scene format=3 uid="uid://bhskf8yrulqtj"]
 
 [ext_resource type="Script" uid="uid://d1mdyvr7majfe" path="res://src/ui_parts/import_warning_menu.gd" id="1_1rv5w"]
 [ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/preview_rect.tscn" id="2_j1v8v"]
 
-[node name="ImportWarningPanel" type="PanelContainer"]
+[node name="ImportWarningPanel" type="PanelContainer" unique_id=1277783950]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -18,25 +18,25 @@ grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_1rv5w")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1253857114]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1343256487]
 layout_mode = 2
 theme_type_variation = &"TitleLabel"
 horizontal_alignment = 1
 
-[node name="TextureContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TextureContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=941398222]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TexturePreview" parent="VBoxContainer/TextureContainer" instance=ExtResource("2_j1v8v")]
+[node name="TexturePreview" parent="VBoxContainer/TextureContainer" unique_id=322142057 instance=ExtResource("2_j1v8v")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TextureContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TextureContainer" unique_id=70049626]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
@@ -46,10 +46,10 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TextureContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TextureContainer/MarginContainer" unique_id=163801116]
 layout_mode = 2
 
-[node name="WarningsLabel" type="RichTextLabel" parent="VBoxContainer/TextureContainer/MarginContainer/ScrollContainer"]
+[node name="WarningsLabel" type="RichTextLabel" parent="VBoxContainer/TextureContainer/MarginContainer/ScrollContainer" unique_id=1039710040]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -59,18 +59,18 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=732760433]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="CancelButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="CancelButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1346487584]
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
 
-[node name="OKButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="OKButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1605328525]
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_default_cursor_shape = 2

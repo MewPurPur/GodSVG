@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://clp287ssgovaa"]
+[gd_scene format=3 uid="uid://clp287ssgovaa"]
 
 [ext_resource type="Script" uid="uid://dfp0yap8evr57" path="res://src/ui_widgets/profile_frame.gd" id="1_urnhl"]
 
-[node name="ProfileFrame" type="MarginContainer"]
+[node name="ProfileFrame" type="MarginContainer" unique_id=729621792]
 custom_minimum_size = Vector2(0, 28)
 anchors_preset = 10
 anchor_right = 1.0
@@ -13,17 +13,17 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 script = ExtResource("1_urnhl")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=999578735]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="Control" type="Control" parent="HBoxContainer"]
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=1848690047]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 mouse_filter = 2
 
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=808294247]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0

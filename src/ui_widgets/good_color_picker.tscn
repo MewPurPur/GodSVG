@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b1eig44cov474"]
+[gd_scene format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" uid="uid://bof1kkpsf7cmx" path="res://src/ui_widgets/good_color_picker.gd" id="1_0pc78"]
 [ext_resource type="Shader" uid="uid://dwop5cmg7i04p" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
@@ -48,59 +48,57 @@ shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
 
-[node name="GoodColorPicker" type="VBoxContainer"]
-anchors_preset = -1
+[node name="GoodColorPicker" type="VBoxContainer" unique_id=1539422717]
 offset_right = 198.0
 offset_bottom = 344.0
 theme_override_constants/separation = 6
 script = ExtResource("1_0pc78")
 
-[node name="ShapeContainer" type="HBoxContainer" parent="."]
+[node name="ShapeContainer" type="HBoxContainer" parent="." unique_id=112689325]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="ColorWheel" type="MarginContainer" parent="ShapeContainer"]
+[node name="ColorWheel" type="MarginContainer" parent="ShapeContainer" unique_id=1719868340]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="ColorWheelDraw" type="ColorRect" parent="ShapeContainer/ColorWheel"]
+[node name="ColorWheelDraw" type="ColorRect" parent="ShapeContainer/ColorWheel" unique_id=385358480]
 material = SubResource("ShaderMaterial_wl372")
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="SideSlider" type="MarginContainer" parent="ShapeContainer"]
+[node name="SideSlider" type="MarginContainer" parent="ShapeContainer" unique_id=1797054762]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="SideSliderTrack" type="ColorRect" parent="ShapeContainer/SideSlider"]
+[node name="SideSliderTrack" type="ColorRect" parent="ShapeContainer/SideSlider" unique_id=747943929]
 material = SubResource("ShaderMaterial_gihhg")
 custom_minimum_size = Vector2(18, 0)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="ColorContainer" type="HBoxContainer" parent="."]
+[node name="ColorContainer" type="HBoxContainer" parent="." unique_id=304615092]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="KeywordButton" type="Button" parent="ColorContainer"]
+[node name="KeywordButton" type="Button" parent="ColorContainer" unique_id=1965249288]
 visible = false
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_ewifk")
 
-[node name="ColorsDisplay" type="HBoxContainer" parent="ColorContainer"]
+[node name="ColorsDisplay" type="HBoxContainer" parent="ColorContainer" unique_id=1140463134]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
@@ -108,80 +106,78 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/separation = 0
 
-[node name="StartColorRect" type="Control" parent="ColorContainer/ColorsDisplay"]
+[node name="StartColorRect" type="Control" parent="ColorContainer/ColorsDisplay" unique_id=1014461573]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ColorRect" type="Control" parent="ColorContainer/ColorsDisplay"]
+[node name="ColorRect" type="Control" parent="ColorContainer/ColorsDisplay" unique_id=560003720]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ResetColorButton" type="Button" parent="ColorContainer/ColorsDisplay/ColorRect"]
+[node name="ResetColorButton" type="Button" parent="ColorContainer/ColorsDisplay/ColorRect" unique_id=1295573575]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-focus_mode = 0
 theme_type_variation = &"TextButton"
 theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
 icon = ExtResource("5_rh0xc")
 icon_alignment = 1
 
-[node name="EyedropperButton" type="Button" parent="ColorContainer"]
+[node name="EyedropperButton" type="Button" parent="ColorContainer" unique_id=1876688761]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 theme_override_font_sizes/font_size = 10
 icon = ExtResource("6_titg4")
 
-[node name="SliderContainer" type="VBoxContainer" parent="."]
+[node name="SliderContainer" type="VBoxContainer" parent="." unique_id=1276853973]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ColorSpaceContainer" type="HBoxContainer" parent="SliderContainer"]
+[node name="ColorSpaceContainer" type="HBoxContainer" parent="SliderContainer" unique_id=2057620932]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SliderContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SliderContainer" unique_id=367582515]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Spacer" type="Control" parent="SliderContainer/HBoxContainer"]
+[node name="Spacer" type="Control" parent="SliderContainer/HBoxContainer" unique_id=1612977865]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="TracksContainer" type="VBoxContainer" parent="SliderContainer/HBoxContainer"]
+[node name="TracksContainer" type="VBoxContainer" parent="SliderContainer/HBoxContainer" unique_id=1877225528]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 alignment = 2
 
-[node name="Slider1" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+[node name="Slider1" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=851427053]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1" unique_id=1412553273]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer" unique_id=172837594]
 material = SubResource("ShaderMaterial_fvg6q")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1" unique_id=685943662]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
@@ -189,26 +185,26 @@ alignment = 1
 max_length = 3
 script = ExtResource("6_aqyoh")
 
-[node name="Slider2" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+[node name="Slider2" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=1598633778]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2" unique_id=1992652617]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer" unique_id=2039286117]
 material = SubResource("ShaderMaterial_dlmj5")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2" unique_id=452541113]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
@@ -216,26 +212,26 @@ alignment = 1
 max_length = 3
 script = ExtResource("6_aqyoh")
 
-[node name="Slider3" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+[node name="Slider3" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=138290662]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3" unique_id=331993906]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer" unique_id=750166284]
 material = SubResource("ShaderMaterial_p3pbp")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3" unique_id=944688313]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
@@ -243,33 +239,33 @@ alignment = 1
 max_length = 3
 script = ExtResource("6_aqyoh")
 
-[node name="Slider4" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+[node name="Slider4" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=471824461]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4"]
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4" unique_id=109570350]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer" unique_id=1603275331]
 layout_mode = 2
 texture = ExtResource("6_qq1j3")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer"]
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer" unique_id=573111272]
 material = SubResource("ShaderMaterial_exp51")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4"]
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4" unique_id=706389396]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"

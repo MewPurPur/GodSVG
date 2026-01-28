@@ -1,13 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://of6s1h2n4s55"]
+[gd_scene format=3 uid="uid://of6s1h2n4s55"]
 
 [ext_resource type="Script" uid="uid://nu3gu2q28w8b" path="res://src/ui_widgets/invalid_syntax_warning.gd" id="1_n5tba"]
 
-[node name="InvalidSyntaxWarning" type="MarginContainer"]
+[node name="InvalidSyntaxWarning" type="MarginContainer" unique_id=381849248]
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 16
 script = ExtResource("1_n5tba")
 
-[node name="InvalidSyntaxLabel" type="Label" parent="."]
+[node name="InvalidSyntaxLabel" type="Label" parent="." unique_id=1750679169]
 layout_mode = 2
 autowrap_mode = 3

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://byriqsdywhr1k"]
+[gd_scene format=3 uid="uid://byriqsdywhr1k"]
 
 [ext_resource type="Script" uid="uid://b6am6tjtg0ahm" path="res://src/ui_widgets/directory_path_widget.gd" id="1_n2nsb"]
 
-[node name="DirectoryPathWidget" type="Control"]
+[node name="DirectoryPathWidget" type="Control" unique_id=1786113286]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

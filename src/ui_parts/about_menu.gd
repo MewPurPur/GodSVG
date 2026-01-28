@@ -40,7 +40,10 @@ func _ready() -> void:
 	tab_container.set_tab_title(2, Translator.translate("License"))
 	tab_container.set_tab_title(3, Translator.translate("Third-party licenses"))
 	tab_container.tab_changed.connect(_on_tab_changed)
-	_on_tab_changed(0)
+	
+	HandlerGUI.register_focus_sequence(self, [tab_container.get_tab_bar(), close_button])
+	tab_container.get_tab_bar().grab_focus(true)
+	tab_container.tab_changed.emit(0)
 
 
 func select_next_tab() -> void:
@@ -66,7 +69,7 @@ func _on_tab_changed(idx: int) -> void:
 			
 			# There can be multiple translators for a single locale.
 			for locale in TranslationServer.get_loaded_locales():
-				var credits := TranslationServer.get_translation_object(locale).get_message("translation-credits").split(",", false)
+				var credits := TranslationServer.find_translations(locale, true)[0].get_message("translation-credits").split(",", false)
 				if credits.is_empty():
 					continue
 				

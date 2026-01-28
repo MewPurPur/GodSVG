@@ -1,19 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://bygxen40wv4nr"]
+[gd_scene format=3 uid="uid://bygxen40wv4nr"]
 
 [ext_resource type="Script" uid="uid://dtmassdggpkom" path="res://src/ui_parts/layout_configuration.gd" id="2_lmeyv"]
 
-[node name="LayoutPopup" type="PanelContainer"]
+[node name="LayoutPopup" type="PanelContainer" unique_id=1569313201]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1878466646]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="LayoutConfiguration" type="Control" parent="MarginContainer"]
+[node name="LayoutConfiguration" type="Control" parent="MarginContainer" unique_id=2110925232]
 custom_minimum_size = Vector2(200, 203)
 layout_mode = 2
 script = ExtResource("2_lmeyv")

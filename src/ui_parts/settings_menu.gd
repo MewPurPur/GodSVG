@@ -66,8 +66,7 @@ func sync_localization() -> void:
 
 func adjust_right_margin() -> void:
 	var scrollbar := scroll_container.get_v_scroll_bar()
-	content_container.add_theme_constant_override("margin_right",
-			2 if scrollbar.visible else int(2 + scrollbar.size.x))
+	content_container.add_theme_constant_override("margin_right", 2 if scrollbar.visible else int(2 + scrollbar.size.x))
 
 func setup_tabs() -> void:
 	for tab in tabs.get_children():
@@ -80,7 +79,6 @@ func setup_tabs() -> void:
 		tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		tab.toggle_mode = true
 		tab.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-		tab.focus_mode = Control.FOCUS_NONE
 		tab.theme_type_variation = "SideTab"
 		tab.toggled.connect(_on_tab_toggled.bind(tab_index))
 		tab.button_group = button_group
@@ -138,7 +136,7 @@ func set_preview(node: Control) -> void:
 
 
 func _on_language_pressed() -> void:
-	var strings_count := TranslationServer.get_translation_object("en").get_message_count()
+	var strings_count := TranslationServer.find_translations("en", true)[0].get_message_count()
 	
 	var btn_arr: Array[Button] = []
 	for locale in TranslationServer.get_loaded_locales():
@@ -146,7 +144,7 @@ func _on_language_pressed() -> void:
 		
 		# Translation percentages.
 		if locale != "en":
-			var translation_obj := TranslationServer.get_translation_object(locale)
+			var translation_obj := TranslationServer.find_translations(locale, true)[0]
 			var translated_count := translation_obj.get_message_count() - translation_obj.get_translated_message_list().count("")
 			
 			btn_arr.append(ContextPopup.create_button(

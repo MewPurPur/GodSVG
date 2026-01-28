@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://dqy5lv33sy5r7"]
+[gd_scene format=3 uid="uid://dqy5lv33sy5r7"]
 
 [ext_resource type="Script" uid="uid://p4nyhlbpwxe2" path="res://src/ui_widgets/pathdata_field.gd" id="1_22rk2"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_48xgh"]
 
-[node name="PathdataField" type="VBoxContainer"]
+[node name="PathdataField" type="VBoxContainer" unique_id=1850833474]
 offset_right = 358.0
 offset_bottom = 45.0
 theme_override_constants/separation = 2
 script = ExtResource("1_22rk2")
 
-[node name="LineEdit" type="LineEdit" parent="."]
+[node name="LineEdit" type="LineEdit" parent="." unique_id=267493983]
 custom_minimum_size = Vector2(358, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -17,7 +17,7 @@ focus_mode = 1
 script = ExtResource("2_48xgh")
 mono_font_tooltip = true
 
-[node name="Commands" type="Control" parent="."]
+[node name="Commands" type="Control" parent="." unique_id=494513988]
 custom_minimum_size = Vector2(344, 0)
 layout_mode = 2
 size_flags_horizontal = 8

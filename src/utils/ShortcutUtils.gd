@@ -155,13 +155,12 @@ static func get_action_first_valid_shortcut(action: String) -> InputEventKey:
 static func is_shortcut_valid(shortcut: InputEventKey, action: String) -> bool:
 	return not is_action_modifiable(action) or Configs.savedata.is_shortcut_valid(shortcut)
 
-static func is_action_pressed(event: InputEvent, action: String) -> bool:
-	# TODO Sometimes MacOS gives us an InputEventAction here.
-	# This doesn't happen on my Linux laptop. I don't know which platform's behavior
-	# is the correct one... But it should be handled gracefully.
+static func is_action_pressed(event: InputEvent, action: String, allow_echo := false) -> bool:
+	# TODO Sometimes MacOS gives us an InputEventAction here. This doesn't happen on my Linux laptop.
+	# I don't know which platform's behavior is the correct one... But it should be handled gracefully.
 	if event is InputEventAction:
 		if event.event_index == -1:
 			# The action has no associated shortcut, so we don't need to check validity.
 			return event.pressed and event.action == action
 		event = InputMap.action_get_events(event.action)[event.event_index]
-	return event.is_action_pressed(action, false, true) and is_shortcut_valid(event, action)
+	return event.is_action_pressed(action, allow_echo, true) and is_shortcut_valid(event, action)

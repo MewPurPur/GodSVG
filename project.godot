@@ -24,7 +24,7 @@ run/low_processor_mode=true
 boot_splash/bg_color=Color(0.1065, 0.1181, 0.15, 1)
 boot_splash/stretch_mode=0
 boot_splash/image="res://assets/logos/splash.png"
-config/icon="res://assets/logos/icon.png"
+config/icon="uid://v7hej5yexkvl"
 config/macos_native_icon="res://assets/logos/icon.icns"
 config/windows_native_icon="res://assets/logos/icon.ico"
 

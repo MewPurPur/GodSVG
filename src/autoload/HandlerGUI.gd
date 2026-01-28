@@ -30,11 +30,14 @@ var popup_submenu_source: Control
 
 var shortcut_panel: PanelContainer
 
-## A dictionary for shortcut registrations for each node.
-## If a node is freed, its shortcut registrations are cleared.
+## A dictionary for shortcut registrations for each node. If a node is freed, its shortcut registrations are cleared.
 ## Every time a shortcut is pressed, the list of registrations is walked through to find if there's an appropriate one.
 ## For a registratition to be appropriate, its behavior must coincide with where the node is relative to the menu/popup stack.
 var shortcut_registrations: Dictionary[Node, ShortcutsRegistration] = {}
+
+## A dictionary of focus masters and their focus sequences.
+var focus_sequences: Dictionary[Control, Array] = {}
+
 
 func _enter_tree() -> void:
 	var shortcuts := ShortcutsRegistration.new()
@@ -90,6 +93,17 @@ func register_shortcuts(node: Node, registrations: ShortcutsRegistration) -> voi
 ## Removes all shortcuts registered to a node.
 func forget_all_shortcuts(node: Node) -> void:
 	shortcut_registrations.erase(node)
+
+
+## Registers a focus sequence to an owner.
+func register_focus_sequence(focus_master: Control, sequence: Array[Control]) -> void:
+	focus_sequences[focus_master] = sequence
+	if not focus_master.tree_exiting.is_connected(forget_focus_sequence):
+		focus_master.tree_exiting.connect(forget_focus_sequence.bind(focus_master))
+
+## Removes all shortcuts registered to a node.
+func forget_focus_sequence(focus_master: Control) -> void:
+	focus_sequences.erase(focus_master)
 
 
 ## Adds a new menu to menu_stack which hides the previous one.
@@ -332,6 +346,50 @@ func _input(event: InputEvent) -> void:
 	if is_instance_valid(focus_owner) and not is_node_on_top_menu_or_popup(focus_owner):
 		get_viewport().set_input_as_handled()
 		_react_to_action(event)
+		return
+	if not is_instance_valid(focus_owner):
+		return
+	
+	# Intercent focus in favor of our own system.
+	if ShortcutUtils.is_action_pressed(event, "ui_focus_next", true):
+		get_viewport().set_input_as_handled()
+		if not focus_owner.has_focus(true):
+			focus_owner.grab_focus()
+		else:
+			gather_focus(focus_owner, true).grab_focus()
+	elif ShortcutUtils.is_action_pressed(event, "ui_focus_prev", true):
+		get_viewport().set_input_as_handled()
+		if not focus_owner.has_focus(true):
+			focus_owner.grab_focus()
+		else:
+			gather_focus(focus_owner, false).grab_focus()
+
+func gather_focus(control: Control, is_next: bool) -> Control:
+	var new_focus := _gather_focus_internal(control, is_next)
+	while not (is_instance_valid(new_focus) and new_focus.is_visible_in_tree() and new_focus.focus_mode == Control.FOCUS_ALL):
+		var new_focus_candidate := _gather_focus_internal(new_focus, is_next)
+		if not is_instance_valid(new_focus_candidate):
+			return control
+		new_focus = _gather_focus_internal(new_focus, is_next)
+	return new_focus
+
+func _gather_focus_internal(control: Control, is_next: bool) -> Control:
+	for focus_master in focus_sequences:
+		var sequence: Array[Control] = focus_sequences[focus_master]
+		var control_idx := sequence.find(control)
+		if control_idx != -1:
+			var new_control_idx := control_idx + (1 if is_next else -1)
+			# Get next control in sequence, otherwise go down a level.
+			if new_control_idx >= 0 and new_control_idx <= sequence.size() - 1:
+				var new_control := sequence[new_control_idx]
+				if new_control in focus_sequences:
+					var new_sequence: Array[Control] = focus_sequences[new_control]
+					if not new_sequence.is_empty():
+						return new_sequence[0] if is_next else new_sequence[-1]
+				return new_control
+			return focus_master
+	return null
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventAction or event is InputEventKey):

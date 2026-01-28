@@ -1,9 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://vrmbmt18wocm"]
+[gd_scene format=3 uid="uid://vrmbmt18wocm"]
 
 [ext_resource type="Script" uid="uid://mtwptdpc3cxs" path="res://src/ui_parts/debug_content.gd" id="1_7pqvx"]
 
-[node name="DebugContent" type="MarginContainer"]
-anchors_preset = -1
+[node name="DebugContent" type="MarginContainer" unique_id=617642477]
 offset_top = 4.0
 offset_right = 10.0
 offset_bottom = 40.0
@@ -14,12 +13,12 @@ theme_override_constants/margin_top = 36
 theme_override_constants/margin_right = 10
 script = ExtResource("1_7pqvx")
 
-[node name="DebugContainer" type="VBoxContainer" parent="."]
+[node name="DebugContainer" type="VBoxContainer" parent="." unique_id=1110222788]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = -18
 
-[node name="DebugLabel" type="Label" parent="DebugContainer"]
+[node name="DebugLabel" type="Label" parent="DebugContainer" unique_id=1378842865]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -28,7 +27,7 @@ theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 2
 
-[node name="InputDebugLabel" type="Label" parent="DebugContainer"]
+[node name="InputDebugLabel" type="Label" parent="DebugContainer" unique_id=244977686]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)

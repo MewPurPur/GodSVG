@@ -21,6 +21,8 @@ func _ready() -> void:
 	zoom_out_button.shortcuts_bind = shortcuts
 	zoom_in_button.shortcuts_bind = shortcuts
 	zoom_reset_button.shortcuts_bind = shortcuts
+	
+	HandlerGUI.register_focus_sequence(self, [zoom_out_button, zoom_reset_button, zoom_in_button])
 
 
 func setup_limits(new_min_zoom: float, new_max_zoom: float) -> void:

@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bc45fp38kar6a"]
+[gd_scene format=3 uid="uid://bc45fp38kar6a"]
 
 [ext_resource type="Script" uid="uid://bws54nmwus6y6" path="res://src/ui_widgets/transform_field.gd" id="1_5gokr"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://assets/icons/Arrow.svg" id="2_2uudq"]
 
-[node name="TransformField" type="Control"]
+[node name="TransformField" type="Control" unique_id=636640374]
 custom_minimum_size = Vector2(162, 0)
 layout_mode = 3
 anchors_preset = 0

@@ -90,7 +90,6 @@ func update_layout() -> void:
 	var config_button := Button.new()
 	config_button.theme_type_variation = "TranslucentButton"
 	config_button.icon = config_icon
-	config_button.focus_mode = Control.FOCUS_NONE
 	config_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	config_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	config_button.custom_minimum_size = Vector2(30, 30)
@@ -124,7 +123,6 @@ func update_layout() -> void:
 			var shortcut := Configs.savedata.get_shortcut_panel_slot(i)
 			if not shortcut.is_empty():
 				var button := Button.new()
-				button.focus_mode = Control.FOCUS_NONE
 				button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				button.mouse_filter = Control.MOUSE_FILTER_PASS
 				button.custom_minimum_size = Vector2(30, 30)

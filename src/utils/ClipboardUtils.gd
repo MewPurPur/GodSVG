@@ -1,6 +1,31 @@
 # This class adds support for copying images. Currently not supported by Godot.
 @abstract class_name ClipboardUtils
 
+enum ErrorType {OK, UNKNOWN, UNSUPPORTED_PLATFORM, FAILED_EXECUTING, NO_CLIPBOAD_UTIL}
+
+class ClipboardError:
+	var type: ErrorType
+	var extra: String
+	var command_output: PackedStringArray
+	var message: String
+	func _init(_type: ErrorType, _cmd_out: PackedStringArray, _extra: String = "") -> void:
+		type = _type
+		extra = _extra
+		command_output = _cmd_out
+		match type:
+			ErrorType.FAILED_EXECUTING:
+				var cmd_out := '\n'.join(_cmd_out).strip_edges().replace("\n\n", '\n')
+				message = "Failed executing \"%s\"\n\n%s" % [extra, cmd_out]
+				if "xclip" in extra and "no authorization protocol" in cmd_out:
+					message += "\n\nConsider installing 'wl-clipboard' if you're using Wayland."
+			ErrorType.NO_CLIPBOAD_UTIL:
+				message = "Failed to find a clipboard util.\nMake sure you've installed one of the following:\n%s" % extra
+			ErrorType.UNSUPPORTED_PLATFORM:
+				message = "Unsupported platform"
+			_:
+				message = "Unknown error"
+
+
 ## Returns true if this clipboard util is supported on the current platform.
 static func is_supported(format: String) -> bool:
 	if OS.get_name() in ["Web", "macOS"] and format not in ["png", "svg"]:
@@ -10,10 +35,10 @@ static func is_supported(format: String) -> bool:
 ## Returns an object containing the error information, as well as an "OK" type.
 static func copy_image(export_data: ImageExportData) -> ClipboardError:
 	if not is_supported(export_data.format):
-		return ClipboardError.new(ErrorType.UnsupportedPlatform, [])
+		return ClipboardError.new(ErrorType.UNSUPPORTED_PLATFORM, [])
 	if export_data.format == "svg":
 		DisplayServer.clipboard_set(State.get_export_text())
-		return ClipboardError.new(ErrorType.Ok, [])
+		return ClipboardError.new(ErrorType.OK, [])
 	var mime_type := ImageExportData.image_types_dict[export_data.format]
 	var cmd_output := []
 	match OS.get_name():
@@ -35,7 +60,7 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 				""" % temp_path.replace('\\', '/')
 			var e := OS.execute("powershell.exe", ["-Command", ps_script], cmd_output, true)
 			_clean_temp(temp_path)
-			return ClipboardError.new(ErrorType.FailedExecuting if e < 0 else ErrorType.Ok, cmd_output)
+			return ClipboardError.new(ErrorType.FAILED_EXECUTING if e < 0 else ErrorType.OK, cmd_output)
 		"Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
 			# Finding out the display manager type.
 			var display_manager_arr := []
@@ -61,7 +86,7 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 						"wl-copy":
 							var dict := OS.execute_with_pipe("wl-copy", ["-t", mime_type], false)
 							if dict.is_empty():
-								return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
+								return ClipboardError.new(ErrorType.FAILED_EXECUTING, cmd_output, " ".join(cmd))
 							var stdio: FileAccess = dict.stdio
 							stdio.store_buffer(export_data.image_to_buffer(export_data.generate_image()))
 							stdio.close()
@@ -69,19 +94,19 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 								OS.delay_msec(10)
 							exit_code = OS.get_process_exit_code(dict.pid)
 					if exit_code == 0:
-						return ClipboardError.new(ErrorType.Ok, cmd_output)
+						return ClipboardError.new(ErrorType.OK, cmd_output)
 			if exit_code == -99:
-				return ClipboardError.new(ErrorType.NoClipboardUtil, cmd_output, ", ".join(usable_utils))
+				return ClipboardError.new(ErrorType.NO_CLIPBOAD_UTIL, cmd_output, ", ".join(usable_utils))
 			else:
-				return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
+				return ClipboardError.new(ErrorType.FAILED_EXECUTING, cmd_output, " ".join(cmd))
 		"macOS":
 			var temp_path := _save_temp_to_disk(export_data)
 			var e := OS.execute("osascript", ["-e", r'set the clipboard to read file POSIX file \"%s\" as «class %sf»' % [temp_path, export_data.format.to_upper()]], cmd_output, true)
 			_clean_temp(temp_path)
-			return ClipboardError.new(ErrorType.FailedExecuting if e == -1 else ErrorType.Ok, cmd_output, "osascript")
+			return ClipboardError.new(ErrorType.FAILED_EXECUTING if e == -1 else ErrorType.OK, cmd_output, "osascript")
 		"Android":
 			# TODO: Implement "copy to clipboard" util for Android.
-			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
+			return ClipboardError.new(ErrorType.UNSUPPORTED_PLATFORM, cmd_output)
 		"Web":
 			JavaScriptBridge.eval("""
 				window.copyImageToClipboard = (data, mimeType) => {
@@ -97,9 +122,9 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 			for i in len(image_buf):
 				data[i] = image_buf[i]
 			JavaScriptBridge.get_interface("window").window.copyImageToClipboard(data, mime_type)
-			return ClipboardError.new(ErrorType.Ok, cmd_output)
+			return ClipboardError.new(ErrorType.OK, cmd_output)
 		_:
-			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
+			return ClipboardError.new(ErrorType.UNSUPPORTED_PLATFORM, cmd_output)
 
 static func _save_temp_to_disk(export_data: ImageExportData) -> String:
 	var image_buf := export_data.image_to_buffer(export_data.generate_image())
@@ -110,33 +135,3 @@ static func _save_temp_to_disk(export_data: ImageExportData) -> String:
 
 static func _clean_temp(temp_path: String) -> void:
 	DirAccess.remove_absolute(temp_path)
-
-enum ErrorType {
-	Ok,
-	Unknown,
-	UnsupportedPlatform,
-	FailedExecuting,
-	NoClipboardUtil
-}
-
-class ClipboardError:
-	var type: ErrorType
-	var extra: String
-	var command_output: PackedStringArray
-	var message: String
-	func _init(_type: ErrorType, _cmd_out: PackedStringArray, _extra: String = "") -> void:
-		type = _type
-		extra = _extra
-		command_output = _cmd_out
-		match type:
-			ErrorType.FailedExecuting:
-				var cmd_out := '\n'.join(_cmd_out).strip_edges().replace("\n\n", '\n')
-				message = "Failed executing \"%s\"\n\n%s" % [extra, cmd_out]
-				if "xclip" in extra and "no authorization protocol" in cmd_out:
-					message += "\n\nConsider installing 'wl-clipboard' if you're using Wayland."
-			ErrorType.NoClipboardUtil:
-				message = "Failed to find a clipboard util.\nMake sure you've installed one of the following:\n%s" % extra
-			ErrorType.UnsupportedPlatform:
-				message = "Unsupported platform"
-			_:
-				message = "Unknown error"

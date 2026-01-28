@@ -90,7 +90,7 @@ func transform_list_tests() -> void:
 		"translate(10.) scale(.5) rotate(7)": "translate(10 0) scale(0.5 0.5) rotate(7 0 0)",
 		"skewX(3) , skewY(4)": "skewX(3) skewY(4)",
 		"skewX(3) , skewY(4 2)": "",
-		"skewX(3) ,, skewY(4)": "",
+		"skewX(3), ,, ,skewY(4)": "skewX(3) skewY(4)",
 		"skewX(3)skewY(4)": "",
 		"scale(2,)": "",
 		"translate(,10)": "",

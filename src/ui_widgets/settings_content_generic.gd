@@ -86,7 +86,6 @@ func _ready() -> void:
 			btn.tree_exited.connect(Configs.language_changed.disconnect.bind(update_category_button_text))
 			update_category_button_text.call()
 			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			btn.focus_mode = Control.FOCUS_NONE
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 			categories.add_child(btn)
 		add_child(categories)
