@@ -108,8 +108,18 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 			return []
 		
 		var transform_params := transform_info[1].strip_edges()
-		var transform_name := transform_info[0].strip_edges(false, true)
-		if transform_name.is_empty() or (idx > 0 and not transform_name[0] in ", \t\n\r"):
+		var transform_name := transform_info[0]
+		
+		var has_at_least_one_comma_or_whitespace_before := (idx == 0)
+		while true:
+			if not transform_name.is_empty() and transform_name[0] in ", \t\n\r":
+				transform_name = transform_name.right(-1)
+				has_at_least_one_comma_or_whitespace_before = true
+			else:
+				break
+		transform_name = transform_name.strip_edges(false, true)
+		
+		if transform_name.is_empty() or not has_at_least_one_comma_or_whitespace_before:
 			return []
 		
 		match transform_name.strip_edges(true, false).trim_prefix(",").strip_edges(true, false):

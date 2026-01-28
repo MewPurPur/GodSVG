@@ -56,5 +56,35 @@ func check_text_validity(checked_text: String) -> bool:
 		NodeType.COMMENT: return not ("--" in checked_text or checked_text.ends_with("-"))
 		NodeType.CDATA: return not "]]>" in checked_text
 		NodeType.TEXT:
-			return not ("]]>" in checked_text or "<" in checked_text or "&" in checked_text)
+			if "]]>" in checked_text or "<" in checked_text:
+				return false
+			var current_pos := 0
+			while true:
+				var amp_pos := checked_text.find("&", current_pos)
+				if amp_pos == -1:
+					break
+				
+				var semi_pos := checked_text.find(";", amp_pos + 1)
+				if semi_pos == -1:
+					return false
+				
+				var entity_body := checked_text.substr(amp_pos + 1, semi_pos - amp_pos - 1)
+				if entity_body.begins_with("#"):
+					var num_body := entity_body.substr(1, entity_body.length() - 1)
+					if num_body.is_empty():
+						return false
+					elif (num_body.begins_with("x") or num_body.begins_with("X")) and\
+					not num_body.substr(1, num_body.length() - 1).is_valid_hex_number():
+						return false
+					else:
+						for c in num_body:
+							if not (c >= "0" and c <= "9"):
+								return false
+				else:
+					# The only predefined XML entities.
+					if not entity_body in ["lt", "gt", "amp", "apos", "quot"]:
+						return false
+				current_pos = semi_pos + 1
+			return true
+		
 		_: return true

@@ -71,7 +71,6 @@ func update_shortcut_slots() -> void:
 			var clear_button := Button.new()
 			clear_button.theme_type_variation = "FlatButton"
 			clear_button.icon = clear_icon
-			clear_button.focus_mode = Control.FOCUS_NONE
 			clear_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			clear_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 			clear_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER

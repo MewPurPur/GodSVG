@@ -1,10 +1,10 @@
 extends PanelContainer
 
-@onready var title_label: Label = $MainContainer/TextContainer/Title
-@onready var name_edit: BetterLineEdit = $MainContainer/TextContainer/NameEdit
-@onready var rich_text_label: RichTextLabel = $MainContainer/TextContainer/RichTextLabel
-@onready var cancel_button: Button = $MainContainer/ButtonContainer/CancelButton
-@onready var action_button: Button = $MainContainer/ButtonContainer/ActionButton
+@onready var title_label: Label = %Title
+@onready var name_edit: BetterLineEdit = %NameEdit
+@onready var rich_text_label: RichTextLabel = %RichTextLabel
+@onready var cancel_button: Button = %CancelButton
+@onready var action_button: Button = %ActionButton
 
 var warning_callback: Callable
 var error_callback: Callable
@@ -31,7 +31,7 @@ warning_callable := Callable()) -> void:
 	title_label.text = title
 	action_button.pressed.connect(func() -> void: action.call(name_edit.text))
 	name_edit.grab_focus()
-	name_edit.custom_minimum_size.x = 300.0
+	name_edit.custom_minimum_size.x = 240.0
 	warning_callback = warning_callable
 	error_callback = error_callable
 	adapt_to_text(name_edit.text)

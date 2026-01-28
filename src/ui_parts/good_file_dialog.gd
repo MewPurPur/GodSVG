@@ -43,8 +43,8 @@ var dir_cursor: DirAccess
 @onready var drives_list: ItemList = %DrivesList
 @onready var file_list: ItemList = %FileList
 
-@onready var undo_button: Button = %TopBar/UndoButton
-@onready var redo_button: Button = %TopBar/RedoButton
+@onready var back_button: Button = %TopBar/BackButton
+@onready var forward_button: Button = %TopBar/ForwardButton
 @onready var path_panel: PanelContainer = %TopBar/PathPanel
 @onready var directory_path_widget: DirectoryPathWidget = %TopBar/PathPanel/MainPathBox/DirectoryPathWidget
 @onready var path_edit_button: Button = %TopBar/PathPanel/MainPathBox/PathEditButton
@@ -137,8 +137,8 @@ func _ready() -> void:
 	search_field.text_change_canceled.connect(_on_search_field_text_change_canceled)
 	refresh_button.pressed.connect(refresh_dir)
 	special_button.pressed.connect(select_files)
-	undo_button.pressed.connect(_on_undo_button_pressed)
-	redo_button.pressed.connect(_on_redo_button_pressed)
+	back_button.pressed.connect(_on_back_button_pressed)
+	forward_button.pressed.connect(_on_forward_button_pressed)
 	directory_path_widget.directory_selected.connect(open_dir)
 	path_field.text_submitted.connect(_on_path_field_text_submitted)
 	path_field.focus_exited.connect(_on_path_field_focus_exited)
@@ -161,8 +161,8 @@ func _ready() -> void:
 	show_hidden_button.tooltip_text = Translator.translate("Toggle the visibility of hidden files")
 	search_button.tooltip_text = Translator.translate("Search files")
 	search_field.placeholder_text = Translator.translate("Search files")
-	undo_button.tooltip_text = Translator.translate("Go back")
-	redo_button.tooltip_text = Translator.translate("Go forward")
+	back_button.tooltip_text = Translator.translate("Go back")
+	forward_button.tooltip_text = Translator.translate("Go forward")
 	
 	if mode == FileMode.SAVE:
 		title_label.text = TranslationUtils.get_file_dialog_save_mode_title_text(extensions[0])
@@ -514,19 +514,18 @@ func _on_file_field_text_change_canceled() -> void:
 
 
 func update_navigation_buttons() -> void:
-	undo_button.disabled = (navigation_index == 0)
-	redo_button.disabled = (navigation_index == navigation_history.size() - 1)
-	for btn: Button in [undo_button, redo_button]:
+	back_button.disabled = (navigation_index == 0)
+	forward_button.disabled = (navigation_index == navigation_history.size() - 1)
+	for btn: Button in [back_button, forward_button]:
 		btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if btn.disabled else Control.CURSOR_POINTING_HAND
-		btn.focus_mode = Control.FOCUS_NONE if btn.disabled else Control.FOCUS_ALL
 
-func _on_undo_button_pressed() -> void:
+func _on_back_button_pressed() -> void:
 	if navigation_index > 0:
 		navigation_index -= 1
 		open_dir(navigation_history[navigation_index], false)
 		update_navigation_buttons()
 
-func _on_redo_button_pressed() -> void:
+func _on_forward_button_pressed() -> void:
 	if navigation_index < navigation_history.size() - 1:
 		navigation_index += 1
 		open_dir(navigation_history[navigation_index], false)

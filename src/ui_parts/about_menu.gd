@@ -41,6 +41,9 @@ func _ready() -> void:
 	tab_container.set_tab_title(3, Translator.translate("Third-party licenses"))
 	tab_container.tab_changed.connect(_on_tab_changed)
 	_on_tab_changed(0)
+	
+	# The tab container has focus neighbors set to itself.
+	tab_container.grab_focus()
 
 
 func select_next_tab() -> void:

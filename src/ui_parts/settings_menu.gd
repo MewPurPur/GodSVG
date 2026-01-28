@@ -80,7 +80,6 @@ func setup_tabs() -> void:
 		tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		tab.toggle_mode = true
 		tab.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-		tab.focus_mode = Control.FOCUS_NONE
 		tab.theme_type_variation = "SideTab"
 		tab.toggled.connect(_on_tab_toggled.bind(tab_index))
 		tab.button_group = button_group

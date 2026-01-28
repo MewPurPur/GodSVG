@@ -37,6 +37,8 @@ func _ready() -> void:
 	patreon_link.mouse_entered.connect(set_link.bind(Link.PATREON))
 	margin_container.gui_input.connect(_on_margin_container_gui_input)
 	margin_container.mouse_exited.connect(set_link.bind(Link.NONE))
+	
+	github_link.grab_focus(true)
 
 
 func _on_margin_container_gui_input(event: InputEvent) -> void:
