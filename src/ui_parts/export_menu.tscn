@@ -148,11 +148,11 @@ unique_name_in_owner = true
 layout_mode = 2
 columns = 2
 
-[node name="PreciseModeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer"]
+[node name="PreciseModeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer" unique_id=1100694615]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="PrecisePathModeDropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer" instance=ExtResource("5_y6ex0")]
+[node name="PrecisePathModeDropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer" unique_id=1547915458 instance=ExtResource("5_y6ex0")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 22)
 layout_mode = 2
@@ -163,23 +163,23 @@ value_text_map = {
 2: "Never"
 }
 
-[node name="QualityLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer"]
+[node name="QualityLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer" unique_id=1784192134]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer" unique_id=1683798398]
 layout_mode = 2
 
-[node name="PathQualityNumberEdit" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
+[node name="PathQualityNumberEdit" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer/HBoxContainer" unique_id=86271434 instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 layout_mode = 2
 initial_value = 10.0
 
-[node name="SuffixLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer/HBoxContainer"]
+[node name="SuffixLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer/HBoxContainer" unique_id=988850831]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="QualityRelatedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
+[node name="QualityRelatedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" unique_id=1072118615]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
@@ -280,7 +280,7 @@ min_value = 1.0
 max_value = 16384.0
 is_float = false
 
-[node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
+[node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" unique_id=51719619]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
