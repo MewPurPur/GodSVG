@@ -149,7 +149,7 @@ msgstr "纯黑 (OLED)"
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Gray"
-msgstr ""
+msgstr "灰色"
 
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
