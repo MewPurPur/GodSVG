@@ -8,5 +8,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 144.0
 offset_bottom = 22.0
+focus_mode = 2
 mouse_filter = 1
 script = ExtResource("1_1wr00")

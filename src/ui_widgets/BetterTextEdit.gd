@@ -187,14 +187,14 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 		return
 	
-	if event.is_action_pressed("select_all"):
-		select_all()
+	if ShortcutUtils.is_action_pressed(event, "select_all"):
 		accept_event()
+		select_all()
 		return
 	
-	if event.is_action_pressed("ui_cancel"):
-		release_focus()
+	if ShortcutUtils.is_action_pressed(event, "ui_cancel"):
 		accept_event()
+		release_focus()
 		return
 	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

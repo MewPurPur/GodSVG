@@ -76,7 +76,7 @@ func setup_tabs() -> void:
 		var tab := Button.new()
 		tab.text = get_tab_localized_name(tab_index)
 		tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 		tab.toggle_mode = true
 		tab.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 		tab.theme_type_variation = "SideTab"

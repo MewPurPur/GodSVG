@@ -116,7 +116,7 @@ func _draw() -> void:
 			var text_line_width := rect.size.x - size.y
 			if text_line_width > 0:
 				var text_line := TextLine.new()
-				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 				text_line.add_string(current_tab_name, ThemeUtils.main_font, 13)
 				text_line.width = text_line_width - 2
 				text_line.draw(ci, rect.position + Vector2(4, 3), get_theme_color("font_selected_color", "TabContainer"))
@@ -129,7 +129,7 @@ func _draw() -> void:
 				var text_color := get_theme_color("font_hovered_color" if is_hovered else "font_unselected_color", "TabContainer")
 				
 				var text_line := TextLine.new()
-				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 				text_line.add_string(current_tab_name, ThemeUtils.main_font, 13)
 				text_line.width = text_line_width
 				text_line.draw(ci, rect.position + Vector2(4, 3), text_color)
@@ -474,7 +474,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	preview.custom_minimum_size = Vector2(tab_width, size.y)
 	preview.add_theme_stylebox_override("panel", get_theme_stylebox("tab_selected", "TabContainer"))
 	var label := Label.new()
-	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 	label.text = Configs.savedata.get_active_tab().presented_name
 	preview.add_child(label)
 	label.position = Vector2(4, 3)

@@ -1,4 +1,4 @@
-# A dropdown with multiple options, not tied to any attribute.
+## A dropdown with multiple options, not tied to any attribute.
 @abstract class_name Dropdown extends Control
 
 const arrow_icon = preload("res://assets/icons/SmallArrowDown.svg")
@@ -27,6 +27,9 @@ func _draw() -> void:
 	var half_spacing := spacing / 2.0
 	
 	normal_sb.draw(ci, Rect2(Vector2.ZERO, size))
+	if has_focus(true):
+		get_theme_stylebox("focus").draw(ci, Rect2(Vector2.ZERO, size))
+		arrow_icon.draw(ci, Vector2(size.x - arrow_icon.get_width() - half_spacing, half_spacing), ThemeUtils.context_icon_hover_color)
 	if get_viewport().gui_get_hovered_control() == self:
 		get_theme_stylebox("hover").draw(ci, Rect2(Vector2.ZERO, size))
 		arrow_icon.draw(ci, Vector2(size.x - arrow_icon.get_width() - half_spacing, half_spacing), ThemeUtils.context_icon_hover_color)
@@ -34,7 +37,7 @@ func _draw() -> void:
 		arrow_icon.draw(ci, Vector2(size.x - arrow_icon.get_width() - half_spacing, half_spacing), ThemeUtils.context_icon_normal_color)
 	
 	var text_line := TextLine.new()
-	text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 	text_line.width = size.x - spacing - arrow_icon.get_width() - normal_sb.content_margin_left + 2
 	text_line.add_string(_text, font, font_size)
 	
@@ -50,15 +53,22 @@ func _gui_input(event: InputEvent) -> void:
 		queue_redraw()
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_RIGHT and not (_text.is_empty() and not editing_enabled):
+			accept_event()
 			_enter_edit_mode()
-			accept_event()
 		elif event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE]:
-			focus_entered.emit()
-			var value_picker := ContextPopup.new()
-			value_picker.setup(_get_dropdown_buttons(), align_left, size.x)
-			queue_redraw()
 			accept_event()
-			HandlerGUI.popup_under_rect(value_picker, get_global_rect(), get_viewport())
+			grab_focus(true)
+			_show_value_picker()
+	
+	if ShortcutUtils.is_action_pressed(event, "ui_accept"):
+		_show_value_picker()
+
+
+func _show_value_picker() -> void:
+	var value_picker := ContextPopup.new()
+	value_picker.setup(_get_dropdown_buttons(), align_left, size.x)
+	queue_redraw()
+	HandlerGUI.popup_under_rect(value_picker, get_global_rect(), get_viewport())
 
 func _enter_edit_mode() -> void:
 	line_edit = BetterLineEdit.new()

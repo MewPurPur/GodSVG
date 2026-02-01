@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://jt23l0tx8vdj" path="res://src/ui_widgets/dropdown_numeric.gd" id="1_w2lqh"]
 
-[node name="NumericDropdown" type="Control" unique_id=533157490]
+[node name="DropdownNumeric" type="Control" unique_id=533157490]
 layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+focus_mode = 2
 mouse_filter = 1
 script = ExtResource("1_w2lqh")
 special_value_exception = nan
