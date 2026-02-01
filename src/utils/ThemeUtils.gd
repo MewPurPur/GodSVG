@@ -97,8 +97,9 @@ static var overlay_panel_border_color: Color
 static var scrollbar_pressed_color: Color
 
 static var focus_color: Color
+static var weak_focus_color: Color
+static var dim_focus_color: Color
 
-static var line_edit_focus_color: Color
 static var line_edit_inner_color: Color
 static var line_edit_normal_border_color: Color
 static var mini_line_edit_inner_color: Color
@@ -229,8 +230,9 @@ static func recalculate_colors() -> void:
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
 	
 	focus_color = accent_color
+	weak_focus_color = Color(focus_color, 0.72)
+	dim_focus_color = Color(accent_color, 0.48)
 	
-	line_edit_focus_color = Color(accent_color, 0.48)
 	line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.74)
 	line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.42 if is_theme_dark else 0.35)
 	mini_line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.78)
@@ -921,7 +923,7 @@ static func _setup_checkbutton(theme: Theme) -> void:
 	focus_stylebox.set_corner_radius_all(5)
 	focus_stylebox.set_border_width_all(2)
 	focus_stylebox.draw_center = false
-	focus_stylebox.border_color = Color(focus_color, 0.8)
+	focus_stylebox.border_color = weak_focus_color
 	theme.set_stylebox("focus", "CheckButton", focus_stylebox)
 
 static func _setup_itemlist(theme: Theme) -> void:
@@ -936,10 +938,19 @@ static func _setup_itemlist(theme: Theme) -> void:
 	
 	var empty_stylebox := StyleBoxEmpty.new()
 	empty_stylebox.set_content_margin_all(1)
-	theme.set_stylebox("panel", "ItemList", empty_stylebox)
-	theme.set_stylebox("focus", "ItemList", empty_stylebox)
-	theme.set_stylebox("cursor", "ItemList", empty_stylebox)
-	theme.set_stylebox("cursor_unfocused", "ItemList", empty_stylebox)
+	
+	var panel_stylebox := StyleBoxFlat.new()
+	panel_stylebox.bg_color = basic_panel_inner_color
+	panel_stylebox.border_color = basic_panel_border_color
+	panel_stylebox.set_border_width_all(2)
+	panel_stylebox.set_content_margin_all(2)
+	panel_stylebox.set_corner_radius_all(5)
+	theme.set_stylebox("panel", "ItemList", panel_stylebox)
+	
+	var focus_stylebox := panel_stylebox.duplicate()
+	focus_stylebox.border_color = dim_focus_color
+	focus_stylebox.draw_center = false
+	theme.set_stylebox("focus", "ItemList", focus_stylebox)
 	
 	var item_stylebox := StyleBoxFlat.new()
 	item_stylebox.set_corner_radius_all(3)
@@ -958,6 +969,16 @@ static func _setup_itemlist(theme: Theme) -> void:
 	hovered_selected_item_stylebox.bg_color = hover_pressed_overlay_color
 	theme.set_stylebox("hovered_selected", "ItemList", hovered_selected_item_stylebox)
 	theme.set_stylebox("hovered_selected_focus", "ItemList", hovered_selected_item_stylebox)
+	
+	var item_cursor_stylebox := item_stylebox.duplicate()
+	item_cursor_stylebox.set_border_width_all(1)
+	item_cursor_stylebox.border_color = Color(focus_color, 0.36)
+	item_cursor_stylebox.draw_center = false
+	theme.set_stylebox("cursor", "ItemList", item_cursor_stylebox)
+	
+	var item_cursor_unfocused_stylebox := item_cursor_stylebox.duplicate()
+	item_cursor_unfocused_stylebox.border_color = Color(focus_color, 0.12)
+	theme.set_stylebox("cursor_unfocused", "ItemList", item_cursor_unfocused_stylebox)
 
 static func _setup_dropdown(theme: Theme) -> void:
 	theme.add_type("Dropdown")
@@ -981,6 +1002,10 @@ static func _setup_dropdown(theme: Theme) -> void:
 	hover_stylebox.draw_center = false
 	hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
 	theme.set_stylebox("hover", "Dropdown", hover_stylebox)
+	
+	var focus_stylebox := hover_stylebox.duplicate()
+	focus_stylebox.border_color = weak_focus_color
+	theme.set_stylebox("focus", "Dropdown", focus_stylebox)
 
 static func _setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LineEdit")
@@ -1017,7 +1042,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var focus_stylebox := stylebox.duplicate()
 	focus_stylebox.draw_center = false
-	focus_stylebox.border_color = line_edit_focus_color
+	focus_stylebox.border_color = dim_focus_color
 	theme.set_stylebox("focus", "LineEdit", focus_stylebox)
 	
 	theme.add_type("LeftConnectedLineEdit")
@@ -1053,7 +1078,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var left_connected_focus_stylebox := left_connected_stylebox.duplicate()
 	left_connected_focus_stylebox.draw_center = false
-	left_connected_focus_stylebox.border_color = line_edit_focus_color
+	left_connected_focus_stylebox.border_color = dim_focus_color
 	theme.set_stylebox("focus", "LeftConnectedLineEdit", left_connected_focus_stylebox)
 	
 	theme.add_type("RightConnectedLineEdit")
@@ -1089,7 +1114,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var right_connected_focus_stylebox := right_connected_stylebox.duplicate()
 	right_connected_focus_stylebox.draw_center = false
-	right_connected_focus_stylebox.border_color = line_edit_focus_color
+	right_connected_focus_stylebox.border_color = dim_focus_color
 	theme.set_stylebox("focus", "RightConnectedLineEdit", right_connected_focus_stylebox)
 	
 	theme.add_type("MiniLineEdit")
@@ -1122,7 +1147,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var mini_stylebox_pressed := mini_stylebox.duplicate()
 	mini_stylebox_pressed.draw_center = false
-	mini_stylebox_pressed.border_color = mini_line_edit_normal_border_color.blend(line_edit_focus_color)
+	mini_stylebox_pressed.border_color = mini_line_edit_normal_border_color.blend(dim_focus_color)
 	theme.set_stylebox("focus", "MiniLineEdit", mini_stylebox_pressed)
 	
 	theme.add_type("GoodColorPickerLineEdit")
@@ -1312,7 +1337,7 @@ static func _setup_textedit(theme: Theme) -> void:
 	
 	var focus_stylebox := normal_stylebox.duplicate()
 	focus_stylebox.draw_center = false
-	focus_stylebox.border_color = line_edit_focus_color
+	focus_stylebox.border_color = dim_focus_color
 	theme.set_stylebox("focus", "TextEdit", focus_stylebox)
 	
 	var hover_stylebox := focus_stylebox.duplicate()

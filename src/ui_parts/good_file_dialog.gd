@@ -54,7 +54,7 @@ var dir_cursor: DirAccess
 @onready var search_button: Button = %TopBar/SearchButton
 
 @onready var close_button: Button = %ButtonContainer/CloseButton
-@onready var special_button: Button = %ButtonContainer/SpecialButton
+@onready var action_button: Button = %ButtonContainer/ActionButton
 
 
 class Actions:
@@ -136,7 +136,7 @@ func _ready() -> void:
 	search_field.text_changed.connect(_on_search_field_text_changed)
 	search_field.text_change_canceled.connect(_on_search_field_text_change_canceled)
 	refresh_button.pressed.connect(refresh_dir)
-	special_button.pressed.connect(select_files)
+	action_button.pressed.connect(select_files)
 	back_button.pressed.connect(_on_back_button_pressed)
 	forward_button.pressed.connect(_on_forward_button_pressed)
 	directory_path_widget.directory_selected.connect(open_dir)
@@ -171,7 +171,7 @@ func _ready() -> void:
 		title_label.text = TranslationUtils.get_file_dialog_select_mode_title_text(mode == FileMode.MULTI_SELECT, extensions)
 	
 	close_button.text = Translator.translate("Close")
-	special_button.text = Translator.translate("Save") if mode == FileMode.SAVE else Translator.translate("Select")
+	action_button.text = Translator.translate("Save") if mode == FileMode.SAVE else Translator.translate("Select")
 	
 	# Should always be safe.
 	open_dir(current_dir)
@@ -179,8 +179,12 @@ func _ready() -> void:
 		sync_file_field()
 		file_field.grab_focus()
 	else:
-		special_button.disabled = true
-		special_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		action_button.disabled = true
+		action_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	
+	HandlerGUI.register_focus_sequence(self, [back_button, forward_button, path_edit_button, path_field,
+			refresh_button, show_hidden_button, search_button, search_field, drives_list, file_list, file_field, close_button, action_button])
+	back_button.grab_focus(true)
 
 func sync_theming() -> void:
 	var stylebox := StyleBoxFlat.new()
@@ -345,7 +349,7 @@ func sync_to_selection() -> void:
 	
 	var paths := get_selected_file_paths()
 	if paths.is_empty():
-		set_special_button_enabled(false)
+		set_action_button_enabled(false)
 		return
 	
 	var has_folders := false
@@ -353,15 +357,15 @@ func sync_to_selection() -> void:
 		if path.get_extension().is_empty():
 			has_folders = true
 			break
-	set_special_button_enabled(not has_folders)
+	set_action_button_enabled(not has_folders)
 
-func set_special_button_enabled(enabled: bool) -> void:
+func set_action_button_enabled(enabled: bool) -> void:
 	if enabled:
-		special_button.disabled = false
-		special_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		action_button.disabled = false
+		action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	else:
-		special_button.disabled = true
-		special_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		action_button.disabled = true
+		action_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 func get_selected_file_paths() -> PackedStringArray:
 	var selections := PackedStringArray()
@@ -426,7 +430,7 @@ func open_file_context() -> void:
 				return
 	
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_shortcut_button("ui_accept", false, special_button.text,
+		ContextPopup.create_shortcut_button("ui_accept", false, action_button.text,
 				load("res://assets/icons/OpenFile.svg"))]
 	if selected_file_paths.size() == 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Copy path"),
@@ -503,7 +507,7 @@ func _on_search_field_text_change_canceled() -> void:
 
 func _on_file_field_text_changed(new_text: String) -> void:
 	var is_valid_filename := new_text.is_valid_filename()
-	set_special_button_enabled(not new_text.is_empty() and is_valid_filename)
+	set_action_button_enabled(not new_text.is_empty() and is_valid_filename)
 	file_field.add_theme_color_override("font_color", Configs.savedata.get_validity_color(not is_valid_filename))
 	if search_button.button_pressed:
 		# Toggling search off will refresh the directory.

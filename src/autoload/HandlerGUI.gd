@@ -350,7 +350,7 @@ func _input(event: InputEvent) -> void:
 	if not is_instance_valid(focus_owner):
 		return
 	
-	# Intercent focus in favor of our own system.
+	# Intercept focus in favor of our own system.
 	if ShortcutUtils.is_action_pressed(event, "ui_focus_next", true):
 		get_viewport().set_input_as_handled()
 		if not focus_owner.has_focus(true):
@@ -370,7 +370,7 @@ func gather_focus(control: Control, is_next: bool) -> Control:
 		var new_focus_candidate := _gather_focus_internal(new_focus, is_next)
 		if not is_instance_valid(new_focus_candidate):
 			return control
-		new_focus = _gather_focus_internal(new_focus, is_next)
+		new_focus = new_focus_candidate
 	return new_focus
 
 func _gather_focus_internal(control: Control, is_next: bool) -> Control:

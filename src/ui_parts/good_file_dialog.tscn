@@ -105,13 +105,9 @@ metadata/_custom_type_script = "uid://ynx3s1jc6bwq"
 [node name="MainContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=106730047]
 layout_mode = 2
 
-[node name="DrivesContainer" type="PanelContainer" parent="VBoxContainer/MainContainer" unique_id=1645312029]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="DrivesList" type="ItemList" parent="VBoxContainer/MainContainer/DrivesContainer" unique_id=1745998491]
+[node name="DrivesList" type="ItemList" parent="VBoxContainer/MainContainer" unique_id=1745998491]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 fixed_icon_size = Vector2i(16, 16)
 
@@ -126,14 +122,11 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("11_1umq0")
 script = ExtResource("2_52puw")
 
-[node name="VisualPicker" type="PanelContainer" parent="VBoxContainer/MainContainer/FilePicker" unique_id=785577807]
+[node name="FileList" type="ItemList" parent="VBoxContainer/MainContainer/FilePicker" unique_id=117928088]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="FileList" type="ItemList" parent="VBoxContainer/MainContainer/FilePicker/VisualPicker" unique_id=117928088]
-unique_name_in_owner = true
-layout_mode = 2
 allow_rmb_select = true
 fixed_icon_size = Vector2i(16, 16)
 
@@ -162,11 +155,9 @@ alignment = 1
 [node name="CloseButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=930951555]
 layout_mode = 2
 size_flags_horizontal = 6
-focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[node name="SpecialButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1004902575]
+[node name="ActionButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1004902575]
 layout_mode = 2
 size_flags_horizontal = 6
-focus_mode = 0
 mouse_default_cursor_shape = 2

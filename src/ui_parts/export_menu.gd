@@ -90,6 +90,9 @@ func _ready() -> void:
 	titled_panel.border_width = 2
 	titled_panel.title_margin = 2
 	titled_panel.panel_margin = 8
+	
+	HandlerGUI.register_focus_sequence(self, [clipboard_button, format_dropdown, quality_edit, scale_edit, width_edit, height_edit, cancel_button, export_button])
+	clipboard_button.grab_focus(true)
 
 
 func _on_export_button_pressed() -> void:

@@ -227,7 +227,7 @@ func _draw() -> void:
 	var text_obj := TextLine.new()
 	text_obj.add_string(text, ThemeUtils.main_font, 13)
 	text_obj.width = text_space
-	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 	text_obj.draw(ci, Vector2(text_pos_x, 5), color)
 	get_theme_stylebox("panel", "SubtleFlatPanel").draw(ci, Rect2(non_panel_width - 2, 2, panel_width, size.y - 4))
 
