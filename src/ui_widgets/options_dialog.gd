@@ -1,5 +1,4 @@
-# A more complex dialog, with the ability to have any number of arbitrary options,
-# a list, and a checkbox.
+# A more complex dialog, with the ability to have any number of arbitrary options, a list, and a checkbox.
 extends PanelContainer
 
 @onready var title_label: Label = $MainContainer/TextContainer/Title
@@ -10,8 +9,7 @@ extends PanelContainer
 @onready var list_scroll_container: ScrollContainer = %ListPanel/ListScrollContainer
 @onready var checkbox: CheckBox = $MainContainer/TextContainer/CheckBox
 
-func setup(title: String, message: String, list := PackedStringArray(),
-checkbox_text := "") -> void:
+func setup(title: String, message: String, list := PackedStringArray(), checkbox_text := "") -> void:
 	label.text = message
 	title_label.text = title
 	if not list.is_empty():
@@ -24,13 +22,13 @@ checkbox_text := "") -> void:
 	if not checkbox_text.is_empty():
 		checkbox.show()
 		checkbox.text = checkbox_text
+	options_container.child_order_changed.connect(update_focus_sequence)
 
 func set_text_width(width: float) -> void:
 	label.custom_minimum_size.x = width
 
-func add_option(action_text: String, action: Callable, focused := false,
-free_on_click := true, action_when_checkbox_checked := Callable(),
-disabled_when_checkbox_pressed := false, grab_focus_when_checkbox_pressed := false) -> void:
+func add_option(action_text: String, action: Callable, focused := false, free_on_click := true,
+action_when_checkbox_checked := Callable(), disabled_when_checkbox_pressed := false, grab_focus_when_checkbox_pressed := false) -> void:
 	var button := Button.new()
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	button.text = action_text
@@ -73,11 +71,11 @@ func add_cancel_option() -> void:
 
 func get_button_disabled_callable(button: Button) -> Callable:
 	return func(disabled: bool) -> void:
-		if disabled:
-			button.disabled = true
-			button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-			button.focus_mode = Control.FOCUS_NONE
-		else:
-			button.disabled = false
-			button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			button.focus_mode = Control.FOCUS_ALL
+		button.disabled = disabled
+		button.mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
+
+func update_focus_sequence() -> void:
+	var focus_sequence: Array[Control] = [checkbox]
+	for button in options_container.get_children():
+		focus_sequence.append(button)
+	HandlerGUI.register_focus_sequence(self, focus_sequence)

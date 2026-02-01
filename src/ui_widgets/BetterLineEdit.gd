@@ -26,7 +26,6 @@ func _init() -> void:
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
 	mouse_exited.connect(queue_redraw)
-	text_submitted.connect(release_focus.unbind(1))
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 
@@ -88,6 +87,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("evaluate"):
 		var numstring_evaluation := NumstringParser.evaluate(get_selected_text() if has_selection() else text)
 		if not is_nan(numstring_evaluation):
+			var old_text := text
 			if has_selection():
 				var selection_start := get_selection_from_column()
 				var caret_column_was_at_start := (selection_start == caret_column)
@@ -100,6 +100,10 @@ func _gui_input(event: InputEvent) -> void:
 			else:
 				text = Utils.num_simple(numstring_evaluation, Utils.MAX_NUMERIC_PRECISION)
 				caret_column = text.length()
+			
+			if text != old_text:
+				text_changed.emit()
+		
 		accept_event()
 		return
 	

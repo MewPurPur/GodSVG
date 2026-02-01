@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bf0tfj1eo5ap"]
+[gd_scene format=3 uid="uid://bf0tfj1eo5ap"]
 
 [ext_resource type="Script" uid="uid://cdlrqylqsmc22" path="res://src/ui_parts/good_file_dialog.gd" id="1_awdto"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_52puw"]
@@ -12,78 +12,88 @@
 [ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="7_ejhg0"]
 [ext_resource type="FontVariation" uid="uid://bo626nsycqtaj" path="res://assets/fonts/MainFont.tres" id="11_1umq0"]
 
-[node name="GoodFileDialog" type="PanelContainer"]
+[node name="GoodFileDialog" type="PanelContainer" unique_id=306411326]
 offset_right = 684.0
 offset_bottom = 386.0
 theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_awdto")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=255761178]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1492714239]
 layout_mode = 2
 theme_type_variation = &"TitleLabel"
 horizontal_alignment = 1
 
-[node name="TopBar" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer" unique_id=49301654]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="UndoButton" type="Button" parent="VBoxContainer/TopBar"]
+[node name="BackButton" type="Button" parent="VBoxContainer/TopBar" unique_id=1771879461]
 layout_mode = 2
+focus_next = NodePath("../ForwardButton")
+focus_previous = NodePath(".")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_dyt2g")
 
-[node name="RedoButton" type="Button" parent="VBoxContainer/TopBar"]
+[node name="ForwardButton" type="Button" parent="VBoxContainer/TopBar" unique_id=2035423985]
 layout_mode = 2
+focus_next = NodePath("../PathField")
+focus_previous = NodePath("../BackButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("3_8ufx4")
 
-[node name="PathPanel" type="PanelContainer" parent="VBoxContainer/TopBar"]
+[node name="PathPanel" type="PanelContainer" parent="VBoxContainer/TopBar" unique_id=1617354438]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MainPathBox" type="HBoxContainer" parent="VBoxContainer/TopBar/PathPanel"]
+[node name="MainPathBox" type="HBoxContainer" parent="VBoxContainer/TopBar/PathPanel" unique_id=1834063987]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="DirectoryPathWidget" parent="VBoxContainer/TopBar/PathPanel/MainPathBox" instance=ExtResource("4_1umq0")]
+[node name="DirectoryPathWidget" parent="VBoxContainer/TopBar/PathPanel/MainPathBox" unique_id=1066429396 instance=ExtResource("4_1umq0")]
 layout_mode = 2
 
-[node name="PathEditButton" type="Button" parent="VBoxContainer/TopBar/PathPanel/MainPathBox"]
+[node name="PathEditButton" type="Button" parent="VBoxContainer/TopBar/PathPanel/MainPathBox" unique_id=1874577377]
 layout_mode = 2
 size_flags_vertical = 4
+focus_next = NodePath("../../../RefreshButton")
+focus_previous = NodePath("../../../ForwardButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("4_8ufx4")
 
-[node name="PathField" type="LineEdit" parent="VBoxContainer/TopBar"]
+[node name="PathField" type="LineEdit" parent="VBoxContainer/TopBar" unique_id=1211057962]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+focus_next = NodePath("../RefreshButton")
+focus_previous = NodePath("../ForwardButton")
 script = ExtResource("2_52puw")
 metadata/_custom_type_script = "uid://1hox6gd5pxku"
 
-[node name="RefreshButton" type="Button" parent="VBoxContainer/TopBar"]
+[node name="RefreshButton" type="Button" parent="VBoxContainer/TopBar" unique_id=1288013129]
 layout_mode = 2
+focus_next = NodePath("../ShowHiddenButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_udwbh")
 
-[node name="ShowHiddenButton" type="Button" parent="VBoxContainer/TopBar"]
+[node name="ShowHiddenButton" type="Button" parent="VBoxContainer/TopBar" unique_id=1345111914]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true
 icon = ExtResource("5_2ggtv")
 
-[node name="SearchButton" type="Button" parent="VBoxContainer/TopBar"]
+[node name="SearchButton" type="Button" parent="VBoxContainer/TopBar" unique_id=2048350652]
 layout_mode = 2
+focus_previous = NodePath("../ShowHiddenButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true
@@ -92,70 +102,70 @@ script = ExtResource("7_ejhg0")
 action = "find"
 metadata/_custom_type_script = "uid://ynx3s1jc6bwq"
 
-[node name="MainContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="MainContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=106730047]
 layout_mode = 2
 
-[node name="DrivesContainer" type="PanelContainer" parent="VBoxContainer/MainContainer"]
+[node name="DrivesContainer" type="PanelContainer" parent="VBoxContainer/MainContainer" unique_id=1645312029]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="DrivesList" type="ItemList" parent="VBoxContainer/MainContainer/DrivesContainer"]
+[node name="DrivesList" type="ItemList" parent="VBoxContainer/MainContainer/DrivesContainer" unique_id=1745998491]
 unique_name_in_owner = true
 layout_mode = 2
 fixed_icon_size = Vector2i(16, 16)
 
-[node name="FilePicker" type="VBoxContainer" parent="VBoxContainer/MainContainer"]
+[node name="FilePicker" type="VBoxContainer" parent="VBoxContainer/MainContainer" unique_id=548672296]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 
-[node name="SearchField" type="LineEdit" parent="VBoxContainer/MainContainer/FilePicker"]
+[node name="SearchField" type="LineEdit" parent="VBoxContainer/MainContainer/FilePicker" unique_id=901255698]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_fonts/font = ExtResource("11_1umq0")
 script = ExtResource("2_52puw")
 
-[node name="VisualPicker" type="PanelContainer" parent="VBoxContainer/MainContainer/FilePicker"]
+[node name="VisualPicker" type="PanelContainer" parent="VBoxContainer/MainContainer/FilePicker" unique_id=785577807]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="FileList" type="ItemList" parent="VBoxContainer/MainContainer/FilePicker/VisualPicker"]
+[node name="FileList" type="ItemList" parent="VBoxContainer/MainContainer/FilePicker/VisualPicker" unique_id=117928088]
 unique_name_in_owner = true
 layout_mode = 2
 allow_rmb_select = true
 fixed_icon_size = Vector2i(16, 16)
 
-[node name="FileContainer" type="HBoxContainer" parent="VBoxContainer/MainContainer/FilePicker"]
+[node name="FileContainer" type="HBoxContainer" parent="VBoxContainer/MainContainer/FilePicker" unique_id=314809218]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="FileField" type="LineEdit" parent="VBoxContainer/MainContainer/FilePicker/FileContainer"]
+[node name="FileField" type="LineEdit" parent="VBoxContainer/MainContainer/FilePicker/FileContainer" unique_id=906499915]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("2_52puw")
 
-[node name="ExtensionPanel" type="PanelContainer" parent="VBoxContainer/MainContainer/FilePicker/FileContainer"]
+[node name="ExtensionPanel" type="PanelContainer" parent="VBoxContainer/MainContainer/FilePicker/FileContainer" unique_id=713045003]
 layout_mode = 2
 theme_type_variation = &"ContrastFlatPanel"
 
-[node name="ExtensionLabel" type="Label" parent="VBoxContainer/MainContainer/FilePicker/FileContainer/ExtensionPanel"]
+[node name="ExtensionLabel" type="Label" parent="VBoxContainer/MainContainer/FilePicker/FileContainer/ExtensionPanel" unique_id=1957198076]
 layout_mode = 2
 
-[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=383627707]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="CloseButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="CloseButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=930951555]
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[node name="SpecialButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="SpecialButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1004902575]
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0

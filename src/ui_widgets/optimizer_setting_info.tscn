@@ -1,42 +1,42 @@
-[gd_scene load_steps=3 format=3 uid="uid://cmo78vpyllsmp"]
+[gd_scene format=3 uid="uid://cmo78vpyllsmp"]
 
 [ext_resource type="Script" uid="uid://xeenmv8f8au0" path="res://src/ui_widgets/optimizer_setting_info.gd" id="1_hf6yr"]
 [ext_resource type="Script" uid="uid://dh5mir6i27u4u" path="res://src/ui_widgets/BetterTextEdit.gd" id="2_lgjs3"]
 
-[node name="OptimizerSettingInfo" type="PanelContainer"]
+[node name="OptimizerSettingInfo" type="PanelContainer" unique_id=1037561413]
 offset_top = 156.0
 offset_right = 724.0
 offset_bottom = 156.0
 theme_type_variation = &"SpaciousPanel"
 script = ExtResource("1_hf6yr")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1718360682]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=169820373]
 custom_minimum_size = Vector2(725, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer" unique_id=1554754844]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(725, 0)
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1558028318]
 layout_mode = 2
 
-[node name="BeforeBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="BeforeBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=1135986632]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BeforeLabel" type="Label" parent="VBoxContainer/HBoxContainer/BeforeBox"]
+[node name="BeforeLabel" type="Label" parent="VBoxContainer/HBoxContainer/BeforeBox" unique_id=2057442657]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="BeforeTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/BeforeBox"]
+[node name="BeforeTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/BeforeBox" unique_id=880691287]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 125)
 layout_mode = 2
@@ -46,16 +46,16 @@ indent_wrapped_lines = true
 script = ExtResource("2_lgjs3")
 metadata/_custom_type_script = "uid://dh5mir6i27u4u"
 
-[node name="AfterBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="AfterBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=1526361738]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="AfterLabel" type="Label" parent="VBoxContainer/HBoxContainer/AfterBox"]
+[node name="AfterLabel" type="Label" parent="VBoxContainer/HBoxContainer/AfterBox" unique_id=1183094968]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="AfterTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/AfterBox"]
+[node name="AfterTextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer/AfterBox" unique_id=1221717860]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 125)
 layout_mode = 2

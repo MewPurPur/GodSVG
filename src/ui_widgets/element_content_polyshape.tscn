@@ -3,14 +3,14 @@
 [ext_resource type="Script" uid="uid://d3tlbx5skjsjj" path="res://src/ui_widgets/element_content_polyshape.gd" id="1_10fyu"]
 [ext_resource type="PackedScene" uid="uid://b2gchy70px8jt" path="res://src/ui_widgets/points_field.tscn" id="2_8l4pm"]
 
-[node name="ElementContentPoly" type="VBoxContainer"]
+[node name="ElementContentPoly" type="VBoxContainer" unique_id=1430392439]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_10fyu")
 
-[node name="AttributeContainer" type="HFlowContainer" parent="."]
+[node name="AttributeContainer" type="HFlowContainer" parent="." unique_id=1523774292]
 layout_mode = 2
 
-[node name="PointsField" parent="." instance=ExtResource("2_8l4pm")]
+[node name="PointsField" parent="." unique_id=389291234 instance=ExtResource("2_8l4pm")]
 layout_mode = 2
 size_flags_horizontal = 0

@@ -96,6 +96,8 @@ static var overlay_panel_border_color: Color
 
 static var scrollbar_pressed_color: Color
 
+static var focus_color: Color
+
 static var line_edit_focus_color: Color
 static var line_edit_inner_color: Color
 static var line_edit_normal_border_color: Color
@@ -226,7 +228,9 @@ static func recalculate_colors() -> void:
 	
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
 	
-	line_edit_focus_color = Color(accent_color, 0.4)
+	focus_color = accent_color
+	
+	line_edit_focus_color = Color(accent_color, 0.48)
 	line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.74)
 	line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.42 if is_theme_dark else 0.35)
 	mini_line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.78)
@@ -439,10 +443,10 @@ static func _setup_button(theme: Theme) -> void:
 	disabled_button_stylebox.border_color = common_button_border_color_disabled
 	theme.set_stylebox("disabled", "Button", disabled_button_stylebox)
 	
-	var focus_button_stylebox := button_stylebox.duplicate()
-	focus_button_stylebox.draw_center = false
-	focus_button_stylebox.border_color = Configs.savedata.accent_color
-	theme.set_stylebox("focus", "Button", focus_button_stylebox)
+	var button_focus_stylebox := button_stylebox.duplicate()
+	button_focus_stylebox.draw_center = false
+	button_focus_stylebox.border_color = focus_color
+	theme.set_stylebox("focus", "Button", button_focus_stylebox)
 	
 	theme.add_type("IconButton")
 	theme.set_type_variation("IconButton", "Button")
@@ -506,6 +510,11 @@ static func _setup_button(theme: Theme) -> void:
 	hover_pressed_left_connected_button_stylebox.bg_color = connected_button_inner_color_pressed.blend(hover_overlay_color)
 	hover_pressed_left_connected_button_stylebox.border_color = connected_button_border_color_pressed.blend(hover_overlay_color)
 	theme.set_stylebox("hover_pressed", "LeftConnectedButton", hover_pressed_left_connected_button_stylebox)
+	
+	var left_connected_button_focus_stylebox := left_connected_button_stylebox.duplicate()
+	left_connected_button_focus_stylebox.draw_center = false
+	left_connected_button_focus_stylebox.border_color = focus_color
+	theme.set_stylebox("focus", "LeftConnectedButton", left_connected_button_focus_stylebox)
 	
 	theme.add_type("LeftConnectedButtonTransparent")
 	theme.set_type_variation("LeftConnectedButtonTransparent", "Button")
@@ -578,6 +587,11 @@ static func _setup_button(theme: Theme) -> void:
 	hover_pressed_right_connected_button_stylebox.bg_color = connected_button_inner_color_pressed.blend(hover_overlay_color)
 	hover_pressed_right_connected_button_stylebox.border_color = connected_button_border_color_pressed.blend(hover_overlay_color)
 	theme.set_stylebox("hover_pressed", "RightConnectedButton", hover_pressed_right_connected_button_stylebox)
+	
+	var right_connected_button_focus_stylebox := right_connected_button_stylebox.duplicate()
+	right_connected_button_focus_stylebox.draw_center = false
+	right_connected_button_focus_stylebox.border_color = focus_color
+	theme.set_stylebox("focus", "RightConnectedButton", right_connected_button_focus_stylebox)
 	
 	theme.add_type("RightConnectedButtonTransparent")
 	theme.set_type_variation("RightConnectedButtonTransparent", "Button")
@@ -663,6 +677,12 @@ static func _setup_button(theme: Theme) -> void:
 	disabled_flat_button_stylebox.bg_color = flat_button_color_disabled
 	theme.set_stylebox("disabled", "FlatButton", disabled_flat_button_stylebox)
 	
+	var flat_button_focus_stylebox := flat_button_stylebox.duplicate()
+	flat_button_focus_stylebox.set_border_width_all(2)
+	flat_button_focus_stylebox.draw_center = false
+	flat_button_focus_stylebox.border_color = focus_color
+	theme.set_stylebox("focus", "FlatButton", flat_button_focus_stylebox)
+	
 	theme.add_type("ContextButton")
 	theme.set_type_variation("ContextButton", "Button")
 	theme.set_color("icon_normal_color", "ContextButton", context_icon_normal_color)
@@ -696,6 +716,11 @@ static func _setup_button(theme: Theme) -> void:
 	# Ensure enough contrast.
 	disabled_context_button_stylebox.bg_color = context_button_color_disabled
 	theme.set_stylebox("disabled", "ContextButton", disabled_context_button_stylebox)
+	
+	var context_button_focus_stylebox := context_button_stylebox.duplicate()
+	context_button_focus_stylebox.draw_center = false
+	context_button_focus_stylebox.border_color = focus_color
+	theme.set_stylebox("focus", "ContextButton", context_button_focus_stylebox)
 	
 	theme.add_type("PathCommandAbsoluteButton")
 	theme.set_type_variation("PathCommandAbsoluteButton", "Button")
@@ -892,6 +917,12 @@ static func _setup_checkbutton(theme: Theme) -> void:
 			<circle cx="8" cy="8" r="5.5" fill="#%s" opacity=".6"/>
 		</svg>""" % [gray_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
+	var focus_stylebox := StyleBoxFlat.new()
+	focus_stylebox.set_corner_radius_all(5)
+	focus_stylebox.set_border_width_all(2)
+	focus_stylebox.draw_center = false
+	focus_stylebox.border_color = Color(focus_color, 0.8)
+	theme.set_stylebox("focus", "CheckButton", focus_stylebox)
 
 static func _setup_itemlist(theme: Theme) -> void:
 	# TODO Keep track of https://github.com/godotengine/godot/issues/56045

@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://2vlktxj118su"]
+[gd_scene format=3 uid="uid://2vlktxj118su"]
 
 [ext_resource type="Script" uid="uid://qiuaih0hajks" path="res://src/ui_widgets/choose_name_dialog.gd" id="1_qr08l"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="3_q0a2q"]
 
-[node name="ChooseNameDialog" type="PanelContainer"]
+[node name="ChooseNameDialog" type="PanelContainer" unique_id=1491281579]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -18,38 +18,47 @@ grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_qr08l")
 
-[node name="MainContainer" type="VBoxContainer" parent="."]
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=1263072980]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextContainer" type="VBoxContainer" parent="MainContainer" unique_id=293676116]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TextContainer" type="VBoxContainer" parent="MainContainer"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Title" type="Label" parent="MainContainer/TextContainer"]
+[node name="Title" type="Label" parent="MainContainer/TextContainer" unique_id=741427406]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"BoldTitleLabel"
 horizontal_alignment = 1
 
-[node name="NameEdit" type="LineEdit" parent="MainContainer/TextContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/TextContainer" unique_id=1373259333]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NameEdit" type="LineEdit" parent="MainContainer/TextContainer/VBoxContainer" unique_id=1740132193]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("3_q0a2q")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MainContainer/TextContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MainContainer/TextContainer/VBoxContainer" unique_id=1646592478]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 fit_content = true
 
-[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer" unique_id=1409592687]
 layout_mode = 2
 alignment = 1
 
-[node name="CancelButton" type="Button" parent="MainContainer/ButtonContainer"]
+[node name="CancelButton" type="Button" parent="MainContainer/ButtonContainer" unique_id=2006698560]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
 
-[node name="ActionButton" type="Button" parent="MainContainer/ButtonContainer"]
+[node name="ActionButton" type="Button" parent="MainContainer/ButtonContainer" unique_id=916994959]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_default_cursor_shape = 2

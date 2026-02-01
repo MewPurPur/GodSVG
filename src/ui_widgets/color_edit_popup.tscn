@@ -1,13 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bs68u5annwepo"]
+[gd_scene format=3 uid="uid://bs68u5annwepo"]
 
 [ext_resource type="Script" uid="uid://6epc6l4yo18d" path="res://src/ui_widgets/color_edit_popup.gd" id="1_wmbff"]
 
-[node name="ColorEditPopup" type="PanelContainer"]
+[node name="ColorEditPopup" type="PanelContainer" unique_id=1252244097]
 offset_right = 4.0
 offset_bottom = 4.0
 script = ExtResource("1_wmbff")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=167788805]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8

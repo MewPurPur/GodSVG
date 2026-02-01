@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://xh26qa68xed4"]
+[gd_scene format=3 uid="uid://xh26qa68xed4"]
 
 [ext_resource type="Script" uid="uid://cx43kir18is86" path="res://src/ui_widgets/preview_rect.gd" id="1_n2xbu"]
 [ext_resource type="Shader" uid="uid://i2y5pyhcgra2" path="res://src/shaders/zoom_shader.gdshader" id="2_qrqjp"]
@@ -8,17 +8,17 @@
 shader = ExtResource("2_qrqjp")
 shader_parameter/uv_scale = 1.0
 
-[node name="PreviewRect" type="CenterContainer"]
+[node name="PreviewRect" type="CenterContainer" unique_id=1515351521]
 script = ExtResource("1_n2xbu")
 
-[node name="Checkerboard" type="TextureRect" parent="."]
+[node name="Checkerboard" type="TextureRect" parent="." unique_id=247452587]
 material = SubResource("ShaderMaterial_y7eee")
 layout_mode = 2
 texture = ExtResource("3_tuqha")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TexturePreview" type="TextureRect" parent="Checkerboard"]
+[node name="TexturePreview" type="TextureRect" parent="Checkerboard" unique_id=226247741]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2da0thyq5rq8"]
+[gd_scene format=3 uid="uid://d2da0thyq5rq8"]
 
 [ext_resource type="Script" uid="uid://bplpuld6fqv7q" path="res://src/ui_widgets/enum_field.gd" id="1_1jqoy"]
 
-[node name="EnumField" type="Control"]
+[node name="EnumField" type="Control" unique_id=1774644178]
 custom_minimum_size = Vector2(81, 22)
 layout_mode = 3
 anchors_preset = 0

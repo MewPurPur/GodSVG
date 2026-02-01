@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwc7ke3w7bf6t"]
+[gd_scene format=3 uid="uid://cwc7ke3w7bf6t"]
 
 [ext_resource type="Script" uid="uid://cftadbnbgghps" path="res://src/ui_widgets/basic_xnode_frame.gd" id="1_c72yn"]
 [ext_resource type="Script" uid="uid://dh5mir6i27u4u" path="res://src/ui_widgets/BetterTextEdit.gd" id="2_0i3q7"]
 
-[node name="BasicXNodeFrame" type="Container"]
+[node name="BasicXNodeFrame" type="Container" unique_id=2023541789]
 offset_left = 2.0
 offset_top = 2.0
 offset_right = 55.0
@@ -17,13 +17,13 @@ corner_radius_bottom_right = 4
 title_margin = 3
 panel_margin = 5
 
-[node name="TitleBar" type="Control" parent="."]
+[node name="TitleBar" type="Control" parent="." unique_id=1789442488]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 2
 
-[node name="TextEdit" type="TextEdit" parent="."]
+[node name="TextEdit" type="TextEdit" parent="." unique_id=1198378712]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 indent_wrapped_lines = true

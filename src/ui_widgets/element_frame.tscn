@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cgtbtlg2nfwvt" path="res://src/ui_widgets/element_frame.gd" id="1_5mc4m"]
 
-[node name="ElementFrame" type="Container"]
+[node name="ElementFrame" type="Container" unique_id=973552271]
 offset_left = 2.0
 offset_top = 2.0
 offset_right = 182.0
@@ -16,12 +16,12 @@ corner_radius_bottom_right = 4
 title_margin = 3
 panel_margin = 6
 
-[node name="TitleBar" type="Control" parent="."]
+[node name="TitleBar" type="Control" parent="." unique_id=758331239]
 custom_minimum_size = Vector2(180, 20)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MainContainer" type="VBoxContainer" parent="."]
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=1026553582]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8

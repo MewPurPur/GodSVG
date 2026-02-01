@@ -3,14 +3,14 @@
 [ext_resource type="Script" uid="uid://db6oyweh2t54d" path="res://src/ui_widgets/element_content_path.gd" id="1_t5x4b"]
 [ext_resource type="PackedScene" uid="uid://dqy5lv33sy5r7" path="res://src/ui_widgets/pathdata_field.tscn" id="1_vf17i"]
 
-[node name="ElementContentPath" type="VBoxContainer"]
+[node name="ElementContentPath" type="VBoxContainer" unique_id=1727181549]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_t5x4b")
 
-[node name="AttributeContainer" type="HFlowContainer" parent="."]
+[node name="AttributeContainer" type="HFlowContainer" parent="." unique_id=708445763]
 layout_mode = 2
 
-[node name="PathField" parent="." instance=ExtResource("1_vf17i")]
+[node name="PathField" parent="." unique_id=1087392315 instance=ExtResource("1_vf17i")]
 layout_mode = 2
 size_flags_horizontal = 0

@@ -8,6 +8,7 @@ extends PanelContainer
 func _ready() -> void:
 	cancel_button.pressed.connect(queue_free)
 	action_button.pressed.connect(queue_free)
+	HandlerGUI.register_focus_sequence(self, [cancel_button, action_button])
 	action_button.grab_focus()
 
 func setup(title: String, message: String, action_text: String, action: Callable) -> void:

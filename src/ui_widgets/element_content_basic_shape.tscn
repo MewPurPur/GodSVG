@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://cv6p3un40sgne" path="res://src/ui_widgets/element_content_basic_shape.gd" id="1_tg77v"]
 
-[node name="ElementContentBasicShape" type="VBoxContainer"]
+[node name="ElementContentBasicShape" type="VBoxContainer" unique_id=248830237]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_tg77v")
 
-[node name="AttributeContainer" type="HFlowContainer" parent="."]
+[node name="AttributeContainer" type="HFlowContainer" parent="." unique_id=161460354]
 layout_mode = 2

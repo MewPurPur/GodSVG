@@ -1,41 +1,41 @@
-[gd_scene load_steps=5 format=3 uid="uid://dyc4so8qdkmmc"]
+[gd_scene format=3 uid="uid://dyc4so8qdkmmc"]
 
 [ext_resource type="Script" uid="uid://dnolxvseucte" path="res://src/ui_widgets/transform_popup.gd" id="1_ye80i"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="2_tdse4"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_w40hh"]
 [ext_resource type="Texture2D" uid="uid://cqg7ga6y3m0v1" path="res://assets/icons/ApplyMatrix.svg" id="3_eegha"]
 
-[node name="TransformPopup" type="PanelContainer"]
+[node name="TransformPopup" type="PanelContainer" unique_id=517963384]
 custom_minimum_size = Vector2(168, 0)
 offset_right = 4.0
 offset_bottom = 4.0
 script = ExtResource("1_ye80i")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2009353375]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=860939204]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1127925018]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="TransformsBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="TransformsBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1205944744]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TransformList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/TransformsBox"]
+[node name="TransformList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/TransformsBox" unique_id=1938235722]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="AddButton" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/TransformsBox"]
+[node name="AddButton" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/TransformsBox" unique_id=600095170]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -45,61 +45,61 @@ theme_type_variation = &"TranslucentButton"
 icon = ExtResource("2_w40hh")
 icon_alignment = 1
 
-[node name="Separator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="Separator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1561094068]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1020243052]
 layout_mode = 2
 
-[node name="FinalMatrix" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="FinalMatrix" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=636388238]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 3
 
-[node name="X1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+[node name="X1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" unique_id=1436553894 instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "x1"
 editable = false
 mono_font_tooltip = true
 
-[node name="Y1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+[node name="Y1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" unique_id=1919010448 instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "y1"
 editable = false
 mono_font_tooltip = true
 
-[node name="O1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+[node name="O1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" unique_id=1848250505 instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "o1"
 editable = false
 mono_font_tooltip = true
 
-[node name="X2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+[node name="X2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" unique_id=59355903 instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "x2"
 editable = false
 mono_font_tooltip = true
 
-[node name="Y2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+[node name="Y2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" unique_id=1199538641 instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "y2"
 editable = false
 mono_font_tooltip = true
 
-[node name="O2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+[node name="O2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" unique_id=1446147339 instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "o2"
 editable = false
 mono_font_tooltip = true
 
-[node name="ApplyMatrix" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ApplyMatrix" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=126592038]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4

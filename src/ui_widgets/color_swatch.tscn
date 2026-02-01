@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bujllg1bqlub6"]
+[gd_scene format=3 uid="uid://bujllg1bqlub6"]
 
 [ext_resource type="Script" uid="uid://b8kcgqnji5wvq" path="res://src/ui_widgets/color_swatch.gd" id="1_2b2yq"]
 
-[node name="ColorSwatch" type="Button"]
+[node name="ColorSwatch" type="Button" unique_id=1046295726]
 custom_minimum_size = Vector2(22, 22)
 offset_right = 20.0
 offset_bottom = 20.0

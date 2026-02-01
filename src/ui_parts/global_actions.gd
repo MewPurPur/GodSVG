@@ -3,9 +3,10 @@ extends HBoxContainer
 const LayoutPopupScene = preload("res://src/ui_parts/layout_popup.tscn")
 
 @onready var more_options: Button = $LeftSide/MoreOptions
-@onready var size_button: Button = $RightSide/SizeButton
-@onready var layout_button: Button = $LeftSide/LayoutButton
 @onready var settings_button: BetterButton = $LeftSide/SettingsButton
+@onready var layout_button: Button = $LeftSide/LayoutButton
+@onready var size_button: Button = $RightSide/SizeButton
+@onready var current_file_button: Button = $RightSide/CurrentFileButton
 @onready var import_button: BetterButton = $RightSide/ImportButton
 @onready var export_button: BetterButton = $RightSide/ExportButton
 
@@ -33,7 +34,9 @@ func _ready() -> void:
 	more_options.pressed.connect(_on_more_options_pressed)
 	size_button.pressed.connect(_on_size_button_pressed)
 	layout_button.pressed.connect(_on_layout_button_pressed)
-
+	
+	HandlerGUI.register_focus_sequence(self, [more_options, settings_button, layout_button, size_button, current_file_button, import_button, export_button])
+	more_options.grab_focus(true)
 
 func sync_theming() -> void:
 	size_button.begin_bulk_theme_override()

@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dm3l2yb8crdqr"]
+[gd_scene format=3 uid="uid://dm3l2yb8crdqr"]
 
 [ext_resource type="Script" uid="uid://dm646g7ndq56u" path="res://src/ui_widgets/file_path_field.gd" id="1_vugfe"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_vugfe"]
 [ext_resource type="Texture2D" uid="uid://n6ive1o6t4bp" path="res://assets/icons/FileBrowse.svg" id="3_qlle3"]
 
-[node name="FilePathField" type="HBoxContainer"]
+[node name="FilePathField" type="HBoxContainer" unique_id=109570203]
 custom_minimum_size = Vector2(130, 22)
 offset_right = 93.0
 offset_bottom = 31.0
@@ -13,13 +13,13 @@ size_flags_vertical = 0
 theme_override_constants/separation = 0
 script = ExtResource("1_vugfe")
 
-[node name="LineEdit" type="LineEdit" parent="."]
+[node name="LineEdit" type="LineEdit" parent="." unique_id=953374770]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"RightConnectedLineEdit"
 script = ExtResource("2_vugfe")
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=713547953]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 size_flags_horizontal = 8

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://co2btefrqrm0e"]
+[gd_scene format=3 uid="uid://co2btefrqrm0e"]
 
 [ext_resource type="Script" uid="uid://fln0r81yv0rn" path="res://src/ui_widgets/path_command_button.gd" id="1_q6blt"]
 
-[node name="PathCommandButton" type="Button"]
+[node name="PathCommandButton" type="Button" unique_id=679128148]
 custom_minimum_size = Vector2(0, 24)
 anchors_preset = 10
 anchor_right = 1.0

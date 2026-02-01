@@ -40,6 +40,8 @@ func _ready() -> void:
 	update_snap_config()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
+	
+	HandlerGUI.register_focus_sequence(self, [visuals_button, reference_button, snap_button, snapper, zoom_widget])
 
 
 func sync_localization() -> void:

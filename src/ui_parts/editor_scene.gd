@@ -107,6 +107,10 @@ func update_layout() -> void:
 		left_vertical_split_container.add_child(_create_part_box(bottom_left))
 	
 	left_vbox.add_child(left_vertical_split_container)
+	
+	var focus_sequence: Array[Control] = [global_actions]
+	focus_sequence.append_array(left_vertical_split_container.get_children())
+	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 	var vbox := VBoxContainer.new()
@@ -139,7 +143,6 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 			btn.toggle_mode = true
 			btn.icon = Utils.get_layout_part_icon(part)
 			btn.theme_type_variation = "FlatButton"
-			btn.focus_mode = Control.FOCUS_NONE
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 			btn.button_group = btn_group
 			for node_part in layout_nodes:
@@ -151,6 +154,10 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 			if i == 0:
 				btn.button_pressed = true
 				layout_nodes[part].show()
+		
+		var focus_sequence: Array[Control] = []
+		focus_sequence.append_array(buttons_hbox.get_children())
+		HandlerGUI.register_focus_sequence(vbox, focus_sequence)
 	else:
 		layout_nodes[layout_parts[0]].show()
 	

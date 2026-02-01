@@ -1,53 +1,53 @@
-[gd_scene load_steps=4 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" uid="uid://c3q5dvxm6ro1m" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://assets/icons/Edit.svg" id="4_sos04"]
 [ext_resource type="Script" uid="uid://dh5mir6i27u4u" path="res://src/ui_widgets/BetterTextEdit.gd" id="8_ser4i"]
 
-[node name="CodeEditor" type="VBoxContainer"]
+[node name="CodeEditor" type="VBoxContainer" unique_id=476313861]
 custom_minimum_size = Vector2(0, 120)
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 script = ExtResource("1_nffk0")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=921990444]
 layout_mode = 2
 
-[node name="CodeButtons" type="HBoxContainer" parent="PanelContainer"]
+[node name="CodeButtons" type="HBoxContainer" parent="PanelContainer" unique_id=1744504258]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons"]
+[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons" unique_id=1221972678]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="OptionsButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+[node name="OptionsButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions" unique_id=579136601]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_sos04")
 icon_alignment = 1
 
-[node name="ScriptEditor" type="VBoxContainer" parent="."]
+[node name="ScriptEditor" type="VBoxContainer" parent="." unique_id=794146768]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = -2
 
-[node name="SVGCodeEdit" type="TextEdit" parent="ScriptEditor"]
+[node name="SVGCodeEdit" type="TextEdit" parent="ScriptEditor" unique_id=949717930]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 indent_wrapped_lines = true
 script = ExtResource("8_ser4i")
 
-[node name="ErrorBar" type="PanelContainer" parent="ScriptEditor"]
+[node name="ErrorBar" type="PanelContainer" parent="ScriptEditor" unique_id=628749463]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="RichTextLabel" parent="ScriptEditor/ErrorBar"]
+[node name="Label" type="RichTextLabel" parent="ScriptEditor/ErrorBar" unique_id=2125847921]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 14

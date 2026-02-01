@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://speqrhruag5k"]
+[gd_scene format=3 uid="uid://speqrhruag5k"]
 
 [ext_resource type="Script" uid="uid://3tqaiuqu1h01" path="res://src/ui_widgets/setting_frame.gd" id="1_p1ngn"]
 
-[node name="SettingFrame" type="Control"]
+[node name="SettingFrame" type="Control" unique_id=2103016289]
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 3
 anchors_preset = 10
@@ -11,7 +11,7 @@ grow_horizontal = 2
 mouse_filter = 1
 script = ExtResource("1_p1ngn")
 
-[node name="ResetButton" type="Button" parent="."]
+[node name="ResetButton" type="Button" parent="." unique_id=1817704057]
 layout_mode = 0
 offset_left = 1000.0
 offset_top = 3.0

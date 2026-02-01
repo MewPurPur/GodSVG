@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnhb2yvcb4fbe"]
+[gd_scene format=3 uid="uid://cnhb2yvcb4fbe"]
 
 [ext_resource type="Script" uid="uid://3owchx7ygm21" path="res://src/ui_parts/eyedropper_popup.gd" id="1_qjmw3"]
 
-[node name="EyedropperPopup" type="TextureRect"]
+[node name="EyedropperPopup" type="TextureRect" unique_id=1328343850]
 texture_filter = 1
 expand_mode = 1
 script = ExtResource("1_qjmw3")

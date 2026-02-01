@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7wobq0ndm35"]
+[gd_scene format=3 uid="uid://b7wobq0ndm35"]
 
 [ext_resource type="Script" uid="uid://btl68wj2dmivk" path="res://src/ui_widgets/color_configuration_popup.gd" id="1_j0oms"]
 [ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://assets/icons/FieldEdit.svg" id="2_y6afs"]
@@ -7,40 +7,40 @@
 [ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_widgets/color_edit.tscn" id="5_idufj"]
 [ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://assets/icons/Delete.svg" id="6_50dbg"]
 
-[node name="ColorConfigurationPopup" type="PanelContainer"]
+[node name="ColorConfigurationPopup" type="PanelContainer" unique_id=940113814]
 custom_minimum_size = Vector2(128, 40)
 offset_right = 4.0
 offset_bottom = 4.0
 theme_type_variation = &"SpaciousPanel"
 script = ExtResource("1_j0oms")
 
-[node name="ConfigureContainer" type="VBoxContainer" parent="."]
+[node name="ConfigureContainer" type="VBoxContainer" parent="." unique_id=1677273509]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TopContainer" type="CenterContainer" parent="ConfigureContainer"]
+[node name="TopContainer" type="CenterContainer" parent="ConfigureContainer" unique_id=1243740347]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 
-[node name="LabelContainer" type="HBoxContainer" parent="ConfigureContainer/TopContainer"]
+[node name="LabelContainer" type="HBoxContainer" parent="ConfigureContainer/TopContainer" unique_id=489402164]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
-[node name="ColorLabel" type="Label" parent="ConfigureContainer/TopContainer/LabelContainer"]
+[node name="ColorLabel" type="Label" parent="ConfigureContainer/TopContainer/LabelContainer" unique_id=152000415]
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_alignment = 1
 
-[node name="EditButton" type="Button" parent="ConfigureContainer/TopContainer/LabelContainer"]
+[node name="EditButton" type="Button" parent="ConfigureContainer/TopContainer/LabelContainer" unique_id=1756561507]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_y6afs")
 
-[node name="NameEdit" type="LineEdit" parent="ConfigureContainer/TopContainer"]
+[node name="NameEdit" type="LineEdit" parent="ConfigureContainer/TopContainer" unique_id=118811290]
 visible = false
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
@@ -52,17 +52,17 @@ alignment = 1
 max_length = 30
 script = ExtResource("4_u07gm")
 
-[node name="BottomContainer" type="HBoxContainer" parent="ConfigureContainer"]
+[node name="BottomContainer" type="HBoxContainer" parent="ConfigureContainer" unique_id=276588151]
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="ColorEdit" parent="ConfigureContainer/BottomContainer" instance=ExtResource("5_idufj")]
+[node name="ColorEdit" parent="ConfigureContainer/BottomContainer" unique_id=212726817 instance=ExtResource("5_idufj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="DeleteButton" type="Button" parent="ConfigureContainer/BottomContainer"]
+[node name="DeleteButton" type="Button" parent="ConfigureContainer/BottomContainer" unique_id=883127974]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2

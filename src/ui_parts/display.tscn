@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" uid="uid://bxmb134e3sqpr" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://iglrqrqyg4kn" path="res://assets/icons/Reference.svg" id="4_2hiq7"]
@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://1da5k40m2tl2" path="res://src/ui_parts/main_canvas.gd" id="9_ryr8t"]
 [ext_resource type="PackedScene" uid="uid://vrmbmt18wocm" path="res://src/ui_parts/debug_content.tscn" id="15_ryr8t"]
 
-[node name="Display" type="VBoxContainer"]
+[node name="Display" type="VBoxContainer" unique_id=1966022780]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,59 +20,56 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_oib5g")
 
-[node name="TabBar" type="Control" parent="."]
+[node name="TabBar" type="Control" parent="." unique_id=130296871]
 clip_contents = true
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("9_rll1m")
 
-[node name="ViewportPanel" type="PanelContainer" parent="."]
+[node name="ViewportPanel" type="PanelContainer" parent="." unique_id=83911522]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ViewportPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ViewportPanel" unique_id=984834341]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Toolbar" type="PanelContainer" parent="ViewportPanel/VBoxContainer"]
+[node name="Toolbar" type="PanelContainer" parent="ViewportPanel/VBoxContainer" unique_id=750057839]
 layout_mode = 2
 
-[node name="ViewportOptions" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar"]
+[node name="ViewportOptions" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar" unique_id=212867172]
 layout_mode = 2
 alignment = 2
 
-[node name="LeftMenu" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions"]
+[node name="LeftMenu" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions" unique_id=977288433]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_constants/separation = 5
 
-[node name="Visuals" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu"]
+[node name="Visuals" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu" unique_id=1325097607]
 layout_mode = 2
 size_flags_horizontal = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_n3qjt")
 icon_alignment = 1
 
-[node name="Reference" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu"]
+[node name="Reference" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu" unique_id=1923498064]
 layout_mode = 2
 size_flags_horizontal = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_2hiq7")
 icon_alignment = 1
 
-[node name="Snapping" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu"]
+[node name="Snapping" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu" unique_id=1678573534]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="SnapButton" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping"]
+[node name="SnapButton" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping" unique_id=593679739]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightConnectedButton"
 toggle_mode = true
@@ -81,23 +78,25 @@ icon = ExtResource("5_1k2cq")
 script = ExtResource("6_3v3ve")
 action = "toggle_snap"
 
-[node name="SnapNumberEdit" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
+[node name="SnapNumberEdit" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping" unique_id=495004006 instance=ExtResource("7_wrrfr")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
+focus_mode = 2
 theme_type_variation = &"LeftConnectedLineEdit"
 max_length = 20
 min_value = 0.001
 
-[node name="ZoomMenu" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions" instance=ExtResource("8_xtdmn")]
+[node name="ZoomMenu" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions" unique_id=1763011856 instance=ExtResource("8_xtdmn")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Canvas" type="SubViewportContainer" parent="ViewportPanel/VBoxContainer"]
+[node name="Canvas" type="SubViewportContainer" parent="ViewportPanel/VBoxContainer" unique_id=145734151]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
+focus_mode = 0
 script = ExtResource("9_ryr8t")
 metadata/_custom_type_script = "uid://8bxv5i60h8rb"
 
-[node name="DebugContent" parent="ViewportPanel" instance=ExtResource("15_ryr8t")]
+[node name="DebugContent" parent="ViewportPanel" unique_id=1159043687 instance=ExtResource("15_ryr8t")]
 layout_mode = 2

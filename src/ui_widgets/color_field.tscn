@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://carf2o1y7wvmc"]
+[gd_scene format=3 uid="uid://carf2o1y7wvmc"]
 
 [ext_resource type="Script" uid="uid://ditw2rswb3tjd" path="res://src/ui_widgets/color_field.gd" id="1_2pe1j"]
 
-[node name="ColorField" type="Control"]
+[node name="ColorField" type="Control" unique_id=2143671475]
 custom_minimum_size = Vector2(68, 0)
 layout_mode = 3
 anchors_preset = 0

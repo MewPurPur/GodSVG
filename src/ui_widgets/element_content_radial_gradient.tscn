@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://1mmtphi577im" path="res://src/ui_widgets/element_content_radial_gradient.gd" id="1_le714"]
 
-[node name="ElementContentRadialGradient" type="VBoxContainer"]
+[node name="ElementContentRadialGradient" type="VBoxContainer" unique_id=629851476]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_le714")
 
-[node name="AttributeContainer" type="HFlowContainer" parent="."]
+[node name="AttributeContainer" type="HFlowContainer" parent="." unique_id=56091036]
 layout_mode = 2

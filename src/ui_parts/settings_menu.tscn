@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" uid="uid://1rjr3yrqwueu" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://assets/icons/Languages.svg" id="2_ndyp7"]
 
-[node name="SettingsMenu" type="PanelContainer"]
+[node name="SettingsMenu" type="PanelContainer" unique_id=908180128]
 custom_minimum_size = Vector2(660, 420)
 anchors_preset = 8
 anchor_left = 0.5
@@ -19,58 +19,58 @@ grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_1gf4m")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=212041751]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Language" type="Button" parent="VBoxContainer"]
+[node name="Language" type="Button" parent="VBoxContainer" unique_id=656627179]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 icon = ExtResource("2_ndyp7")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=825150850]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="ContentPicker" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="ContentPicker" type="PanelContainer" parent="VBoxContainer/HBoxContainer" unique_id=118380668]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 theme_type_variation = &"SideTabBar"
 
-[node name="Tabs" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ContentPicker"]
+[node name="Tabs" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ContentPicker" unique_id=655013623]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer" unique_id=1137668930]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_type_variation = &"SideBarContent"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/PanelContainer" unique_id=1089122156]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="ContentContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer"]
+[node name="ContentContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer" unique_id=761386232]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 4
 
-[node name="PreviewPanel" type="PanelContainer" parent="VBoxContainer"]
+[node name="PreviewPanel" type="PanelContainer" parent="VBoxContainer" unique_id=930616438]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"TextBox"
 
-[node name="CloseButton" type="Button" parent="VBoxContainer"]
+[node name="CloseButton" type="Button" parent="VBoxContainer" unique_id=795688215]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8

@@ -76,8 +76,8 @@ func setup_color(new_color: String, default_color: Color) -> void:
 	starting_display_color = ColorParser.text_to_color(starting_color, default_color,
 			alpha_enabled)
 	if slider_mode == SliderMode.HSV:
-		# Clamping like this doesn't change the hex representation, but
-		# it helps avoid locking certain sliders (e.g. hue slider when saturation is 0).
+		# Clamping like this doesn't change the hex representation, but it helps avoid
+		# locking certain sliders (e.g. hue slider when saturation is 0).
 		# The HVS order helps to keep the saturation at 0.0001 for some reason.
 		starting_display_color.h = clampf(starting_display_color.h, 0.0, 0.9999)
 		starting_display_color.v = clampf(starting_display_color.v, 0.0001, 1.0)
@@ -115,7 +115,6 @@ func sync_color_space_buttons() -> void:
 		btn.add_theme_stylebox_override("hover_pressed", pressed_stylebox)
 		btn.end_bulk_theme_override()
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.focus_mode = Control.FOCUS_NONE
 		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		btn.button_group = color_space_button_group
 		btn.toggle_mode = true
@@ -182,8 +181,12 @@ func _ready() -> void:
 	eyedropper_button.pressed.connect(_on_eyedropper_pressed)
 	eyedropper_button.tooltip_text = Translator.translate("Eyedropper")
 	# Set up the rest.
-	RenderingServer.canvas_item_set_parent(color_wheel_surface,
-			color_wheel_drawn.get_canvas_item())
+	RenderingServer.canvas_item_set_parent(color_wheel_surface, color_wheel_drawn.get_canvas_item())
+	
+	var focus_sequence: Array[Control] = [keyword_button, reset_color_button, eyedropper_button]
+	focus_sequence.append_array(color_space_container.get_children())
+	focus_sequence.append_array(fields_arr.slice(1))
+	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(color_wheel_surface)
@@ -207,8 +210,7 @@ func _on_slider_mode_changed() -> void:
 # If the change was continuous, like a color wheel adjustment, the backup color
 # should be used as it stores the color from before the operation.
 func register_visual_change(new_color: Color, use_backup := true) -> void:
-	# Return early if the color didn't change. If the color is a keyword, all visual
-	# changes reset it to a normal color.
+	# Return early if the color didn't change. If the color is a keyword, all visual changes reset it to a normal color.
 	if not color in ["none", "currentColor"] and new_color == (backup_display_color if use_backup else display_color):
 		return
 	
@@ -515,15 +517,17 @@ func update_color_button() -> void:
 		reset_color_button.disabled = true
 		return
 	reset_color_button.disabled = false
-	reset_color_button.begin_bulk_theme_override()
 	
 	var accent_hue_color := Color.from_hsv(ThemeUtils.accent_color.h, 1.0, 1.0)
 	
+	reset_color_button.begin_bulk_theme_override()
 	if display_color.get_luminance() < 0.5:
 		reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
+		reset_color_button.add_theme_color_override("icon_focus_color", Color.WHITE)
 		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.WHITE, 0.76))
 	else:
 		reset_color_button.add_theme_color_override("icon_hover_color", Color.BLACK)
+		reset_color_button.add_theme_color_override("icon_focus_color", Color.BLACK)
 		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.BLACK, 0.64))
 	reset_color_button.end_bulk_theme_override()
 

@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cnay1l0u6a5tw"]
+[gd_scene format=3 uid="uid://cnay1l0u6a5tw"]
 
 [ext_resource type="Script" uid="uid://cnmsf3h1qq3q6" path="res://src/ui_parts/shortcut_panel_config.gd" id="1_eg1f5"]
 [ext_resource type="PackedScene" uid="uid://bpr5yv7pbv13g" path="res://src/ui_widgets/dropdown_basic.tscn" id="2_4egw5"]
 
-[node name="ShortcutPanelConfig" type="PanelContainer"]
+[node name="ShortcutPanelConfig" type="PanelContainer" unique_id=1547906302]
 custom_minimum_size = Vector2(460, 300)
 anchors_preset = 8
 anchor_left = 0.5
@@ -19,50 +19,50 @@ grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_eg1f5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1984650685]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="VBoxContainer"]
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=347423124]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"TitleLabel"
 horizontal_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1967819892]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"SpaciousPanel"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=2085188796]
 layout_mode = 2
 theme_override_constants/separation = 36
 
-[node name="SlotContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="SlotContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=889381026]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 5
 alignment = 1
 
-[node name="ConfigContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="ConfigContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=86514535]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LayoutBox" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer"]
+[node name="LayoutBox" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer" unique_id=1382006991]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="LayoutLabel" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox"]
+[node name="LayoutLabel" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" unique_id=294966083]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="LayoutDropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" instance=ExtResource("2_4egw5")]
+[node name="LayoutDropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" unique_id=1069715959 instance=ExtResource("2_4egw5")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CloseButton" type="Button" parent="VBoxContainer"]
+[node name="CloseButton" type="Button" parent="VBoxContainer" unique_id=1766328009]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

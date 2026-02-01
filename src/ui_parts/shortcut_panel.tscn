@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://jf1wq6xy617n"]
+[gd_scene format=3 uid="uid://jf1wq6xy617n"]
 
 [ext_resource type="Script" uid="uid://cqqaic7b2s5xu" path="res://src/ui_parts/shortcut_panel.gd" id="1_bdakw"]
 
-[node name="ShortcutPanel" type="PanelContainer"]
+[node name="ShortcutPanel" type="PanelContainer" unique_id=755752110]
 script = ExtResource("1_bdakw")

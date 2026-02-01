@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bp2vpf7g8w8aj"]
+[gd_scene format=3 uid="uid://bp2vpf7g8w8aj"]
 
 [ext_resource type="Script" uid="uid://cmj05v3n1gfpl" path="res://src/ui_widgets/number_field_with_slider.gd" id="1_ymm02"]
 
-[node name="NumberFieldWithSlider" type="Control"]
+[node name="NumberFieldWithSlider" type="Control" unique_id=656228512]
 clip_contents = true
 custom_minimum_size = Vector2(62, 0)
 layout_mode = 3

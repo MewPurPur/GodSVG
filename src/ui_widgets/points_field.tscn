@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://b2gchy70px8jt"]
+[gd_scene format=3 uid="uid://b2gchy70px8jt"]
 
 [ext_resource type="Script" uid="uid://bey3843fto5dc" path="res://src/ui_widgets/points_field.gd" id="1_pnk5w"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_4uivs"]
 
-[node name="PointsField" type="VBoxContainer"]
+[node name="PointsField" type="VBoxContainer" unique_id=1082092662]
 offset_right = 358.0
 offset_bottom = 45.0
 theme_override_constants/separation = 2
 script = ExtResource("1_pnk5w")
 
-[node name="LineEdit" type="LineEdit" parent="."]
+[node name="LineEdit" type="LineEdit" parent="." unique_id=898087880]
 custom_minimum_size = Vector2(358, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -17,7 +17,7 @@ focus_mode = 1
 script = ExtResource("2_4uivs")
 mono_font_tooltip = true
 
-[node name="Points" type="Control" parent="."]
+[node name="Points" type="Control" parent="." unique_id=1804651955]
 custom_minimum_size = Vector2(344, 0)
 layout_mode = 2
 size_flags_horizontal = 8
