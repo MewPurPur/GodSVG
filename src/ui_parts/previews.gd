@@ -305,9 +305,8 @@ func _on_edit_field_value_changed(new_value: float) -> void:
 
 func _delete_tile(tile: IconPreviewTileData) -> void:
 	var sizes := Configs.savedata.preview_sizes.duplicate()
-	var index := sizes.find(tile.bigger_dimension)
-	if index >= 0:
-		sizes.remove_at(index)
+	if tile.index >= 0 and tile.index <= Configs.savedata.preview_sizes.size() - 1:
+		sizes.remove_at(tile.index)
 		Configs.savedata.preview_sizes = sizes
 		selected_tile_index = -1
 		sync_tiles()

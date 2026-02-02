@@ -6,7 +6,6 @@
 custom_minimum_size = Vector2(22, 22)
 offset_right = 20.0
 offset_bottom = 20.0
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Swatch"
 script = ExtResource("1_2b2yq")

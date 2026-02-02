@@ -822,6 +822,11 @@ static func _setup_button(theme: Theme) -> void:
 	hover_swatch_stylebox.bg_color = intermediate_color.blend(stronger_hover_overlay_color)
 	theme.set_stylebox("hover", "Swatch", hover_swatch_stylebox)
 	
+	var swatch_focus_stylebox := swatch_stylebox.duplicate()
+	swatch_focus_stylebox.draw_center = false
+	swatch_focus_stylebox.border_color = focus_color
+	theme.set_stylebox("focus", "Swatch", swatch_focus_stylebox)
+	
 	var pressed_swatch_stylebox := swatch_stylebox.duplicate()
 	pressed_swatch_stylebox.bg_color = common_button_border_color_pressed
 	theme.set_stylebox("pressed", "Swatch", pressed_swatch_stylebox)

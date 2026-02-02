@@ -35,18 +35,16 @@ horizontal_alignment = 1
 
 [node name="EditButton" type="Button" parent="ConfigureContainer/TopContainer/LabelContainer" unique_id=1756561507]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_y6afs")
 
-[node name="NameEdit" type="LineEdit" parent="ConfigureContainer/TopContainer" unique_id=118811290]
+[node name="ColorNameEdit" type="LineEdit" parent="ConfigureContainer/TopContainer" unique_id=118811290]
 visible = false
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-focus_mode = 1
 theme_override_fonts/font = ExtResource("3_j0oms")
 alignment = 1
 max_length = 30
@@ -64,7 +62,6 @@ size_flags_vertical = 4
 
 [node name="DeleteButton" type="Button" parent="ConfigureContainer/BottomContainer" unique_id=883127974]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("6_50dbg")

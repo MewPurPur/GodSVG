@@ -3,7 +3,7 @@ extends PanelContainer
 signal color_deletion_requested
 
 @onready var color_label: Label = %LabelContainer/ColorLabel
-@onready var color_name_edit: BetterLineEdit = %ConfigureContainer/TopContainer/NameEdit
+@onready var color_name_edit: BetterLineEdit = %ConfigureContainer/TopContainer/ColorNameEdit
 @onready var color_edit: LineEditButton = %ConfigureContainer/BottomContainer/ColorEdit
 @onready var edit_button: Button = $ConfigureContainer/TopContainer/LabelContainer/EditButton
 @onready var delete_button: Button = %ConfigureContainer/BottomContainer/DeleteButton
@@ -21,6 +21,9 @@ func _ready() -> void:
 	color_name_edit.text_change_canceled.connect(hide_name_edit)
 	edit_button.pressed.connect(_on_edit_button_pressed)
 	delete_button.pressed.connect(_on_delete_button_pressed)
+	
+	HandlerGUI.register_focus_sequence(self, [edit_button, color_name_edit, color_edit, delete_button])
+	edit_button.grab_focus(true)
 
 
 func sync_localization() -> void:

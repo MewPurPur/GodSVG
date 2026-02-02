@@ -29,7 +29,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_pm7dr")
@@ -61,7 +60,6 @@ enable_alpha = true
 
 [node name="MoreButton" type="Button" parent="ActionContainer" unique_id=1528240669]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_ue2r5")
