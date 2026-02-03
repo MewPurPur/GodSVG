@@ -419,7 +419,7 @@ func _react_to_action(event: InputEvent) -> void:
 					continue
 					
 				var action := registrations.actions[idx]
-				if ShortcutUtils.is_action_pressed(event, action):
+				if ShortcutUtils.is_action_pressed(event, action, action in ShortcutUtils.echoable_actions):
 					var should_execute := false
 					var should_clear_popups := false
 					
@@ -451,7 +451,8 @@ func is_node_on_top_menu(node: Node) -> bool:
 
 func is_node_on_top_menu_or_popup(node: Node) -> bool:
 	return ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
-			menu_stack[-1].is_ancestor_of(node)) or (not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node)))
+			menu_stack[-1].is_ancestor_of(node)) or (not popup_stack.is_empty() and not is_instance_valid(popup_submenu) and\
+			popup_stack[-1].is_ancestor_of(node)) or (is_instance_valid(popup_submenu) and popup_submenu.is_ancestor_of(node)))
 
 
 func get_window_default_size() -> Vector2i:
@@ -608,9 +609,9 @@ func open_export() -> void:
 		message = Translator.translate("The graphic can be exported only as SVG because its size is not defined.")
 	message += "\n\n" + Translator.translate("Do you want to proceed?")
 	
+	var svg_export_data := ImageExportData.new()
 	var confirm_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirm_dialog)
-	var svg_export_data := ImageExportData.new()
 	confirm_dialog.setup(Translator.translate("Export SVG"), message,
 			Translator.translate("Export"), FileUtils.open_export_dialog.bind(svg_export_data))
 

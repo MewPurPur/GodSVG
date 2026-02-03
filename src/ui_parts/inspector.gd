@@ -52,17 +52,15 @@ func add_element(element_name: String) -> void:
 
 
 func _on_add_button_pressed() -> void:
-	var btn_array: Array[Button] = []
+	var btn_array: Array[ContextButton] = []
 	for element_name in PackedStringArray(["path", "circle", "ellipse", "rect", "line",
 	"polygon", "polyline", "g", "linearGradient", "radialGradient", "stop"]):
-		var btn := ContextPopup.create_button(element_name, add_element.bind(element_name),
-				false, DB.get_element_icon(element_name))
+		var btn := ContextButton.create_custom(element_name, add_element.bind(element_name), DB.get_element_icon(element_name))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	
-	var add_popup := ContextPopup.new()
-	add_popup.setup(btn_array, true, add_button.size.x, PackedInt32Array([1, 4, 7]))
-	HandlerGUI.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(ContextPopup.create(btn_array, true, add_button.size.x, PackedInt32Array([1, 4, 7])),
+			add_button.get_global_rect(), get_viewport())
 
 
 func react_to_last_parsing() -> void:

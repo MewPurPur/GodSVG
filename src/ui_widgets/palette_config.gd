@@ -193,22 +193,15 @@ func save_palette(palette_idx: int) -> void:
 	FileUtils.open_xml_export_dialog(saved_palette.get_as_markup(), saved_palette.title)
 
 func open_palette_options() -> void:
-	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button("Pure",
-			apply_preset.bind(Palette.Preset.PURE),
-			palette.is_same_as_preset(Palette.Preset.PURE),
-			load("res://assets/icons/PresetPure.svg"), true))
-	btn_arr.append(ContextPopup.create_button("Grayscale",
-			apply_preset.bind(Palette.Preset.GRAYSCALE),
-			palette.is_same_as_preset(Palette.Preset.GRAYSCALE),
-			load("res://assets/icons/PresetGrayscale.svg"), true))
-	btn_arr.append(ContextPopup.create_button("Empty",
-			apply_preset.bind(Palette.Preset.EMPTY),
-			palette.is_same_as_preset(Palette.Preset.EMPTY),
-			load("res://assets/icons/Clear.svg")))
+	var btn_arr: Array[ContextButton] = []
+	btn_arr.append(ContextButton.create_custom("Pure", apply_preset.bind(Palette.Preset.PURE),
+			load("res://assets/icons/PresetPure.svg"), palette.is_same_as_preset(Palette.Preset.PURE)).set_icon_unmodulated())
+	btn_arr.append(ContextButton.create_custom("Grayscale", apply_preset.bind(Palette.Preset.GRAYSCALE),
+			load("res://assets/icons/PresetGrayscale.svg"), palette.is_same_as_preset(Palette.Preset.GRAYSCALE)).set_icon_unmodulated())
+	btn_arr.append(ContextButton.create_custom("Empty", apply_preset.bind(Palette.Preset.EMPTY),
+			load("res://assets/icons/Clear.svg"), palette.is_same_as_preset(Palette.Preset.EMPTY)))
 	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true)
+	var context_popup := ContextPopup.create(btn_arr)
 	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(), get_viewport())
 
 func apply_preset(preset: Palette.Preset) -> void:
@@ -223,29 +216,21 @@ func find_palette_index() -> int:
 
 func _on_palette_button_pressed() -> void:
 	var palette_idx := find_palette_index()
-	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Rename"),
-			popup_edit_name, false, load("res://assets/icons/Rename.svg")))
+	var btn_arr: Array[ContextButton] = []
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Rename"), popup_edit_name, preload("res://assets/icons/Rename.svg")))
 	if palette_idx >= 1:
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Up"),
-				move_up, false, load("res://assets/icons/MoveUp.svg")))
+		btn_arr.append(ContextButton.create_custom(Translator.translate("Move Up"), move_up, preload("res://assets/icons/MoveUp.svg")))
 	if palette_idx < Configs.savedata.get_palette_count() - 1:
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Down"),
-				move_down, false, load("res://assets/icons/MoveDown.svg")))
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Apply Preset"),
-			open_palette_options, false, load("res://assets/icons/Import.svg")))
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-			delete, false, load("res://assets/icons/Delete.svg")))
+		btn_arr.append(ContextButton.create_custom(Translator.translate("Move Down"), move_down, preload("res://assets/icons/MoveDown.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Apply Preset"), open_palette_options, preload("res://assets/icons/Import.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"), delete, preload("res://assets/icons/Delete.svg")))
 	
 	var separator_arr := PackedInt32Array([btn_arr.size()])
 	
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Copy as XML"),
-			copy_palette.bind(palette_idx), false, load("res://assets/icons/Copy.svg")))
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Save as XML"),
-			save_palette.bind(palette_idx), false, load("res://assets/icons/Export.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Copy as XML"), copy_palette.bind(palette_idx), preload("res://assets/icons/Copy.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Save as XML"), save_palette.bind(palette_idx), preload("res://assets/icons/Export.svg")))
 	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true, -1, separator_arr)
+	var context_popup := ContextPopup.create(btn_arr, true, -1, separator_arr)
 	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(), get_viewport())
 
 

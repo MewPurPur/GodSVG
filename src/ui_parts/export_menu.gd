@@ -4,6 +4,8 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 const BasicDropdown = preload("res://src/ui_widgets/dropdown_basic.gd")
 const PreviewRect = preload("res://src/ui_widgets/preview_rect.gd")
 
+const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
+
 var undo_redo := UndoRedoRef.new()
 var export_data := ImageExportData.new()
 var dimensions := Vector2.ZERO
@@ -101,7 +103,7 @@ func _on_export_button_pressed() -> void:
 func _on_clipboard_button_pressed() -> void:
 	var error := ClipboardUtils.copy_image(export_data)
 	if error.type != ClipboardUtils.ErrorType.OK:
-		var alert_dialog := HandlerGUI.AlertDialogScene.instantiate()
+		var alert_dialog := AlertDialogScene.instantiate()
 		HandlerGUI.add_dialog(alert_dialog)
 		alert_dialog.setup(error.message)
 

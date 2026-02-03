@@ -56,7 +56,6 @@ size_flags_vertical = 3
 [node name="CheckBox" type="CheckBox" parent="MainContainer/TextContainer" unique_id=700704501]
 visible = false
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 action_mode = 0
 

@@ -606,7 +606,7 @@ func insert_point_after_selection() -> void:
 
 
 func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) -> ContextPopup:
-	var btn_arr: Array[Button] = []
+	var btn_arr: Array[ContextButton] = []
 	
 	if not selected_xids.is_empty():
 		var filtered_xids := XIDUtils.filter_descendants(selected_xids)
@@ -630,24 +630,22 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 				if not can_move_down and base_xid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
 		if context == Utils.LayoutPart.VIEWPORT:
-			btn_arr.append(ContextPopup.create_button(Translator.translate("View in Inspector"),
-					view_in_inspector.bind(selected_xids[0]), false,
-					load("res://assets/icons/Inspector.svg")))
+			btn_arr.append(ContextButton.create_custom(Translator.translate("View in Inspector"),
+					view_in_inspector.bind(selected_xids[0]), preload("res://assets/icons/Inspector.svg")))
 		
-		btn_arr.append(ContextPopup.create_shortcut_button("duplicate"))
+		btn_arr.append(ContextButton.create_from_action("duplicate"))
 		
 		var xnode := root_element.get_xnode(selected_xids[0])
 		if selected_xids.size() == 1 and (not xnode.is_element() or (xnode.is_element() and not xnode.possible_conversions.is_empty())):
-			btn_arr.append(ContextPopup.create_button(Translator.translate("Convert To"),
-					popup_convert_to_context.bind(popup_method), false,
-					load("res://assets/icons/Reload.svg")))
+			btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+					popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
 		
 		if can_move_up:
-			btn_arr.append(ContextPopup.create_shortcut_button("move_up"))
+			btn_arr.append(ContextButton.create_from_action("move_up"))
 		if can_move_down:
-			btn_arr.append(ContextPopup.create_shortcut_button("move_down"))
+			btn_arr.append(ContextButton.create_from_action("move_down"))
 		
-		btn_arr.append(ContextPopup.create_shortcut_button("delete"))
+		btn_arr.append(ContextButton.create_from_action("delete"))
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var element_ref := root_element.get_xnode(semi_selected_xid)
@@ -657,61 +655,53 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 			for idx in inner_selections:
 				if idx < inner_idx:
 					inner_idx = idx
-			btn_arr.append(ContextPopup.create_button(Translator.translate("View in Inspector"),
-					view_in_inspector.bind(semi_selected_xid, inner_idx), false,
-					load("res://assets/icons/Inspector.svg")))
+			btn_arr.append(ContextButton.create_custom(Translator.translate("View in Inspector"),
+					view_in_inspector.bind(semi_selected_xid, inner_idx), preload("res://assets/icons/Inspector.svg")))
 		match element_ref.name:
 			"path":
 				if inner_selections.size() == 1:
-					btn_arr.append(ContextPopup.create_button(Translator.translate("Insert After"),
-							popup_insert_command_after_context.bind(popup_method), false,
-							load("res://assets/icons/Plus.svg")))
+					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
+							popup_insert_command_after_context.bind(popup_method), preload("res://assets/icons/Plus.svg")))
 					if inner_selections[0] != 0 or element_ref.get_attribute("d").get_command(0).command_char != "M":
-						btn_arr.append(ContextPopup.create_button(Translator.translate("Convert To"),
-								popup_convert_to_context.bind(popup_method), false,
-								load("res://assets/icons/Reload.svg")))
+						btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+								popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
 				if is_selection_subpath():
 					# TODO
 					var can_move_up := false
 					var can_move_down := false
 					if can_move_up:
-						btn_arr.append(ContextPopup.create_shortcut_button("move_up"))
+						btn_arr.append(ContextButton.create_from_action("move_up"))
 						# , "Move Subpath Up"
 					if can_move_down:
-						btn_arr.append(ContextPopup.create_shortcut_button("move_down"))
+						btn_arr.append(ContextButton.create_from_action("move_down"))
 						# , "Move Subpath Down"
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
-					btn_arr.append(ContextPopup.create_button(Translator.translate("Insert After"),
-							insert_point_after_selection, false, load("res://assets/icons/Plus.svg")))
+					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
+							insert_point_after_selection, preload("res://assets/icons/Plus.svg")))
 		
-		btn_arr.append(ContextPopup.create_shortcut_button("delete"))
+		btn_arr.append(ContextButton.create_from_action("delete"))
 	
-	var element_context := ContextPopup.new()
-	element_context.setup(btn_arr, true)
-	return element_context
+	return ContextPopup.create(btn_arr)
 
 func popup_convert_to_context(popup_method: Callable) -> void:
 	# The "Convert To" context popup.
 	if not selected_xids.is_empty():
-		var btn_arr: Array[Button] = []
+		var btn_arr: Array[ContextButton] = []
 		var xnode := root_element.get_xnode(selected_xids[0])
 		if not xnode.is_element():
 			for xnode_type in xnode.get_possible_conversions():
-				var btn := ContextPopup.create_button(BasicXNode.get_type_string(xnode_type),
-						convert_selected_xnode_to.bind(xnode_type), false, DB.get_xnode_icon(xnode_type))
+				var btn := ContextButton.create_custom(BasicXNode.get_type_string(xnode_type),
+						convert_selected_xnode_to.bind(xnode_type), DB.get_xnode_icon(xnode_type))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_arr.append(btn)
 		else:
 			for element_name in xnode.possible_conversions:
-				var btn := ContextPopup.create_button(element_name,
-						convert_selected_element_to.bind(element_name),
-						not xnode.can_replace(element_name), DB.get_element_icon(element_name))
+				var btn := ContextButton.create_custom(element_name, convert_selected_element_to.bind(element_name),
+						DB.get_element_icon(element_name), not xnode.can_replace(element_name))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_arr.append(btn)
-		var context_popup := ContextPopup.new()
-		context_popup.setup(btn_arr, true)
-		popup_method.call(context_popup)
+		popup_method.call(ContextPopup.create(btn_arr))
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var path_attrib: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
 		var selection_idx: int = inner_selections.max()

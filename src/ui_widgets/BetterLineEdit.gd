@@ -123,7 +123,7 @@ func _gui_input(event: InputEvent) -> void:
 		queue_redraw()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		grab_focus()
-		var btn_arr: Array[Button] = []
+		var btn_arr: Array[ContextButton] = []
 		var separator_arr := PackedInt32Array()
 		
 		var is_text_empty := text.is_empty()
@@ -132,26 +132,25 @@ func _gui_input(event: InputEvent) -> void:
 			var text_to_evaluate := get_selected_text() if has_selection() else text
 			var selection_evaluation := NumstringParser.evaluate(text_to_evaluate)
 			if not is_nan(selection_evaluation) and Utils.num_simple(selection_evaluation, Utils.MAX_NUMERIC_PRECISION) != text_to_evaluate:
-				btn_arr.append(ContextPopup.create_shortcut_button("evaluate"))
+				btn_arr.append(ContextButton.create_from_action("evaluate"))
 			
 			if not btn_arr.is_empty():
 				separator_arr.append(btn_arr.size())
 			
-			btn_arr.append(ContextPopup.create_shortcut_button("ui_undo", not has_undo()))
-			btn_arr.append(ContextPopup.create_shortcut_button("ui_redo", not has_redo()))
+			btn_arr.append(ContextButton.create_from_action("ui_undo", not has_undo()))
+			btn_arr.append(ContextButton.create_from_action("ui_redo", not has_redo()))
 			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 				separator_arr.append(btn_arr.size())
-				btn_arr.append(ContextPopup.create_shortcut_button("ui_cut", is_text_empty))
-				btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
-				btn_arr.append(ContextPopup.create_shortcut_button("ui_paste", not Utils.has_clipboard_web_safe()))
-				btn_arr.append(ContextPopup.create_shortcut_button("select_all", is_text_empty))
+				btn_arr.append(ContextButton.create_from_action("ui_cut", is_text_empty))
+				btn_arr.append(ContextButton.create_from_action("ui_copy", is_text_empty))
+				btn_arr.append(ContextButton.create_from_action("ui_paste", not Utils.has_clipboard_web_safe()))
+				btn_arr.append(ContextButton.create_from_action("select_all", is_text_empty))
 		else:
-			btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
-			btn_arr.append(ContextPopup.create_shortcut_button("select_all", is_text_empty))
+			btn_arr.append(ContextButton.create_from_action("ui_copy", is_text_empty))
+			btn_arr.append(ContextButton.create_from_action("select_all", is_text_empty))
 		
 		var vp := get_viewport()
-		var context_popup := ContextPopup.new()
-		context_popup.setup(btn_arr, true, -1, separator_arr)
+		var context_popup := ContextPopup.create(btn_arr, true, -1, separator_arr)
 		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 		accept_event()
 		# Wow, no way to find out the column of a given click? Okay...

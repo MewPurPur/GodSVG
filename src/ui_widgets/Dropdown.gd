@@ -65,10 +65,8 @@ func _gui_input(event: InputEvent) -> void:
 
 
 func _show_value_picker() -> void:
-	var value_picker := ContextPopup.new()
-	value_picker.setup(_get_dropdown_buttons(), align_left, size.x)
 	queue_redraw()
-	HandlerGUI.popup_under_rect(value_picker, get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(ContextPopup.create(_get_dropdown_buttons(), align_left, size.x), get_global_rect(), get_viewport())
 
 func _enter_edit_mode() -> void:
 	line_edit = BetterLineEdit.new()
@@ -91,4 +89,4 @@ func _on_text_submitted(_new_text: String) -> void:
 func _on_text_changed(_new_text: String) -> void:
 	return
 
-@abstract func _get_dropdown_buttons() -> Array[Button]
+@abstract func _get_dropdown_buttons() -> Array[ContextButton]

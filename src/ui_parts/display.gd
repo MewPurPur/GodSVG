@@ -73,19 +73,16 @@ func update_snap_config() -> void:
 func _on_reference_button_pressed() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
 	var has_reference := is_instance_valid(active_tab.reference_image)
-	var btn_arr: Array[Button] = [
-		ContextPopup.create_shortcut_button("load_reference"),
-		ContextPopup.create_button(Translator.translate("Paste reference image"),
-				paste_reference_image, not Utils.has_clipboard_image_web_safe(), load("res://assets/icons/Paste.svg")),
-		ContextPopup.create_button(Translator.translate("Clear reference image"),
-				clear_reference_image, not has_reference, load("res://assets/icons/Clear.svg")),
-		ContextPopup.create_shortcut_checkbox("view_show_reference", active_tab.show_reference and has_reference, not has_reference),
-		ContextPopup.create_shortcut_checkbox("view_overlay_reference", active_tab.overlay_reference and has_reference, not has_reference)
+	var btn_arr: Array[ContextButton] = [
+		ContextButton.create_from_action("load_reference"),
+		ContextButton.create_custom(Translator.translate("Paste reference image"), paste_reference_image,
+				load("res://assets/icons/Paste.svg"), not Utils.has_clipboard_image_web_safe()),
+		ContextButton.create_custom(Translator.translate("Clear reference image"), clear_reference_image,
+				load("res://assets/icons/Clear.svg"), not has_reference),
+		ContextButton.create_checkbox_from_action("view_show_reference", active_tab.show_reference and has_reference, not has_reference),
+		ContextButton.create_checkbox_from_action("view_overlay_reference", active_tab.overlay_reference and has_reference, not has_reference)
 	]
-	
-	var reference_popup := ContextPopup.new()
-	reference_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), reference_button.get_global_rect(), get_viewport())
 
 func paste_reference_image() -> void:
 	set_main_viewport_reference_image(DisplayServer.clipboard_get_image())
@@ -101,15 +98,12 @@ func set_main_viewport_reference_image(image: Image) -> void:
 
 
 func _on_visuals_button_pressed() -> void:
-	var btn_arr: Array[Button] = [
-		ContextPopup.create_shortcut_checkbox("view_show_grid", canvas.show_grid),
-		ContextPopup.create_shortcut_checkbox("view_show_handles", canvas.show_handles),
-		ContextPopup.create_shortcut_checkbox("view_rasterized_svg", canvas.view_rasterized)
+	var btn_arr: Array[ContextButton] = [
+		ContextButton.create_checkbox_from_action("view_show_grid", canvas.show_grid),
+		ContextButton.create_checkbox_from_action("view_show_handles", canvas.show_handles),
+		ContextButton.create_checkbox_from_action("view_rasterized_svg", canvas.view_rasterized)
 	]
-	
-	var visuals_popup := ContextPopup.new()
-	visuals_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), visuals_button.get_global_rect(), get_viewport())
 
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:

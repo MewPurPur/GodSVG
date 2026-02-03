@@ -51,35 +51,31 @@ func sync_theming() -> void:
 	update_size_button_colors()
 
 func _on_size_button_pressed() -> void:
-	var btn_array: Array[Button] = [ContextPopup.create_shortcut_button("optimize")]
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(), get_viewport())
+	var btn_arr: Array[ContextButton] = [ContextButton.create_from_action("optimize")]
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), size_button.get_global_rect(), get_viewport())
 
 func _on_more_options_pressed() -> void:
-	var buttons_arr: Array[Button] = []
+	var btn_arr: Array[ContextButton] = []
 	var separator_indices := PackedInt32Array()
 	
-	buttons_arr.append(ContextPopup.create_shortcut_button("check_updates"))
+	btn_arr.append(ContextButton.create_from_action("check_updates"))
 	
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE_EXTRA):
-		buttons_arr.append(ContextPopup.create_button(Translator.translate("View savedata"),
-				open_savedata_folder, false, load("res://assets/icons/OpenFolder.svg")))
+		btn_arr.append(ContextButton.create_custom(Translator.translate("View savedata"),
+				open_savedata_folder, preload("res://assets/icons/OpenFolder.svg")))
 	
-	separator_indices.append(buttons_arr.size())
+	separator_indices.append(btn_arr.size())
 	
-	var about_btn := ContextPopup.create_shortcut_button("about_info", false, "", load("res://assets/logos/icon.svg"), true)
-	buttons_arr.append(about_btn)
-	buttons_arr.append(ContextPopup.create_shortcut_button("about_donate"))
+	var about_btn := ContextButton.create_from_action("about_info").add_custom_icon(load("res://assets/logos/icon.svg")).set_icon_unmodulated()
+	btn_arr.append(about_btn)
+	btn_arr.append(ContextButton.create_from_action("about_donate"))
 	
-	separator_indices.append(buttons_arr.size())
+	separator_indices.append(btn_arr.size())
 	
-	buttons_arr.append(ContextPopup.create_shortcut_button("about_repo"))
-	buttons_arr.append(ContextPopup.create_shortcut_button("about_website"))
+	btn_arr.append(ContextButton.create_from_action("about_repo"))
+	btn_arr.append(ContextButton.create_from_action("about_website"))
 	
-	var more_popup := ContextPopup.new()
-	more_popup.setup(buttons_arr, true, -1, separator_indices)
-	HandlerGUI.popup_under_rect_center(more_popup, more_options.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr, true, -1, separator_indices), more_options.get_global_rect(), get_viewport())
 
 
 func open_savedata_folder() -> void:

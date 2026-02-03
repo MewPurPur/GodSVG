@@ -271,6 +271,7 @@ static func generate_theme() -> Theme:
 	theme.default_font_size = 13
 	_setup_panelcontainer(theme)
 	_setup_button(theme)
+	_setup_context_button(theme)
 	_setup_checkbox(theme)
 	_setup_checkbutton(theme)
 	_setup_dropdown(theme)
@@ -685,45 +686,6 @@ static func _setup_button(theme: Theme) -> void:
 	flat_button_focus_stylebox.border_color = focus_color
 	theme.set_stylebox("focus", "FlatButton", flat_button_focus_stylebox)
 	
-	theme.add_type("ContextButton")
-	theme.set_type_variation("ContextButton", "Button")
-	theme.set_color("icon_normal_color", "ContextButton", context_icon_normal_color)
-	theme.set_color("icon_hover_color", "ContextButton", context_icon_hover_color)
-	theme.set_color("icon_pressed_color", "ContextButton", context_icon_pressed_color)
-	theme.set_color("icon_disabled_color", "ContextButton", tinted_gray_color)
-	
-	var context_button_stylebox := StyleBoxFlat.new()
-	context_button_stylebox.set_corner_radius_all(3)
-	context_button_stylebox.content_margin_bottom = 2.0
-	context_button_stylebox.content_margin_top = 2.0
-	context_button_stylebox.content_margin_left = 3.0
-	context_button_stylebox.content_margin_right = 4.0
-	
-	var normal_context_button_stylebox := StyleBoxEmpty.new()
-	normal_context_button_stylebox.content_margin_bottom = 2.0
-	normal_context_button_stylebox.content_margin_top = 2.0
-	normal_context_button_stylebox.content_margin_left = 3.0
-	normal_context_button_stylebox.content_margin_right = 4.0
-	theme.set_stylebox("normal", "ContextButton", normal_context_button_stylebox)
-	
-	var hover_context_button_stylebox := context_button_stylebox.duplicate()
-	hover_context_button_stylebox.bg_color = hover_overlay_color
-	theme.set_stylebox("hover", "ContextButton", hover_context_button_stylebox)
-	
-	var pressed_context_button_stylebox := context_button_stylebox.duplicate()
-	pressed_context_button_stylebox.bg_color = pressed_overlay_color
-	theme.set_stylebox("pressed", "ContextButton", pressed_context_button_stylebox)
-	
-	var disabled_context_button_stylebox := context_button_stylebox.duplicate()
-	# Ensure enough contrast.
-	disabled_context_button_stylebox.bg_color = context_button_color_disabled
-	theme.set_stylebox("disabled", "ContextButton", disabled_context_button_stylebox)
-	
-	var context_button_focus_stylebox := context_button_stylebox.duplicate()
-	context_button_focus_stylebox.draw_center = false
-	context_button_focus_stylebox.border_color = focus_color
-	theme.set_stylebox("focus", "ContextButton", context_button_focus_stylebox)
-	
 	theme.add_type("PathCommandAbsoluteButton")
 	theme.set_type_variation("PathCommandAbsoluteButton", "Button")
 	var path_command_absolute_button_stylebox_normal := StyleBoxFlat.new()
@@ -831,6 +793,27 @@ static func _setup_button(theme: Theme) -> void:
 	pressed_swatch_stylebox.bg_color = common_button_border_color_pressed
 	theme.set_stylebox("pressed", "Swatch", pressed_swatch_stylebox)
 	theme.set_stylebox("disabled", "Swatch", pressed_swatch_stylebox)
+
+static func _setup_context_button(theme: Theme) -> void:
+	theme.add_type("ContextButton")
+	theme.set_type_variation("ContextButton", "Control")
+	theme.set_color("icon_color", "ContextButton", context_icon_normal_color)
+	theme.set_color("icon_disabled_color", "ContextButton", tinted_gray_color)
+	theme.set_color("icon_focus_color", "ContextButton", context_icon_hover_color)
+	theme.set_color("font_color", "ContextButton", text_color)
+	theme.set_color("font_disabled_color", "ContextButton", subtle_text_color)
+	theme.set_color("font_focus_color", "ContextButton", highlighted_text_color)
+	
+	var context_button_stylebox := StyleBoxFlat.new()
+	context_button_stylebox.set_corner_radius_all(3)
+	
+	var hover_context_button_stylebox := context_button_stylebox.duplicate()
+	hover_context_button_stylebox.bg_color = strong_hover_overlay_color
+	theme.set_stylebox("focus", "ContextButton", hover_context_button_stylebox)
+	
+	var disabled_context_button_stylebox := context_button_stylebox.duplicate()
+	disabled_context_button_stylebox.bg_color = context_button_color_disabled
+	theme.set_stylebox("disabled", "ContextButton", disabled_context_button_stylebox)
 
 static func _setup_checkbox(theme: Theme) -> void:
 	theme.add_type("CheckBox")

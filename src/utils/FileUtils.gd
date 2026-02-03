@@ -8,7 +8,14 @@ const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.gd")
 
 const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
 const ConfirmDialogScene = preload("res://src/ui_widgets/confirm_dialog.tscn")
-const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
+
+# FIXME Workaround to a truly diabolical issue! #115996
+static var OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn"):
+	get:
+		if not OptionsDialogScene.can_instantiate():
+			OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
+		return OptionsDialogScene
+
 const ImportWarningMenuScene = preload("res://src/ui_parts/import_warning_menu.tscn")
 const GoodFileDialogScene = preload("res://src/ui_parts/good_file_dialog.tscn")
 
@@ -209,8 +216,8 @@ static func open_custom_import_dialog(extensions: PackedStringArray, completion_
 					GoodFileDialog.FileMode.MULTI_SELECT if multi_select else GoodFileDialog.FileMode.SELECT, extensions)
 			HandlerGUI.add_menu(import_dialog)
 			import_dialog.files_selected.connect(
-					func(paths: PackedStringArray) -> void:
-						_start_file_import_process(paths, completion_callback, extensions)
+				func(paths: PackedStringArray) -> void:
+					_start_file_import_process(paths, completion_callback, extensions)
 			)
 
 # Preprocessing step where all files with wrong extensions are discarded.
@@ -273,6 +280,7 @@ static func _file_import_proceed(file_paths: PackedStringArray, completion_callb
 	# to avoid any file operations. If the file alert is not shown, we should call
 	# proceed_callback automatically and still exit early.
 	if not file.is_valid():
+		var has_file_paths := (not file_paths.is_empty())
 		if show_file_missing_alert:
 			var options_dialog := OptionsDialogScene.instantiate()
 			HandlerGUI.add_dialog(options_dialog)
@@ -290,13 +298,13 @@ static func _file_import_proceed(file_paths: PackedStringArray, completion_callb
 						Translator.translate("Proceed for all files that can't be opened"))
 			
 			options_dialog.add_cancel_option()
-			options_dialog.add_option(Translator.translate("Retry"), retry_callback, false, true, Callable(), true)
-			if not file_paths.is_empty():
+			options_dialog.add_option(Translator.translate("Retry"), retry_callback, not has_file_paths, true, Callable(), true)
+			if has_file_paths:
 				options_dialog.add_option(Translator.translate("Proceed"), proceed_callback, true, true,
 						_file_import_proceed.bind(file_paths, completion_callback, false), false, true)
 			return
 		else:
-			if not file_paths.is_empty():
+			if has_file_paths:
 				proceed_callback.call()
 			return
 	
@@ -340,8 +348,7 @@ static func _apply_svg(data: Variant, file_path: String, proceed_callback := Cal
 		else:
 			var confirm_dialog := ConfirmDialogScene.instantiate()
 			HandlerGUI.add_menu(confirm_dialog)
-			confirm_dialog.setup(Translator.translate("Alert!"), alert_message,
-					Translator.translate("Proceed"), proceed_callback)
+			confirm_dialog.setup(Translator.translate("Alert!"), alert_message, Translator.translate("Proceed"), proceed_callback)
 		return
 	
 	# Make new tab only if the active tab isn't empty.

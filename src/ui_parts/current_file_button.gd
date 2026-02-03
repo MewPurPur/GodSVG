@@ -20,19 +20,15 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 	return label
 
 func _on_file_button_pressed() -> void:
-	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_shortcut_button("save"))
-	btn_array.append(ContextPopup.create_shortcut_button("save_as", false,
-			Translator.translate("Save SVG as…")))
-	btn_array.append(ContextPopup.create_shortcut_button("reset_svg",
-			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT))
-	btn_array.append(ContextPopup.create_shortcut_button("open_externally",
-			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path)))
-	btn_array.append(ContextPopup.create_shortcut_button("open_in_folder",
-			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path)))
+	var external_file_missing := (not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path))
+	var btn_arr: Array[ContextButton] = []
+	btn_arr.append(ContextButton.create_from_action("save"))
+	btn_arr.append(ContextButton.create_from_action("save_as").add_custom_text(Translator.translate("Save SVG as…")))
+	btn_arr.append(ContextButton.create_from_action("reset_svg", FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT))
+	btn_arr.append(ContextButton.create_from_action("open_externally", external_file_missing))
+	btn_arr.append(ContextButton.create_from_action("open_in_folder", external_file_missing))
 	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true, size.x, PackedInt32Array([2]))
+	var context_popup := ContextPopup.create(btn_arr, true, size.x, PackedInt32Array([2]))
 	HandlerGUI.popup_under_rect_center(context_popup, get_global_rect(), get_viewport())
 
 func update_file_button() -> void:

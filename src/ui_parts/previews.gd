@@ -237,12 +237,9 @@ func _on_tiles_gui_input(event: InputEvent) -> void:
 							_show_tile_popup_at_pos(tile, event.global_position)
 							break
 				else:
-					var btn_array: Array[Button] = []
-					btn_array.append(ContextPopup.create_button(Translator.translate("Add new preview"), _add_new_tile, false, plus_icon))
-					var popup := ContextPopup.new()
-					popup.setup(btn_array, true)
+					var btn_array: Array[ContextButton] = [ContextButton.create_custom(Translator.translate("Add new preview"), _add_new_tile, plus_icon)]
 					var vp := get_viewport()
-					HandlerGUI.popup_under_pos(popup, vp.get_mouse_position(), vp)
+					HandlerGUI.popup_under_pos(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)
 
 
 func _on_tiles_mouse_exited() -> void:
@@ -262,12 +259,11 @@ func _sync_texture() -> void:
 
 
 func _generate_tile_popup(tile: IconPreviewTileData) -> ContextPopup:
-	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_button(Translator.translate("Edit"), _edit_tile_size.bind(tile), false, edit_icon))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Delete"), _delete_tile.bind(tile), false, delete_icon))
-	var popup := ContextPopup.new()
-	popup.setup(btn_array, true)
-	return popup
+	var btn_arr: Array[ContextButton] = [
+		ContextButton.create_custom(Translator.translate("Edit"), _edit_tile_size.bind(tile), edit_icon),
+		ContextButton.create_custom(Translator.translate("Delete"), _delete_tile.bind(tile), delete_icon),
+	]
+	return ContextPopup.create(btn_arr, true)
 
 func _show_tile_popup_at_pos(tile: IconPreviewTileData, pos: Vector2) -> void:
 	HandlerGUI.popup_under_pos(_generate_tile_popup(tile), pos, get_viewport())
@@ -352,14 +348,12 @@ func _update_preview_background(new_value: String) -> void:
 
 
 func _on_more_button_pressed() -> void:
-	var btn_array: Array[Button] = [
-		ContextPopup.create_button(Translator.translate("Reset to default"),
-				reset_tiles, are_tiles_default(), load("res://assets/icons/Reload.svg")),
-		ContextPopup.create_button(Translator.translate("Clear all"),
-				clear_all_tiles, Configs.savedata.preview_sizes.is_empty(), load("res://assets/icons/Clear.svg")),
-		ContextPopup.create_button(Translator.translate("Sort"),
-				sort_tiles, are_tiles_sorted(), load("res://assets/icons/Sort.svg")),
+	var btn_array: Array[ContextButton] = [
+		ContextButton.create_custom(Translator.translate("Reset to default"), reset_tiles,
+				load("res://assets/icons/Reload.svg"), are_tiles_default()),
+		ContextButton.create_custom(Translator.translate("Clear all"), clear_all_tiles,
+				load("res://assets/icons/Clear.svg"), Configs.savedata.preview_sizes.is_empty()),
+		ContextButton.create_custom(Translator.translate("Sort"), sort_tiles,
+				load("res://assets/icons/Sort.svg"), are_tiles_sorted()),
 	]
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, more_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_array), more_button.get_global_rect(), get_viewport())
