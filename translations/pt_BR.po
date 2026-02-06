@@ -448,6 +448,14 @@ msgstr "Ferramenta"
 msgid "View"
 msgstr "Visualizar"
 
+#: src/ui_parts/mac_menu.gd
+msgid "Window"
+msgstr ""
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "Help"
+msgstr "Ajuda"
+
 #: src/ui_parts/previews.gd
 msgid "Add new preview"
 msgstr "Adicionar nova prévia"
@@ -1135,10 +1143,6 @@ msgstr "Importar XML"
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "Paste XML"
 msgstr "Colar XML"
-
-#: src/ui_widgets/settings_content_shortcuts.gd
-msgid "Help"
-msgstr "Ajuda"
 
 #: src/ui_widgets/transform_field.gd
 msgid "No transforms"

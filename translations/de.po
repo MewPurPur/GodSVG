@@ -450,6 +450,14 @@ msgstr "Werkzeuge"
 msgid "View"
 msgstr "Ansicht"
 
+#: src/ui_parts/mac_menu.gd
+msgid "Window"
+msgstr ""
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "Help"
+msgstr "Hilfe"
+
 #: src/ui_parts/previews.gd
 #, fuzzy
 msgid "Add new preview"
@@ -1162,10 +1170,6 @@ msgstr "XML importieren"
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "Paste XML"
 msgstr "XML einfügen"
-
-#: src/ui_widgets/settings_content_shortcuts.gd
-msgid "Help"
-msgstr "Hilfe"
 
 #: src/ui_widgets/transform_field.gd
 msgid "No transforms"

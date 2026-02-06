@@ -70,10 +70,15 @@ func _generate_main_menus() -> void:
 	_add_many_items(tool_rid, ShortcutUtils.get_actions("tool"))
 	_add_many_items(view_rid, ShortcutUtils.get_actions("view"))
 
+	await get_tree().process_frame
+	NativeMenu.set_system_menu_text(NativeMenu.WINDOW_MENU_ID, Translator.translate("Window"))
+	NativeMenu.set_system_menu_text(NativeMenu.HELP_MENU_ID, Translator.translate("Help"))
+
 
 func _add_many_items(menu_rid: RID, actions: PackedStringArray) -> void:
 	for action in actions:
 		_add_item(menu_rid, action)
+
 
 func _add_item(menu_rid: RID, action_name: String) -> int:
 	return NativeMenu.add_item(menu_rid, TranslationUtils.get_action_description(action_name),
