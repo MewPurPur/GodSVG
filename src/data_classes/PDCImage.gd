@@ -1,6 +1,17 @@
+## A representation of a [url=https://developer.rebble.io/guides/app-resources/pdc-format/]Pebble Draw Command[/url] file.
+## [br][br]
+## The Pebble Draw Command format is a bespoke vector image format designed for the PebbleOS smartwatch firmware, made for
+## efficient storage and drawing.
+## PDCImage supports loading a binary file with [method load_from_pdc], converting them to SVGs with [method to_svg], and
+## converting SVGs to PDCs with [method load_from_svg]. It doesn't support image sequences, only stills.
+## [br][br]
+## To convert an in-memory [PDCImage] to a binary file, use [method encode].
+## [br][br]
+## Implementation based on the specification at [url]https://developer.rebble.io/guides/app-resources/pdc-format/[/url] and
+## [url=https://github.com/pebble-examples/cards-example/blob/master/tools/svg2pdc.py]svg2pdc.py[/url].
 class_name PDCImage
 
-## Don't change
+## Don't change, see [url]https://developer.rebble.io/guides/app-resources/pdc-format/#pebble-draw-command-image[/url] offset 8.
 const DRAW_COMMAND_VERSION = 1
 
 enum DrawType {
@@ -46,7 +57,7 @@ func encode() -> PackedByteArray:
 	var size_byte_offset = buffer.size()
 	buffer.resize(8)
 	
-	var encoded_commands := encode_image()
+	var encoded_commands := _encode_image()
 	buffer.append_array(encoded_commands)
 	
 	buffer.encode_u32(size_byte_offset, encoded_commands.size())
@@ -54,7 +65,7 @@ func encode() -> PackedByteArray:
 	return buffer
 
 
-func encode_image() -> PackedByteArray:
+func _encode_image() -> PackedByteArray:
 	var buffer: PackedByteArray
 	buffer.resize(8)
 	buffer.encode_u8(0, DRAW_COMMAND_VERSION)
