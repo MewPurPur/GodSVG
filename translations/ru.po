@@ -448,6 +448,14 @@ msgstr "Инструмент"
 msgid "View"
 msgstr "Просмотр"
 
+#: src/ui_parts/mac_menu.gd
+msgid "Window"
+msgstr ""
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "Help"
+msgstr "Помощь"
+
 #: src/ui_parts/previews.gd
 msgid "Add new preview"
 msgstr "Добавить новый предпросмотр"
@@ -1136,10 +1144,6 @@ msgstr "Импортировать XML"
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "Paste XML"
 msgstr "Вставить XML"
-
-#: src/ui_widgets/settings_content_shortcuts.gd
-msgid "Help"
-msgstr "Помощь"
 
 #: src/ui_widgets/transform_field.gd
 msgid "No transforms"

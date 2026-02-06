@@ -447,6 +447,14 @@ msgstr "工具"
 msgid "View"
 msgstr "视图"
 
+#: src/ui_parts/mac_menu.gd
+msgid "Window"
+msgstr "窗口"
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "Help"
+msgstr "帮助"
+
 #: src/ui_parts/previews.gd
 msgid "Add new preview"
 msgstr "添加新预览"
@@ -1132,10 +1140,6 @@ msgstr "导入 XML"
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "Paste XML"
 msgstr "粘贴 XML"
-
-#: src/ui_widgets/settings_content_shortcuts.gd
-msgid "Help"
-msgstr "帮助"
 
 #: src/ui_widgets/transform_field.gd
 msgid "No transforms"
