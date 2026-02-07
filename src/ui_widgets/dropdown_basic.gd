@@ -30,10 +30,10 @@ func _on_text_changed(new_text: String) -> void:
 		new_text = aliases[new_text]
 	line_edit.add_theme_color_override("font_color", Configs.savedata.get_validity_color(not new_text in values))
 
-func _get_dropdown_buttons() -> Array[Button]:
-	var btn_arr: Array[Button] = []
+func _get_dropdown_buttons() -> Array[ContextButton]:
+	var btn_arr: Array[ContextButton] = []
 	for i in values:
-		btn_arr.append(ContextPopup.create_button(get_value_string(i), set_value.bind(i), disabled_values.has(i) or i == _value))
+		btn_arr.append(ContextButton.create_custom(get_value_string(i), set_value.bind(i), null, disabled_values.has(i) or i == _value))
 	return btn_arr
 
 func get_value_string(p_value: Variant) -> String:

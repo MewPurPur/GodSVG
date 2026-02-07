@@ -98,19 +98,17 @@ func _gui_input(event: InputEvent) -> void:
 			while location < State.root_element.get_child_count() and get_xnode_editor_rect(PackedInt32Array([location])).end.y < y_pos:
 				location += 1
 			# Create the context popup.
-			var btn_array: Array[Button] = []
+			var btn_arr: Array[ContextButton] = []
 			const CONST_ARR: PackedStringArray = ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
 					"g", "linearGradient", "radialGradient", "stop"]
 			for element_name in CONST_ARR:
-				var btn := ContextPopup.create_button(element_name, add_element.bind(element_name, location), false, DB.get_element_icon(element_name))
+				var btn := ContextButton.create_custom(element_name, add_element.bind(element_name, location), DB.get_element_icon(element_name))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
-				btn_array.append(btn)
+				btn_arr.append(btn)
 			
 			var separation_indices := PackedInt32Array([1, 4, 7])
 			
-			var add_popup := ContextPopup.new()
-			add_popup.setup_with_title(btn_array, Translator.translate("New element"),
-					true, -1, -1, separation_indices)
+			var add_popup := ContextPopup.create_with_title(btn_arr, Translator.translate("New element"), true, -1, separation_indices)
 			var vp := get_viewport()
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 

@@ -23,6 +23,12 @@ func setup(title: String, message: String, list := PackedStringArray(), checkbox
 		checkbox.show()
 		checkbox.text = checkbox_text
 	options_container.child_order_changed.connect(update_focus_sequence)
+	update_focus_sequence()
+
+func update_focus_sequence() -> void:
+	var focus_sequence: Array[Control] = [checkbox]
+	focus_sequence.append_array(options_container.get_children())
+	HandlerGUI.register_focus_sequence(self, [])
 
 func set_text_width(width: float) -> void:
 	label.custom_minimum_size.x = width
@@ -50,9 +56,9 @@ action_when_checkbox_checked := Callable(), disabled_when_checkbox_pressed := fa
 		checkbox.toggled.connect(get_button_disabled_callable(button))
 	if grab_focus_when_checkbox_pressed:
 		checkbox.toggled.connect(
-				func(pressed: bool) -> void:
-					if pressed:
-						button.grab_focus()
+			func(pressed: bool) -> void:
+				if pressed:
+					button.grab_focus()
 		)
 	options_container.add_child(button)
 	if focused:
@@ -73,9 +79,3 @@ func get_button_disabled_callable(button: Button) -> Callable:
 	return func(disabled: bool) -> void:
 		button.disabled = disabled
 		button.mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
-
-func update_focus_sequence() -> void:
-	var focus_sequence: Array[Control] = [checkbox]
-	for button in options_container.get_children():
-		focus_sequence.append(button)
-	HandlerGUI.register_focus_sequence(self, focus_sequence)

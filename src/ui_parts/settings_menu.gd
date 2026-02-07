@@ -138,27 +138,20 @@ func set_preview(node: Control) -> void:
 func _on_language_pressed() -> void:
 	var strings_count := TranslationServer.find_translations("en", true)[0].get_message_count()
 	
-	var btn_arr: Array[Button] = []
+	var btn_arr: Array[ContextButton] = []
 	for locale in TranslationServer.get_loaded_locales():
 		var is_current_locale := (locale == TranslationServer.get_locale())
 		
-		# Translation percentages.
+		var btn := ContextButton.create_custom(TranslationUtils.get_locale_display(locale),
+				_on_language_chosen.bind(locale), null, is_current_locale)
+		
 		if locale != "en":
 			var translation_obj := TranslationServer.find_translations(locale, true)[0]
 			var translated_count := translation_obj.get_message_count() - translation_obj.get_translated_message_list().count("")
-			
-			btn_arr.append(ContextPopup.create_button(
-					TranslationUtils.get_locale_display(locale),
-					_on_language_chosen.bind(locale), is_current_locale,
-					null, false, Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"))
-		else:
-			btn_arr.append(ContextPopup.create_button(
-					TranslationUtils.get_locale_display(locale),
-					_on_language_chosen.bind(locale), is_current_locale))
+			btn.add_custom_dim_text(Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%")
+		btn_arr.append(btn)
 	
-	var lang_popup := ContextPopup.new()
-	lang_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), lang_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale

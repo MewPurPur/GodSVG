@@ -155,33 +155,24 @@ func update_final_transform() -> void:
 
 
 func popup_transform_actions(idx: int, control: Control) -> void:
-	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_button(Translator.translate("Insert After"),
-			popup_new_transform_context.bind(idx + 1, control), false,
-			load("res://assets/icons/InsertAfter.svg")))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Insert Before"),
-			popup_new_transform_context.bind(idx, control), false,
-			load("res://assets/icons/InsertBefore.svg")))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Delete"),
-			delete_transform.bind(idx), false, load("res://assets/icons/Delete.svg")))
+	var btn_arr: Array[ContextButton] = []
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
+			popup_new_transform_context.bind(idx + 1, control), preload("res://assets/icons/InsertAfter.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert Before"),
+			popup_new_transform_context.bind(idx, control), preload("res://assets/icons/InsertBefore.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"),
+			delete_transform.bind(idx), preload("res://assets/icons/Delete.svg")))
 	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, control.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), control.get_global_rect(), get_viewport())
 
 func popup_new_transform_context(idx: int, control: Control) -> void:
-	var btn_array: Array[Button] = []
+	var btn_arr: Array[ContextButton] = []
 	const CONST_ARR: PackedStringArray = ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]
 	for transform_type in CONST_ARR:
-		var btn := ContextPopup.create_button(transform_type,
-				insert_transform.bind(idx, transform_type), false,
-				_icons_dict[transform_type])
+		var btn := ContextButton.create_custom(transform_type, insert_transform.bind(idx, transform_type), _icons_dict[transform_type])
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
-		btn_array.append(btn)
-	
-	var transform_context := ContextPopup.new()
-	transform_context.setup_with_title(btn_array, Translator.translate("New transform"), true)
-	HandlerGUI.popup_under_rect_center(transform_context, control.get_global_rect(), get_viewport())
+		btn_arr.append(btn)
+	HandlerGUI.popup_under_rect_center(ContextPopup.create_with_title(btn_arr, Translator.translate("New transform")), control.get_global_rect(), get_viewport())
 
 
 # So I have to rebuild this in its entirety to keep the references safe or something...

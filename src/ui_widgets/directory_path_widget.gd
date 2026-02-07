@@ -160,16 +160,15 @@ func _draw() -> void:
 
 
 func _popup_dropdown() -> void:
-	var btn_array: Array[Button] = []
+	var btn_array: Array[ContextButton] = []
 	for collapsed_path in collapsed_paths:
 		var display_name := collapsed_path.get_file()
 		if display_name.is_empty():
-			btn_array.append(ContextPopup.create_button("Computer", directory_selected.emit.bind(collapsed_path), false, computer_icon))
+			btn_array.append(ContextButton.create_custom("Computer", directory_selected.emit.bind(collapsed_path), computer_icon))
 		elif collapsed_path == Utils.get_home_dir():
-			btn_array.append(ContextPopup.create_button("Home", directory_selected.emit.bind(collapsed_path), false, home_icon))
+			btn_array.append(ContextButton.create_custom("Home", directory_selected.emit.bind(collapsed_path), home_icon))
 		else:
-			btn_array.append(ContextPopup.create_button(display_name, directory_selected.emit.bind(collapsed_path)))
+			btn_array.append(ContextButton.create_custom(display_name, directory_selected.emit.bind(collapsed_path)))
 	
-	var dropdown_popup := ContextPopup.new()
-	dropdown_popup.setup(btn_array, true)
+	var dropdown_popup := ContextPopup.create(btn_array)
 	HandlerGUI.popup_under_rect_center(dropdown_popup, Rect2(dropdown_button.rect.position + global_position, dropdown_button.rect.size), get_viewport())

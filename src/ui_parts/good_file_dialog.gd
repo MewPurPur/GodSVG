@@ -408,17 +408,13 @@ func open_dir_context(dir: String) -> void:
 	if get_selected_file_paths().size() > 1:
 		return
 	
-	var context_popup := ContextPopup.new()
-	var btn_arr: Array[Button] = [
-		ContextPopup.create_shortcut_button("ui_accept", false,
-				Translator.translate("Open"), load("res://assets/icons/OpenFolder.svg")),
-		ContextPopup.create_button(Translator.translate("Copy path"),
-				DisplayServer.clipboard_set.bind(dir), false, load("res://assets/icons/Copy.svg")),
-		ContextPopup.create_shortcut_button("open_in_folder", false),
+	var btn_arr: Array[ContextButton] = [
+		ContextButton.create_from_action("ui_accept").add_custom_text(Translator.translate("Open")).add_custom_icon(load("res://assets/icons/OpenFolder.svg")),
+		ContextButton.create_custom(Translator.translate("Copy path"), DisplayServer.clipboard_set.bind(dir), preload("res://assets/icons/Copy.svg")),
+		ContextButton.create_from_action("open_in_folder"),
 	]
-	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
-	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+	HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
 
 func open_file_context() -> void:
 	sync_to_selection()
@@ -429,18 +425,15 @@ func open_file_context() -> void:
 			if path.get_extension().is_empty():
 				return
 	
-	var btn_arr: Array[Button] = [
-		ContextPopup.create_shortcut_button("ui_accept", false, action_button.text,
-				load("res://assets/icons/OpenFile.svg"))]
+	var btn_arr: Array[ContextButton] = [
+		ContextButton.create_from_action("ui_accept").add_custom_text(action_button.text).add_custom_icon(load("res://assets/icons/OpenFile.svg"))
+	]
 	if selected_file_paths.size() == 1:
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Copy path"),
-				copy_file_path, false, load("res://assets/icons/Copy.svg")))
-	btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder", false))
+		btn_arr.append(ContextButton.create_custom(Translator.translate("Copy path"), copy_file_path, preload("res://assets/icons/Copy.svg")))
+	btn_arr.append(ContextButton.create_from_action("open_in_folder"))
 	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
-	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+	HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
 
 
 func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int) -> void:
@@ -448,15 +441,13 @@ func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int)
 		file_list.deselect_all()
 		sync_to_selection()
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
-		var context_popup := ContextPopup.new()
-		var btn_arr: Array[Button] = []
+		var btn_arr: Array[ContextButton] = []
 		if mode == FileMode.SAVE:
-			btn_arr.append(ContextPopup.create_button(Translator.translate("Create new folder"),
-					create_folder, false, load("res://assets/icons/CreateFolder.svg")))
-		btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder", false))
-		context_popup.setup(btn_arr, true)
+			btn_arr.append(ContextButton.create_custom(Translator.translate("Create new folder"), create_folder, preload("res://assets/icons/CreateFolder.svg")))
+		btn_arr.append(ContextButton.create_from_action("open_in_folder"))
+		
 		var vp := get_viewport()
-		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+		HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
 
 func _on_file_list_item_activated(index: int) -> void:
 	call_activation_callback(file_list.get_item_metadata(index))
@@ -570,16 +561,16 @@ var system_dir_paths: Dictionary[OS.SystemDir, String] = {}
 
 func get_drive_icon(path: String) -> Texture2D:
 	if path == system_dir_paths[OS.SYSTEM_DIR_DESKTOP]:
-		return load("res://assets/icons/DirDesktop.svg")
+		return preload("res://assets/icons/DirDesktop.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_DOCUMENTS]:
-		return load("res://assets/icons/DirDocuments.svg")
+		return preload("res://assets/icons/DirDocuments.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_DOWNLOADS]:
-		return load("res://assets/icons/DirDownloads.svg")
+		return preload("res://assets/icons/DirDownloads.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_MOVIES]:
-		return load("res://assets/icons/DirMovies.svg")
+		return preload("res://assets/icons/DirMovies.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_MUSIC]:
-		return load("res://assets/icons/DirMusic.svg")
+		return preload("res://assets/icons/DirMusic.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_PICTURES]:
-		return load("res://assets/icons/DirPictures.svg")
+		return preload("res://assets/icons/DirPictures.svg")
 	else:
 		return folder_icon

@@ -126,11 +126,8 @@ func _on_svg_code_edit_focus_exited() -> void:
 
 
 func _on_options_button_pressed() -> void:
-	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_shortcut_button("copy_svg_text"))
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(), get_viewport())
+	var btn_arr: Array[ContextButton] = [ContextButton.create_from_action("copy_svg_text")]
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), options_button.get_global_rect(), get_viewport())
 
 
 func update_syntax_highlighter() -> void:

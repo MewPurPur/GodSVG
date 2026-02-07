@@ -28,15 +28,10 @@ func _on_text_submitted(new_text: String) -> void:
 	else:
 		set_value(clampf(new_value, min_value, max_value))
 
-func _get_dropdown_buttons() -> Array[Button]:
-	var btn_arr: Array[Button] = []
-	
-	var edit_btn := ContextPopup.create_button("", _enter_edit_mode, false, edit_icon)
-	edit_btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	btn_arr.append(edit_btn)
-	
+func _get_dropdown_buttons() -> Array[ContextButton]:
+	var btn_arr: Array[ContextButton] = [ContextButton.create_custom("", _enter_edit_mode, edit_icon)]
 	for i in values_for_dropdown:
-		btn_arr.append(ContextPopup.create_button(get_value_string(i), set_value.bind(i), is_equal_approx(i, _value)))
+		btn_arr.append(ContextButton.create_custom(get_value_string(i), set_value.bind(i), null, is_equal_approx(i, _value)))
 	return btn_arr
 
 func get_value_string(p_value: float) -> String:

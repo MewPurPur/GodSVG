@@ -211,13 +211,13 @@ func _gui_input(event: InputEvent) -> void:
 						set_process(true)
 					return
 				
-				var btn_arr: Array[Button] = []
+				var btn_arr: Array[ContextButton] = []
 				
 				if hovered_idx == -1:
 					if get_add_button_rect().has_point(event.position) or get_scroll_forwards_area_rect().has_point(event.position) or\
 					get_scroll_backwards_area_rect().has_point(event.position):
 						return
-					btn_arr.append(ContextPopup.create_shortcut_button("new_tab"))
+					btn_arr.append(ContextButton.create_from_action("new_tab"))
 				else:
 					var new_active_tab := Configs.savedata.get_tab(hovered_idx)
 					var file_absent := not FileAccess.file_exists(new_active_tab.svg_file_path)
@@ -235,19 +235,18 @@ func _gui_input(event: InputEvent) -> void:
 							has_saved_tabs = true
 							break
 					
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_tab"))
-					btn_arr.append(ContextPopup.create_arrow_button(Translator.translate("Close multiple"), [
-						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_all_other_tabs", tab_count < 2),
-						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_tabs_to_left", hovered_idx == 0),
-						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_tabs_to_right", hovered_idx == tab_count - 1),
-						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_empty_tabs", not has_empty_tabs),
-						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_saved_tabs", not has_saved_tabs),
+					btn_arr.append(ContextButton.create_from_action("close_tab").set_icon_none())
+					btn_arr.append(ContextButton.create_arrow(Translator.translate("Close multiple"), [
+						func() -> ContextButton: return ContextButton.create_from_action("close_all_other_tabs", tab_count < 2).set_icon_none(),
+						func() -> ContextButton: return ContextButton.create_from_action("close_tabs_to_left", hovered_idx == 0).set_icon_none(),
+						func() -> ContextButton: return ContextButton.create_from_action("close_tabs_to_right", hovered_idx == tab_count - 1).set_icon_none(),
+						func() -> ContextButton: return ContextButton.create_from_action("close_empty_tabs", not has_empty_tabs).set_icon_none(),
+						func() -> ContextButton: return ContextButton.create_from_action("close_saved_tabs", not has_saved_tabs).set_icon_none(),
 					]))
-					btn_arr.append(ContextPopup.create_shortcut_button("open_externally", file_absent))
-					btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder", file_absent))
-				var tab_popup := ContextPopup.new()
-				tab_popup.setup(btn_arr, true, -1, PackedInt32Array([6]))
+					btn_arr.append(ContextButton.create_from_action("open_externally", file_absent))
+					btn_arr.append(ContextButton.create_from_action("open_in_folder", file_absent))
 				
+				var tab_popup := ContextPopup.create(btn_arr, true, -1, PackedInt32Array([6]))
 				if hovered_idx != -1:
 					var tab_global_rect := get_tab_rect(hovered_idx)
 					tab_global_rect.position += get_global_rect().position
@@ -330,8 +329,7 @@ func get_close_button_rect() -> Rect2:
 	return Rect2(left_coords, CLOSE_BUTTON_MARGIN, side, side)
 
 func get_add_button_rect() -> Rect2:
-	return Rect2(minf(DEFAULT_TAB_WIDTH * Configs.savedata.get_tab_count(), size.x - size.y), 0,
-			size.y, size.y)
+	return Rect2(minf(DEFAULT_TAB_WIDTH * Configs.savedata.get_tab_count(), size.x - size.y), 0, size.y, size.y)
 
 func get_scroll_forwards_area_rect() -> Rect2:
 	if size.x - size.y > Configs.savedata.get_tab_count() * MIN_TAB_WIDTH:

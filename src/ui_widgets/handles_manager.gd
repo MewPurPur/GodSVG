@@ -894,14 +894,13 @@ func _on_handle_added() -> void:
 
 # Creates a popup for adding a shape at a position.
 func create_element_context(precise_pos: PackedFloat64Array) -> ContextPopup:
-	var btn_array: Array[Button] = []
+	var btn_arr: Array[ContextButton] = []
 	const CONST_ARR: PackedStringArray = ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline"]
 	for shape in CONST_ARR:
-		var btn := ContextPopup.create_button(shape, add_shape_at_pos.bind(shape, precise_pos), false, DB.get_element_icon(shape))
+		var btn := ContextButton.create_custom(shape, add_shape_at_pos.bind(shape, precise_pos), DB.get_element_icon(shape))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
-		btn_array.append(btn)
-	var element_context := ContextPopup.new()
-	element_context.setup_with_title(btn_array, Translator.translate("New shape"), true, -1, -1, PackedInt32Array([1, 4]))
+		btn_arr.append(btn)
+	var element_context := ContextPopup.create_with_title(btn_arr, Translator.translate("New shape"), true, -1, PackedInt32Array([1, 4]))
 	return element_context
 
 func add_shape_at_pos(element_name: String, precise_pos: PackedFloat64Array) -> void:

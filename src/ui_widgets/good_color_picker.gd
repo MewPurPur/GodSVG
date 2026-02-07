@@ -399,19 +399,18 @@ func _slider_set_text(field: BetterLineEdit, number: float) -> void:
 
 
 func _on_keyword_button_pressed() -> void:
-	var btn_arr: Array[Button] = []
+	var btn_arr: Array[ContextButton] = []
 	if is_none_keyword_available:
-		btn_arr.append(ContextPopup.create_button("none", set_to_keyword.bind("none"),
-				color == "none", load("res://assets/icons/NoneColor.svg")))
+		btn_arr.append(ContextButton.create_custom("none", set_to_keyword.bind("none"),
+				load("res://assets/icons/NoneColor.svg"), color == "none"))
 	if is_current_color_keyword_available:
-		btn_arr.append(ContextPopup.create_button("currentColor", set_to_keyword.bind("currentColor"),
-				color == "currentColor", load("res://assets/icons/Paste.svg")))
+		btn_arr.append(ContextButton.create_custom("currentColor", set_to_keyword.bind("currentColor"),
+				load("res://assets/icons/Paste.svg"), color == "currentColor"))
 	
 	for btn in btn_arr:
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true)
+	var context_popup := ContextPopup.create(btn_arr)
 	HandlerGUI.popup_under_rect(context_popup, keyword_button.get_global_rect(), get_viewport())
 
 func set_to_keyword(keyword: String) -> void:

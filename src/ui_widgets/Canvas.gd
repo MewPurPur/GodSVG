@@ -105,12 +105,12 @@ func _enter_tree() -> void:
 	viewport.gui_snap_controls_to_pixels = false
 	viewport.canvas = self
 	add_child(viewport)
-	checkerboard.texture = load("res://assets/icons/Checkerboard.svg")
+	checkerboard.texture = preload("res://assets/icons/Checkerboard.svg")
 	checkerboard.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	checkerboard.stretch_mode = TextureRect.STRETCH_TILE
 	checkerboard.texture_filter = TEXTURE_FILTER_NEAREST
 	var zoom_shader_material := ShaderMaterial.new()
-	zoom_shader_material.shader = load("res://src/shaders/zoom_shader.gdshader")
+	zoom_shader_material.shader = preload("res://src/shaders/zoom_shader.gdshader")
 	checkerboard.material = zoom_shader_material
 	viewport.add_child(checkerboard)
 	display_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

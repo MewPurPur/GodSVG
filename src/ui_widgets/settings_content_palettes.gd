@@ -30,15 +30,13 @@ func rebuild_palettes() -> void:
 
 
 func _popup_xml_palette_options(palette_xml_button: Button) -> void:
-	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
-			add_imported_palette, false, load("res://assets/icons/Import.svg")))
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
-			add_pasted_palette, not Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
-			load("res://assets/icons/Paste.svg")))
+	var btn_arr: Array[ContextButton] = [
+		ContextButton.create_custom(Translator.translate("Import XML"), add_imported_palette, preload("res://assets/icons/Import.svg")),
+		ContextButton.create_custom(Translator.translate("Paste XML"), add_pasted_palette, preload("res://assets/icons/Paste.svg"),
+				not Palette.is_valid_palette(Utils.get_clipboard_web_safe()))
+	]
 	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true)
+	var context_popup := ContextPopup.create(btn_arr)
 	HandlerGUI.popup_under_rect_center(context_popup, palette_xml_button.get_global_rect(), get_viewport())
 
 
