@@ -119,3 +119,51 @@ static func has_clipboard_image_web_safe() -> bool:
 	if OS.has_feature("web"):
 		return false
 	return DisplayServer.clipboard_has_image()
+
+
+static func vector2_min_element(vector: Vector2) -> float:
+	return vector[vector.min_axis_index()]
+
+
+static func vector3_min_element(vector: Vector3) -> float:
+	return vector[vector.min_axis_index()]
+
+
+static func vector4_min_element(vector: Vector4) -> float:
+	return vector[vector.min_axis_index()]
+
+
+static func vector2_max_element(vector: Vector2) -> float:
+	return vector[vector.max_axis_index()]
+
+
+static func vector3_max_element(vector: Vector3) -> float:
+	return vector[vector.max_axis_index()]
+
+
+static func vector4_max_element(vector: Vector4) -> float:
+	return vector[vector.max_axis_index()]
+
+
+static func vector2i_min_element(vector: Vector2i) -> int:
+	return vector[vector.min_axis_index()]
+
+
+static func vector3i_min_element(vector: Vector3i) -> int:
+	return vector[vector.min_axis_index()]
+
+
+static func vector4i_min_element(vector: Vector4i) -> int:
+	return vector[vector.min_axis_index()]
+
+
+static func vector2i_max_element(vector: Vector2i) -> int:
+	return vector[vector.max_axis_index()]
+
+
+static func vector3i_max_element(vector: Vector3i) -> int:
+	return vector[vector.max_axis_index()]
+
+
+static func vector4i_max_element(vector: Vector4i) -> int:
+	return vector[vector.max_axis_index()]

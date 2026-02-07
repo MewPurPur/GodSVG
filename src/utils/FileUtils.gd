@@ -137,6 +137,9 @@ static func _finish_export(file_path: String, export_data: ImageExportData) -> v
 		"png": export_data.generate_image().save_png(file_path)
 		"jpg", "jpeg": export_data.generate_image().save_jpg(file_path, export_data.quality)
 		"webp": export_data.generate_image().save_webp(file_path, export_data.lossy, export_data.quality)
+		"pdc":
+			var fd := FileAccess.open(file_path, FileAccess.WRITE)
+			fd.store_buffer(export_data.image_to_buffer(null))
 		_:
 			# When saving SVG, also modify the file path to associate it
 			# with the graphic being edited.
