@@ -957,8 +957,9 @@ msgid "Color {index}"
 msgstr "颜色 {index}"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Basic colors"
-msgstr "基本颜色"
+#, fuzzy
+msgid "Canvas"
+msgstr "画布颜色"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Canvas color"
@@ -967,6 +968,18 @@ msgstr "画布颜色"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid color"
 msgstr "网格颜色"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Grid tick interval"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "No ticks"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Basic colors"
+msgstr "基本颜色"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Valid color"

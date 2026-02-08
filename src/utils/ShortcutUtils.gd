@@ -86,7 +86,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 	}
 }
 
-static func get_action_icon(action: String) -> Texture2D:
+static func get_action_icon(action: String) -> DPITexture:
 	match action:
 		"ui_paste": return preload("res://assets/icons/Paste.svg")
 		"ui_cut": return preload("res://assets/icons/Cut.svg")

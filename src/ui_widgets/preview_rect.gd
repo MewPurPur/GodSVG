@@ -28,8 +28,7 @@ func setup_image(config: ImageExportData) -> void:
 	final_image_config.lossy = config.lossy
 	final_image_config.quality = config.quality
 	var svg_size := State.root_element.get_size()
-	final_image_config.upscale_amount = minf(config.upscale_amount,
-			MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
+	final_image_config.upscale_amount = minf(config.upscale_amount, MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
 	
 	var buffer := final_image_config.image_to_buffer(final_image_config.generate_image())
 	var image := Image.new()
@@ -41,19 +40,17 @@ func setup_image(config: ImageExportData) -> void:
 	var factor := minf(size.x / image.get_width(), size.y / image.get_height())
 	var final_width := maxi(int(image.get_width() * factor), 1)
 	var final_height := maxi(int(image.get_height() * factor), 1)
-	image.resize(final_width, final_height,
-			Image.INTERPOLATE_NEAREST if factor >= 2 else Image.INTERPOLATE_BILINEAR)
+	image.resize(final_width, final_height, Image.INTERPOLATE_NEAREST if factor >= 2 else Image.INTERPOLATE_BILINEAR)
 	_set_image(image)
 
 func _set_image(image: Image) -> void:
 	var image_texture := ImageTexture.create_from_image(image)
 	texture_preview.texture = image_texture
 	checkerboard.custom_minimum_size = image_texture.get_size()
-	checkerboard.material.set_shader_parameter("uv_scale",
-			256 / maxf(image_texture.get_width(), image_texture.get_height()))
+	checkerboard.material.set_shader_parameter("uv_scale", 256 / maxf(image_texture.get_width(), image_texture.get_height()))
 
 func shrink_to_fit(true_minimum_width: float, true_minimum_height: float) -> void:
 	if not is_node_ready():
 		await ready
-	custom_minimum_size.x = maxf(checkerboard.custom_minimum_size.x, true_minimum_width)
-	custom_minimum_size.y = maxf(checkerboard.custom_minimum_size.y, true_minimum_height)
+	custom_minimum_size = Vector2(maxf(checkerboard.custom_minimum_size.x, true_minimum_width),
+			maxf(checkerboard.custom_minimum_size.y, true_minimum_height))

@@ -100,6 +100,7 @@ func get_setting_default(setting: String) -> Variant:
 				ThemePreset.DARK, ThemePreset.BLACK: return Color("808080")
 				ThemePreset.LIGHT: return Color("666")
 				ThemePreset.GRAY: return Color("999")
+		"grid_tick_interval": return 4
 		
 		# Tab bar
 		"tab_mmb_close": return true
@@ -491,7 +492,14 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 		if grid_color != new_value:
 			grid_color = new_value
 			emit_changed()
-			Configs.grid_color_changed.emit()
+			Configs.grid_configs_changed.emit()
+
+@export var grid_tick_interval := 4:
+	set(new_value):
+		if grid_tick_interval != new_value:
+			grid_tick_interval = new_value
+			emit_changed()
+			Configs.grid_configs_changed.emit()
 
 
 # Tab bar
@@ -562,9 +570,7 @@ const MAX_FPS_MAX = 600
 @export var max_fps := 0:
 	set(new_value):
 		# Clamp unless it's 0 (unlimited).
-		if is_nan(new_value):
-			new_value = get_setting_default("max_fps")
-		elif new_value != 0:
+		if new_value != 0:
 			new_value = clampi(new_value, MAX_FPS_MIN, MAX_FPS_MAX)
 		
 		if max_fps != new_value:

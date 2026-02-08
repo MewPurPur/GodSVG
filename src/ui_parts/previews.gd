@@ -52,7 +52,7 @@ class IconPreviewTileData extends RefCounted:
 		var multiplier := bigger_dimension / maxf(svg_size.x, svg_size.y)
 		svg_size *= multiplier
 		
-		label_text = "%d×%d (%sx)" % [int(svg_size.x), int(svg_size.y), Utils.num_simple(multiplier, 1)]
+		label_text = "%d×%d (%sx)" % [int(svg_size.x), int(svg_size.y), Utils.num_simple(multiplier, 1 if multiplier > 10 else 2)]
 		var label_size := ThemeUtils.main_font.get_string_size(label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
 		var preview_size := svg_size if bigger_dimension <= MAX_ICON_PREVIEW_SIZE else svg_size * MAX_ICON_PREVIEW_SIZE / maxf(svg_size.x, svg_size.y)
 		var bottom_row_size := label_size.x + MORE_ICON_SIZE
@@ -350,10 +350,10 @@ func _update_preview_background(new_value: String) -> void:
 func _on_more_button_pressed() -> void:
 	var btn_array: Array[ContextButton] = [
 		ContextButton.create_custom(Translator.translate("Reset to default"), reset_tiles,
-				load("res://assets/icons/Reload.svg"), are_tiles_default()),
+				preload("res://assets/icons/Reload.svg"), are_tiles_default()),
 		ContextButton.create_custom(Translator.translate("Clear all"), clear_all_tiles,
-				load("res://assets/icons/Clear.svg"), Configs.savedata.preview_sizes.is_empty()),
+				preload("res://assets/icons/Clear.svg"), Configs.savedata.preview_sizes.is_empty()),
 		ContextButton.create_custom(Translator.translate("Sort"), sort_tiles,
-				load("res://assets/icons/Sort.svg"), are_tiles_sorted()),
+				preload("res://assets/icons/Sort.svg"), are_tiles_sorted()),
 	]
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_array), more_button.get_global_rect(), get_viewport())

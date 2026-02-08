@@ -604,13 +604,19 @@ func setup_theming_content() -> void:
 	add_color_edit(Translator.translate("Color {index}").format({"index": "2"}))
 	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	
-	add_section(Translator.translate("Basic colors"))
+	add_section(Translator.translate("Canvas"))
 	current_setup_setting = "canvas_color"
 	add_color_edit(Translator.translate("Canvas color"), false)
 	add_preview(SettingCanvasPreview.new(empty_preview_root))
 	current_setup_setting = "grid_color"
 	add_color_edit(Translator.translate("Grid color"), false)
 	add_preview(SettingCanvasPreview.new(empty_preview_root))
+	current_setup_setting = "grid_tick_interval"
+	add_numeric_dropdown(Translator.translate("Grid tick interval"), PackedFloat64Array([0, 4, 5]), true,
+			0, INF, NAN, {0: Translator.translate("No ticks")})
+	add_preview(SettingCanvasPreview.new(empty_preview_root))
+	
+	add_section(Translator.translate("Basic colors"))
 	current_setup_setting = "basic_color_valid"
 	add_color_edit(Translator.translate("Valid color"))
 	add_preview(SettingBasicColorPreview.new(current_setup_setting, Translator.translate("Valid color")))
@@ -774,9 +780,9 @@ value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
 	resource_permanent_ref.changed_deferred.connect(frame.button_update_disabled)
 	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(frame.button_update_disabled), CONNECT_ONE_SHOT)
 
-func add_checkbox(text: String, dim_text := false) -> Control:
+func add_checkbox(text: String, use_dim_text := false) -> Control:
 	var frame := SettingFrameScene.instantiate()
-	frame.dim_text = dim_text
+	frame.use_dim_text = use_dim_text
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_checkbox()
@@ -800,9 +806,9 @@ func add_dropdown(text: String, values: Array[Variant], value_text_map := {}) ->
 	return frame
 
 func add_numeric_dropdown(text: String, values_for_dropdown: PackedFloat64Array, use_integers := false,
-min_value := -INF, max_value := INF, special_value_exception := NAN, value_text_map: Dictionary[float, String] = {}, dim_text := false) -> Control:
+min_value := -INF, max_value := INF, special_value_exception := NAN, value_text_map: Dictionary[float, String] = {}, use_dim_text := false) -> Control:
 	var frame := SettingFrameScene.instantiate()
-	frame.dim_text = dim_text
+	frame.use_dim_text = use_dim_text
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_numeric_dropdown(values_for_dropdown, use_integers, min_value, max_value, special_value_exception, value_text_map)

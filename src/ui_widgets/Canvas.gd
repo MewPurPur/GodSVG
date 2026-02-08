@@ -5,8 +5,6 @@ class_name Canvas extends SubViewportContainer
 const HandlesManager = preload("res://src/ui_widgets/handles_manager.gd")
 const ViewportControls = preload("res://src/ui_widgets/viewport_controls.gd")
 
-const TICKS_INTERVAL = 4
-const TICK_DISTANCE = float(TICKS_INTERVAL)
 const MIN_ZOOM = 0.125
 const MAX_ZOOM = 512.0
 
@@ -123,7 +121,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(grid_ci, ci)
 	RenderingServer.canvas_item_set_parent(grid_numbers_ci, ci)
-	Configs.grid_color_changed.connect(queue_redraw)
+	Configs.grid_configs_changed.connect(queue_redraw)
 	update_show_grid()
 	
 	resized.connect(sync_canvas_transform)
@@ -228,16 +226,18 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(grid_ci)
 	RenderingServer.canvas_item_clear(grid_numbers_ci)
 	
+	var tick_interval := Configs.savedata.grid_tick_interval
 	var axis_line_color := Color(Configs.savedata.grid_color, 0.75)
-	var major_grid_color := Color(Configs.savedata.grid_color, 0.35)
-	var minor_grid_color := Color(Configs.savedata.grid_color, 0.15)
+	var major_grid_color := Color(Configs.savedata.grid_color, 0.375)
+	var minor_grid_color := Color(Configs.savedata.grid_color, 0.125)
 	
 	var major_points := PackedVector2Array()
 	var minor_points := PackedVector2Array()
 	var snapped_pos := get_camera_position()
 	var grid_size := size / camera_zoom
-	var mark_pixel_lines := (camera_zoom > 127.999)
-	var rate := nearest_po2(roundi(maxf(128.0 / (TICKS_INTERVAL * camera_zoom), 2.0))) / 2
+	var mark_pixel_lines := (camera_zoom > 71.9)
+	var unbounded_rate := nearest_po2(roundi(512.0 / camera_zoom)) / 32.0
+	var rate := maxi(int(unbounded_rate), 1)
 	
 	# Draw axis lines.
 	RenderingServer.canvas_item_add_line(grid_ci, Vector2(-snapped_pos.x * camera_zoom, 0),
@@ -245,11 +245,14 @@ func _draw() -> void:
 	RenderingServer.canvas_item_add_line(grid_ci, Vector2(0, -snapped_pos.y * camera_zoom),
 			Vector2(grid_size.x, -snapped_pos.y) * camera_zoom, axis_line_color)
 	
+	# Make sure the major ticks don't start disappearing sooner than necessary for bigger tick intervals.
+	var scaled_tick_interval := nearest_po2(maxi(ceili(unbounded_rate * 4 / tick_interval), 1)) * tick_interval
+	
 	var i := fmod(-snapped_pos.x, rate)
 	# Horizontal offset.
 	while i <= grid_size.x:
 		var coord := snappedi(i + snapped_pos.x, rate)
-		if coord % (rate * TICKS_INTERVAL) == 0:
+		if tick_interval != 0 and coord % scaled_tick_interval == 0:
 			major_points.append(Vector2(i * camera_zoom, 0))
 			major_points.append(Vector2(i, grid_size.y) * camera_zoom)
 			ThemeUtils.main_font.draw_string(grid_numbers_ci, Vector2(i * camera_zoom + 4, 14),
@@ -266,7 +269,7 @@ func _draw() -> void:
 	# Vertical offset.
 	while i <= grid_size.y:
 		var coord := snappedi(i + snapped_pos.y, rate)
-		if coord % (rate * TICKS_INTERVAL) == 0:
+		if tick_interval != 0 and coord % scaled_tick_interval == 0:
 			major_points.append(Vector2(0, i * camera_zoom))
 			major_points.append(Vector2(grid_size.x, i) * camera_zoom)
 			ThemeUtils.main_font.draw_string(grid_numbers_ci, Vector2(4, i * camera_zoom + 14),

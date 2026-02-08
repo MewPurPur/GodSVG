@@ -409,7 +409,7 @@ func open_dir_context(dir: String) -> void:
 		return
 	
 	var btn_arr: Array[ContextButton] = [
-		ContextButton.create_from_action("ui_accept").add_custom_text(Translator.translate("Open")).add_custom_icon(load("res://assets/icons/OpenFolder.svg")),
+		ContextButton.create_from_action("ui_accept").add_custom_text(Translator.translate("Open")).add_custom_icon(preload("res://assets/icons/OpenFolder.svg")),
 		ContextButton.create_custom(Translator.translate("Copy path"), DisplayServer.clipboard_set.bind(dir), preload("res://assets/icons/Copy.svg")),
 		ContextButton.create_from_action("open_in_folder"),
 	]
@@ -426,7 +426,7 @@ func open_file_context() -> void:
 				return
 	
 	var btn_arr: Array[ContextButton] = [
-		ContextButton.create_from_action("ui_accept").add_custom_text(action_button.text).add_custom_icon(load("res://assets/icons/OpenFile.svg"))
+		ContextButton.create_from_action("ui_accept").add_custom_text(action_button.text).add_custom_icon(preload("res://assets/icons/OpenFile.svg"))
 	]
 	if selected_file_paths.size() == 1:
 		btn_arr.append(ContextButton.create_custom(Translator.translate("Copy path"), copy_file_path, preload("res://assets/icons/Copy.svg")))

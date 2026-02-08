@@ -957,8 +957,8 @@ msgid "Color {index}"
 msgstr "Цвят {index}"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Basic colors"
-msgstr "Основни цветове"
+msgid "Canvas"
+msgstr "Платно"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Canvas color"
@@ -967,6 +967,18 @@ msgstr "Цвят на платното"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid color"
 msgstr "Цвят на решетката"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Grid tick interval"
+msgstr "Интервал на деление на решетката"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "No ticks"
+msgstr "Без деления"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Basic colors"
+msgstr "Основни цветове"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Valid color"
