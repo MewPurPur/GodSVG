@@ -107,16 +107,16 @@ func _ready() -> void:
 			if visible:
 				sync_tiles()
 	)
-	
 	split_container.resized.connect(
 		func():
 			split_container.vertical = (split_container.size.y * 2.0 > split_container.size.x)
 			sync_preview_top_panel_expand_margins()
 			sync_tile_positions()
 	)
-	
 	icon_preview_tiles.resized.connect(sync_tile_positions)
 	sync_tiles()
+	HandlerGUI.register_focus_sequence(self, [add_new_preview_button,
+			transparent_color_swatch, black_color_swatch, white_color_swatch, color_edit, more_button])
 
 
 func sync_theming() -> void:

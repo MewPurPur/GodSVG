@@ -56,8 +56,6 @@ text = "© 2023 MewPurPur
 custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
 size_flags_vertical = 3
-focus_mode = 2
-focus_behavior_recursive = 2
 current_tab = 0
 
 [node name="Authors" type="ScrollContainer" parent="VBoxContainer/TabContainer" unique_id=1737192378]
