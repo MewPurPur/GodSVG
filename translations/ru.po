@@ -960,8 +960,9 @@ msgid "Color {index}"
 msgstr "Цвет {index}"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Basic colors"
-msgstr "Базовый цвет"
+#, fuzzy
+msgid "Canvas"
+msgstr "Цвет полотна"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Canvas color"
@@ -970,6 +971,18 @@ msgstr "Цвет полотна"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid color"
 msgstr "Цвет сетки"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Grid tick interval"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "No ticks"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Basic colors"
+msgstr "Базовый цвет"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Valid color"

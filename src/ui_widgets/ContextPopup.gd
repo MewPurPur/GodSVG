@@ -137,7 +137,7 @@ static func _common_initial_setup() -> ScrollContainer:
 func _draw() -> void:
 	var text_offset := ContextButton.PADDING
 	for button in buttons:
-		if is_instance_valid(button.get_icon()) or button.type == ContextButton.Type.CHECKBOX:
+		if (is_instance_valid(button.get_icon()) and align_left) or button.type == ContextButton.Type.CHECKBOX:
 			text_offset += 16.0 + ContextButton.ICON_SPACING
 			break
 	
@@ -178,13 +178,10 @@ func _draw() -> void:
 				icon_color = button.get_theme_color("icon_focus_color")
 			
 			var icon_size := button_icon.get_size() * 16.0 / maxi(button_icon.get_width(), button_icon.get_height())
-			var icon_position: Vector2
 			if button_text.is_empty() and not align_left:
-				icon_position = button_rect.get_center() - icon_size / 2
+				button_icon.draw_rect(ci, Rect2(button_rect.get_center() - icon_size / 2, icon_size), false, icon_color)
 			else:
-				icon_position = Vector2(1, 1) * ContextButton.PADDING
-			
-			button_icon.draw_rect(ci, Rect2(button_rect.position + icon_position, icon_size), false, icon_color)
+				button_icon.draw_rect(ci, Rect2(button_rect.position + Vector2(1, 1) * ContextButton.PADDING, icon_size), false, icon_color)
 		
 		if not button_text.is_empty():
 			var font := button.get_theme_font("font")
@@ -199,6 +196,7 @@ func _draw() -> void:
 				text_width -= text_offset + ContextButton.PADDING
 			else:
 				text_width -= text_offset * 2
+			
 			font.draw_string(ci, button_rect.position + Vector2(text_offset, 16), button_text,
 					HORIZONTAL_ALIGNMENT_LEFT if align_left else HORIZONTAL_ALIGNMENT_CENTER, text_width, font_size, font_color)
 			

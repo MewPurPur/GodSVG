@@ -960,8 +960,9 @@ msgid "Color {index}"
 msgstr "Cor {index}"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Basic colors"
-msgstr "Cores básicas"
+#, fuzzy
+msgid "Canvas"
+msgstr "Cor da tela"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Canvas color"
@@ -970,6 +971,18 @@ msgstr "Cor da tela"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid color"
 msgstr "Cor da grade"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Grid tick interval"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "No ticks"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Basic colors"
+msgstr "Cores básicas"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Valid color"

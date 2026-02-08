@@ -66,7 +66,7 @@ func _on_more_options_pressed() -> void:
 	
 	separator_indices.append(btn_arr.size())
 	
-	var about_btn := ContextButton.create_from_action("about_info").add_custom_icon(load("res://assets/logos/icon.svg")).set_icon_unmodulated()
+	var about_btn := ContextButton.create_from_action("about_info").add_custom_icon(preload("res://assets/logos/icon.svg")).set_icon_unmodulated()
 	btn_arr.append(about_btn)
 	btn_arr.append(ContextButton.create_from_action("about_donate"))
 	

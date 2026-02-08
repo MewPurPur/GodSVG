@@ -2,6 +2,8 @@
 @icon("res://godot_only/icons/BetterLineEdit.svg")
 class_name BetterLineEdit extends LineEdit
 
+var ci := get_canvas_item()
+
 ## Emitted when Esc is pressed to cancel the current text change.
 signal text_change_canceled
 
@@ -25,13 +27,16 @@ func _init() -> void:
 	caret_blink_interval = 0.6
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
+	text_submitted.connect(_on_base_class_text_submitted.unbind(1))
 	mouse_exited.connect(queue_redraw)
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 
+
 func sync_theming() -> void:
 	add_theme_color_override("selection_color", ThemeDB.get_default_theme().get_color(
 			"selection_color" if editable else "disabled_selection_color", "LineEdit"))
+
 
 var first_click := false
 var text_before_focus := ""
@@ -54,10 +59,13 @@ func _on_base_class_focus_exited() -> void:
 		# If ui_accept is pressed, text_submitted gets emitted anyway.
 		text_submitted.emit(text)
 
+func _on_base_class_text_submitted() -> void:
+	release_focus()
+
 
 func _draw() -> void:
 	if editable and get_viewport().gui_get_hovered_control() == self and has_theme_stylebox("hover"):
-		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
+		get_theme_stylebox("hover").draw(ci, Rect2(Vector2.ZERO, size))
 
 func _make_custom_tooltip(for_text: String) -> Object:
 	if mono_font_tooltip:

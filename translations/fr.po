@@ -979,8 +979,9 @@ msgid "Color {index}"
 msgstr "Pipette"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Basic colors"
-msgstr "Couleurs basiques"
+#, fuzzy
+msgid "Canvas"
+msgstr "Couleur d'intérieur"
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -990,6 +991,18 @@ msgstr "Couleur d'intérieur"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid color"
 msgstr "Couleur de la grille"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Grid tick interval"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "No ticks"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Basic colors"
+msgstr "Couleurs basiques"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Valid color"

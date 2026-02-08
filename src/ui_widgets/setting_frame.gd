@@ -27,7 +27,7 @@ var disabled := false:
 			disabled = new_value
 			update_widgets()
 
-var dim_text := false  # For settings that wouldn't have an effect.
+var use_dim_text := false  # For settings that wouldn't have an effect.
 
 var widget: Control
 var panel_width := 0
@@ -215,7 +215,7 @@ func _draw() -> void:
 	var color := ThemeUtils.text_color
 	if disabled:
 		color = ThemeUtils.subtle_text_color
-	elif dim_text:
+	elif use_dim_text:
 		color = ThemeUtils.dimmer_text_color
 	
 	var text_pos_x := 4.0

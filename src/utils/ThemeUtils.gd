@@ -799,7 +799,7 @@ static func _setup_context_button(theme: Theme) -> void:
 	theme.set_type_variation("ContextButton", "Control")
 	theme.set_color("icon_color", "ContextButton", context_icon_normal_color)
 	theme.set_color("icon_disabled_color", "ContextButton", tinted_gray_color)
-	theme.set_color("icon_focus_color", "ContextButton", context_icon_hover_color)
+	theme.set_color("icon_focus_color", "ContextButton", context_icon_pressed_color)
 	theme.set_color("font_color", "ContextButton", text_color)
 	theme.set_color("font_disabled_color", "ContextButton", subtle_text_color)
 	theme.set_color("font_focus_color", "ContextButton", highlighted_text_color)
@@ -808,7 +808,7 @@ static func _setup_context_button(theme: Theme) -> void:
 	context_button_stylebox.set_corner_radius_all(3)
 	
 	var hover_context_button_stylebox := context_button_stylebox.duplicate()
-	hover_context_button_stylebox.bg_color = strong_hover_overlay_color
+	hover_context_button_stylebox.bg_color = stronger_hover_overlay_color
 	theme.set_stylebox("focus", "ContextButton", hover_context_button_stylebox)
 	
 	var disabled_context_button_stylebox := context_button_stylebox.duplicate()

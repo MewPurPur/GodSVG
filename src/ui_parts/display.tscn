@@ -81,7 +81,6 @@ action = "toggle_snap"
 [node name="SnapNumberEdit" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping" unique_id=495004006 instance=ExtResource("7_wrrfr")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
-focus_mode = 2
 theme_type_variation = &"LeftConnectedLineEdit"
 max_length = 20
 min_value = 0.001

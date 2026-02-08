@@ -44,12 +44,10 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 
 
 func _get_dropdown_buttons() -> Array[ContextButton]:
-	var btn_arr: Array[ContextButton] = []
-	# Add a default.
-	var reset_btn := ContextButton.create_custom("", set_value.bind("", true), reload_icon,
-			element.get_attribute_value(attribute_name).is_empty())
-	reset_btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	btn_arr.append(reset_btn)
+	var btn_arr: Array[ContextButton] = [
+		ContextButton.create_custom("", set_value.bind("", true), reload_icon,
+				element.get_attribute_value(attribute_name).is_empty())
+	]
 	# Add a button for each enum value.
 	for enum_constant in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]:
 		var btn := ContextButton.create_custom(enum_constant, set_value.bind(enum_constant, true), null,

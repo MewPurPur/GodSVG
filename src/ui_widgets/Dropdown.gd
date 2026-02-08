@@ -84,6 +84,7 @@ func _get_line_edit_activation_text() -> String:
 	return _text
 
 func _on_text_submitted(_new_text: String) -> void:
+	line_edit.release_focus()
 	queue_redraw()
 
 func _on_text_changed(_new_text: String) -> void:

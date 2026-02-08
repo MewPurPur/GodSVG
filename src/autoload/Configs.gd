@@ -11,7 +11,7 @@ signal shortcuts_changed
 signal basic_colors_changed
 signal handle_visuals_changed
 signal selection_rectangle_visuals_changed
-signal grid_color_changed
+signal grid_configs_changed
 signal shortcut_panel_changed
 signal active_tab_status_changed
 signal active_tab_changed
