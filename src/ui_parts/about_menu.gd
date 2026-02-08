@@ -42,7 +42,7 @@ func _ready() -> void:
 	tab_container.tab_changed.connect(_on_tab_changed)
 	
 	HandlerGUI.register_focus_sequence(self, [tab_container.get_tab_bar(), close_button])
-	tab_container.get_tab_bar().grab_focus(true)
+	tab_container.get_tab_bar().grab_focus()
 	tab_container.tab_changed.emit(0)
 
 

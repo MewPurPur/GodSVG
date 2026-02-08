@@ -89,7 +89,7 @@ func setup_color(new_color: String, default_color: Color) -> void:
 	update()
 
 
-func sync_color_space_buttons() -> void:
+func sync_theming() -> void:
 	for child in color_space_container.get_children():
 		child.queue_free()
 	
@@ -98,6 +98,11 @@ func sync_color_space_buttons() -> void:
 	
 	var hover_stylebox := normal_stylebox.duplicate()
 	hover_stylebox.bg_color = ThemeUtils.strong_hover_overlay_color
+	
+	var focus_stylebox := StyleBoxFlat.new()
+	focus_stylebox.draw_center = false
+	focus_stylebox.set_border_width_all(2)
+	focus_stylebox.border_color = ThemeUtils.focus_color
 	
 	var pressed_stylebox := StyleBoxFlat.new()
 	pressed_stylebox.bg_color = ThemeUtils.hover_pressed_overlay_color
@@ -111,6 +116,7 @@ func sync_color_space_buttons() -> void:
 		btn.add_theme_constant_override("align_to_largest_stylebox", 0)
 		btn.add_theme_stylebox_override("normal", normal_stylebox)
 		btn.add_theme_stylebox_override("hover", hover_stylebox)
+		btn.add_theme_stylebox_override("focus", focus_stylebox)
 		btn.add_theme_stylebox_override("pressed", pressed_stylebox)
 		btn.add_theme_stylebox_override("hover_pressed", pressed_stylebox)
 		btn.end_bulk_theme_override()
@@ -132,6 +138,8 @@ func sync_color_space_buttons() -> void:
 			SliderMode.RGB: btn.text = "RGB"
 			SliderMode.HSV: btn.text = "HSV"
 		color_space_container.add_child(btn)
+	
+	reset_color_button.add_theme_stylebox_override("focus", focus_stylebox)
 
 # Workaround to set this after ready from external places.
 func update_keyword_button() -> void:
@@ -146,8 +154,8 @@ func _ready() -> void:
 	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
-	Configs.theme_changed.connect(sync_color_space_buttons)
-	sync_color_space_buttons()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 	# Set up signals.
 	color_wheel.gui_input.connect(_on_color_wheel_gui_input)
 	start_color_rect.draw.connect(_on_start_color_rect_draw)
@@ -165,9 +173,9 @@ func _ready() -> void:
 	tracks_arr[1].resized.connect(_on_track_resized)
 	tracks_arr[2].resized.connect(_on_track_resized)
 	tracks_arr[3].resized.connect(_on_track_resized)
-	fields_arr[1].text_submitted.connect(_on_slider1_text_submitted)
-	fields_arr[2].text_submitted.connect(_on_slider2_text_submitted)
-	fields_arr[3].text_submitted.connect(_on_slider3_text_submitted)
+	fields_arr[1].text_submitted_with_changes.connect(_on_slider1_text_submitted_with_changes)
+	fields_arr[2].text_submitted_with_changes.connect(_on_slider2_text_submitted_with_changes)
+	fields_arr[3].text_submitted_with_changes.connect(_on_slider3_text_submitted_with_changes)
 	slider_mode_changed.connect(_on_slider_mode_changed)
 	_on_slider_mode_changed()
 	if alpha_enabled:
@@ -175,7 +183,7 @@ func _ready() -> void:
 		widgets_arr[4].draw.connect(_on_slider4_draw)
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
 		tracks_arr[4].resized.connect(_on_track_resized)
-		fields_arr[4].text_submitted.connect(_on_slider4_text_submitted)
+		fields_arr[4].text_submitted_with_changes.connect(_on_slider4_text_submitted_with_changes)
 	
 	update_keyword_button()
 	eyedropper_button.pressed.connect(_on_eyedropper_pressed)
@@ -340,7 +348,7 @@ func parse_slider_input(event: InputEvent, idx: int, is_slider_vertical := false
 
 # When slider text is submitted, it should be clamped, used, and then the slider should
 # be updated again so the text reflects the new value even if the color didn't change.
-func _on_slider1_text_submitted(new_text: String) -> void:
+func _on_slider1_text_submitted_with_changes(new_text: String) -> void:
 	var new_color := display_color
 	match slider_mode:
 		SliderMode.RGB: new_color.r = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
@@ -348,7 +356,7 @@ func _on_slider1_text_submitted(new_text: String) -> void:
 	register_visual_change(new_color, false)
 	slider1_update()
 
-func _on_slider2_text_submitted(new_text: String) -> void:
+func _on_slider2_text_submitted_with_changes(new_text: String) -> void:
 	var new_color := display_color
 	match slider_mode:
 		SliderMode.RGB: new_color.g = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
@@ -356,7 +364,7 @@ func _on_slider2_text_submitted(new_text: String) -> void:
 	register_visual_change(new_color, false)
 	slider2_update()
 
-func _on_slider3_text_submitted(new_text: String) -> void:
+func _on_slider3_text_submitted_with_changes(new_text: String) -> void:
 	var new_color := display_color
 	match slider_mode:
 		SliderMode.RGB: new_color.b = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
@@ -364,7 +372,7 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 	register_visual_change(new_color, false)
 	slider3_update()
 
-func _on_slider4_text_submitted(new_text: String) -> void:
+func _on_slider4_text_submitted_with_changes(new_text: String) -> void:
 	var new_color := display_color
 	new_color.a = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 	register_visual_change(new_color, false)

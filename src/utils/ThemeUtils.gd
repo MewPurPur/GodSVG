@@ -787,6 +787,7 @@ static func _setup_button(theme: Theme) -> void:
 	var swatch_focus_stylebox := swatch_stylebox.duplicate()
 	swatch_focus_stylebox.draw_center = false
 	swatch_focus_stylebox.border_color = focus_color
+	swatch_focus_stylebox.set_border_width_all(2)
 	theme.set_stylebox("focus", "Swatch", swatch_focus_stylebox)
 	
 	var pressed_swatch_stylebox := swatch_stylebox.duplicate()
