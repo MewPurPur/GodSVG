@@ -225,7 +225,7 @@ static func _start_file_import_process(file_paths: PackedStringArray, completion
 allowed_extensions: PackedStringArray, show_incorrect_extension_errors := true) -> void:
 	for i in range(file_paths.size()):
 		var file_path = file_paths[i]
-		if file_path.begins_with("file://"):  # Flatpak may encode the file path as a URI
+		if file_path.begins_with("file://"):  # Flatpak may encode the file path as a URI.
 			file_paths[i] = file_path.trim_prefix("file://").uri_file_decode()
 
 	if not show_incorrect_extension_errors:
