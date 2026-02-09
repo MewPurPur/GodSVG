@@ -376,9 +376,10 @@ func _toggle_use_pebble_preview() -> void:
 
 
 func _on_more_button_pressed() -> void:
-	# var checkbox := ContextPopup.create_checkbox(Translator.translate("Preview as PDC"),
-	# 		_toggle_use_pebble_preview, Configs.savedata.previews_use_pebble_preview, false)
-	# checkbox.theme_type_variation = "PebbleCheckBox"
+	var pebble_preview_checkbox := ContextButton.create_custom_checkbox(Translator.translate("Preview as PDC"),
+		_toggle_use_pebble_preview, Configs.savedata.previews_use_pebble_preview)
+	pebble_preview_checkbox.auto_toggle = true
+	pebble_preview_checkbox.theme_type = "PebbleCheckBox"
 	var btn_array: Array[ContextButton] = [
 		ContextButton.create_custom(Translator.translate("Reset to default"), reset_tiles,
 				preload("res://assets/icons/Reload.svg"), are_tiles_default()),
@@ -386,7 +387,7 @@ func _on_more_button_pressed() -> void:
 				preload("res://assets/icons/Clear.svg"), Configs.savedata.preview_sizes.is_empty()),
 		ContextButton.create_custom(Translator.translate("Sort"), sort_tiles,
 				preload("res://assets/icons/Sort.svg"), are_tiles_sorted()),
-		# checkbox,
+		 pebble_preview_checkbox,
 	]
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_array), more_button.get_global_rect(), get_viewport())
 
