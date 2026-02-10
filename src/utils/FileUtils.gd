@@ -13,7 +13,7 @@ const ConfirmDialogScene = preload("res://src/ui_widgets/confirm_dialog.tscn")
 static var OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn"):
 	get:
 		if not OptionsDialogScene.can_instantiate():
-			OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
+			OptionsDialogScene = load("res://src/ui_widgets/options_dialog.tscn")
 		return OptionsDialogScene
 
 const ImportWarningMenuScene = preload("res://src/ui_parts/import_warning_menu.tscn")
@@ -116,7 +116,8 @@ static func open_xml_export_dialog(xml: String, file_name: String) -> void:
 		_web_save(xml.to_utf8_buffer(), "application/xml")
 	else:
 		if _is_native_preferred():
-			var native_callback := func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+			var native_callback :=\
+				func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
 					if has_selected:
 						_finish_xml_export(files[0], xml)
 			
@@ -145,8 +146,7 @@ static func _finish_export(file_path: String, export_data: ImageExportData) -> v
 		"jpg", "jpeg": export_data.generate_image().save_jpg(file_path, export_data.quality)
 		"webp": export_data.generate_image().save_webp(file_path, export_data.lossy, export_data.quality)
 		_:
-			# When saving SVG, also modify the file path to associate it
-			# with the graphic being edited.
+			# When saving SVG, also modify the file path to associate it with the graphic being edited.
 			var active_tab := Configs.savedata.get_active_tab()
 			active_tab.svg_file_path = file_path
 			active_tab.save_to_bound_path()
@@ -203,7 +203,8 @@ static func open_custom_import_dialog(extensions: PackedStringArray, completion_
 			for extension in extensions_with_dots:
 				filters.append("*" + extension)
 			
-			var native_callback := func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+			var native_callback :=\
+				func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
 					if has_selected:
 						_start_file_import_process(files, completion_callback, extensions)
 			

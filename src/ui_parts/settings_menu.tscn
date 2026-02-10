@@ -26,7 +26,6 @@ theme_override_constants/separation = 8
 [node name="Language" type="Button" parent="VBoxContainer" unique_id=656627179]
 layout_mode = 2
 size_flags_horizontal = 4
-focus_mode = 0
 mouse_default_cursor_shape = 2
 icon = ExtResource("2_ndyp7")
 
@@ -74,5 +73,4 @@ theme_type_variation = &"TextBox"
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-focus_mode = 0
 mouse_default_cursor_shape = 2

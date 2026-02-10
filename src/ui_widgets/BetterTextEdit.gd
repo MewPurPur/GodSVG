@@ -21,6 +21,7 @@ func _init() -> void:
 	scroll_v_scroll_speed = 30.0
 	caret_multiple = false
 	highlight_all_occurrences = true
+	clip_contents = true
 	set_tab_size(2)
 
 func _ready() -> void:
