@@ -28,6 +28,27 @@ func _init() -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	theme_type_variation = "ContextButton"
 
+func _ready() -> void:
+	# Calculate min width.
+	var font := get_theme_font("font")
+	var font_size := get_theme_font_size("font_size")
+	var icon := get_icon()
+	var text := get_text()
+	var dim_text := get_dim_text()
+	
+	var min_width := PADDING * 2
+	if not text.is_empty():
+		min_width += font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	if not dim_text.is_empty():
+		min_width += DIM_TEXT_SPACING + font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	if is_instance_valid(icon) or type != Type.NORMAL:
+		min_width += 16.0 + ICON_SPACING
+	custom_minimum_size.x = min_width
+	# Set mouse cursor shape.
+	if disabled or type == Type.ARROW:
+		mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+
 static func create(new_disabled := false) -> ContextButton:
 	var context_button := ContextButton.new()
 	context_button.disabled = new_disabled
@@ -38,7 +59,6 @@ static func create_custom(new_custom_text: String, new_custom_callback: Callable
 	context_button.custom_text = new_custom_text
 	context_button.custom_callback = new_custom_callback
 	context_button.custom_icon = new_custom_icon
-	context_button.calibrate()
 	return context_button
 
 static func create_from_action(new_action: String, new_disabled := false) -> ContextButton:
@@ -48,14 +68,12 @@ static func create_from_action(new_action: String, new_disabled := false) -> Con
 	
 	var context_button := ContextButton.create(new_disabled)
 	context_button.action = new_action
-	context_button.calibrate()
 	return context_button
 
 static func create_checkbox_from_action(new_action: String, start_toggled_on: bool, new_disabled := false) -> ContextButton:
 	var context_button := ContextButton.create_from_action(new_action, new_disabled)
 	context_button.type = Type.CHECKBOX
 	context_button.toggled_on = start_toggled_on
-	context_button.calibrate()
 	return context_button
 
 static func create_arrow(new_text: String, new_submenu_button_builders: Array[Callable]) -> ContextButton:
@@ -112,53 +130,27 @@ static func create_arrow(new_text: String, new_submenu_button_builders: Array[Ca
 			if Rect2(Vector2.ZERO, popup.size).grow(-2).has_point(popup.get_local_mouse_position()):
 				HandlerGUI.clear_submenu()
 	)
-	context_button.calibrate()
 	return context_button
-
-func calibrate() -> void:
-	# Calculate min width.
-	var font := get_theme_font("font")
-	var font_size := get_theme_font_size("font_size")
-	var icon := get_icon()
-	var text := get_text()
-	var dim_text := get_dim_text()
-	
-	var min_width := PADDING * 2
-	if not text.is_empty():
-		min_width += font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	if not dim_text.is_empty():
-		min_width += DIM_TEXT_SPACING + font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	if is_instance_valid(icon) or type != Type.NORMAL:
-		min_width += 16.0 + ICON_SPACING
-	custom_minimum_size.x = min_width
-	# Set mouse cursor shape.
-	if disabled or type == Type.ARROW:
-		mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 
 func add_custom_text(new_text: String) -> ContextButton:
 	custom_text = new_text
-	calibrate()
 	return self
 
 func set_icon_none() -> ContextButton:
 	use_icon = false
-	calibrate()
 	return self
 
 func set_icon_unmodulated() -> ContextButton:
 	skip_icon_modulation = true
-	calibrate()
 	return self
 
 func add_custom_icon(new_icon: Texture2D) -> ContextButton:
 	custom_icon = new_icon
-	calibrate()
 	return self
 
 func add_custom_dim_text(new_dim_text: String) -> ContextButton:
 	custom_dim_text = new_dim_text
-	calibrate()
 	return self
 
 
