@@ -138,8 +138,7 @@ func _add_control(new_control: Control) -> void:
 	get_viewport().gui_cancel_drag()
 
 func _remove_control(overlay_ref: ColorRect = null) -> void:
-	# If an overlay_ref is passed but doesn't match, do nothing.
-	# This is a hack against exiting overlay menus closing other menus than their own.
+	# Make sure that when a popup is being replaced, it doesn't close the new one's overlay.
 	var matching_idx := menu_stack.size() - 1
 	if is_instance_valid(overlay_ref):
 		while matching_idx >= 0:
@@ -212,11 +211,18 @@ func remove_popup(overlay_ref: Control = null) -> void:
 	if popup_stack.is_empty():
 		return
 	
-	# Refer to remove_menu() for why the logic is like this.
-	if is_instance_valid(overlay_ref) and overlay_ref != popup_stack.back():
+	# Make sure that when a popup is being replaced, it doesn't close the new one's overlay.
+	var matching_idx := popup_stack.size() - 1
+	if is_instance_valid(overlay_ref):
+		while matching_idx >= 0:
+			if overlay_ref == popup_stack[matching_idx]:
+				break
+			matching_idx -= 1
+	
+	if matching_idx < 0:
 		return
 	
-	overlay_ref = popup_stack.pop_back()
+	overlay_ref = popup_stack.pop_at(matching_idx)
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
 	

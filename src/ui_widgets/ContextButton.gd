@@ -29,7 +29,25 @@ func _init() -> void:
 	theme_type_variation = "ContextButton"
 
 func _ready() -> void:
-	calibrate()
+	# Calculate min width.
+	var font := get_theme_font("font")
+	var font_size := get_theme_font_size("font_size")
+	var icon := get_icon()
+	var text := get_text()
+	var dim_text := get_dim_text()
+	
+	var min_width := PADDING * 2
+	if not text.is_empty():
+		min_width += font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	if not dim_text.is_empty():
+		min_width += DIM_TEXT_SPACING + font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	if is_instance_valid(icon) or type != Type.NORMAL:
+		min_width += 16.0 + ICON_SPACING
+	custom_minimum_size.x = min_width
+	# Set mouse cursor shape.
+	if disabled or type == Type.ARROW:
+		mouse_default_cursor_shape = Control.CURSOR_ARROW
+
 
 static func create(new_disabled := false) -> ContextButton:
 	var context_button := ContextButton.new()
@@ -114,50 +132,25 @@ static func create_arrow(new_text: String, new_submenu_button_builders: Array[Ca
 	)
 	return context_button
 
-func calibrate() -> void:
-	# Calculate min width.
-	var font := get_theme_font("font")
-	var font_size := get_theme_font_size("font_size")
-	var icon := get_icon()
-	var text := get_text()
-	var dim_text := get_dim_text()
-	
-	var min_width := PADDING * 2
-	if not text.is_empty():
-		min_width += font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	if not dim_text.is_empty():
-		min_width += DIM_TEXT_SPACING + font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	if is_instance_valid(icon) or type != Type.NORMAL:
-		min_width += 16.0 + ICON_SPACING
-	custom_minimum_size.x = min_width
-	# Set mouse cursor shape.
-	if disabled or type == Type.ARROW:
-		mouse_default_cursor_shape = Control.CURSOR_ARROW
-
 
 func add_custom_text(new_text: String) -> ContextButton:
 	custom_text = new_text
-	calibrate()
 	return self
 
 func set_icon_none() -> ContextButton:
 	use_icon = false
-	calibrate()
 	return self
 
 func set_icon_unmodulated() -> ContextButton:
 	skip_icon_modulation = true
-	calibrate()
 	return self
 
 func add_custom_icon(new_icon: Texture2D) -> ContextButton:
 	custom_icon = new_icon
-	calibrate()
 	return self
 
 func add_custom_dim_text(new_dim_text: String) -> ContextButton:
 	custom_dim_text = new_dim_text
-	calibrate()
 	return self
 
 
