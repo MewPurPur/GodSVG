@@ -28,6 +28,9 @@ func _init() -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	theme_type_variation = "ContextButton"
 
+func _ready() -> void:
+	calibrate()
+
 static func create(new_disabled := false) -> ContextButton:
 	var context_button := ContextButton.new()
 	context_button.disabled = new_disabled
@@ -38,7 +41,6 @@ static func create_custom(new_custom_text: String, new_custom_callback: Callable
 	context_button.custom_text = new_custom_text
 	context_button.custom_callback = new_custom_callback
 	context_button.custom_icon = new_custom_icon
-	context_button.calibrate()
 	return context_button
 
 static func create_from_action(new_action: String, new_disabled := false) -> ContextButton:
@@ -48,14 +50,12 @@ static func create_from_action(new_action: String, new_disabled := false) -> Con
 	
 	var context_button := ContextButton.create(new_disabled)
 	context_button.action = new_action
-	context_button.calibrate()
 	return context_button
 
 static func create_checkbox_from_action(new_action: String, start_toggled_on: bool, new_disabled := false) -> ContextButton:
 	var context_button := ContextButton.create_from_action(new_action, new_disabled)
 	context_button.type = Type.CHECKBOX
 	context_button.toggled_on = start_toggled_on
-	context_button.calibrate()
 	return context_button
 
 static func create_arrow(new_text: String, new_submenu_button_builders: Array[Callable]) -> ContextButton:
@@ -112,7 +112,6 @@ static func create_arrow(new_text: String, new_submenu_button_builders: Array[Ca
 			if Rect2(Vector2.ZERO, popup.size).grow(-2).has_point(popup.get_local_mouse_position()):
 				HandlerGUI.clear_submenu()
 	)
-	context_button.calibrate()
 	return context_button
 
 func calibrate() -> void:
