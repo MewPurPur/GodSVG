@@ -43,6 +43,9 @@ func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
 	press_tab(0)
+	
+	HandlerGUI.register_focus_sequence(self, [lang_button, close_button])
+	lang_button.grab_focus(true)
 
 func select_next_tab() -> void:
 	press_tab((focused_tab_index + 1) % TabIndex.size())

@@ -97,8 +97,7 @@ func update_size_button() -> void:
 
 func update_size_button_colors() -> void:
 	size_button.begin_bulk_theme_override()
-	const CONST_ARR: PackedStringArray = ["font_color", "font_hover_color",
-			"font_pressed_color"]
+	const CONST_ARR: PackedStringArray = ["font_color", "font_hover_color", "font_pressed_color"]
 	for theme_type in CONST_ARR:
 		size_button.add_theme_color_override(theme_type,
 				Configs.savedata.basic_color_warning.lerp(ThemeUtils.max_contrast_color, 0.4))
