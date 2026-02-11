@@ -173,9 +173,9 @@ func _ready() -> void:
 	tracks_arr[1].resized.connect(_on_track_resized)
 	tracks_arr[2].resized.connect(_on_track_resized)
 	tracks_arr[3].resized.connect(_on_track_resized)
-	fields_arr[1].text_submitted_with_changes.connect(_on_slider1_text_submitted_with_changes)
-	fields_arr[2].text_submitted_with_changes.connect(_on_slider2_text_submitted_with_changes)
-	fields_arr[3].text_submitted_with_changes.connect(_on_slider3_text_submitted_with_changes)
+	fields_arr[1].text_submitted.connect(_on_slider1_text_submitted)
+	fields_arr[2].text_submitted.connect(_on_slider2_text_submitted)
+	fields_arr[3].text_submitted.connect(_on_slider3_text_submitted)
 	slider_mode_changed.connect(_on_slider_mode_changed)
 	_on_slider_mode_changed()
 	if alpha_enabled:
@@ -183,7 +183,7 @@ func _ready() -> void:
 		widgets_arr[4].draw.connect(_on_slider4_draw)
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
 		tracks_arr[4].resized.connect(_on_track_resized)
-		fields_arr[4].text_submitted_with_changes.connect(_on_slider4_text_submitted_with_changes)
+		fields_arr[4].text_submitted.connect(_on_slider4_text_submitted)
 	
 	update_keyword_button()
 	eyedropper_button.pressed.connect(_on_eyedropper_pressed)
@@ -348,33 +348,37 @@ func parse_slider_input(event: InputEvent, idx: int, is_slider_vertical := false
 
 # When slider text is submitted, it should be clamped, used, and then the slider should
 # be updated again so the text reflects the new value even if the color didn't change.
-func _on_slider1_text_submitted_with_changes(new_text: String) -> void:
+func _on_slider1_text_submitted(new_text: String) -> void:
+	var new_value := NumstringParser.evaluate(new_text)
 	var new_color := display_color
 	match slider_mode:
-		SliderMode.RGB: new_color.r = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
-		SliderMode.HSV: new_color.h = clampf(new_text.to_int() / 360.0, 0.0, 0.9999)
+		SliderMode.RGB: new_color.r = clampf(new_value / 255.0, 0.0, 1.0)
+		SliderMode.HSV: new_color.h = clampf(new_value / 360.0, 0.0, 0.9999)
 	register_visual_change(new_color, false)
 	slider1_update()
 
-func _on_slider2_text_submitted_with_changes(new_text: String) -> void:
+func _on_slider2_text_submitted(new_text: String) -> void:
+	var new_value := NumstringParser.evaluate(new_text)
 	var new_color := display_color
 	match slider_mode:
-		SliderMode.RGB: new_color.g = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
-		SliderMode.HSV: new_color.s = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
+		SliderMode.RGB: new_color.g = clampf(new_value / 255.0, 0.0, 1.0)
+		SliderMode.HSV: new_color.s = clampf(new_value / 100.0, 0.0001, 1.0)
 	register_visual_change(new_color, false)
 	slider2_update()
 
-func _on_slider3_text_submitted_with_changes(new_text: String) -> void:
+func _on_slider3_text_submitted(new_text: String) -> void:
+	var new_value := NumstringParser.evaluate(new_text)
 	var new_color := display_color
 	match slider_mode:
-		SliderMode.RGB: new_color.b = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
-		SliderMode.HSV: new_color.v = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
+		SliderMode.RGB: new_color.b = clampf(new_value / 255.0, 0.0, 1.0)
+		SliderMode.HSV: new_color.v = clampf(new_value / 100.0, 0.0001, 1.0)
 	register_visual_change(new_color, false)
 	slider3_update()
 
-func _on_slider4_text_submitted_with_changes(new_text: String) -> void:
+func _on_slider4_text_submitted(new_text: String) -> void:
+	var new_value := NumstringParser.evaluate(new_text)
 	var new_color := display_color
-	new_color.a = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
+	new_color.a = clampf(new_value / 255.0, 0.0, 1.0)
 	register_visual_change(new_color, false)
 	slider4_update()
 

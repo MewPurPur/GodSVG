@@ -449,7 +449,7 @@ msgstr "Гледка"
 
 #: src/ui_parts/mac_menu.gd
 msgid "Window"
-msgstr ""
+msgstr "Прозорец"
 
 #: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
 msgid "Help"
@@ -1230,8 +1230,9 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "{file_path} вече се редактира в GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
-msgstr "Ако искаш да премахнеш промените след последното записване, използвай \"{reset_svg}\"."
+#, fuzzy
+msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
+msgstr "Ако искаш да премахнеш промените си и да се синхронизираш със сегашното състояние на файла, използвай \"{reset_svg}\"."
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"

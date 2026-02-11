@@ -84,7 +84,7 @@ func _on_pressed() -> void:
 		color_popup.current_color_availability = color_popup.CurrentColorAvailability.UNAVAILABLE
 	else:
 		var has_color_attribute_parent := false
-		for element_depth in range(0, element.xid.size()):
+		for element_depth in element.xid.size():
 			var checked_xid := element.xid.duplicate()
 			checked_xid.resize(element_depth)
 			if State.root_element.get_xnode(checked_xid).has_attribute("color"):

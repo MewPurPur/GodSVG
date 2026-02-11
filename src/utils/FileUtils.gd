@@ -224,10 +224,12 @@ static func open_custom_import_dialog(extensions: PackedStringArray, completion_
 # Preprocessing step where all files with wrong extensions are discarded.
 static func _start_file_import_process(file_paths: PackedStringArray, completion_callback: Callable,
 allowed_extensions: PackedStringArray, show_incorrect_extension_errors := true) -> void:
-	for i in range(file_paths.size()):
-		var file_path = file_paths[i]
-		if file_path.begins_with("file://"):  # Flatpak may encode the file path as a URI.
-			file_paths[i] = file_path.trim_prefix("file://").uri_file_decode()
+	# Why paths with "file://" are URI-decoded: https://flatpak.github.io/xdg-desktop-portal/docs/doc-org.freedesktop.portal.FileChooser.html
+	# Backslashes are converted to forward slashes because Godot can always handle them and it prevents ambiguity.
+	for i in file_paths.size():
+		if file_paths[i].begins_with("file://"):
+			file_paths[i] = file_paths[i].trim_prefix("file://").uri_file_decode()
+		file_paths[i].replace("\\", "/")
 
 	if not show_incorrect_extension_errors:
 		for i in range(file_paths.size() - 1, -1, -1):
@@ -344,7 +346,7 @@ static func _apply_svg(data: Variant, file_path: String, proceed_callback := Cal
 					{"file_path": Utils.simplify_file_path(file_path)})
 		if compare_svg_to_disk_contents(existing_tab_idx) == FileState.DIFFERENT:
 			alert_message += "\n\n" + Translator.translate(
-					"If you want to revert your edits since the last save, use \"{reset_svg}\".").format(
+					"If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\".").format(
 					{"reset_svg": TranslationUtils.get_action_description("reset_svg")})
 		
 		if is_last_file:

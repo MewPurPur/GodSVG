@@ -69,7 +69,8 @@ func _generate_main_menus() -> void:
 	_add_many_items(edit_rid, ShortcutUtils.get_actions("edit"))
 	_add_many_items(tool_rid, ShortcutUtils.get_actions("tool"))
 	_add_many_items(view_rid, ShortcutUtils.get_actions("view"))
-
+	
+	# Can be removed after issue #114204 is solved.
 	await get_tree().process_frame
 	NativeMenu.set_system_menu_text(NativeMenu.WINDOW_MENU_ID, Translator.translate("Window"))
 	NativeMenu.set_system_menu_text(NativeMenu.HELP_MENU_ID, Translator.translate("Help"))
