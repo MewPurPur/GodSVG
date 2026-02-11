@@ -1251,7 +1251,7 @@ msgstr "Файл {file_path} вже редагується в GodSVG."
 
 #: src/utils/FileUtils.gd
 #, fuzzy
-msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
+msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
 msgstr "Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте {reset_svg}."
 
 #: src/utils/FileUtils.gd

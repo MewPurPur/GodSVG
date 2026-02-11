@@ -6,8 +6,6 @@ var ci := get_canvas_item()
 
 ## Emitted when Esc is pressed to cancel the current text change.
 signal text_change_canceled
-## Emitted after text_submitted if the text has been changed.
-signal text_submitted_with_changes(new_text: String)
 
 ## When turned on, uses the mono font for the tooltip.
 @export var mono_font_tooltip := false
@@ -59,12 +57,11 @@ func _on_base_class_focus_exited() -> void:
 		text_change_canceled.emit()
 	elif not Input.is_action_pressed("ui_accept"):
 		# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
-		text_submitted.emit(text)
+		if text != text_before_focus:
+			text_submitted.emit(text)
 	text_before_focus = ""
 
 func _on_base_class_text_submitted() -> void:
-	if text != text_before_focus:
-		text_submitted_with_changes.emit(text)
 	release_focus()
 
 

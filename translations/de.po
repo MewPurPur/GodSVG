@@ -1262,7 +1262,7 @@ msgstr "{file_path} wird bereits in GodSVG bearbeitet."
 
 #: src/utils/FileUtils.gd
 #, fuzzy
-msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
+msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
 msgstr "Wenn Sie Ihre Änderungen seit dem letzten Speichern rückgängig machen wollen, verwenden Sie {reset_svg}."
 
 #: src/utils/FileUtils.gd

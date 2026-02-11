@@ -1234,7 +1234,8 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "{file_path} já está sendo editado dentro do GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
+#, fuzzy
+msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
 msgstr "Se você deseja reverter as suas edições desde o último salvamento, use {reset_svg}."
 
 #: src/utils/FileUtils.gd

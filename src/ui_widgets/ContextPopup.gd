@@ -23,7 +23,7 @@ func _ready() -> void:
 	shortcuts.add_shortcut("ui_up", focus_first_above)
 	shortcuts.add_shortcut("ui_right", _on_ui_right)
 	shortcuts.add_shortcut("ui_left", _on_ui_left)
-	shortcuts.add_shortcut("ui_accept", call_focused_button)
+	shortcuts.add_shortcut("ui_accept", _on_ui_accept)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 
 static func create(new_buttons: Array[ContextButton], new_align_left := true, min_width := -1.0, separator_indices := PackedInt32Array()) -> ContextPopup:
@@ -225,13 +225,13 @@ func _gui_input(event: InputEvent) -> void:
 			if event.is_pressed():
 				set_focus_index_to_button_at_global_position(event.global_position)
 			elif event.is_released():
-				call_focused_button()
+				try_to_call_focused_button()
 	elif event is InputEventMouseMotion:
 		# We only want to capture real mouse motion for this.
 		if not event.relative.is_zero_approx():
 			set_focus_index_to_button_at_global_position(event.global_position)
 
-func call_focused_button() -> void:
+func try_to_call_focused_button() -> void:
 	if focus_index != -1:
 		var btn := buttons[focus_index]
 		if not btn.disabled:
@@ -239,16 +239,26 @@ func call_focused_button() -> void:
 			if btn.type == ContextButton.Type.NORMAL:
 				queue_free()
 
+func try_to_open_submenu() -> void:
+	if is_instance_valid(HandlerGUI.popup_submenu) and focus_index == -1:
+		focus_first_below()
+		return
+	
+	var focus_button := buttons[focus_index]
+	if focus_button.type == ContextButton.Type.ARROW:
+		var options: Array[ContextButton] = []
+		for button_builder in focus_button.submenu_button_builders:
+			options.append(button_builder.call())
+		var new_popup := ContextPopup.create(options)
+		new_popup.focus_first_below()
+		HandlerGUI.popup_submenu_to_right_or_left_side(new_popup, focus_button)
+
 func set_focus_index_to_button_at_global_position(pos: Vector2) -> void:
 	focus_index = -1
 	for button_idx in buttons.size():
 		if buttons[button_idx].get_global_rect().has_point(pos):
 			focus_index = button_idx
 			return
-
-func _on_mouse_exited() -> void:
-	focus_index = -1
-
 
 func focus_first_below() -> void:
 	for button_idx in (range(focus_index + 1, buttons.size()) + range(0, focus_index)):
@@ -263,19 +273,16 @@ func focus_first_above() -> void:
 			focus_index = button_idx
 			return
 
+
+func _on_mouse_exited() -> void:
+	focus_index = -1
+
 func _on_ui_right() -> void:
-	if is_instance_valid(HandlerGUI.popup_submenu) and focus_index == -1:
-		focus_first_below()
-		return
-	
-	var focus_button := buttons[focus_index]
-	if focus_button.type == ContextButton.Type.ARROW:
-		var options: Array[ContextButton] = []
-		for button_builder in focus_button.submenu_button_builders:
-			options.append(button_builder.call())
-		var new_popup := ContextPopup.create(options)
-		new_popup.focus_first_below()
-		HandlerGUI.popup_submenu_to_right_or_left_side(new_popup, focus_button)
+	try_to_open_submenu()
+
+func _on_ui_accept() -> void:
+	try_to_call_focused_button()
+	try_to_open_submenu()
 
 func _on_ui_left() -> void:
 	if is_instance_valid(HandlerGUI.popup_submenu):
