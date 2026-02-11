@@ -229,7 +229,7 @@ allowed_extensions: PackedStringArray, show_incorrect_extension_errors := true) 
 	for i in file_paths.size():
 		if file_paths[i].begins_with("file://"):
 			file_paths[i] = file_paths[i].trim_prefix("file://").uri_file_decode()
-		file_paths[i].replace("\\", "/")
+		file_paths[i] = file_paths[i].replace("\\", "/")
 
 	if not show_incorrect_extension_errors:
 		for i in range(file_paths.size() - 1, -1, -1):
