@@ -825,30 +825,77 @@ static func _setup_checkbox(theme: Theme) -> void:
 	theme.set_color("font_hover_color", "CheckBox", highlighted_text_color)
 	theme.set_color("font_pressed_color", "CheckBox", text_color)
 	theme.set_color("font_hover_pressed_color", "CheckBox", highlighted_text_color)
+	var checked_colors: Dictionary[String, String] = {
+		base = black_or_white_counter_accent_color.to_html(false),
+		accent = soft_accent_color.to_html(false),
+	}
+	var checked_disabled_colors: Dictionary[String, String] = {
+		base = black_or_white_counter_accent_color.to_html(false),
+		accent = soft_accent_color.lerp(gray_color, 0.2).to_html(false),
+	}
+	var unchecked_colors: Dictionary[String, String] = {
+		base = gray_color.to_html(false),
+	}
+	var unchecked_disabled_colors: Dictionary[String, String] = {
+		base = gray_color.to_html(false),
+	}
 	theme.set_icon("checked", "CheckBox", DPITexture.create_from_string(
 		"""<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s"/>
-			<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s"/>
-		</svg>""" % [soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
+			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#{accent}"/>
+			<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#{base}"/>
+		</svg>""".format(checked_colors))
 	)
 	theme.set_icon("checked_disabled", "CheckBox", DPITexture.create_from_string(
 		"""<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 			<g opacity=".4">
-				<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s"/>
-				<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s"/>
+				<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#{accent}"/>
+				<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#{base}"/>
 			</g>
-		</svg>""" % [soft_accent_color.lerp(gray_color, 0.2).to_html(false), black_or_white_counter_accent_color.to_html(false)])
+		</svg>""".format(checked_disabled_colors))
 	)
 	theme.set_icon("unchecked", "CheckBox", DPITexture.create_from_string(
 		"""<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s" opacity=".6"/>
-		</svg>""" % gray_color.to_html(false))
+			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#{base}" opacity=".6"/>
+		</svg>""".format(unchecked_colors))
 	)
 	theme.set_icon("unchecked_disabled", "CheckBox", DPITexture.create_from_string(
 		"""<svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-			<rect x="1" y="1" rx="2.5" width="14" height="14" fill="#%s" opacity=".2"/>
-		</svg>""" % gray_color.to_html(false))
+			<rect x="1" y="1" rx="2.5" width="14" height="14" fill="#{base}" opacity=".2"/>
+		</svg>""".format(unchecked_disabled_colors))
 	)
+
+	theme.set_icon("checked", "PebbleCheckBox", DPITexture.create_from_string(
+		"""<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+			<path d="M4 4V12L5 13V13h6L12 12V4L11 3V3 3h-6" fill="#{accent}" />
+			<rect width="4" height="3" x="6" y="12" fill="#{accent}" rx="1" />
+			<rect width="4" height="3" x="6" y="1" fill="#{accent}" rx="1" />
+			<path d="M6.5 8l1 1 2-2" stroke-width="1" stroke="#{base}" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+		</svg>""".format(checked_colors))
+	)
+	theme.set_icon("checked_disabled", "PebbleCheckBox", DPITexture.create_from_string(
+		"""<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+			<path d="M4 4V12L5 13V13h6L12 12V4L11 3V3 3h-6" fill="#{accent}" />
+			<rect width="4" height="3" x="6" y="12" fill="#{accent}" rx="1" />
+			<rect width="4" height="3" x="6" y="1" fill="#{accent}" rx="1" />
+			<path d="M6.5 8l1 1 2-2" stroke-width="1" stroke="#{base}" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+		</svg>""".format(checked_disabled_colors))
+	)
+	theme.set_icon("unchecked", "PebbleCheckBox", DPITexture.create_from_string(
+		"""<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+			<path d="M4 4V12L5 13V13h6L12 12V4L11 3V3 3h-6M5 4H11V12H5Z" fill="#{base}" />
+			<rect width="4" height="3" x="6" y="12" fill="#{base}" rx="1" />
+			<rect width="4" height="3" x="6" y="1" fill="#{base}" rx="1" />
+		</svg>""".format(unchecked_colors))
+	)
+	theme.set_icon("unchecked_disabled", "PebbleCheckBox", DPITexture.create_from_string(
+		"""<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+			<path d="M4 4V12L5 13V13h6L12 12V4L11 3V3 3h-6M5 4H11V12H5Z" fill="#{base}" />
+			<rect width="4" height="3" x="6" y="12" fill="#{base}" rx="1" />
+			<rect width="4" height="3" x="6" y="1" fill="#{base}" rx="1" />
+		</svg>""".format(unchecked_disabled_colors))
+	)
+	
+	theme.set_type_variation("PebbleCheckBox", "CheckBox")
 	
 	var checkbox_stylebox := StyleBoxFlat.new()
 	checkbox_stylebox.set_corner_radius_all(4)

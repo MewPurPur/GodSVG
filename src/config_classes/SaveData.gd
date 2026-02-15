@@ -1190,6 +1190,20 @@ const DEFAULT_PREVIEW_SIZES: PackedInt32Array = [16, 24, 32, 48, 64]
 			emit_changed()
 
 
+@export var previews_use_pebble_preview := false:
+	set(new_value):
+		if previews_use_pebble_preview != new_value:
+			previews_use_pebble_preview = new_value
+			emit_changed()
+
+
+@export var previews_precise_path_mode := PDCImage.PrecisePathMode.AUTODETECT:
+	set(new_value):
+		if previews_precise_path_mode != new_value:
+			previews_precise_path_mode = new_value
+			emit_changed()
+
+
 # Utility
 
 func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
