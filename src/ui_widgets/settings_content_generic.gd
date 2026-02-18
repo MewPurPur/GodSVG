@@ -896,14 +896,10 @@ func emit_preview_changed() -> void:
 		
 		if has_warning:
 			var vbox := VBoxContainer.new()
-			vbox.add_theme_constant_override("separation", 2)
 			var no_effect_warning_label := Label.new()
 			no_effect_warning_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			no_effect_warning_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			no_effect_warning_label.begin_bulk_theme_override()
-			no_effect_warning_label.add_theme_constant_override("line_spacing", 2)
 			no_effect_warning_label.add_theme_color_override("font_color", Configs.savedata.basic_color_warning)
-			no_effect_warning_label.end_bulk_theme_override()
 			match preview.warning:
 				preview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION:
 					no_effect_warning_label.text = Translator.translate("The setting has no effect in the current configuration.")
@@ -919,8 +915,6 @@ func emit_preview_changed() -> void:
 				func() -> void:
 					label.set_block_signals(true)
 					no_effect_warning_label.set_block_signals(true)
-					label.remove_theme_font_size_override("font_size")
-					no_effect_warning_label.remove_theme_font_size_override("font_size")
 					for i in PROBES.size():
 						var probe := PROBES[i]
 						label.add_theme_font_size_override("font_size", probe[0])
@@ -937,7 +931,6 @@ func emit_preview_changed() -> void:
 			label.resized.connect(
 				func() -> void:
 					label.set_block_signals(true)
-					label.remove_theme_font_size_override("font_size")
 					for i in PROBES.size():
 						var probe := PROBES[i]
 						label.add_theme_font_size_override("font_size", probe[0])

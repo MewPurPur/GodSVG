@@ -42,11 +42,11 @@ func _ready() -> void:
 
 
 func select_next_tab() -> void:
-	tab_container.current_tab = (tab_container.current_tab + 1) % tab_container.get_tab_count()
+	tab_container.select_tab((tab_container.current_tab_index + 1) % tab_container.get_tab_count())
 
 func select_previous_tab() -> void:
 	var tab_count := tab_container.get_tab_count()
-	tab_container.current_tab = (tab_container.current_tab + tab_count - 1) % tab_count
+	tab_container.select_tab((tab_container.current_tab_index + tab_count - 1) % tab_count)
 
 func get_content(index: int) -> Control:
 	match index:
