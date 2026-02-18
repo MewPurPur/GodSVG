@@ -6,11 +6,6 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
 const NumberEditScene = preload("res://src/ui_widgets/number_edit.tscn")
 
-const more_icon = preload("res://assets/icons/SmallMore.svg")
-const edit_icon = preload("res://assets/icons/Edit.svg")
-const delete_icon = preload("res://assets/icons/Delete.svg")
-const plus_icon = preload("res://assets/icons/Plus.svg")
-
 const TILE_MARGIN = 2.0
 const TILE_TOP_PADDING = 4.0
 const TILE_LEFT_PADDING = 4.0
@@ -188,7 +183,8 @@ func sync_tile_positions() -> void:
 	icon_preview_tiles.buttons.clear()
 	for tile in tiles:
 		icon_preview_tiles.buttons.append(ProceduralControl.ButtonData.create_from_icon(
-				Rect2(tile.position + tile.more_button_rect.position, tile.more_button_rect.size), _show_tile_popup_under_more_button.bind(tile), more_icon))
+				Rect2(tile.position + tile.more_button_rect.position, tile.more_button_rect.size), _show_tile_popup_under_more_button.bind(tile),
+				preload("res://assets/icons/SmallMore.svg")))
 
 
 func _on_preview_tiles_draw() -> void:
@@ -237,7 +233,9 @@ func _on_tiles_gui_input(event: InputEvent) -> void:
 							_show_tile_popup_at_pos(tile, event.global_position)
 							break
 				else:
-					var btn_array: Array[ContextButton] = [ContextButton.create_custom(Translator.translate("Add new preview"), _add_new_tile, plus_icon)]
+					var btn_array: Array[ContextButton] = [
+						ContextButton.create_custom(Translator.translate("Add new preview"), _add_new_tile, preload("res://assets/icons/Plus.svg"))
+					]
 					var vp := get_viewport()
 					HandlerGUI.popup_under_pos(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)
 
@@ -260,8 +258,8 @@ func _sync_texture() -> void:
 
 func _generate_tile_popup(tile: IconPreviewTileData) -> ContextPopup:
 	var btn_arr: Array[ContextButton] = [
-		ContextButton.create_custom(Translator.translate("Edit"), _edit_tile_size.bind(tile), edit_icon),
-		ContextButton.create_custom(Translator.translate("Delete"), _delete_tile.bind(tile), delete_icon),
+		ContextButton.create_custom(Translator.translate("Edit"), _edit_tile_size.bind(tile), preload("res://assets/icons/Edit.svg")),
+		ContextButton.create_custom(Translator.translate("Delete"), _delete_tile.bind(tile), preload("res://assets/icons/Delete.svg")),
 	]
 	return ContextPopup.create(btn_arr, true)
 
