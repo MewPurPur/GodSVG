@@ -209,7 +209,7 @@ func update() -> void:
 	match export_data.format:
 		"svg":
 			export_size = State.get_export_text().length()
-		"pdc":
+		_:
 			export_size = texture_preview.last_image_size
 	final_size_label.text = Translator.translate("Size") + ": " + String.humanize_size(export_size)
 	
