@@ -91,8 +91,7 @@ const _DRAW_TYPE_DISPATCHER: Dictionary[DrawType, Script] = {
 func load_from_pdc(pdc: PackedByteArray) -> PDCLoadingError:
 	var sp := StreamPeerBuffer.new()
 	sp.data_array = pdc
-	# 4 chars * 1 byte / char = 32 bits
-	if sp.get_u32() != "PDCI".to_ascii_buffer().decode_u32(0):
+	if sp.get_utf8_string(4) != "PDCI":
 		return PDCLoadingError.INVALID_MAGIC_WORD
 	var _buffer_size := sp.get_u32()
 	if sp.get_u8() != DRAW_COMMAND_VERSION:
@@ -301,9 +300,9 @@ func load_from_svg(svg: ElementRoot) -> void:
 		var viewbox_rect := Rect2(viewbox[0], viewbox[1], viewbox[2], viewbox[3])
 		var scaling_factor := size_float / viewbox_rect.size
 		viewbox_transform = Transform2D(0.0, scaling_factor, 0.0, -viewbox_rect.position * scaling_factor)
-		path_generator.angle_tolerance = path_angle_tolerance
 	else:
 		viewbox_transform = Transform2D.IDENTITY
+	path_generator.angle_tolerance = path_angle_tolerance
 	for element in svg.get_all_valid_element_descendants():
 		match element.name:
 			"circle":
@@ -400,7 +399,7 @@ func _generate_path_commands(element: Element) -> Array[PebblePathCommand]:
 			if commands[-1] == null:
 				commands[-1] = _setup_cmd(element, PebblePathCommand.new())
 				commands[-1].points.append_array(points)
-			elif commands[-1].points.size() > 0 and points[0] == commands[-1].points[-1]:
+			elif commands[-1].points.size() > 0 and points[0].is_equal_approx(commands[-1].points[-1]):
 				commands[-1].points.append_array(points.slice(1))
 			else:
 				commands[-1].is_path_open = true
@@ -539,18 +538,19 @@ func requires_precise_path(points: PackedVector2Array) -> bool:
 
 static func to_pebble_color(color: Color) -> int:
 	return (0
-		| int(color.r * 3.0) << 0
-		| int(color.g * 3.0) << 2
-		| int(color.b * 3.0) << 4
-		| int(color.a * 3.0) << 6
+		# BGRA format for some reason 💀
+		| clampi(int(color.b * 4.0), 0, 3) << 0
+		| clampi(int(color.g * 4.0), 0, 3) << 2
+		| clampi(int(color.r * 4.0), 0, 3) << 4
+		| clampi(int(color.a * 4.0), 0, 3) << 6
 	)
 
 
 static func from_pebble_color(color: int) -> Color:
 	return Color(
-		((color >> 0) & 0b11) / 3.0,
-		((color >> 2) & 0b11) / 3.0,
 		((color >> 4) & 0b11) / 3.0,
+		((color >> 2) & 0b11) / 3.0,
+		((color >> 0) & 0b11) / 3.0,
 		((color >> 6) & 0b11) / 3.0,
 	)
 
