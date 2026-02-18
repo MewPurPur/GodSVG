@@ -76,9 +76,9 @@ func _on_reference_button_pressed() -> void:
 	var btn_arr: Array[ContextButton] = [
 		ContextButton.create_from_action("load_reference"),
 		ContextButton.create_custom(Translator.translate("Paste reference image"), paste_reference_image,
-				load("res://assets/icons/Paste.svg"), not Utils.has_clipboard_image_web_safe()),
+				preload("res://assets/icons/Paste.svg"), not Utils.has_clipboard_image_web_safe()),
 		ContextButton.create_custom(Translator.translate("Clear reference image"), clear_reference_image,
-				load("res://assets/icons/Clear.svg"), not has_reference),
+				preload("res://assets/icons/Clear.svg"), not has_reference),
 		ContextButton.create_checkbox_from_action("view_show_reference", active_tab.show_reference and has_reference, not has_reference),
 		ContextButton.create_checkbox_from_action("view_overlay_reference", active_tab.overlay_reference and has_reference, not has_reference)
 	]

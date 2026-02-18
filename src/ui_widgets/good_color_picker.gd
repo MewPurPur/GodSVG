@@ -414,10 +414,10 @@ func _on_keyword_button_pressed() -> void:
 	var btn_arr: Array[ContextButton] = []
 	if is_none_keyword_available:
 		btn_arr.append(ContextButton.create_custom("none", set_to_keyword.bind("none"),
-				load("res://assets/icons/NoneColor.svg"), color == "none"))
+				preload("res://assets/icons/NoneColor.svg"), color == "none"))
 	if is_current_color_keyword_available:
 		btn_arr.append(ContextButton.create_custom("currentColor", set_to_keyword.bind("currentColor"),
-				load("res://assets/icons/Paste.svg"), color == "currentColor"))
+				preload("res://assets/icons/Paste.svg"), color == "currentColor"))
 	
 	for btn in btn_arr:
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)

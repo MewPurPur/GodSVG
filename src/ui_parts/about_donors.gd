@@ -12,6 +12,9 @@ extends VBoxContainer
 @onready var past_golden_donors_list: PanelGrid = $PastGoldenDonors/List
 @onready var past_donors_label: Label = $PastDonors/Label
 @onready var past_donors_list: PanelGrid = $PastDonors/List
+@onready var diamond_donors: VBoxContainer = $DiamondDonors
+@onready var golden_donors: VBoxContainer = $GoldenDonors
+@onready var donors: VBoxContainer = $Donors
 
 
 func _ready() -> void:
@@ -24,7 +27,7 @@ func _ready() -> void:
 	# Once the past donors lists start filling up, they will never unfill,
 	# so no need to bother with logic, we can just unhide it manually.
 	if app_info.donors.is_empty() and app_info.anonymous_donors == 0:
-		donors_list.hide()
+		donors.hide()
 	else:
 		donors_list.items = app_info.donors
 		if app_info.anonymous_donors != 0:
@@ -32,7 +35,7 @@ func _ready() -> void:
 			donors_list.items.append("%d anonymous" % app_info.anonymous_donors)
 	
 	if app_info.golden_donors.is_empty() and app_info.anonymous_golden_donors == 0:
-		golden_donors_list.hide()
+		golden_donors.hide()
 	else:
 		golden_donors_list.items = app_info.golden_donors
 		if app_info.anonymous_golden_donors != 0:
@@ -40,7 +43,7 @@ func _ready() -> void:
 			golden_donors_list.items.append("%d anonymous" % app_info.anonymous_golden_donors)
 	
 	if app_info.diamond_donors.is_empty() and app_info.anonymous_diamond_donors == 0:
-		diamond_donors_list.hide()
+		diamond_donors.hide()
 	else:
 		diamond_donors_list.items = app_info.diamond_donors
 		if app_info.anonymous_diamond_donors != 0:
