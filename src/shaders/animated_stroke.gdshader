@@ -10,22 +10,16 @@ varying float cos_skew;
 varying float max_rotation_factor;
 
 void vertex() {
-	// A bunch of hacks to deal with rotated or skewed drawing resulting in ants
-	// that are too long, fast, and sometimes wide.
+	// A bunch of hacks to deal with rotated or skewed drawing resulting in
+	// ants that are too long, fast, and sometimes wide.
 	vec2 col0 = MODEL_MATRIX[0].xy;
 	vec2 col1 = MODEL_MATRIX[1].xy;
 	
+	float dot_product = dot(normalize(col0), normalize(col1) * sign(col0.x * col1.y - col0.y * col1.x));
+	
 	float rotation = atan(col0.y, col0.x);
-	float det = col0.x * col1.y - col0.y * col1.x;
-	
-	vec2 col0_norm = normalize(col0);
-	vec2 col1_norm = normalize(col1) * sign(det);
-	
-	float dot_product = dot(col0_norm, col1_norm);
-	float skew = acos(clamp(dot_product, -1.0, 1.0)) - PI * 0.5;
-	
-	cos_skew = cos(skew);
 	max_rotation_factor = max(abs(cos(rotation)), abs(sin(rotation)));
+	cos_skew = cos(acos(clamp(dot_product, -1.0, 1.0)) - PI * 0.5);
 }
 
 void fragment() {

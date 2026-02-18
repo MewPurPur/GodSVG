@@ -10,7 +10,7 @@ const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
 const ConfirmDialogScene = preload("res://src/ui_widgets/confirm_dialog.tscn")
 
 # FIXME Workaround to a truly diabolical issue! #115996
-static var OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn"):
+static var OptionsDialogScene := preload("res://src/ui_widgets/options_dialog.tscn"):
 	get:
 		if not OptionsDialogScene.can_instantiate():
 			OptionsDialogScene = load("res://src/ui_widgets/options_dialog.tscn")
@@ -430,7 +430,8 @@ static func _close_tabs_internal(indices: Array[int]) -> void:
 	
 	var tab := Configs.savedata.get_tab(idx)
 	
-	var dont_save_callback := func() -> void:
+	var dont_save_callback :=\
+		func() -> void:
 			Configs.savedata.remove_tab(idx)
 			HandlerGUI.remove_all_menus()
 			_close_tabs_internal(indices.duplicate())
@@ -483,7 +484,7 @@ class WebSafeFileAccess:
 	var _is_web_file: bool = false
 	
 	static func open(file_path: String, mode: int) -> WebSafeFileAccess:
-		var wrapper = WebSafeFileAccess.new()
+		var wrapper := WebSafeFileAccess.new()
 		if OS.has_feature("web") and FileUtils._web_file_data_cache.has(file_path):
 			wrapper._cached_data = FileUtils._web_file_data_cache[file_path]
 			wrapper._is_web_file = true
@@ -535,7 +536,7 @@ completion_callback: Callable, multi_select: bool) -> void:
 	
 	# Setup and clearing previous data.
 	_web_file_data_cache.clear()
-	var window = JavaScriptBridge.get_interface("window")
+	var window := JavaScriptBridge.get_interface("window")
 	window.godsvgFileNames = JavaScriptBridge.create_object("Array")
 	window.godsvgFileDataArray = JavaScriptBridge.create_object("Array")
 	window.godsvgDialogClosed = false
@@ -591,7 +592,7 @@ static func _web_on_files_selected(args: Array) -> void:
 		return
 	
 	# Set up tracking for multiple files.
-	var window = JavaScriptBridge.get_interface("window")
+	var window := JavaScriptBridge.get_interface("window")
 	window.godsvgFilesToProcess = files.length
 	window.godsvgFilesProcessed = 0
 	
@@ -622,7 +623,7 @@ static func _web_on_file_loaded(args: Array, file_index: int) -> void:
 	if event.target.readyState != FileReader.DONE:
 		return
 	
-	var window = JavaScriptBridge.get_interface("window")
+	var window := JavaScriptBridge.get_interface("window")
 	var file_name: String = window.godsvgFileNames[file_index]
 	
 	# Store file data based on type.
@@ -631,14 +632,14 @@ static func _web_on_file_loaded(args: Array, file_index: int) -> void:
 		window.godsvgFileDataArray[file_index] = event.target.result
 	else:
 		# For binary files, convert ArrayBuffer to Uint8Array.
-		var Uint8Array = JavaScriptBridge.get_interface("Uint8Array")
+		var Uint8Array := JavaScriptBridge.get_interface("Uint8Array")
 		window.godsvgFileDataArray[file_index] = Uint8Array.new(event.target.result)
 	
 	# Increment processed counter.
 	window.godsvgFilesProcessed += 1
 
 static func _web_on_file_dialog_canceled(_args: Array) -> void:
-	var window = JavaScriptBridge.get_interface("window")
+	var window := JavaScriptBridge.get_interface("window")
 	window.godsvgDialogClosed = true
 
 

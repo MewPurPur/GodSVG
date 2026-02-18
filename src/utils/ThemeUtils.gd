@@ -249,7 +249,7 @@ static func recalculate_colors() -> void:
 	connected_button_border_color_pressed = line_edit_normal_border_color.lerp(common_button_border_color_pressed, 0.6)
 	
 	selected_tab_color = softer_intermediate_hover_color.lerp(accent_color, 0.2)
-	selected_tab_border_color = accent_color
+	selected_tab_border_color = Color(accent_color, 0.88)
 
 static func rebuild_fonts() -> void:
 	main_font.base_font = FontFile.new()
@@ -374,29 +374,6 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	textbox_stylebox.bg_color = overlay_panel_inner_color.lerp(extreme_theme_color, 0.2)
 	textbox_stylebox.border_color = subtle_panel_border_color
 	theme.set_stylebox("panel", "TextBox", textbox_stylebox)
-	
-	theme.add_type("SideTabBar")
-	theme.set_type_variation("SideTabBar", "PanelContainer")
-	var side_tabbar_stylebox := StyleBoxFlat.new()
-	side_tabbar_stylebox.bg_color = soft_base_color
-	side_tabbar_stylebox.set_content_margin_all(0)
-	side_tabbar_stylebox.corner_radius_top_left = 5
-	side_tabbar_stylebox.corner_radius_bottom_left = 5
-	theme.set_stylebox("panel", "SideTabBar", side_tabbar_stylebox)
-	
-	theme.add_type("SideBarContent")
-	theme.set_type_variation("SideBarContent", "PanelContainer")
-	var panel_stylebox := StyleBoxFlat.new()
-	panel_stylebox.bg_color = soft_base_color.lerp(softer_base_color, 0.6)
-	panel_stylebox.border_color = subtle_panel_border_color
-	panel_stylebox.set_border_width_all(2)
-	panel_stylebox.corner_radius_top_right = 5
-	panel_stylebox.corner_radius_bottom_right = 5
-	panel_stylebox.content_margin_left = 14
-	panel_stylebox.content_margin_right = 2
-	panel_stylebox.content_margin_bottom = 2
-	panel_stylebox.content_margin_top = 2
-	theme.set_stylebox("panel", "SideBarContent", panel_stylebox)
 
 static func _setup_button(theme: Theme) -> void:
 	theme.add_type("Button")
@@ -1246,7 +1223,6 @@ static func _setup_tabcontainer(theme: Theme) -> void:
 	theme.set_color("font_hovered_color", "TabContainer", text_color)
 	theme.set_color("font_selected_color", "TabContainer", highlighted_text_color)
 	theme.set_constant("side_margin", "TabContainer", 0)
-	theme.set_font_size("font_size", "TabContainer", 14)
 	
 	var panel_stylebox := StyleBoxFlat.new()
 	panel_stylebox.bg_color = soft_base_color.lerp(softer_base_color, 0.5)
@@ -1256,49 +1232,69 @@ static func _setup_tabcontainer(theme: Theme) -> void:
 	panel_stylebox.border_width_bottom = 2
 	panel_stylebox.corner_radius_bottom_right = 5
 	panel_stylebox.corner_radius_bottom_left = 5
-	panel_stylebox.content_margin_left = 8.0
-	panel_stylebox.content_margin_right = 2.0
-	panel_stylebox.content_margin_bottom = 2.0
-	panel_stylebox.content_margin_top = 0.0
+	panel_stylebox.content_margin_left = 2
+	panel_stylebox.content_margin_right = 2
+	panel_stylebox.content_margin_bottom = 2
+	panel_stylebox.content_margin_top = 0
 	theme.set_stylebox("panel", "TabContainer", panel_stylebox)
 	
-	var tab_disabled_stylebox := StyleBoxEmpty.new()
-	tab_disabled_stylebox.content_margin_left = 12.0
-	tab_disabled_stylebox.content_margin_right = 12.0
-	tab_disabled_stylebox.content_margin_bottom = 3.0
-	tab_disabled_stylebox.content_margin_top = 3.0
-	theme.set_stylebox("tab_disabled", "TabContainer", tab_disabled_stylebox)
-	theme.set_stylebox("tab_focus", "TabContainer", StyleBoxEmpty.new())
+	var tab_stylebox := StyleBoxFlat.new()
+	tab_stylebox.corner_radius_top_left = 4
+	tab_stylebox.corner_radius_top_right = 4
+	tab_stylebox.content_margin_left = 12.0
+	tab_stylebox.content_margin_right = 12.0
+	tab_stylebox.content_margin_bottom = 3.0
+	tab_stylebox.content_margin_top = 3.0
 	
-	var tab_hover_stylebox := StyleBoxFlat.new()
+	theme.set_stylebox("tab_disabled", "TabContainer", tab_stylebox)  # Unused
+	
+	var tab_focus_stylebox := StyleBoxFlat.new()
+	tab_focus_stylebox.set_border_width_all(2)
+	tab_focus_stylebox.draw_center = false
+	tab_focus_stylebox.border_color = focus_color
+	theme.set_stylebox("tab_focus", "TabContainer", tab_focus_stylebox)
+	
+	var tab_hover_stylebox := tab_stylebox.duplicate()
 	tab_hover_stylebox.bg_color = softer_intermediate_hover_color
-	tab_hover_stylebox.corner_radius_top_left = 4
-	tab_hover_stylebox.corner_radius_top_right = 4
-	tab_hover_stylebox.content_margin_left = 12.0
-	tab_hover_stylebox.content_margin_right = 12.0
-	tab_hover_stylebox.content_margin_bottom = 3.0
-	tab_hover_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("tab_hovered", "TabContainer", tab_hover_stylebox)
 	
-	var tab_selected_stylebox := StyleBoxFlat.new()
+	var tab_selected_stylebox := tab_stylebox.duplicate()
+	tab_selected_stylebox.corner_radius_top_left = 0
+	tab_selected_stylebox.corner_radius_top_right = 0
+	tab_selected_stylebox.border_width_top = 2
 	tab_selected_stylebox.bg_color = selected_tab_color
 	tab_selected_stylebox.border_color = selected_tab_border_color
-	tab_selected_stylebox.border_width_top = 2
-	tab_selected_stylebox.content_margin_left = 12.0
-	tab_selected_stylebox.content_margin_right = 12.0
-	tab_selected_stylebox.content_margin_bottom = 3.0
-	tab_selected_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("tab_selected", "TabContainer", tab_selected_stylebox)
 	
-	var tab_unselected_stylebox := StyleBoxFlat.new()
+	var tab_unselected_stylebox := tab_stylebox.duplicate()
 	tab_unselected_stylebox.bg_color = softer_intermediate_color
-	tab_unselected_stylebox.corner_radius_top_left = 4
-	tab_unselected_stylebox.corner_radius_top_right = 4
-	tab_unselected_stylebox.content_margin_left = 12.0
-	tab_unselected_stylebox.content_margin_right = 12.0
-	tab_unselected_stylebox.content_margin_bottom = 3.0
-	tab_unselected_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("tab_unselected", "TabContainer", tab_unselected_stylebox)
+	
+	var side_tab_stylebox := StyleBoxFlat.new()
+	side_tab_stylebox.corner_radius_top_left = 4
+	side_tab_stylebox.corner_radius_bottom_left = 4
+	side_tab_stylebox.content_margin_top = 3.0
+	side_tab_stylebox.content_margin_bottom = 3.0
+	side_tab_stylebox.content_margin_left = 4.0
+	side_tab_stylebox.content_margin_right = 10.0
+	
+	var side_tab_hover_stylebox := side_tab_stylebox.duplicate()
+	side_tab_hover_stylebox.bg_color = softer_intermediate_hover_color
+	theme.set_stylebox("side_tab_hovered", "TabContainer", side_tab_hover_stylebox)
+	
+	var side_tab_selected_stylebox := side_tab_stylebox.duplicate()
+	side_tab_selected_stylebox.corner_radius_top_left = 0
+	side_tab_selected_stylebox.corner_radius_bottom_left = 0
+	side_tab_selected_stylebox.content_margin_left = 8.0
+	side_tab_selected_stylebox.content_margin_right = 6.0
+	side_tab_selected_stylebox.border_width_left = 2
+	side_tab_selected_stylebox.bg_color = selected_tab_color
+	side_tab_selected_stylebox.border_color = selected_tab_border_color
+	theme.set_stylebox("side_tab_selected", "TabContainer", side_tab_selected_stylebox)
+	
+	var side_tab_unselected_stylebox := side_tab_stylebox.duplicate()
+	side_tab_unselected_stylebox.bg_color = softer_intermediate_color
+	theme.set_stylebox("side_tab_unselected", "TabContainer", side_tab_unselected_stylebox)
 	
 	var tabbar_background_stylebox := StyleBoxFlat.new()
 	tabbar_background_stylebox.bg_color = soft_base_color

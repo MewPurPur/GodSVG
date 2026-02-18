@@ -86,11 +86,11 @@ func _ready() -> void:
 	more_button.pressed.connect(_on_more_button_pressed)
 	
 	transparent_color_swatch.color = "none"
-	transparent_color_swatch.pressed.connect(func(): color_edit.value = "#fff0")
+	transparent_color_swatch.pressed.connect(func() -> void: color_edit.value = "#fff0")
 	black_color_swatch.color = "#000"
-	black_color_swatch.pressed.connect(func(): color_edit.value = "#000")
+	black_color_swatch.pressed.connect(func() -> void: color_edit.value = "#000")
 	white_color_swatch.color = "#fff"
-	white_color_swatch.pressed.connect(func(): color_edit.value = "#fff")
+	white_color_swatch.pressed.connect(func() -> void: color_edit.value = "#fff")
 	
 	color_edit.value_changed.connect(_update_preview_background)
 	color_edit.value = Configs.savedata.previews_background.to_html()
@@ -108,7 +108,7 @@ func _ready() -> void:
 				sync_tiles()
 	)
 	split_container.resized.connect(
-		func():
+		func() -> void:
 			split_container.vertical = (split_container.size.y * 2.0 > split_container.size.x)
 			sync_preview_top_panel_expand_margins()
 			sync_tile_positions()
@@ -228,7 +228,7 @@ func _on_tiles_gui_input(event: InputEvent) -> void:
 	
 	elif event is InputEventMouseButton:
 		if event.is_pressed():
-			if event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE]:
+			if event.button_index == MOUSE_BUTTON_LEFT:
 				_select_tile(hovered_tile_index)
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
 				if hovered_tile_index >= 0:

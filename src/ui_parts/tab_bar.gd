@@ -312,6 +312,7 @@ func get_tab_rect(idx: int) -> Rect2:
 	
 	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width) / Configs.savedata.get_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
+	
 	var unclamped_tab_start := tab_width * idx - current_scroll + left_limit
 	var tab_start := clampf(unclamped_tab_start, left_limit, right_limit)
 	var tab_end := clampf(unclamped_tab_start + tab_width, left_limit, right_limit)

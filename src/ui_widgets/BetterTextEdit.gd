@@ -57,7 +57,7 @@ func _line_number_draw_callback(line: int, _gutter: int, region: Rect2) -> void:
 	if not Rect2(Vector2.ZERO, size).intersects(region):
 		return
 	
-	var line_number_text := String.num_int64(line + 1)
+	var line_number_text := String.num_uint64(line + 1)
 	var font := get_theme_font("font")
 	var font_size := get_theme_font_size("font_size")
 	

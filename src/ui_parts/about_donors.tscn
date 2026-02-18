@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://86k1kxkfkaf8"]
+
+[ext_resource type="Script" uid="uid://ep3rlxpfug5b" path="res://src/ui_parts/about_donors.gd" id="1_hs77b"]
+[ext_resource type="Script" uid="uid://ci44864moadn" path="res://src/ui_widgets/PanelGrid.gd" id="1_llebk"]
+
+[node name="AboutDonors" type="VBoxContainer" unique_id=1362687579]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+script = ExtResource("1_hs77b")
+
+[node name="DiamondDonors" type="VBoxContainer" parent="." unique_id=1242401093]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="DiamondDonors" unique_id=1657208372]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="List" type="Control" parent="DiamondDonors" unique_id=163027498]
+layout_mode = 2
+script = ExtResource("1_llebk")
+columns = 2
+
+[node name="GoldenDonors" type="VBoxContainer" parent="." unique_id=472682109]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="GoldenDonors" unique_id=620990080]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="List" type="Control" parent="GoldenDonors" unique_id=1249939339]
+layout_mode = 2
+script = ExtResource("1_llebk")
+columns = 2
+
+[node name="Donors" type="VBoxContainer" parent="." unique_id=1319653007]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Donors" unique_id=2081194376]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="List" type="Control" parent="Donors" unique_id=1227033023]
+layout_mode = 2
+script = ExtResource("1_llebk")
+columns = 2
+
+[node name="PastDiamondDonors" type="VBoxContainer" parent="." unique_id=1169062065]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="PastDiamondDonors" unique_id=1801461726]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="List" type="Control" parent="PastDiamondDonors" unique_id=158152430]
+layout_mode = 2
+script = ExtResource("1_llebk")
+columns = 2
+
+[node name="PastGoldenDonors" type="VBoxContainer" parent="." unique_id=2109721823]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="PastGoldenDonors" unique_id=951305952]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="List" type="Control" parent="PastGoldenDonors" unique_id=1794218728]
+layout_mode = 2
+script = ExtResource("1_llebk")
+columns = 2
+
+[node name="PastDonors" type="VBoxContainer" parent="." unique_id=1108178035]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="PastDonors" unique_id=1706191194]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="List" type="Control" parent="PastDonors" unique_id=146392507]
+layout_mode = 2
+script = ExtResource("1_llebk")
+columns = 2

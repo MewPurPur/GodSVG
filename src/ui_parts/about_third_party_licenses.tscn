@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bkqse55sliuna"]
+
+[ext_resource type="Script" uid="uid://kks5cpj44u0v" path="res://src/ui_parts/about_third_party_licenses.gd" id="1_tfm1x"]
+
+[node name="AboutThirdPartyLicenses" type="VBoxContainer" unique_id=170855117]
+theme_override_constants/separation = 18
+script = ExtResource("1_tfm1x")
+
+[node name="GodSVGParts" type="VBoxContainer" parent="." unique_id=1775486905]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GodotParts" type="VBoxContainer" parent="." unique_id=341643637]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LicenseTexts" type="VBoxContainer" parent="." unique_id=811403947]
+layout_mode = 2
+theme_override_constants/separation = 12
