@@ -195,11 +195,11 @@ func save_palette(palette_idx: int) -> void:
 func open_palette_options() -> void:
 	var btn_arr: Array[ContextButton] = []
 	btn_arr.append(ContextButton.create_custom("Pure", apply_preset.bind(Palette.Preset.PURE),
-			load("res://assets/icons/PresetPure.svg"), palette.is_same_as_preset(Palette.Preset.PURE)).set_icon_unmodulated())
+			preload("res://assets/icons/PresetPure.svg"), palette.is_same_as_preset(Palette.Preset.PURE)).set_icon_unmodulated())
 	btn_arr.append(ContextButton.create_custom("Grayscale", apply_preset.bind(Palette.Preset.GRAYSCALE),
-			load("res://assets/icons/PresetGrayscale.svg"), palette.is_same_as_preset(Palette.Preset.GRAYSCALE)).set_icon_unmodulated())
+			preload("res://assets/icons/PresetGrayscale.svg"), palette.is_same_as_preset(Palette.Preset.GRAYSCALE)).set_icon_unmodulated())
 	btn_arr.append(ContextButton.create_custom("Empty", apply_preset.bind(Palette.Preset.EMPTY),
-			load("res://assets/icons/Clear.svg"), palette.is_same_as_preset(Palette.Preset.EMPTY)))
+			preload("res://assets/icons/Clear.svg"), palette.is_same_as_preset(Palette.Preset.EMPTY)))
 	
 	var context_popup := ContextPopup.create(btn_arr)
 	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(), get_viewport())

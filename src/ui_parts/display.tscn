@@ -93,7 +93,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
-focus_mode = 0
 script = ExtResource("9_ryr8t")
 metadata/_custom_type_script = "uid://8bxv5i60h8rb"
 

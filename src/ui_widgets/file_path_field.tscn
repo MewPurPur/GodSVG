@@ -23,7 +23,6 @@ script = ExtResource("2_vugfe")
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
