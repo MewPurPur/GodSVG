@@ -4,12 +4,10 @@ const SettingsContentGeneric = preload("res://src/ui_widgets/settings_content_ge
 const SettingsContentPalettes = preload("res://src/ui_widgets/settings_content_palettes.tscn")
 const SettingsContentShortcuts = preload("res://src/ui_widgets/settings_content_shortcuts.tscn")
 
-@onready var lang_button: Button = $VBoxContainer/Language
-@onready var scroll_container: ScrollContainer = %ScrollContainer
-@onready var content_container: MarginContainer = %ScrollContainer/ContentContainer
-@onready var tabs: VBoxContainer = %Tabs
-@onready var close_button: Button = $VBoxContainer/CloseButton
-@onready var preview_panel: PanelContainer = $VBoxContainer/PreviewPanel
+@onready var language_button: Button = %LanguageButton
+@onready var settings_tab_container: GoodTabContainer = %SettingsTabContainer
+@onready var preview_panel: PanelContainer = %PreviewPanel
+@onready var close_button: Button = %CloseButton
 
 enum TabIndex {FORMATTING, OPTIMIZER, PALETTES, SHORTCUTS, THEMING, TAB_BAR, OTHER}
 
@@ -24,9 +22,6 @@ func get_tab_localized_name(tab_index: TabIndex) -> String:
 		TabIndex.OTHER: return Translator.translate("Other")
 	return ""
 
-@warning_ignore("int_as_enum_without_match")
-var focused_tab_index := -1 as TabIndex
-
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("select_next_tab", select_next_tab)
@@ -34,101 +29,70 @@ func _ready() -> void:
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	close_button.pressed.connect(queue_free)
-	lang_button.pressed.connect(_on_language_pressed)
-	scroll_container.get_v_scroll_bar().visibility_changed.connect(adjust_right_margin)
-	adjust_right_margin()
+	language_button.pressed.connect(_on_language_pressed)
 	
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
-	press_tab(0)
 	
-	HandlerGUI.register_focus_sequence(self, [lang_button, close_button])
-	lang_button.grab_focus(true)
+	settings_tab_container.get_content_method = get_content
+	settings_tab_container.select_tab(0)
+	
+	HandlerGUI.register_focus_sequence(self, [language_button, settings_tab_container, close_button])
+	language_button.grab_focus(true)
 
 func select_next_tab() -> void:
-	press_tab((focused_tab_index + 1) % TabIndex.size())
+	settings_tab_container.select_tab((settings_tab_container.current_tab_index + 1) % TabIndex.size())
 
 func select_previous_tab() -> void:
 	var tab_count := TabIndex.size()
-	press_tab((focused_tab_index + tab_count - 1) % tab_count)
-
-func press_tab(index: int) -> void:
-	tabs.get_child(index).button_pressed = true
+	settings_tab_container.select_tab((settings_tab_container.current_tab_index + tab_count - 1) % tab_count)
 
 func sync_theming() -> void:
 	var stylebox := ThemeDB.get_default_theme().get_stylebox("panel", theme_type_variation).duplicate()
 	stylebox.content_margin_top += 4.0
 	add_theme_stylebox_override("panel", stylebox)
+	setup_tabs()
 
 func sync_localization() -> void:
 	close_button.text = Translator.translate("Close")
-	lang_button.text = Translator.translate("Language") + ": " + TranslationUtils.get_locale_string(TranslationServer.get_locale())
+	language_button.text = Translator.translate("Language") + ": " + TranslationUtils.get_locale_string(TranslationServer.get_locale())
 	setup_tabs()
 
-func adjust_right_margin() -> void:
-	var scrollbar := scroll_container.get_v_scroll_bar()
-	content_container.add_theme_constant_override("margin_right", 2 if scrollbar.visible else int(2 + scrollbar.size.x))
-
 func setup_tabs() -> void:
-	for tab in tabs.get_children():
-		tab.queue_free()
-	var button_group := ButtonGroup.new()
+	settings_tab_container.clear_all_tabs()
 	for tab_index in TabIndex.size():
-		var tab := Button.new()
-		tab.text = get_tab_localized_name(tab_index)
-		tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
-		tab.toggle_mode = true
-		tab.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-		tab.theme_type_variation = "SideTab"
-		tab.toggled.connect(_on_tab_toggled.bind(tab_index))
-		tab.button_group = button_group
-		tab.button_pressed = (tab_index == focused_tab_index)
-		tabs.add_child(tab)
+		settings_tab_container.add_tab(get_tab_localized_name(tab_index))
 
-
-func _on_tab_toggled(toggled_on: bool, tab_index: TabIndex) -> void:
-	if toggled_on and focused_tab_index != tab_index:
-		focused_tab_index = tab_index
-		setup_content()
-
-func setup_content() -> void:
-	scroll_container.scroll_vertical = 0
-	for child in content_container.get_children():
-		child.queue_free()
-	
-	match focused_tab_index:
+func get_content(index: TabIndex) -> Control:
+	var current_content: Control = null
+	preview_panel.visible = index in [TabIndex.FORMATTING, TabIndex.THEMING, TabIndex.TAB_BAR, TabIndex.OTHER]
+	match index:
 		TabIndex.FORMATTING:
-			preview_panel.show()
-			var current_content := SettingsContentGeneric.instantiate()
+			current_content = SettingsContentGeneric.instantiate()
 			current_content.setup([Configs.savedata.editor_formatter,
-					Configs.savedata.export_formatter] as Array[ConfigResource], focused_tab_index)
-			content_container.add_child(current_content)
+					Configs.savedata.export_formatter] as Array[ConfigResource], current_content.setup_formatting_content)
 			current_content.preview_changed.connect(set_preview)
 		TabIndex.OPTIMIZER:
-			preview_panel.hide()
-			var current_content := SettingsContentGeneric.instantiate()
-			current_content.setup([Configs.savedata.default_optimizer] as Array[ConfigResource], focused_tab_index)
-			content_container.add_child(current_content)
-			current_content.preview_changed.connect(set_preview)
+			current_content = SettingsContentGeneric.instantiate()
+			current_content.setup([Configs.savedata.default_optimizer] as Array[ConfigResource], current_content.setup_optimizer_content)
 		TabIndex.PALETTES:
-			preview_panel.hide()
-			var current_content := SettingsContentPalettes.instantiate()
-			content_container.add_child(current_content)
+			current_content = SettingsContentPalettes.instantiate()
 		TabIndex.SHORTCUTS:
-			preview_panel.hide()
-			var current_content := SettingsContentShortcuts.instantiate()
-			content_container.add_child(current_content)
+			current_content = SettingsContentShortcuts.instantiate()
 		TabIndex.THEMING, TabIndex.TAB_BAR, TabIndex.OTHER:
-			preview_panel.show()
-			var current_content := SettingsContentGeneric.instantiate()
-			current_content.setup([Configs.savedata] as Array[ConfigResource], focused_tab_index)
-			content_container.add_child(current_content)
+			current_content = SettingsContentGeneric.instantiate()
+			var callback := Callable()
+			match index:
+				TabIndex.THEMING: callback = current_content.setup_theming_content
+				TabIndex.TAB_BAR: callback = current_content.setup_tab_bar_content
+				TabIndex.OTHER: callback = current_content.setup_other_content
+			current_content.setup([Configs.savedata] as Array[ConfigResource], callback)
 			current_content.preview_changed.connect(set_preview)
 	# Update hover.
 	HandlerGUI.throw_mouse_motion_event()
+	return current_content
 
 
 func set_preview(node: Control) -> void:
@@ -154,7 +118,7 @@ func _on_language_pressed() -> void:
 			btn.add_custom_dim_text(Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%")
 		btn_arr.append(btn)
 	
-	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), lang_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), language_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale

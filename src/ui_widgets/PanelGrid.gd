@@ -78,6 +78,7 @@ func _gui_input(event: InputEvent) -> void:
 				var box := boxes[idx]
 				if box.has_point(event.position):
 					if email != hovered_email:
+						hovered_email = email
 						if is_instance_valid(copy_button):
 							copy_button.queue_free()
 						copy_button = Button.new()

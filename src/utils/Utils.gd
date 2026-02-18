@@ -55,6 +55,31 @@ text_property := "text", font_property := "font", font_size_property := "font_si
 	control.custom_minimum_size.x = minf(control.get_theme_font(font_property).get_string_size(control.get(text_property),
 			HORIZONTAL_ALIGNMENT_FILL, -1, control.get_theme_font_size(font_size_property)).x + buffer, max_width)
 
+static func rotate_flat_stylebox_90_left(stylebox: StyleBoxFlat) -> void:
+	var temp1 := stylebox.border_width_left
+	stylebox.border_width_left = stylebox.border_width_top
+	stylebox.border_width_top = stylebox.border_width_right
+	stylebox.border_width_right = stylebox.border_width_bottom
+	stylebox.border_width_bottom = temp1
+	
+	var temp2 := stylebox.corner_radius_bottom_left
+	stylebox.corner_radius_bottom_left = stylebox.corner_radius_top_left
+	stylebox.corner_radius_top_left = stylebox.corner_radius_top_right
+	stylebox.corner_radius_top_right = stylebox.corner_radius_bottom_right
+	stylebox.corner_radius_bottom_right = temp2
+	
+	var temp3 := stylebox.border_width_left
+	stylebox.content_margin_left = stylebox.content_margin_top
+	stylebox.content_margin_top = stylebox.content_margin_right
+	stylebox.content_margin_right = stylebox.content_margin_bottom
+	stylebox.content_margin_bottom = temp3
+	
+	var temp4 := stylebox.expand_margin_left
+	stylebox.expand_margin_left = stylebox.expand_margin_top
+	stylebox.expand_margin_top = stylebox.expand_margin_right
+	stylebox.expand_margin_right = stylebox.expand_margin_bottom
+	stylebox.expand_margin_bottom = temp4
+
 
 static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
@@ -119,3 +144,66 @@ static func has_clipboard_image_web_safe() -> bool:
 	if OS.has_feature("web"):
 		return false
 	return DisplayServer.clipboard_has_image()
+
+
+# Just enough of a parser to handle app_data.toml
+static func get_app_info() -> Dictionary[String, Variant]:
+	var toml_text := FileAccess.get_file_as_string("res://app_info.toml")
+	var lines := toml_text.split("\n", false)
+	var result: Dictionary[String, Variant]
+	var i := 0
+	
+	while i < lines.size():
+		var line := lines[i].get_slice("#", 0).strip_edges()
+		if line.is_empty():
+			i += 1
+			continue
+		
+		var parts := line.split("=", false, 2)
+		if parts.size() != 2:
+			i += 1
+			continue
+		
+		var key := parts[0].strip_edges()
+		var raw_value := parts[1].strip_edges()
+		
+		if raw_value.begins_with("["):
+			var array_text := ""
+			if raw_value.ends_with("]"):
+				array_text = raw_value.substr(1, raw_value.length() - 2)
+			else:
+				array_text = raw_value.right(-1)
+				while true:
+					i += 1
+					if i >= lines.size():
+						break
+					var next_line := lines[i].get_slice("#", 0).strip_edges()
+					if next_line.ends_with("]"):
+						array_text += " " + next_line.substr(0, next_line.length() - 1)
+						break
+					else:
+						array_text += " " + next_line
+			
+			var elements := array_text.split(",", false)
+			var arr := []
+			for elem in elements:
+				var v := elem.strip_edges()
+				if (v.begins_with('"') and v.ends_with('"')) or (v.begins_with("'") and v.ends_with("'")):
+					arr.append(v.substr(1, v.length() - 2))
+				elif v.is_valid_int():
+					arr.append(v.to_int())
+				elif v.is_valid_float():
+					arr.append(v.to_float())
+			result[key] = arr
+		
+		else:
+			if (raw_value.begins_with('"') and raw_value.ends_with('"')) or (raw_value.begins_with("'") and raw_value.ends_with("'")):
+				result[key] = raw_value.substr(1, raw_value.length() - 2)
+			elif raw_value.is_valid_int():
+				result[key] = raw_value.to_int()
+			elif raw_value.is_valid_float():
+				result[key] = raw_value.to_float()
+		
+		i += 1
+	
+	return result

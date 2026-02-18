@@ -55,7 +55,7 @@ func _gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT and not (_text.is_empty() and not editing_enabled):
 			accept_event()
 			_enter_edit_mode()
-		elif event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE]:
+		elif event.button_index == MOUSE_BUTTON_LEFT:
 			accept_event()
 			grab_focus(true)
 			_show_value_picker()

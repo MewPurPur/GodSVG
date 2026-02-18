@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bptueabkfek0c"]
+
+[ext_resource type="Script" uid="uid://c3ebmgoi42ryu" path="res://src/ui_parts/about_authors.gd" id="1_byvd7"]
+[ext_resource type="Script" uid="uid://ci44864moadn" path="res://src/ui_widgets/PanelGrid.gd" id="1_nofba"]
+
+[node name="AboutAuthors" type="VBoxContainer" unique_id=503794767]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+script = ExtResource("1_byvd7")
+
+[node name="ProjectFounderLabel" type="Label" parent="." unique_id=16410242]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="DevelopersLabel" type="Label" parent="." unique_id=1543198677]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="DevelopersList" type="Control" parent="." unique_id=891459704]
+layout_mode = 2
+script = ExtResource("1_nofba")
+columns = 2
+
+[node name="TranslatorsLabel" type="Label" parent="." unique_id=404490400]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="TranslatorsVBox" type="VBoxContainer" parent="." unique_id=861245877]
+layout_mode = 2
+theme_override_constants/separation = 6

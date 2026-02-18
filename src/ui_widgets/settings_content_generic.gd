@@ -8,7 +8,7 @@ const ProfileFrameScene = preload("res://src/ui_widgets/profile_frame.tscn")
 
 # If there are multiple setup resources, they will be added as tabs.
 var current_setup_resources: Array[ConfigResource]
-var type: SettingsMenu.TabIndex
+var setup_method: Callable
 
 var current_setup_setting := ""
 var current_setup_resource_index := 0
@@ -101,8 +101,8 @@ func _get_current_setup_resource() -> ConfigResource:
 func _set_current_setup_resource_index(new_index: int) -> void:
 	current_setup_resource_index = new_index
 
-func setup(setup_resources: Array[ConfigResource], new_type: SettingsMenu.TabIndex) -> void:
-	type = new_type
+func setup(setup_resources: Array[ConfigResource], new_setup_method: Callable) -> void:
+	setup_method = new_setup_method
 	current_setup_resources = setup_resources
 
 
@@ -111,13 +111,7 @@ func setup_content() -> void:
 		setting_container.remove_child(child)
 		child.queue_free()
 	current_setup_container = setting_container
-	
-	match type:
-		SettingsMenu.TabIndex.FORMATTING: setup_formatting_content()
-		SettingsMenu.TabIndex.OPTIMIZER: setup_optimizer_content()
-		SettingsMenu.TabIndex.THEMING: setup_theming_content()
-		SettingsMenu.TabIndex.TAB_BAR: setup_tab_bar_content()
-		SettingsMenu.TabIndex.OTHER: setup_other_content()
+	setup_method.call()
 	HandlerGUI.throw_mouse_motion_event()
 
 func setup_formatting_content() -> void:
@@ -483,9 +477,9 @@ func setup_theming_content() -> void:
 	add_preview(SettingTextPreview.new(Translator.translate(
 			"Determines the accent color used for highlighted elements in GodSVG's interface.")))
 	
-	var basic_svg_text = """<circle cx="6" cy="8" r="4" fill="gold" />"""
-	var basic_svg_text_with_syntax_error = """<circle cx="6" cy="8" ==syntax error"""
-	var fancy_svg_text = """<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""
+	var basic_svg_text := """<circle cx="6" cy="8" r="4" fill="gold" />"""
+	var basic_svg_text_with_syntax_error := """<circle cx="6" cy="8" ==syntax error"""
+	var fancy_svg_text := """<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""
 	
 	add_section(Translator.translate("Fonts"))
 	current_setup_setting = "main_font_path"
@@ -885,27 +879,31 @@ func emit_preview_changed() -> void:
 	if preview is SettingTextPreview:
 		var has_warning: bool = (preview.warning != preview.WarningType.NONE)
 		var margin_container := MarginContainer.new()
+		margin_container.begin_bulk_theme_override()
 		margin_container.add_theme_constant_override("margin_left", 6)
 		margin_container.add_theme_constant_override("margin_right", 6)
 		margin_container.add_theme_constant_override("margin_top", 2)
 		margin_container.add_theme_constant_override("margin_bottom", 4)
+		margin_container.end_bulk_theme_override()
+		
 		var label := Label.new()
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		label.add_theme_constant_override("line_spacing", 2)
 		label.text = preview.text
-		var preview_font_size := get_theme_font_size("font_size", "Label")
-		while label.get_line_count() >= (2 if has_warning else 3):
-			preview_font_size -= 1
-			label.add_theme_font_size_override("font_size", preview_font_size)
+		
+		var font_size := get_theme_font_size("font_size")
+		var PROBES: Array[PackedInt32Array] = [[font_size, 2], [font_size - 1, 1], [font_size - 2, 1], [font_size - 3, 0], [font_size - 4, 0]]
+		
 		if has_warning:
 			var vbox := VBoxContainer.new()
 			vbox.add_theme_constant_override("separation", 2)
 			var no_effect_warning_label := Label.new()
 			no_effect_warning_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			no_effect_warning_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			no_effect_warning_label.begin_bulk_theme_override()
 			no_effect_warning_label.add_theme_constant_override("line_spacing", 2)
 			no_effect_warning_label.add_theme_color_override("font_color", Configs.savedata.basic_color_warning)
+			no_effect_warning_label.end_bulk_theme_override()
 			match preview.warning:
 				preview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION:
 					no_effect_warning_label.text = Translator.translate("The setting has no effect in the current configuration.")
@@ -913,21 +911,48 @@ func emit_preview_changed() -> void:
 					no_effect_warning_label.text = Translator.translate("The setting can't be changed on this platform.")
 				_:
 					no_effect_warning_label.text = ""
-			while no_effect_warning_label.get_line_count() >= 2:
-				preview_font_size -= 1
-				no_effect_warning_label.add_theme_font_size_override("font_size", preview_font_size)
-				label.add_theme_font_size_override("font_size", preview_font_size)
 			if not preview.text.is_empty():
 				vbox.add_child(label)
 			vbox.add_child(no_effect_warning_label)
+			
+			label.resized.connect(
+				func() -> void:
+					label.set_block_signals(true)
+					no_effect_warning_label.set_block_signals(true)
+					label.remove_theme_font_size_override("font_size")
+					no_effect_warning_label.remove_theme_font_size_override("font_size")
+					for i in PROBES.size():
+						var probe := PROBES[i]
+						label.add_theme_font_size_override("font_size", probe[0])
+						no_effect_warning_label.add_theme_font_size_override("font_size", probe[0])
+						if label.get_line_count() + no_effect_warning_label.get_line_count() <= 2:
+							label.add_theme_constant_override("line_spacing", probe[1])
+							vbox.add_theme_constant_override("separation", probe[1])
+							break
+					label.set_block_signals(false)
+					no_effect_warning_label.set_block_signals(false)
+			)
 			margin_container.add_child(vbox)
 		else:
+			label.resized.connect(
+				func() -> void:
+					label.set_block_signals(true)
+					label.remove_theme_font_size_override("font_size")
+					for i in PROBES.size():
+						var probe := PROBES[i]
+						label.add_theme_font_size_override("font_size", probe[0])
+						if label.get_line_count() <= 2:
+							label.add_theme_constant_override("line_spacing", probe[1])
+							break
+					label.set_block_signals(false)
+			)
 			margin_container.add_child(label)
 		preview_changed.emit(margin_container)
 	elif preview is SettingCodePreview:
 		var code_preview := BetterTextEdit.new()
 		code_preview.editable = false
-		var update_highlighter := func() -> void:
+		var update_highlighter :=\
+			func() -> void:
 				code_preview.syntax_highlighter = SVGHighlighter.new()
 		code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
 		
