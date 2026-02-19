@@ -103,8 +103,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: godsvg
 
-      - uses: ./.github/initial-setup
+      - uses: ./godsvg/.github/initial-setup
         id: setup
 
       - name: Set up Godot Editor
@@ -171,8 +173,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: godsvg
 
-      - uses: ./.github/initial-setup
+      - uses: ./godsvg/.github/initial-setup
         id: setup
 
       - name: Set up Godot Editor
@@ -252,8 +256,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: godsvg
 
-      - uses: ./.github/initial-setup
+      - uses: ./godsvg/.github/initial-setup
         id: setup
 
       - name: Set up Godot Editor
@@ -323,8 +329,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: godsvg
 
-      - uses: ./.github/initial-setup
+      - uses: ./godsvg/.github/initial-setup
         id: setup
 
       - name: Set up JDK 17
