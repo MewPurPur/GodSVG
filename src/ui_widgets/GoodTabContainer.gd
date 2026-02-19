@@ -11,6 +11,7 @@ var _scroll_container: ScrollContainer
 @export var side_tabs := false
 @export var sidebar_width := 160.0
 @export var current_tab_index := -1
+@export var compensate_for_scrollbar := false
 
 var _tab_names: PackedStringArray
 var _tab_rects: Array[Rect2]
@@ -111,21 +112,30 @@ func _draw() -> void:
 
 func _ready() -> void:
 	_content_container = MarginContainer.new()
-	_content_container.add_theme_constant_override("margin_left", 8)
-	_content_container.add_theme_constant_override("margin_right", 8)
-	_content_container.add_theme_constant_override("margin_top", 8)
-	_content_container.add_theme_constant_override("margin_bottom", 8)
 	_scroll_container = ScrollContainer.new()
 	add_child(_scroll_container)
 	_scroll_container.add_child(_content_container)
 	_content_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_content_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	resized.connect(_on_base_class_resized)
+	_scroll_container.get_v_scroll_bar().visibility_changed.connect(_sync_content_container_margins)
+	_sync_content_container_margins()
 	
 	tab_selected.connect(_on_base_class_tab_selected)
-	
 	if current_tab_index != -1:
 		select_tab(current_tab_index)
+
+func _sync_content_container_margins() -> void:
+	var scrollbar := _scroll_container.get_v_scroll_bar()
+	_content_container.begin_bulk_theme_override()
+	_content_container.add_theme_constant_override("margin_left", 8)
+	if compensate_for_scrollbar:
+		_content_container.add_theme_constant_override("margin_right", maxi(floori(8 - scrollbar.size.x), 0) if scrollbar.visible else 8)
+	else:
+		_content_container.add_theme_constant_override("margin_right", 8)
+	_content_container.add_theme_constant_override("margin_top", 8)
+	_content_container.add_theme_constant_override("margin_bottom", 8)
+	_content_container.end_bulk_theme_override()
 
 func _on_base_class_resized() -> void:
 	var panel_stylebox := get_theme_stylebox("panel", "TabContainer")
