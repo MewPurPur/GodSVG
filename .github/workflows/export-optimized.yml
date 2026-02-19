@@ -79,6 +79,9 @@ jobs:
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
 
+      - name: List files in GitHub workspace
+        run: ls -R ../
+
       - name: Export project
         run: |
           cd GodSVG
