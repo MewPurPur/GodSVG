@@ -46,7 +46,7 @@ jobs:
         with:
           path: godsvg
 
-      - uses: ./.github/initial-setup
+      - uses: ./godsvg/.github/initial-setup
         id: setup
 
       - name: Set up Godot Editor
@@ -80,9 +80,6 @@ jobs:
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
-
-      - name: List files in GitHub workspace
-        run: ls -R ../
 
       - name: Export project
         run: |
