@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ys8g367cpqc2" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
 [ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="2_t7fbd"]
-[ext_resource type="Script" uid="uid://d0k6h7yuu4oeu" path="res://GoodTabContainer.gd" id="3_s8tsc"]
+[ext_resource type="Script" uid="uid://d0k6h7yuu4oeu" path="res://src/ui_widgets/GoodTabContainer.gd" id="3_s8tsc"]
 
 [node name="AboutMenu" type="PanelContainer" unique_id=1843558257]
 custom_minimum_size = Vector2(580, 420)

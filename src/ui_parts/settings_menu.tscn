@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://1rjr3yrqwueu" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://assets/icons/Languages.svg" id="2_ndyp7"]
-[ext_resource type="Script" uid="uid://d0k6h7yuu4oeu" path="res://GoodTabContainer.gd" id="3_kjrrb"]
+[ext_resource type="Script" uid="uid://d0k6h7yuu4oeu" path="res://src/ui_widgets/GoodTabContainer.gd" id="3_kjrrb"]
 
 [node name="SettingsMenu" type="PanelContainer" unique_id=908180128]
 custom_minimum_size = Vector2(660, 420)

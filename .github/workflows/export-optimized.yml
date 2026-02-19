@@ -9,13 +9,11 @@ on:
 
 env:
   # Which godot version to use for exporting (e.g., 4.4.1, 4.5)
-  GODOT_VERSION: 4.6
+  GODOT_VERSION: 4.6.1
   # Which godot release to use for exporting (e.g., stable, dev5, rc2)
   GODOT_RELEASE: stable
-  # Used in the editor config file name (e.g., 4.4, 4.5, but NOT 4.4.1)
-  GODOT_FEATURE_VERSION: 4.6
   # Commit hash (found in Github releases)
-  GODOT_COMMIT_HASH: 89cea143987d564363e15d207438530651d943ac
+  GODOT_COMMIT_HASH: 14d19694e0c88a3f9e82d899a0400f27a24c176e
   PROJECT_NAME: GodSVG
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # d3d12=no, vulkan=no, use_volk=no since we use Compatibility Renderer. TODO disable rendering_device too (Godot issue #103100).
@@ -43,13 +41,13 @@ jobs:
     env:
       PLATFORM: "Linux"
     steps:
-      - name: Cache Template
-        id: cache-template
-        uses: actions/cache@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
-          path: |
-            ~/.local/share/godot/export_templates/
+          path: godsvg
+
+      - uses: ./godsvg/.github/initial-setup
+        id: setup
 
       - name: Set up Godot Editor
         run: |
@@ -60,27 +58,22 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Install dependencies
         run: sudo apt install -y scons python3 libwayland-dev
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for Linux
         run: |
           cd godot
@@ -108,13 +101,13 @@ jobs:
     env:
       PLATFORM: "Windows"
     steps:
-      - name: Cache Template
-        id: cache-template
-        uses: actions/cache@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
-          path: |
-            ~/.local/share/godot/export_templates/
+          path: godsvg
+
+      - uses: ./godsvg/.github/initial-setup
+        id: setup
 
       - name: Set up Godot Editor
         run: |
@@ -125,13 +118,13 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Install dependencies
         run: |
           sudo apt install -y scons python3
           sudo apt install -y g++-mingw-w64-x86-64-posix
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Download ANGLE Static Libraries
         run: |
           mkdir -p ~/angle
@@ -139,23 +132,18 @@ jobs:
           curl -L -o windows_x86_64.zip ${ANGLE_DOWNLOAD_BASE_URL}-x86_64-gcc-release.zip
           unzip -o windows_x86_64.zip
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for Windows
         run: |
           cd godot
@@ -183,13 +171,13 @@ jobs:
     env:
       PLATFORM: "macOS"
     steps:
-      - name: Cache Template
-        id: cache-template
-        uses: actions/cache@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
-          path: |
-            /Users/runner/Library/Application Support/Godot/export_templates/
+          path: godsvg
+
+      - uses: ./godsvg/.github/initial-setup
+        id: setup
 
       - name: Set up Godot Editor
         run: |
@@ -199,47 +187,42 @@ jobs:
           unzip -a Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
           echo "~/godot-editor/Godot.app/Contents/MacOS" >> $GITHUB_PATH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Install dependencies
         run: brew install scons
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for macOS (arm64 release)
         run: |
           godot --help
           cd godot
           scons p=macos arch=arm64 ${BUILD_OPTIONS}
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for macOS (x86_64 release)
         run: |
           cd godot
           scons p=macos arch=x86_64 ${BUILD_OPTIONS}
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Combine binaries with lipo
         run: |
           cd godot/bin
           lipo -create godot.macos.template_release.x86_64 godot.macos.template_release.arm64 -output godot.macos.template_release.universal
           chmod +x *
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Prepare .app bundle
         run: |
           cd godot/bin
@@ -271,13 +254,13 @@ jobs:
     env:
       PLATFORM: "Web"
     steps:
-      - name: Cache Template
-        id: cache-template
-        uses: actions/cache@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
-          path: |
-            ~/.local/share/godot/export_templates/
+          path: godsvg
+
+      - uses: ./godsvg/.github/initial-setup
+        id: setup
 
       - name: Set up Godot Editor
         run: |
@@ -288,11 +271,11 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Install dependencies
         run: sudo apt-get install -y scons python3
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Install Emscripten
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
@@ -302,23 +285,18 @@ jobs:
           source ./emsdk_env.sh
         shell: bash
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for Web
         run: |
           cd godot
@@ -349,13 +327,13 @@ jobs:
     env:
       PLATFORM: "Android"
     steps:
-      - name: Cache Template
-        id: cache-template
-        uses: actions/cache@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
-          path: |
-            ~/.local/share/godot/export_templates/
+          path: godsvg
+
+      - uses: ./godsvg/.github/initial-setup
+        id: setup
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -380,27 +358,22 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Install dependencies
         run: sudo apt-get install -y scons python3
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for Android
         run: |
           cd godot
@@ -410,7 +383,7 @@ jobs:
           mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_debug.apk
           mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot release template for Android
         run: |
           cd godot

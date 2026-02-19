@@ -15,8 +15,11 @@ func set_text(new_text: String) -> void:
 		_text = new_text
 		queue_redraw()
 
-func _ready() -> void:
+func _init() -> void:
 	theme_type_variation = "Dropdown"
+	focus_mode = Control.FOCUS_ALL
+
+func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 
 func _draw() -> void:
