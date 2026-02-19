@@ -73,7 +73,8 @@ jobs:
 
       - name: List files in GitHub workspace
         run: |
-          ls -R ./.github/
+          cd godot
+          ls -R ../.github/
 
       - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for Linux
