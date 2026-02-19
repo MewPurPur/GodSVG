@@ -84,7 +84,6 @@ jobs:
 
       - name: Export project
         run: |
-          cd GodSVG
           mkdir -p build
           godot --headless --export-release "${{ env.PLATFORM }}" build/GodSVG.x86_64
 
