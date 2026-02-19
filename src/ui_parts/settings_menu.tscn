@@ -31,12 +31,14 @@ size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 icon = ExtResource("2_ndyp7")
 
-[node name="SettingsTabContainer" type="Container" parent="VBoxContainer" unique_id=1988828883]
+[node name="SettingsTabContainer" type="Control" parent="VBoxContainer" unique_id=1891198249]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 script = ExtResource("3_kjrrb")
 side_tabs = true
+compensate_for_scrollbar = true
 metadata/_custom_type_script = "uid://d0k6h7yuu4oeu"
 
 [node name="PreviewPanel" type="PanelContainer" parent="VBoxContainer" unique_id=930616438]
