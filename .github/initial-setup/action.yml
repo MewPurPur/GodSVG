@@ -1,5 +1,5 @@
 name: Setup Godot Build Context
-description: Derives GODOT_FEATURE_VERSION, hashes build options and restores cache
+description: Hashes build parameters and restores cache
 
 outputs:
   hash:
@@ -12,10 +12,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Derive GODOT_FEATURE_VERSION
-      shell: bash
-      run: echo "GODOT_FEATURE_VERSION=$(echo $GODOT_VERSION | cut -d. -f1,2)" >> $GITHUB_ENV
-
     - name: Hash the build parameters
       id: buildhash
       shell: bash
@@ -36,5 +32,5 @@ runs:
       id: cache
       uses: actions/cache@v3
       with:
-        key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ steps.buildhash.outputs.hash }}
+        key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE_TYPE }}-${{ steps.buildhash.outputs.hash }}
         path: ${{ runner.os == 'macOS' && '/Users/runner/Library/Application Support/Godot/export_templates/' || '~/.local/share/godot/export_templates/' }}
