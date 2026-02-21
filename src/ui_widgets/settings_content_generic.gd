@@ -389,7 +389,7 @@ func setup_optimizer_content() -> void:
 			"Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually.")
 	add_clarification_text(short_text + additional_text, short_text)
 	
-	add_section("Lossless")
+	add_section(Translator.translate("Lossless"))
 	
 	current_setup_setting = "remove_comments"
 	var remove_comments_checkbox := add_checkbox(Translator.translate("Remove comments"), false)
