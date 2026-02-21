@@ -850,6 +850,13 @@ static func _setup_checkbox(theme: Theme) -> void:
 	var disabled_checkbox_stylebox := checkbox_stylebox.duplicate()
 	disabled_checkbox_stylebox.bg_color = context_button_color_disabled
 	theme.set_stylebox("disabled", "CheckBox", disabled_checkbox_stylebox)
+	
+	var focus_stylebox := StyleBoxFlat.new()
+	focus_stylebox.set_corner_radius_all(4)
+	focus_stylebox.set_border_width_all(2)
+	focus_stylebox.draw_center = false
+	focus_stylebox.border_color = weak_focus_color
+	theme.set_stylebox("focus", "CheckBox", focus_stylebox)
 
 static func _setup_checkbutton(theme: Theme) -> void:
 	theme.add_type("CheckButton")
@@ -886,7 +893,7 @@ static func _setup_checkbutton(theme: Theme) -> void:
 		</svg>""" % [gray_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
 	var focus_stylebox := StyleBoxFlat.new()
-	focus_stylebox.set_corner_radius_all(5)
+	focus_stylebox.set_corner_radius_all(4)
 	focus_stylebox.set_border_width_all(2)
 	focus_stylebox.draw_center = false
 	focus_stylebox.border_color = weak_focus_color
