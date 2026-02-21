@@ -142,7 +142,7 @@ func _on_base_class_resized() -> void:
 	if side_tabs:
 		panel_stylebox = panel_stylebox.duplicate()
 		Utils.rotate_flat_stylebox_90_left(panel_stylebox)
-		_scroll_container.position = Vector2(sidebar_width, panel_stylebox.border_width_top)
+		_scroll_container.position = Vector2(sidebar_width + panel_stylebox.border_width_left, panel_stylebox.border_width_top)
 		_scroll_container.size = Vector2(size.x - sidebar_width - panel_stylebox.border_width_right,
 				size.y - panel_stylebox.border_width_top - panel_stylebox.border_width_bottom)
 		# FIXME The scrollbar can get all wrong without this.
@@ -162,8 +162,8 @@ func _on_base_class_resized() -> void:
 		var tab_height := test_text_line.get_size().y + max_top_bottom_margin
 		
 		panel_stylebox = panel_stylebox.duplicate()
-		_scroll_container.position = Vector2(0, tab_height)
-		_scroll_container.size = Vector2(size.x - panel_stylebox.border_width_right,
+		_scroll_container.position = Vector2(panel_stylebox.border_width_left, tab_height)
+		_scroll_container.size = Vector2(size.x - panel_stylebox.border_width_right - panel_stylebox.border_width_left,
 				size.y - tab_height - panel_stylebox.border_width_top - panel_stylebox.border_width_bottom)
 		# FIXME The scrollbar can get all wrong without this.
 		await get_tree().process_frame
