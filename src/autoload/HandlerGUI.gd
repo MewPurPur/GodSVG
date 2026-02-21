@@ -357,18 +357,19 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	# Intercept focus in favor of our own system.
-	if ShortcutUtils.is_action_pressed(event, "ui_focus_next", true):
-		get_viewport().set_input_as_handled()
-		if not focus_owner.has_focus(true):
-			focus_owner.grab_focus()
-		else:
-			gather_focus(focus_owner, true).grab_focus()
-	elif ShortcutUtils.is_action_pressed(event, "ui_focus_prev", true):
-		get_viewport().set_input_as_handled()
-		if not focus_owner.has_focus(true):
-			focus_owner.grab_focus()
-		else:
-			gather_focus(focus_owner, false).grab_focus()
+	if not focus_owner is TextEdit:
+		if ShortcutUtils.is_action_pressed(event, "ui_focus_next", true):
+			get_viewport().set_input_as_handled()
+			if not focus_owner.has_focus(true):
+				focus_owner.grab_focus()
+			else:
+				gather_focus(focus_owner, true).grab_focus()
+		elif ShortcutUtils.is_action_pressed(event, "ui_focus_prev", true):
+			get_viewport().set_input_as_handled()
+			if not focus_owner.has_focus(true):
+				focus_owner.grab_focus()
+			else:
+				gather_focus(focus_owner, false).grab_focus()
 
 func gather_focus(control: Control, is_next: bool) -> Control:
 	var new_focus := _gather_focus_internal(control, is_next)
