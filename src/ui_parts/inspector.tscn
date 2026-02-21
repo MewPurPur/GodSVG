@@ -28,7 +28,6 @@ layout_mode = 2
 [node name="AddButton" type="Button" parent="ActionContainer" unique_id=1909487695]
 layout_mode = 2
 size_flags_horizontal = 0
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 4
 icon = ExtResource("3_vo6hf")
