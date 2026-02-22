@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 
 #. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
 #. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
@@ -149,7 +149,7 @@ msgstr "Must (OLED)"
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Gray"
-msgstr ""
+msgstr "Hall"
 
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
@@ -449,7 +449,7 @@ msgstr "Vaade"
 
 #: src/ui_parts/mac_menu.gd
 msgid "Window"
-msgstr ""
+msgstr "Aken"
 
 #: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
 msgid "Help"
@@ -527,9 +527,8 @@ msgid "Configure Shortcut Panel"
 msgstr "Kiirklahvida seadistamise paneel"
 
 #: src/ui_parts/tab_bar.gd
-#, fuzzy
 msgid "Close multiple"
-msgstr "Sulge vahekaart"
+msgstr "Sulge mitu"
 
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
@@ -705,9 +704,8 @@ msgid "Apply all of this preset's defaults"
 msgstr "Rakenda kõik selle eelseadistuse vaikeväärtused"
 
 #: src/ui_widgets/setting_frame.gd
-#, fuzzy
 msgid "Clear"
-msgstr "Eemalda kõik"
+msgstr "Lähtesta"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
@@ -959,9 +957,8 @@ msgid "Color {index}"
 msgstr "Värv {index}"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Canvas"
-msgstr "Lõuendi värv"
+msgstr "Lõuend"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Canvas color"
@@ -973,11 +970,11 @@ msgstr "Ruudustiku värv"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
-msgstr ""
+msgstr "Ruudustiku esiletõstetud joonte interval"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
-msgstr ""
+msgstr "Esiletõstetud joonteta"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Basic colors"
@@ -1233,9 +1230,8 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "{file_path} on juba avatud GodSVGs."
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
-msgstr "Kui te soovite eemaldada muudatused tehtud alates eelmise salvestamise hetkest, kasutage {reset_svg}-d."
+msgstr "Kui te soovite eemaldada muudatused tehtud alates eelmise salvestamise hetkest ja laadida faili hetke sisu, kasutage \"{reset_svg}\"-d."
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
