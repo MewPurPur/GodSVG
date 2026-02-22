@@ -6,6 +6,7 @@ const image_types_dict: Dictionary[String, String] = {
 	"jpg": "image/jpeg",
 	"jpeg": "image/jpeg",
 	"webp": "image/webp",
+	"pdc": "image/x-pdc",
 }
 
 signal changed
@@ -34,15 +35,35 @@ var lossy := false:
 			lossy = new_value
 			changed.emit()
 
+var tesselation_tolerance_degrees := 10.0:
+	set(new_value):
+		if new_value != tesselation_tolerance_degrees:
+			tesselation_tolerance_degrees = new_value
+			changed.emit()
+
+
+var precise_path_mode := PDCImage.PrecisePathMode.AUTODETECT:
+	set(new_value):
+		if new_value != precise_path_mode:
+			precise_path_mode = new_value
+			changed.emit()
+
 
 static func svg_to_buffer() -> PackedByteArray:
 	return State.get_export_text().to_utf8_buffer()
+
 
 func image_to_buffer(image: Image) -> PackedByteArray:
 	match format:
 		"png": return image.save_png_to_buffer()
 		"jpg", "jpeg": return image.save_jpg_to_buffer(quality)
 		"webp": return image.save_webp_to_buffer(lossy, quality)
+		"pdc":
+			var pdc := PDCImage.new()
+			pdc.precise_path_mode = precise_path_mode
+			pdc.path_angle_tolerance = tesselation_tolerance_degrees
+			pdc.load_from_svg(SVGParser.markup_to_root(State.get_export_text()).svg)
+			return pdc.encode()
 		_: return svg_to_buffer()
 
 

@@ -19,6 +19,8 @@ var custom_dim_text := ""
 var toggled_on := true
 var submenu_button_builders: Array[Callable] = []
 var disabled := false
+var theme_type := ""
+var auto_toggle := true
 
 
 func _init() -> void:
@@ -74,6 +76,16 @@ static func create_checkbox_from_action(new_action: String, start_toggled_on: bo
 	var context_button := ContextButton.create_from_action(new_action, new_disabled)
 	context_button.type = Type.CHECKBOX
 	context_button.toggled_on = start_toggled_on
+	return context_button
+
+static func create_custom_checkbox(new_custom_text: String, new_custom_callback: Callable, start_toggled_on: bool, new_custom_icon: Texture2D = null, new_disabled := false) -> ContextButton:
+	var context_button := ContextButton.create(new_disabled)
+	context_button.type = Type.CHECKBOX
+	context_button.custom_text = new_custom_text
+	context_button.custom_callback = new_custom_callback
+	context_button.toggled_on = start_toggled_on
+	context_button.custom_icon = new_custom_icon
+	context_button.calibrate()
 	return context_button
 
 static func create_arrow(new_text: String, new_submenu_button_builders: Array[Callable]) -> ContextButton:
@@ -155,7 +167,17 @@ func add_custom_dim_text(new_dim_text: String) -> ContextButton:
 
 
 func get_callback() -> Callable:
-	return custom_callback if custom_callback.is_valid() else HandlerGUI.throw_action_event.bind(action)
+	# Consider making this call the function directly, rather than return a callback.
+	if not auto_toggle:
+		return custom_callback if custom_callback.is_valid() else HandlerGUI.throw_action_event.bind(action)
+	return func():
+		if type == Type.CHECKBOX:
+			toggled_on = not toggled_on
+		if custom_callback.is_valid():
+			custom_callback.call()
+		else:
+			HandlerGUI.throw_action_event(action)
+		queue_redraw()
 
 func get_text() -> String:
 	return custom_text if not custom_text.is_empty() else TranslationUtils.get_action_description(action, true)
@@ -171,3 +193,10 @@ func get_icon() -> Texture2D:
 	elif not action.is_empty():
 		return ShortcutUtils.get_action_icon(action)
 	return null
+
+func get_theme_type() -> String:
+	if not theme_type.is_empty():
+		return theme_type
+	if type == Type.CHECKBOX:
+		return "CheckBox"
+	return ""

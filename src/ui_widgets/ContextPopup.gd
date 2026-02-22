@@ -158,14 +158,14 @@ func _draw() -> void:
 			var checkbox_icon: Texture2D
 			if button.toggled_on:
 				if button.disabled:
-					checkbox_icon = get_theme_icon("checked_disabled", "CheckBox")
+					checkbox_icon = get_theme_icon("checked_disabled", button.get_theme_type())
 				else:
-					checkbox_icon = get_theme_icon("checked", "CheckBox")
+					checkbox_icon = get_theme_icon("checked", button.get_theme_type())
 			else:
 				if button.disabled:
-					checkbox_icon = get_theme_icon("unchecked_disabled", "CheckBox")
+					checkbox_icon = get_theme_icon("unchecked_disabled", button.get_theme_type())
 				else:
-					checkbox_icon = get_theme_icon("unchecked", "CheckBox")
+					checkbox_icon = get_theme_icon("unchecked", button.get_theme_type())
 			checkbox_icon.draw(ci, button_rect.position + ContextButton.PADDING * Vector2(1, 1))
 		
 		var button_icon := button.get_icon()

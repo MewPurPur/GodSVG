@@ -84,3 +84,11 @@ static func vector_project(a: PackedFloat64Array, b: PackedFloat64Array) -> Pack
 ## 64-bit version of Vector2.dot(Vector2) = float
 static func dot(a: PackedFloat64Array, b: PackedFloat64Array) -> float:
 	return a[0] * b[0] + a[1] * b[1]
+
+
+static func transform_vector_array_mult(transform: PackedFloat64Array, vectors: PackedVector2Array) -> PackedVector2Array:
+	var result: PackedVector2Array
+	result.resize(vectors.size())
+	for i in vectors.size():
+		result[i] = get_vector(transform_vector_mult(transform, [vectors[i].x, vectors[i].y]))
+	return result
