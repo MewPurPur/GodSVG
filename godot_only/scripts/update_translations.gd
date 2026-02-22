@@ -19,7 +19,9 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"Gray": "Refers to a theme preset.",
 	"Black (OLED)": "Refers to a theme preset.",
 	"translation-credits": "Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.\nUsed for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.",
-	"Evaluate": """Refers to evaluating an expression such as "sin(2*pi/5)"."""
+	"Evaluate": """Refers to evaluating an expression such as "sin(2*pi/5)".""",
+	"Grid tick interval": "Refers to the specially marked grid ticks, which are more distinct and have a coordinate.",
+	"No ticks": "Refers to the specially marked grid ticks, which are more distinct and have a coordinate.",
 }
 
 const TRANSLATIONS_DIR = "translations"

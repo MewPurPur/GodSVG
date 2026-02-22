@@ -207,19 +207,34 @@ msgstr "Ei kirjelda SVGd."
 msgid "Improper nesting."
 msgstr "Vigane pesitsus."
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
-#: src/ui_parts/update_menu.gd
-msgid "Close"
-msgstr "Sulge"
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
+#: src/ui_parts/about_authors.gd
+msgid "Project Founder and Manager"
+msgstr "Projekti asutaja ja juht"
+
+#: src/ui_parts/about_authors.gd
+msgid "Developers"
+msgstr "Arendajad"
+
+#: src/ui_parts/about_authors.gd
+msgid "Translators"
+msgstr "Tõlkijad"
+
+#: src/ui_parts/about_donors.gd src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "Annetajad"
+
+#: src/ui_parts/about_donors.gd
+msgid "Golden donors"
+msgstr "Kuldsed annetajad"
+
+#: src/ui_parts/about_donors.gd
+msgid "Diamond donors"
+msgstr "Teemant annetajad"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
 msgstr "Autorid"
-
-#: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "Annetajad"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
@@ -229,26 +244,11 @@ msgstr "Litsents"
 msgid "Third-party licenses"
 msgstr "Kolmandad litsentsid"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
-#: src/ui_parts/about_menu.gd
-msgid "Project Founder and Manager"
-msgstr "Projekti asutaja ja juht"
-
-#: src/ui_parts/about_menu.gd
-msgid "Developers"
-msgstr "Arendajad"
-
-#: src/ui_parts/about_menu.gd
-msgid "Translators"
-msgstr "Tõlkijad"
-
-#: src/ui_parts/about_menu.gd
-msgid "Golden donors"
-msgstr "Kuldsed annetajad"
-
-#: src/ui_parts/about_menu.gd
-msgid "Diamond donors"
-msgstr "Teemant annetajad"
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
+msgid "Close"
+msgstr "Sulge"
 
 #: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
@@ -304,7 +304,7 @@ msgstr "Ekspordi konfiguratsioon"
 msgid "Format"
 msgstr "Formaat"
 
-#: src/ui_parts/export_menu.gd
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
 msgid "Lossless"
 msgstr "Kadudeta"
 
@@ -968,10 +968,12 @@ msgstr "Lõuendi värv"
 msgid "Grid color"
 msgstr "Ruudustiku värv"
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
 msgstr "Ruudustiku esiletõstetud joonte interval"
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
 msgstr "Esiletõstetud joonteta"

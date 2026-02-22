@@ -208,19 +208,34 @@ msgstr "Не является описанием SVG."
 msgid "Improper nesting."
 msgstr "Неправильное вложение."
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
-#: src/ui_parts/update_menu.gd
-msgid "Close"
-msgstr "Закрыть"
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
+#: src/ui_parts/about_authors.gd
+msgid "Project Founder and Manager"
+msgstr "Основатель и руководитель проекта"
+
+#: src/ui_parts/about_authors.gd
+msgid "Developers"
+msgstr "Разработчики"
+
+#: src/ui_parts/about_authors.gd
+msgid "Translators"
+msgstr "Переводчики"
+
+#: src/ui_parts/about_donors.gd src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "Благотворители"
+
+#: src/ui_parts/about_donors.gd
+msgid "Golden donors"
+msgstr "Золотые благотворители"
+
+#: src/ui_parts/about_donors.gd
+msgid "Diamond donors"
+msgstr "Алмазные благотворители"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
 msgstr "Авторы"
-
-#: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "Благотворители"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
@@ -230,26 +245,11 @@ msgstr "Лицензия"
 msgid "Third-party licenses"
 msgstr "Лицензии третьих лиц"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
-#: src/ui_parts/about_menu.gd
-msgid "Project Founder and Manager"
-msgstr "Основатель и руководитель проекта"
-
-#: src/ui_parts/about_menu.gd
-msgid "Developers"
-msgstr "Разработчики"
-
-#: src/ui_parts/about_menu.gd
-msgid "Translators"
-msgstr "Переводчики"
-
-#: src/ui_parts/about_menu.gd
-msgid "Golden donors"
-msgstr "Золотые благотворители"
-
-#: src/ui_parts/about_menu.gd
-msgid "Diamond donors"
-msgstr "Алмазные благотворители"
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
+msgid "Close"
+msgstr "Закрыть"
 
 #: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
@@ -305,7 +305,7 @@ msgstr "Настройки экспорта"
 msgid "Format"
 msgstr "Формат"
 
-#: src/ui_parts/export_menu.gd
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
 msgid "Lossless"
 msgstr "Без потерь"
 
@@ -972,10 +972,12 @@ msgstr "Цвет полотна"
 msgid "Grid color"
 msgstr "Цвет сетки"
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
 msgstr ""
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
 msgstr ""

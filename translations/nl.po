@@ -207,19 +207,34 @@ msgstr "Beschrijft geen SVG."
 msgid "Improper nesting."
 msgstr "Onjuiste nesting."
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
-#: src/ui_parts/update_menu.gd
-msgid "Close"
-msgstr "Afluiten"
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
+#: src/ui_parts/about_authors.gd
+msgid "Project Founder and Manager"
+msgstr "Projectoprichter en Manager"
+
+#: src/ui_parts/about_authors.gd
+msgid "Developers"
+msgstr "Ontwikkelaars"
+
+#: src/ui_parts/about_authors.gd
+msgid "Translators"
+msgstr "Vertalers"
+
+#: src/ui_parts/about_donors.gd src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "Donateurs"
+
+#: src/ui_parts/about_donors.gd
+msgid "Golden donors"
+msgstr "Gouden Donatuers"
+
+#: src/ui_parts/about_donors.gd
+msgid "Diamond donors"
+msgstr "Diamanten Donateurs"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
 msgstr "Auteurs"
-
-#: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "Donateurs"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
@@ -229,26 +244,11 @@ msgstr "Licentie"
 msgid "Third-party licenses"
 msgstr "Derde partij Licenties"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
-#: src/ui_parts/about_menu.gd
-msgid "Project Founder and Manager"
-msgstr "Projectoprichter en Manager"
-
-#: src/ui_parts/about_menu.gd
-msgid "Developers"
-msgstr "Ontwikkelaars"
-
-#: src/ui_parts/about_menu.gd
-msgid "Translators"
-msgstr "Vertalers"
-
-#: src/ui_parts/about_menu.gd
-msgid "Golden donors"
-msgstr "Gouden Donatuers"
-
-#: src/ui_parts/about_menu.gd
-msgid "Diamond donors"
-msgstr "Diamanten Donateurs"
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
+msgid "Close"
+msgstr "Afluiten"
 
 #: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
@@ -305,7 +305,7 @@ msgstr "Export Configuratie"
 msgid "Format"
 msgstr "Formaat"
 
-#: src/ui_parts/export_menu.gd
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
 msgid "Lossless"
 msgstr "Verliesvrij"
 
@@ -981,10 +981,12 @@ msgstr "Canvaskleur"
 msgid "Grid color"
 msgstr "Raster kleur"
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
 msgstr ""
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
 msgstr ""
