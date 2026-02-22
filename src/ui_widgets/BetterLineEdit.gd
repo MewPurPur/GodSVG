@@ -28,6 +28,7 @@ func _init() -> void:
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
 	text_submitted.connect(_on_base_class_text_submitted.unbind(1))
+	editing_toggled.connect(_on_editing_toggled)
 	mouse_exited.connect(queue_redraw)
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
@@ -50,8 +51,9 @@ func _on_base_class_focus_entered() -> void:
 	text_before_focus = text
 
 func _on_base_class_focus_exited() -> void:
-	first_click = false
+	unedit()
 	deselect()
+	first_click = false
 	if Input.is_action_pressed("ui_cancel"):
 		text = text_before_focus
 		text_change_canceled.emit()
@@ -61,8 +63,13 @@ func _on_base_class_focus_exited() -> void:
 			text_submitted.emit(text)
 	text_before_focus = ""
 
+func _on_editing_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		grab_focus()
+
 func _on_base_class_text_submitted() -> void:
-	release_focus()
+	grab_focus(true)
+	unedit()
 
 
 func _draw() -> void:
