@@ -207,19 +207,34 @@ msgstr "文本不是 SVG 格式。"
 msgid "Improper nesting."
 msgstr "错误的嵌套。"
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
-#: src/ui_parts/update_menu.gd
-msgid "Close"
-msgstr "关闭"
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
+#: src/ui_parts/about_authors.gd
+msgid "Project Founder and Manager"
+msgstr "项目创立者与管理者"
+
+#: src/ui_parts/about_authors.gd
+msgid "Developers"
+msgstr "开发者"
+
+#: src/ui_parts/about_authors.gd
+msgid "Translators"
+msgstr "翻译者"
+
+#: src/ui_parts/about_donors.gd src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "捐赠者"
+
+#: src/ui_parts/about_donors.gd
+msgid "Golden donors"
+msgstr "金牌捐赠者"
+
+#: src/ui_parts/about_donors.gd
+msgid "Diamond donors"
+msgstr "钻石捐赠者"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
 msgstr "作者"
-
-#: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "捐赠者"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
@@ -229,26 +244,11 @@ msgstr "协议"
 msgid "Third-party licenses"
 msgstr "第三方协议"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
-#: src/ui_parts/about_menu.gd
-msgid "Project Founder and Manager"
-msgstr "项目创立者与管理者"
-
-#: src/ui_parts/about_menu.gd
-msgid "Developers"
-msgstr "开发者"
-
-#: src/ui_parts/about_menu.gd
-msgid "Translators"
-msgstr "翻译者"
-
-#: src/ui_parts/about_menu.gd
-msgid "Golden donors"
-msgstr "金牌捐赠者"
-
-#: src/ui_parts/about_menu.gd
-msgid "Diamond donors"
-msgstr "钻石捐赠者"
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
+msgid "Close"
+msgstr "关闭"
 
 #: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
@@ -304,7 +304,7 @@ msgstr "导出设置"
 msgid "Format"
 msgstr "格式"
 
-#: src/ui_parts/export_menu.gd
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
 msgid "Lossless"
 msgstr "无损"
 
@@ -968,10 +968,12 @@ msgstr "画布颜色"
 msgid "Grid color"
 msgstr "网格颜色"
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
 msgstr "网格间距"
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
 msgstr "去间距"

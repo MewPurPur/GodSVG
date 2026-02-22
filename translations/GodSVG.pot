@@ -206,18 +206,33 @@ msgstr ""
 msgid "Improper nesting."
 msgstr ""
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
-#: src/ui_parts/update_menu.gd
-msgid "Close"
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
+#: src/ui_parts/about_authors.gd
+msgid "Project Founder and Manager"
+msgstr ""
+
+#: src/ui_parts/about_authors.gd
+msgid "Developers"
+msgstr ""
+
+#: src/ui_parts/about_authors.gd
+msgid "Translators"
+msgstr ""
+
+#: src/ui_parts/about_donors.gd src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr ""
+
+#: src/ui_parts/about_donors.gd
+msgid "Golden donors"
+msgstr ""
+
+#: src/ui_parts/about_donors.gd
+msgid "Diamond donors"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Donors"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
@@ -228,25 +243,10 @@ msgstr ""
 msgid "Third-party licenses"
 msgstr ""
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
-#: src/ui_parts/about_menu.gd
-msgid "Project Founder and Manager"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Developers"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Translators"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Golden donors"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Diamond donors"
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
+msgid "Close"
 msgstr ""
 
 #: src/ui_parts/current_file_button.gd
@@ -303,7 +303,7 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: src/ui_parts/export_menu.gd
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
 msgid "Lossless"
 msgstr ""
 
@@ -967,10 +967,12 @@ msgstr ""
 msgid "Grid color"
 msgstr ""
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
 msgstr ""
 
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
 msgstr ""
