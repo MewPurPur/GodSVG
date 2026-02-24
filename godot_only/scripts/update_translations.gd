@@ -3,6 +3,7 @@
 extends EditorScript
 
 const COMMENTS_DICT: Dictionary[String, String] = {
+	"svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox": "A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has no unique translation, omit it, and if it has multiple sensible translations, you can include all of them.",
 	"Viewport": "The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.",
 	"CDATA color": "CDATA shouldn't be translated. It's a type of XML section.",
 	"Editor formatter": "Refers to the formatter used for GodSVG's code editor.",
@@ -38,6 +39,7 @@ msgstr \"\"
 \"Content-Type: text/plain; charset=UTF-8\\n\"
 \"Content-Transfer-Encoding: 8bit\\n\"\n"""
 
+
 # Don't have a better solution than handling all these different whitespace variations...
 var delimiters: Dictionary[String, String] = {}
 func populate_delimiters() -> void:
@@ -46,6 +48,12 @@ func populate_delimiters() -> void:
 			delimiters["Translator." + method + "(" + quote] = quote + ")"
 			for i in range(2, 10):
 				delimiters["Translator." + method + "(\n" + "\t".repeat(i) + quote] = quote + ")"
+	
+	for method in ["translate_with_object"]:
+		for quote in ["'", '"', '"""']:
+			delimiters["Translator." + method + "(" + quote] = quote + ","
+			for i in range(2, 10):
+				delimiters["Translator." + method + "(\n" + "\t".repeat(i) + quote] = quote + ","
 
 var messages: Array[Message] = [Message.new("translation-credits", PackedStringArray())]
 
@@ -65,48 +73,58 @@ class Message:
 
 
 func _run() -> void:
+	if OS.execute("msgmerge", PackedStringArray()) == -1:
+		return
 	populate_delimiters()
-	if not OS.execute("msgmerge", PackedStringArray()) == -1:
-		search_directory(ProjectSettings.globalize_path("src"))
-		update_translations()
+	get_messages_from_directory(ProjectSettings.globalize_path("src"))
+	get_messages_from_file(ProjectSettings.globalize_path("godot_only/scripts/update_desktop_file.gd"))
+	update_translations()
 
 
-func search_directory(dir: String) -> void:
+func get_messages_from_directory(dir: String) -> void:
 	for dir_name in DirAccess.get_directories_at(dir):
-		search_directory(dir.path_join(dir_name))
-	
+		get_messages_from_directory(dir.path_join(dir_name))
 	for file_name in DirAccess.get_files_at(dir):
-		var file_text := FileAccess.get_file_as_string(dir.path_join(file_name))
-		for start_delim in delimiters:
-			var end_delim := delimiters[start_delim]
-			var cursor := 0
-			while true:
-				cursor = file_text.find(start_delim, cursor)
-				if cursor == -1:
+		get_messages_from_file(dir.path_join(file_name))
+
+func get_messages_from_file(file_path: String) -> void:
+	var file_text := FileAccess.get_file_as_string(file_path)
+	for start_delim in delimiters:
+		var end_delim := delimiters[start_delim]
+		var cursor := 0
+		while true:
+			cursor = file_text.find(start_delim, cursor)
+			if cursor == -1:
+				break
+			
+			var string_start := cursor + start_delim.length()
+			cursor = file_text.find(end_delim, cursor)
+			if file_text[cursor - end_delim.length()] == "\\":
+				continue
+			
+			var msgid := file_text.substr(string_start, cursor - string_start)
+			
+			var already_exists := false
+			for msg in messages:
+				if msg.msgid == msgid:
+					already_exists = true
+					msg.files.append(file_path)
 					break
-				
-				var string_start := cursor + start_delim.length()
-				cursor = file_text.find(end_delim, cursor)
-				
-				var msgid := file_text.substr(string_start, cursor - string_start)
-				var full_file_name := dir.path_join(file_name)
-				
-				var already_exists := false
-				for msg in messages:
-					if msg.msgid == msgid:
-						already_exists = true
-						msg.files.append(full_file_name)
-						break
-				if not already_exists:
-					messages.append(Message.new(msgid, PackedStringArray([full_file_name])))
+			if not already_exists:
+				messages.append(Message.new(msgid, PackedStringArray([file_path])))
 
 
 func update_translations() -> void:
+	# Update .pot file.
 	var used_comments := PackedStringArray()
-	var folder_location := ProjectSettings.globalize_path(TRANSLATIONS_DIR)
-	var pot_location := folder_location.path_join("GodSVG.pot")
+	var translations_dir_location := ProjectSettings.globalize_path(TRANSLATIONS_DIR)
+	var pot_location := translations_dir_location.path_join("GodSVG.pot")
 	
 	var fa := FileAccess.open(pot_location, FileAccess.WRITE)
+	if not is_instance_valid(fa):
+		print_rich("[color=#f66]Failed to open %s." % pot_location)
+		return
+	
 	fa.store_string(HEADER)
 	for msg in messages:
 		if COMMENTS_DICT.has(msg.msgid):
@@ -118,17 +136,18 @@ func update_translations() -> void:
 			used_comments.append(msg.msgid)
 		fa.store_string(msg.to_string())
 	fa = null
-	print("Created %s with %d strings" % [TRANSLATIONS_DIR.path_join("/GodSVG.pot"), (messages.size() + 1)])
+	print("Created %s with %d strings" % [TRANSLATIONS_DIR.path_join("GodSVG.pot"), (messages.size() + 1)])
 	
-	for file in DirAccess.get_files_at(folder_location):
+	# Update .po files.
+	for file in DirAccess.get_files_at(translations_dir_location):
 		if not (file.get_extension() == "po" or file == "GodSVG.pot"):
 			continue
 		
-		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off", folder_location.path_join(file), pot_location])
+		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off", translations_dir_location.path_join(file), pot_location])
 		var output: Array = []
 		var result := OS.execute("msgmerge", args, output, true)
 		if not result == -1:
-			var po_location = folder_location.path_join(file)
+			var po_location := translations_dir_location.path_join(file)
 			args = PackedStringArray(["--no-wrap", po_location, "-o", po_location])
 			OS.execute("msgcat", args)
 			if file == "GodSVG.pot":

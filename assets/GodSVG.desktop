@@ -1,3 +1,4 @@
+# This file is auto-generated from godot_only/scripts. Localizations are found in the respective .po files.
 [Desktop Entry]
 Version=1.0
 Name=GodSVG
@@ -11,15 +12,15 @@ Comment[bg]=Приложение за структурирано редакти�
 Comment[pt_BR]=Um aplicativo de gráficos vetoriais para edição estruturada de SVG
 Comment[ru]=Графическое приложение для структурированого редактория векторных изображений
 Comment[uk]=Графічний додаток для структурованого редагування векторних зображень
-Exec=godsvg %u
+Exec=godsvg %U
 Icon=godsvg
 Terminal=false
 Type=Application
 MimeType=image/svg+xml;
 Categories=Graphics;VectorGraphics;2DGraphics;
-Keywords=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;art;path;shape;2D;code;blue;fox;
-Keywords[bg]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;art;path;shape;2D;code;blue;fox;свг;вектор;графика;рисуване;дизайн;илюстрация;изображение;изкуство;диаграма;иконка;лого;редактор;изкуство;пътека;фигура;2д;код;синя;лисица;
-Keywords[pt_BR]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;art;path;shape;2D;code;blue;fox;svg;vetor;gráficos;desenho;design;ilustração;imagem;arte;diagrama;ícone;logo;editor;arte;caminho;forma;2D;código;azul;raposa;
-Keywords[ru]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;art;path;shape;2D;code;blue;fox;свг;вектор;графика;рисование;дизайн;иллюстрация;изображение;искусство;диаграмма;иконка;лого;редактор;путь;форма;2д;код;синий;лис;
-Keywords[uk]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;art;path;shape;2D;code;blue;fox;свг;вектор;графіка;малювання;дизайн;ілюстрація;зображення;мистецтво;діаграма;іконка;лого;редактор;шлях;форма;2д;код;синій;лис;
+Keywords=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox;
+Keywords[bg]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox;свг;вектор;графика;рисуване;дизайн;илюстрация;изображение;изкуство;диаграма;иконка;лого;редактор;изкуство;пътека;фигура;2д;код;синя;лисица;
+Keywords[pt_BR]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox;svg;vetor;gráficos;desenho;design;ilustração;imagem;arte;diagrama;ícone;logo;editor;arte;caminho;forma;2D;código;azul;raposa;
+Keywords[ru]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox;свг;вектор;графика;рисование;дизайн;иллюстрация;изображение;искусство;диаграмма;иконка;лого;редактор;путь;форма;2д;код;синий;лис;
+Keywords[uk]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox;свг;вектор;графіка;малювання;дизайн;ілюстрація;зображення;мистецтво;діаграма;іконка;лого;редактор;шлях;форма;2д;код;синій;лис;
 StartupWMClass=GodSVG

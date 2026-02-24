@@ -350,6 +350,9 @@ func parse_slider_input(event: InputEvent, idx: int, is_slider_vertical := false
 # be updated again so the text reflects the new value even if the color didn't change.
 func _on_slider1_text_submitted(new_text: String) -> void:
 	var new_value := NumstringParser.evaluate(new_text)
+	if is_nan(new_value):
+		slider1_update()
+		return
 	var new_color := display_color
 	match slider_mode:
 		SliderMode.RGB: new_color.r = clampf(new_value / 255.0, 0.0, 1.0)
@@ -359,6 +362,9 @@ func _on_slider1_text_submitted(new_text: String) -> void:
 
 func _on_slider2_text_submitted(new_text: String) -> void:
 	var new_value := NumstringParser.evaluate(new_text)
+	if is_nan(new_value):
+		slider2_update()
+		return
 	var new_color := display_color
 	match slider_mode:
 		SliderMode.RGB: new_color.g = clampf(new_value / 255.0, 0.0, 1.0)
@@ -368,6 +374,9 @@ func _on_slider2_text_submitted(new_text: String) -> void:
 
 func _on_slider3_text_submitted(new_text: String) -> void:
 	var new_value := NumstringParser.evaluate(new_text)
+	if is_nan(new_value):
+		slider3_update()
+		return
 	var new_color := display_color
 	match slider_mode:
 		SliderMode.RGB: new_color.b = clampf(new_value / 255.0, 0.0, 1.0)
@@ -377,6 +386,9 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 
 func _on_slider4_text_submitted(new_text: String) -> void:
 	var new_value := NumstringParser.evaluate(new_text)
+	if is_nan(new_value):
+		slider4_update()
+		return
 	var new_color := display_color
 	new_color.a = clampf(new_value / 255.0, 0.0, 1.0)
 	register_visual_change(new_color, false)

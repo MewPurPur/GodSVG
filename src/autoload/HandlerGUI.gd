@@ -408,12 +408,15 @@ func _react_to_action(event: InputEvent) -> void:
 		if is_instance_valid(popup_submenu):
 			get_viewport().set_input_as_handled()
 			clear_submenu()
+			return
 		elif not popup_stack.is_empty():
 			get_viewport().set_input_as_handled()
 			remove_popup()
+			return
 		elif not menu_stack.is_empty():
 			get_viewport().set_input_as_handled()
 			_remove_control()
+			return
 	
 	for behavior in ShortcutsRegistration.BEHAVIOR_PRIORITY:
 		for node in shortcut_registrations:

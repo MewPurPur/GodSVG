@@ -1563,6 +1563,19 @@ msgstr "Selecionar um arquivo do tipo {format}"
 msgid "Save the {format} file"
 msgstr "Salvar o arquivo do tipo {format}"
 
+#: godot_only/scripts/update_desktop_file.gd
+msgid "Vector Graphics Editor"
+msgstr "Editor de gráficos vetoriais"
+
+#: godot_only/scripts/update_desktop_file.gd
+msgid "A vector graphics application for structured SVG editing"
+msgstr "Um aplicativo de gráficos vetoriais para edição estruturada de SVG"
+
+#. A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has no unique translation, omit it, and if it has multiple sensible translations, you can include all of them.
+#: godot_only/scripts/update_desktop_file.gd
+msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
+msgstr "svg;vetor;gráficos;desenho;design;ilustração;imagem;arte;diagrama;ícone;logo;editor;arte;caminho;forma;2D;código;azul;raposa"
+
 #~ msgid "Keep comments"
 #~ msgstr "Manter comentários"
 

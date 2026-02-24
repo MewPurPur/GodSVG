@@ -2,9 +2,7 @@
 
 ## Files to translate
 
-Most of the strings for a language are inside its respective po file. You can read more about this format [here](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html).
-
-Outside of this folder, there is the [assets/GodSVG.desktop](https://github.com/MewPurPur/GodSVG/blob/main/assets/GodSVG.desktop) file which has a few fields that can be internationalized.
+All of the strings for a language are inside its respective po file. You can read more about this format [here](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html).
 
 ## For programmers
 

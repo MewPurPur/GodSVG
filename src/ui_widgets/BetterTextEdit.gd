@@ -194,7 +194,8 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	
 	if ShortcutUtils.is_action_pressed(event, "ui_cancel"):
-		accept_event()
+		if has_focus(true):
+			accept_event()
 		release_focus()
 		return
 	

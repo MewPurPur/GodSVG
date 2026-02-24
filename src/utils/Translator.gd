@@ -4,3 +4,6 @@
 
 static func translate(string: String) -> String:
 	return TranslationServer.translate(string)
+
+static func translate_with_object(string: String, object: Translation) -> String:
+	return object.get_message(string)

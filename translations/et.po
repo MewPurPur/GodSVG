@@ -1558,6 +1558,19 @@ msgstr "Vali {format} fail"
 msgid "Save the {format} file"
 msgstr "Salvesta {format} fail"
 
+#: godot_only/scripts/update_desktop_file.gd
+msgid "Vector Graphics Editor"
+msgstr ""
+
+#: godot_only/scripts/update_desktop_file.gd
+msgid "A vector graphics application for structured SVG editing"
+msgstr ""
+
+#. A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has no unique translation, omit it, and if it has multiple sensible translations, you can include all of them.
+#: godot_only/scripts/update_desktop_file.gd
+msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
+msgstr ""
+
 #~ msgid "Keep comments"
 #~ msgstr "Hoia kommentaarid alles"
 

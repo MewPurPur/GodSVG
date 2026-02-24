@@ -28,7 +28,7 @@ func setup(title: String, message: String, list := PackedStringArray(), checkbox
 func update_focus_sequence() -> void:
 	var focus_sequence: Array[Control] = [checkbox]
 	focus_sequence.append_array(options_container.get_children())
-	HandlerGUI.register_focus_sequence(self, [])
+	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 func set_text_width(width: float) -> void:
 	label.custom_minimum_size.x = width

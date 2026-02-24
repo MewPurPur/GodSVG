@@ -27,6 +27,11 @@ class SettingBasicColorPreview:
 		setting_bind = new_setting_bind
 		text = new_text
 
+class SettingFontPreview:
+	var font: Font
+	func _init(new_font: Font) -> void:
+		font = new_font
+
 class SettingTextPreview:
 	enum WarningType {NONE, NO_EFFECT_IN_CURRENT_CONFIGURATION, NOT_AVAILABLE_ON_PLATFORM}
 	var text: String
@@ -484,10 +489,13 @@ func setup_theming_content() -> void:
 	add_section(Translator.translate("Fonts"))
 	current_setup_setting = "main_font_path"
 	add_font_file_path_field(Translator.translate("Main font"))
+	add_preview(SettingFontPreview.new(ThemeUtils.main_font))
 	current_setup_setting = "bold_font_path"
 	add_font_file_path_field(Translator.translate("Bold font"))
+	add_preview(SettingFontPreview.new(ThemeUtils.bold_font))
 	current_setup_setting = "mono_font_path"
 	add_font_file_path_field(Translator.translate("Mono font"))
+	add_preview(SettingFontPreview.new(ThemeUtils.mono_font))
 	
 	add_section(Translator.translate("SVG Text colors"))
 	current_setup_setting = "highlighter_preset"
@@ -869,14 +877,26 @@ func emit_preview_changed() -> void:
 	if preview is SettingBasicColorPreview:
 		var label := Label.new()
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var update_label_font_color := func() -> void:
+		var update_label_font_color :=\
+			func() -> void:
 				label.add_theme_color_override("font_color", Configs.savedata.get(preview.setting_bind))
 		Configs.basic_colors_changed.connect(update_label_font_color)
 		label.tree_exiting.connect(Configs.basic_colors_changed.disconnect.bind(update_label_font_color), CONNECT_ONE_SHOT)
 		update_label_font_color.call()
 		label.text = preview.text
 		preview_changed.emit(label)
-	if preview is SettingTextPreview:
+	elif preview is SettingFontPreview:
+		var label := Label.new()
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var update_label_font :=\
+			func() -> void:
+				label.add_theme_font_override("font", preview.font)
+		Configs.theme_changed.connect(update_label_font)
+		label.tree_exiting.connect(Configs.theme_changed.disconnect.bind(update_label_font), CONNECT_ONE_SHOT)
+		update_label_font.call()
+		label.text = "The quick blue fox now jumps over the lazy dog."
+		preview_changed.emit(label)
+	elif preview is SettingTextPreview:
 		var has_warning: bool = (preview.warning != preview.WarningType.NONE)
 		var margin_container := MarginContainer.new()
 		margin_container.begin_bulk_theme_override()
@@ -973,10 +993,12 @@ func emit_preview_changed() -> void:
 		var code_preview := BetterTextEdit.new()
 		code_preview.editable = false
 		
-		var update_highlighter := func() -> void:
+		var update_highlighter :=\
+			func() -> void:
 				code_preview.syntax_highlighter = SVGHighlighter.new()
 		
-		var update_text := func() -> void:
+		var update_text :=\
+			func() -> void:
 				if preview.show_only_children:
 					code_preview.text = SVGParser.root_children_to_markup(preview.root_element, preview.resource_bind)
 				else:

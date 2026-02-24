@@ -17,6 +17,18 @@ func _set(property: StringName, value: Variant) -> bool:
 		return true
 	return false
 
+# TODO The need for this seems to be caused by a Godot bug.
+func correct_edit() -> void:
+	if not is_editing():
+		edit()
+		editing_toggled.emit(true)
+
+func correct_unedit() -> void:
+	if is_editing():
+		unedit()
+		editing_toggled.emit(false)
+
+
 func _init() -> void:
 	# Solves an issue where Ctrl+S would type an "s" and handle the input.
 	# We want anything with Ctrl to not be handled, but other keys to still be handled.
@@ -25,9 +37,8 @@ func _init() -> void:
 	context_menu_enabled = false
 	caret_blink = true
 	caret_blink_interval = 0.6
-	focus_entered.connect(_on_base_class_focus_entered)
-	focus_exited.connect(_on_base_class_focus_exited)
-	text_submitted.connect(_on_base_class_text_submitted.unbind(1))
+	focus_exited.connect(correct_unedit)
+	text_submitted.connect(correct_unedit.unbind(1))
 	editing_toggled.connect(_on_editing_toggled)
 	mouse_exited.connect(queue_redraw)
 	Configs.theme_changed.connect(sync_theming)
@@ -40,36 +51,29 @@ func sync_theming() -> void:
 
 
 var first_click := false
-var text_before_focus := ""
-
-func _on_base_class_focus_entered() -> void:
-	# Hack to check if focus entered was from a mouse click.
-	if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		first_click = true
-	else:
-		select_all()
-	text_before_focus = text
-
-func _on_base_class_focus_exited() -> void:
-	unedit()
-	deselect()
-	first_click = false
-	if Input.is_action_pressed("ui_cancel"):
-		text = text_before_focus
-		text_change_canceled.emit()
-	elif not Input.is_action_pressed("ui_accept"):
-		# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
-		if text != text_before_focus:
-			text_submitted.emit(text)
-	text_before_focus = ""
+var text_before_edit := ""
 
 func _on_editing_toggled(toggled_on: bool) -> void:
 	if toggled_on:
+		# Hack to check if focus entered was from a mouse click.
+		if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			first_click = true
+		text_before_edit = text
 		grab_focus()
-
-func _on_base_class_text_submitted() -> void:
-	grab_focus(true)
-	unedit()
+		if not first_click:
+			select_all()
+	else:
+		first_click = false
+		if Input.is_action_pressed("ui_cancel"):
+			text = text_before_edit
+			text_change_canceled.emit()
+		elif not Input.is_action_pressed("ui_accept"):
+			# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
+			if text != text_before_edit:
+				text_submitted.emit(text)
+		text_before_edit = ""
+		deselect()
+		grab_focus(true)
 
 
 func _draw() -> void:
@@ -90,9 +94,17 @@ func _input(event: InputEvent) -> void:
 	if not has_focus():
 		return
 	
+	if event.is_action_pressed("ui_focus_next") or event.is_action_pressed("ui_focus_prev"):
+		if not is_editing():
+			set_block_signals(true)
+			correct_edit()
+			set_block_signals(false)
+			select_all()
+			return
+	
 	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
 		if event.is_pressed() and not get_global_rect().has_point(event.position) and HandlerGUI.is_node_on_top_menu_or_popup(self):
-			release_focus()
+			correct_unedit()
 		elif event.is_released() and first_click and not has_selection():
 			first_click = false
 			select_all()
@@ -130,8 +142,9 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("ui_cancel"):
-		release_focus()
-		accept_event()
+		if is_editing():
+			accept_event()
+			correct_unedit()
 		return
 	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
@@ -144,7 +157,6 @@ func _gui_input(event: InputEvent) -> void:
 		var separator_arr := PackedInt32Array()
 		
 		var is_text_empty := text.is_empty()
-		
 		if editable:
 			var text_to_evaluate := get_selected_text() if has_selection() else text
 			var selection_evaluation := NumstringParser.evaluate(text_to_evaluate)
@@ -173,3 +185,6 @@ func _gui_input(event: InputEvent) -> void:
 		# Wow, no way to find out the column of a given click? Okay...
 		# TODO Make it so LineEdit caret automatically moves to the clicked position
 		# to finish the right-click logic.
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		# TODO There's no focus mode for keeping focus visible when clicking an already focused control.
+		grab_focus()
