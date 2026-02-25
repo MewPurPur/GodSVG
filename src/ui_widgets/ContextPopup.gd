@@ -72,7 +72,7 @@ min_width := -1.0, separator_indices := PackedInt32Array()) -> ContextPopup:
 	# Setup the title.
 	var title_container := PanelContainer.new()
 	var stylebox := StyleBoxFlat.new()
-	stylebox.bg_color = ThemeUtils.context_button_color_disabled
+	stylebox.bg_color = ThemeUtils.flat_button_color_disabled
 	stylebox.content_margin_bottom = 3.0
 	stylebox.content_margin_left = 8.0
 	stylebox.content_margin_right = 8.0

@@ -42,7 +42,11 @@ func _run() -> void:
 		if not translated_comment.is_empty():
 			comment_entries.append("Comment[%s]=%s" % [locale, translated_comment])
 		if not translated_comment.is_empty():
-			keyword_entries.append("Keywords[%s]=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox;%s;" %\
-					[locale, translated_keyword])
+			var keywords_arr := "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox".split(";", false) +\
+					translated_keyword.split(";", false)
+			for keyword_idx in range(keywords_arr.size() - 1, -1, -1):
+				if keywords_arr.count(keywords_arr[keyword_idx]) > 1:
+					keywords_arr.remove_at(keyword_idx)
+			keyword_entries.append("Keywords[%s]=%s;" % [locale, ";".join(keywords_arr)])
 	
 	fa.store_string(DESKTOP_FILE_STRUCTURE % ["\n".join(generic_name_entries), "\n".join(comment_entries), "\n".join(keyword_entries)])
