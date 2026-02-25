@@ -304,16 +304,18 @@ func load_from_svg(svg: ElementRoot) -> void:
 		viewbox_transform = Transform2D.IDENTITY
 	path_generator.angle_tolerance = path_angle_tolerance
 	for element in svg.get_all_valid_element_descendants():
+		var element_xform := element.get_transform()
 		match element.name:
 			"circle":
 				var cmd := _setup_cmd(element, PebbleCircleCommand.new())
-				cmd.center = Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
-				cmd.radius = int(element.get_attribute_num("r"))
+				cmd.center = element_xform * Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
+				cmd.radius = int(Utils.vector2_min_element(element_xform.get_scale()) * element.get_attribute_num("r"))
 				add_command(cmd)
 			"ellipse":
 				var cmd := _setup_cmd(element, PebbleCircleCommand.new())
-				cmd.center = Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
-				cmd.radius = int(minf(element.get_attribute_num("rx"), element.get_attribute_num("ry")))
+				cmd.center = element_xform * Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
+				var element_scale := element_xform.get_scale()
+				cmd.radius = int(minf(element_scale.x * element.get_attribute_num("rx"), element_scale.y * element.get_attribute_num("ry")))
 				add_command(cmd)
 			"rect":
 				var x := element.get_attribute_num("x")

@@ -22,7 +22,7 @@ var dimensions := Vector2.ZERO
 @onready var size_container: CenterContainer = %SizeContainer
 @onready var lossless_checkbox: CheckBox = %LosslessCheckBox
 @onready var precise_path_mode_dropdown: Dropdown = %PrecisePathModeDropdown
-@onready var path_quality_container: GridContainer = %PDCPathQualityContainer
+@onready var path_quality_container: Control = %PDCPathQualityContainer
 @onready var path_quality_edit: NumberEdit = %PathQualityNumberEdit
 @onready var quality_edit: NumberEdit = %Quality
 @onready var quality_hbox: HBoxContainer = %QualityHBox
@@ -79,9 +79,9 @@ func _ready() -> void:
 	%FormatHBox/Label.text = Translator.translate("Format") + ":"
 	%LosslessCheckBox.text = Translator.translate("Lossless")
 	%PDCPathQualityContainer/PreciseModeLabel.text = Translator.translate("Precise") + ":"
-	%PDCPathQualityContainer/QualityLabel.text = Translator.translate("Tesselation quality") + ":"
+	%PDCPathQualityContainer/QualityLabel.text = Translator.translate("Tessellation quality") + ":"
 	%PDCPathQualityContainer/HBoxContainer/SuffixLabel.text = Translator.translate("degrees")
-	path_quality_edit.tooltip_text = Translator.translate("The angular tolerance at which to tesselate paths.")
+	path_quality_edit.tooltip_text = Translator.translate("The angular tolerance at which to tessellate paths.")
 	%QualityHBox/Label.text = Translator.translate("Quality") + ":"
 	%ScaleContainer/Label.text = Translator.translate("Scale")
 	%WidthContainer/Label.text = Translator.translate("Width") + ":"
@@ -101,8 +101,21 @@ func _ready() -> void:
 	titled_panel.title_margin = 2
 	titled_panel.panel_margin = 8
 	
-	HandlerGUI.register_focus_sequence(self, [clipboard_button, format_dropdown, lossless_checkbox,
-			quality_edit, scale_edit, width_edit, height_edit, cancel_button, export_button], true)
+	var focus_sequence: Array[Control]
+	focus_sequence.append(clipboard_button)
+	focus_sequence.append(format_dropdown)
+	focus_sequence.append(path_quality_edit)
+	focus_sequence.append(precise_path_mode_dropdown)
+	focus_sequence.append(lossless_checkbox)
+	focus_sequence.append(quality_edit)
+	focus_sequence.append(scale_edit)
+	focus_sequence.append(width_edit)
+	focus_sequence.append(height_edit)
+	focus_sequence.append(cancel_button)
+	focus_sequence.append(export_button)
+	
+	HandlerGUI.register_focus_sequence(self, focus_sequence, true)
+	clipboard_button.grab_focus(true)
 
 
 func _on_export_button_pressed() -> void:
@@ -137,10 +150,10 @@ func _on_precise_path_mode_dropdown_toggled(precise_path_mode: PDCImage.PreciseP
 	undo_redo.commit_action()
 
 func _on_path_quality_value_changed(new_value: float) -> void:
-	var current_quality := export_data.tesselation_tolerance_degrees
+	var current_quality := export_data.tessellation_tolerance_degrees
 	undo_redo.create_action()
-	undo_redo.add_do_property(export_data, "tesselation_tolerance_degrees", new_value)
-	undo_redo.add_undo_property(export_data, "tesselation_tolerance_degrees", current_quality)
+	undo_redo.add_do_property(export_data, "tessellation_tolerance_degrees", new_value)
+	undo_redo.add_undo_property(export_data, "tessellation_tolerance_degrees", current_quality)
 	undo_redo.commit_action()
 
 func _on_quality_value_changed(new_value: float) -> void:
@@ -203,20 +216,31 @@ func update() -> void:
 		quality_edit.set_value(export_data.quality * 100, false)
 		lossless_checkbox.set_pressed_no_signal(not export_data.lossy)
 	
-	#final_size_label.visible = export_data.format in ["svg", "pdc"]
+	var export_size_fac := export_data.upscale_amount * Utils.vector2_max_element(dimensions) / texture_preview.MAX_IMAGE_DIMENSION
+	
 	var export_size: int
 	match export_data.format:
 		"svg":
 			export_size = State.get_export_text().length()
 		_:
-			export_size = texture_preview.last_image_size
+			match export_data.format:
+				"webp":
+					# WebP seems to have better compression as the image gets larger.
+					pass
+				"pdc":
+					# PDC exports are always perfectly accurate.
+					export_size_fac = 1.0
+				_:
+					export_size_fac **= 2
+			export_size = roundi(texture_preview.last_image_size * maxf(1.0, export_size_fac))
 	final_size_label.text = Translator.translate("Size") + ": " + String.humanize_size(export_size)
+	if export_size_fac > 1.0:
+		final_size_label.text += Translator.translate(" (approximate)")
 	
 	format_dropdown.set_value(export_data.format, false)
 	precise_path_mode_dropdown.set_value(export_data.precise_path_mode, false)
 	
-	info_tooltip.visible = (export_data.format != "svg" and
-			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) > texture_preview.MAX_IMAGE_DIMENSION)
+	info_tooltip.visible = (export_data.format != "svg" and export_size_fac > 1.0)
 	
 	clipboard_button.disabled = not ClipboardUtils.is_supported(export_data.format)
 

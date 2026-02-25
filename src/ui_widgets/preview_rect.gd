@@ -31,7 +31,7 @@ func setup_image(config: ImageExportData) -> void:
 	final_image_config.lossy = config.lossy
 	final_image_config.quality = config.quality
 	final_image_config.precise_path_mode = config.precise_path_mode
-	final_image_config.tesselation_tolerance_degrees = config.tesselation_tolerance_degrees
+	final_image_config.tessellation_tolerance_degrees = config.tessellation_tolerance_degrees
 	var svg_size := State.root_element.get_size()
 	final_image_config.upscale_amount = minf(config.upscale_amount, MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
 	
