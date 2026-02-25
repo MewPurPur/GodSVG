@@ -18,9 +18,7 @@ func _ready() -> void:
 	name_edit.text_change_canceled.connect(queue_free)
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	name_edit.add_theme_font_override("font", ThemeUtils.main_font)
-	
-	HandlerGUI.register_focus_sequence(self, [name_edit, cancel_button, action_button])
-	name_edit.grab_focus(true)
+	HandlerGUI.register_focus_sequence(self, [name_edit, cancel_button, action_button], true)
 
 func _on_name_edit_text_submitted(_text: String) -> void:
 	if not action_button.disabled:

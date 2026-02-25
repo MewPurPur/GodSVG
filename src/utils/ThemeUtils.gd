@@ -87,7 +87,6 @@ static var context_icon_hover_color: Color
 static var context_icon_pressed_color: Color
 
 static var flat_button_color_disabled: Color
-static var context_button_color_disabled: Color
 
 static var subtle_flat_panel_color: Color
 static var contrast_flat_panel_color: Color
@@ -216,8 +215,7 @@ static func recalculate_colors() -> void:
 	context_icon_hover_color = tinted_contrast_color
 	context_icon_pressed_color = max_contrast_color
 	
-	flat_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.18)
-	context_button_color_disabled = Color(Color.BLACK, maxf(0.16, 0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2)) if is_theme_dark\
+	flat_button_color_disabled = Color(Color.BLACK, maxf(0.16, 0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2)) if is_theme_dark\
 			else Color(Color.BLACK, 0.055)
 	
 	subtle_flat_panel_color = base_color
@@ -626,7 +624,7 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_stylebox("pressed", "TranslucentButton", pressed_translucent_button_stylebox)
 	
 	var disabled_translucent_button_stylebox := normal_translucent_button_stylebox.duplicate()
-	disabled_translucent_button_stylebox.bg_color = context_button_color_disabled
+	disabled_translucent_button_stylebox.bg_color = flat_button_color_disabled
 	theme.set_stylebox("disabled", "TranslucentButton", disabled_translucent_button_stylebox)
 	
 	theme.add_type("FlatButton")
@@ -790,7 +788,7 @@ static func _setup_context_button(theme: Theme) -> void:
 	theme.set_stylebox("focus", "ContextButton", hover_context_button_stylebox)
 	
 	var disabled_context_button_stylebox := context_button_stylebox.duplicate()
-	disabled_context_button_stylebox.bg_color = context_button_color_disabled
+	disabled_context_button_stylebox.bg_color = flat_button_color_disabled
 	theme.set_stylebox("disabled", "ContextButton", disabled_context_button_stylebox)
 
 static func _setup_checkbox(theme: Theme) -> void:
@@ -848,7 +846,7 @@ static func _setup_checkbox(theme: Theme) -> void:
 	theme.set_stylebox("hover_pressed", "CheckBox", hover_checkbox_stylebox)
 	
 	var disabled_checkbox_stylebox := checkbox_stylebox.duplicate()
-	disabled_checkbox_stylebox.bg_color = context_button_color_disabled
+	disabled_checkbox_stylebox.bg_color = flat_button_color_disabled
 	theme.set_stylebox("disabled", "CheckBox", disabled_checkbox_stylebox)
 	
 	var focus_stylebox := StyleBoxFlat.new()

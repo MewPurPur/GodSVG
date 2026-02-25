@@ -38,9 +38,7 @@ func _ready() -> void:
 	
 	settings_tab_container.get_content_method = get_content
 	settings_tab_container.select_tab(0)
-	
-	HandlerGUI.register_focus_sequence(self, [language_button, settings_tab_container, close_button])
-	language_button.grab_focus(true)
+	HandlerGUI.register_focus_sequence(self, [language_button, settings_tab_container, close_button], true)
 
 func select_next_tab() -> void:
 	settings_tab_container.select_tab((settings_tab_container.current_tab_index + 1) % TabIndex.size())

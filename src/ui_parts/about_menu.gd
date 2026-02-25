@@ -36,9 +36,7 @@ func _ready() -> void:
 		tab_container.add_tab(get_tab_localized_name(tab_index))
 	tab_container.get_content_method = get_content
 	tab_container.select_tab(0)
-	
-	HandlerGUI.register_focus_sequence(self, [tab_container, close_button])
-	tab_container.grab_focus(true)
+	HandlerGUI.register_focus_sequence(self, [tab_container, close_button], true)
 
 
 func select_next_tab() -> void:

@@ -14,6 +14,10 @@ func _ready() -> void:
 	relative_toggle.button_pressed = Configs.savedata.path_command_relative
 	for command_button in command_container.get_children():
 		command_button.pressed_custom.connect(emit_picked)
+	
+	var focus_sequence: Array[Control] = [relative_toggle]
+	focus_sequence.append_array(command_container.get_children())
+	HandlerGUI.register_focus_sequence(self, focus_sequence, true)
 
 func emit_picked(cmd_char: String) -> void:
 	path_command_picked.emit(cmd_char)
@@ -43,7 +47,3 @@ func force_relativity(relative: bool) -> void:
 		command_button.queue_redraw()
 	await get_tree().process_frame
 	reset_size()
-
-func _unhandled_input(event: InputEvent) -> void:
-	if relative_toggle.visible and event is InputEventKey and event.is_pressed() and event.keycode == KEY_SHIFT:
-		relative_toggle.button_pressed = not relative_toggle.button_pressed

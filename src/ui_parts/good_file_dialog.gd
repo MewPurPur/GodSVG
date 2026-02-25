@@ -141,7 +141,7 @@ func _ready() -> void:
 	forward_button.pressed.connect(_on_forward_button_pressed)
 	directory_path_widget.directory_selected.connect(open_dir)
 	path_field.text_submitted.connect(_on_path_field_text_submitted)
-	path_field.focus_exited.connect(_on_path_field_focus_exited)
+	path_field.editing_toggled.connect(_on_path_field_editing_toggled)
 	path_edit_button.pressed.connect(_on_path_edit_button_pressed)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
 	
@@ -183,8 +183,7 @@ func _ready() -> void:
 		action_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	
 	HandlerGUI.register_focus_sequence(self, [back_button, forward_button, path_edit_button, path_field,
-			refresh_button, show_hidden_button, search_button, search_field, drives_list, file_list, file_field, close_button, action_button])
-	back_button.grab_focus(true)
+			refresh_button, show_hidden_button, search_button, search_field, drives_list, file_list, file_field, close_button, action_button], true)
 
 func sync_theming() -> void:
 	var stylebox := StyleBoxFlat.new()
@@ -537,9 +536,11 @@ func _on_path_field_text_submitted(new_text: String) -> void:
 	else:
 		path_field.text = Utils.simplify_file_path(current_dir)
 
-func _on_path_field_focus_exited() -> void:
-	path_field.hide()
-	path_panel.show()
+func _on_path_field_editing_toggled(toggled_on: bool) -> void:
+	if not toggled_on:
+		path_field.hide()
+		path_panel.show()
+		path_edit_button.grab_focus(true)
 
 func _on_path_edit_button_pressed() -> void:
 	path_field.show()

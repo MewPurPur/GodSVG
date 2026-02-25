@@ -21,9 +21,7 @@ func _ready() -> void:
 	color_name_edit.text_change_canceled.connect(hide_name_edit)
 	edit_button.pressed.connect(_on_edit_button_pressed)
 	delete_button.pressed.connect(_on_delete_button_pressed)
-	
-	HandlerGUI.register_focus_sequence(self, [edit_button, color_name_edit, color_edit, delete_button])
-	edit_button.grab_focus(true)
+	HandlerGUI.register_focus_sequence(self, [edit_button, color_name_edit, color_edit, delete_button], true)
 
 
 func sync_localization() -> void:

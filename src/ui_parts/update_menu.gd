@@ -25,9 +25,7 @@ func _ready() -> void:
 	prereleases_button.text = Translator.translate("Show prereleases")
 	current_version_label.text = Translator.translate("Current Version") + ": " + current_version
 	request()
-	
-	HandlerGUI.register_focus_sequence(self, [prereleases_button, retry_button, close_button])
-	prereleases_button.grab_focus(true)
+	HandlerGUI.register_focus_sequence(self, [prereleases_button, retry_button, close_button], true)
 
 func request() -> void:
 	status_label.text = Translator.translate("Retrieving information...")

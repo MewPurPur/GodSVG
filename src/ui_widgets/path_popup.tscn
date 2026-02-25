@@ -22,7 +22,6 @@ theme_override_constants/margin_right = 4
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
-focus_mode = 0
 mouse_default_cursor_shape = 2
 action_mode = 0
 flat = true
@@ -35,50 +34,40 @@ theme_override_constants/separation = 0
 
 [node name="M" parent="VBoxContainer/CommandContainer" unique_id=1021647607 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "M"
 
 [node name="L" parent="VBoxContainer/CommandContainer" unique_id=540376069 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "L"
 
 [node name="H" parent="VBoxContainer/CommandContainer" unique_id=1063213359 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "H"
 
 [node name="V" parent="VBoxContainer/CommandContainer" unique_id=1002416025 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "V"
 
 [node name="Z" parent="VBoxContainer/CommandContainer" unique_id=205416256 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "Z"
 
 [node name="A" parent="VBoxContainer/CommandContainer" unique_id=1766494641 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "A"
 
 [node name="Q" parent="VBoxContainer/CommandContainer" unique_id=553225362 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "Q"
 
 [node name="T" parent="VBoxContainer/CommandContainer" unique_id=1538544102 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "T"
 
 [node name="C" parent="VBoxContainer/CommandContainer" unique_id=1602313355 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "C"
 
 [node name="S" parent="VBoxContainer/CommandContainer" unique_id=1400720117 instance=ExtResource("2_1jd8y")]
 layout_mode = 2
-focus_mode = 0
 command_char = "S"

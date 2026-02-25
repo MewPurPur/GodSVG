@@ -10,5 +10,5 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ContextButton"
+theme_type_variation = &"FlatButton"
 script = ExtResource("1_q6blt")

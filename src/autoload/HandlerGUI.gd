@@ -96,10 +96,25 @@ func forget_all_shortcuts(node: Node) -> void:
 
 
 ## Registers a focus sequence to an owner.
-func register_focus_sequence(focus_master: Control, sequence: Array[Control]) -> void:
+func register_focus_sequence(focus_master: Control, sequence: Array[Control], focus_first_control := false) -> void:
 	focus_sequences[focus_master] = sequence
 	if not focus_master.tree_exiting.is_connected(forget_focus_sequence):
 		focus_master.tree_exiting.connect(forget_focus_sequence.bind(focus_master))
+	for control in sequence:
+		control.visibility_changed.connect(
+			func() -> void:
+				if not control.visible and control.has_focus():
+					for control2 in sequence:
+						if control2.visible:
+							control2.grab_focus(true)
+							return
+		)
+	
+	if focus_first_control:
+		for control in sequence:
+			if control.visible:
+				control.grab_focus(true)
+				return
 
 ## Removes all shortcuts registered to a node.
 func forget_focus_sequence(focus_master: Control) -> void:
