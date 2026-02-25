@@ -1560,16 +1560,16 @@ msgstr "保存 {format} 文件"
 
 #: godot_only/scripts/update_desktop_file.gd
 msgid "Vector Graphics Editor"
-msgstr ""
+msgstr "矢量图形编辑器"
 
 #: godot_only/scripts/update_desktop_file.gd
 msgid "A vector graphics application for structured SVG editing"
-msgstr ""
+msgstr "结构化SVG编辑应用"
 
 #. A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has no unique translation, omit it, and if it has multiple sensible translations, you can include all of them.
 #: godot_only/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
-msgstr ""
+msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标志;编辑器;路径;形狀;二维;代码;蓝色;狐狸"
 
 #~ msgid "Keep comments"
 #~ msgstr "保留注释"
