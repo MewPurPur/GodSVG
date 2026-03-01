@@ -77,7 +77,7 @@ func _run() -> void:
 		return
 	populate_delimiters()
 	get_messages_from_directory(ProjectSettings.globalize_path("src"))
-	get_messages_from_file(ProjectSettings.globalize_path("godot_only/scripts/update_desktop_file.gd"))
+	get_messages_from_file(ProjectSettings.globalize_path("no_export/scripts/update_desktop_file.gd"))
 	update_translations()
 
 

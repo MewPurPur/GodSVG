@@ -1,5 +1,5 @@
 ## A regular Button with some helpers for shortcuts.
-@icon("res://godot_only/icons/BetterButton.svg")
+@icon("res://no_export/class_icons/BetterButton.svg")
 class_name BetterButton extends Button
 
 const HIGHLIGHT_TIME = 0.2

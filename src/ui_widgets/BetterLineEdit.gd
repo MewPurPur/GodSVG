@@ -1,5 +1,5 @@
 ## A LineEdit with a few tweaks to make it nicer to use.
-@icon("res://godot_only/icons/BetterLineEdit.svg")
+@icon("res://no_export/class_icons/BetterLineEdit.svg")
 class_name BetterLineEdit extends LineEdit
 
 var ci := get_canvas_item()
