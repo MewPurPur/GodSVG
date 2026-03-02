@@ -1,4 +1,4 @@
-@icon("res://godot_only/icons/PanelGrid.svg")
+@icon("res://no_export/class_icons/PanelGrid.svg")
 class_name PanelGrid extends Control
 
 const copy_icon = preload("res://assets/icons/Copy.svg")

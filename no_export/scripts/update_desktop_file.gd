@@ -2,7 +2,9 @@
 @tool
 extends EditorScript
 
-const DESKTOP_FILE_STRUCTURE = """# This file is auto-generated from godot_only/scripts. Localizations are found in the respective .po files.
+const DESKTOP_FILE_PATH = "no_export/distribution/com.godsvg.GodSVG.desktop"
+
+const DESKTOP_FILE_STRUCTURE = """# This file is auto-generated from no_export/scripts. Localizations are found in the respective .po files.
 [Desktop Entry]
 Version=1.0
 Name=GodSVG
@@ -19,20 +21,20 @@ StartupWMClass=GodSVG\n"""
 
 
 func _run() -> void:
-	var desktop_file_location := ProjectSettings.globalize_path("assets/GodSVG.desktop")
-	var fa := FileAccess.open(ProjectSettings.globalize_path("assets/GodSVG.desktop"), FileAccess.WRITE)
+	var desktop_file_location := ProjectSettings.globalize_path(DESKTOP_FILE_PATH)
+	var fa := FileAccess.open(desktop_file_location, FileAccess.WRITE)
 	if not is_instance_valid(fa):
 		print_rich("[color=#f66]Failed to open %s." % desktop_file_location)
 		return
 	
-	var generic_name_entries := PackedStringArray(["GenericName=Vector Graphics Editor"])
+	var generic_name_entries := PackedStringArray(["GenericName=Vector graphics editor"])
 	var comment_entries := PackedStringArray(["Comment=A vector graphics application for structured SVG editing"])
 	var keyword_entries := PackedStringArray(["Keywords=svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox;"])
 	for locale in TranslationServer.get_loaded_locales():
 		if locale == "en":
 			continue
 		var translation_obj := TranslationServer.find_translations(locale, true)[0]
-		var translated_generic_name := Translator.translate_with_object("Vector Graphics Editor", translation_obj)
+		var translated_generic_name := Translator.translate_with_object("Vector graphics editor", translation_obj)
 		var translated_comment := Translator.translate_with_object("A vector graphics application for structured SVG editing", translation_obj)
 		var translated_keyword := Translator.translate_with_object(
 				"svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox", translation_obj)
@@ -49,4 +51,5 @@ func _run() -> void:
 					keywords_arr.remove_at(keyword_idx)
 			keyword_entries.append("Keywords[%s]=%s;" % [locale, ";".join(keywords_arr)])
 	
+	print("Updated " + DESKTOP_FILE_PATH)
 	fa.store_string(DESKTOP_FILE_STRUCTURE % ["\n".join(generic_name_entries), "\n".join(comment_entries), "\n".join(keyword_entries)])

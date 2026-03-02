@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://oh62m8j2btxk"
-path="res://.godot/imported/PanelGrid.svg-a9ed42ada73bdd9e53d178e4c19a2855.ctex"
+uid="uid://rhqnuun4e7cj"
+path="res://.godot/imported/splash.svg-70c867d42bca1efa5bc1357dc3b2646a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://godot_only/icons/PanelGrid.svg"
-dest_files=["res://.godot/imported/PanelGrid.svg-a9ed42ada73bdd9e53d178e4c19a2855.ctex"]
+source_file="res://no_export/source_assets/splash.svg"
+dest_files=["res://.godot/imported/splash.svg-70c867d42bca1efa5bc1357dc3b2646a.ctex"]
 
 [params]
 

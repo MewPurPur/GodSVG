@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfpat62uepne8"
-path="res://.godot/imported/LineEditButton.svg-8852cdccf228ac979cde671d6750b2e2.ctex"
+uid="uid://bvouit2ppyuv1"
+path="res://.godot/imported/HTitledPanel.svg-9db7a10f989d23ed04f89260e0c019be.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://godot_only/icons/LineEditButton.svg"
-dest_files=["res://.godot/imported/LineEditButton.svg-8852cdccf228ac979cde671d6750b2e2.ctex"]
+source_file="res://no_export/class_icons/HTitledPanel.svg"
+dest_files=["res://.godot/imported/HTitledPanel.svg-9db7a10f989d23ed04f89260e0c019be.ctex"]
 
 [params]
 
