@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://b287da6a5fbx3"]
+
+[ext_resource type="Script" uid="uid://i85da82joiif" path="res://src/ui_widgets/color_popup.gd" id="1_3mwi3"]
+
+[node name="ColorPopup" type="PanelContainer" unique_id=241498809]
+custom_minimum_size = Vector2(160, 0)
+offset_right = 214.0
+offset_bottom = 325.0
+script = ExtResource("1_3mwi3")
+
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=1186670268]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Content" type="MarginContainer" parent="MainContainer" unique_id=1927988588]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(214, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="NavigationPanel" type="PanelContainer" parent="MainContainer" unique_id=643023906]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SwitchModeButton" type="Button" parent="MainContainer/NavigationPanel" unique_id=919869063]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButton"

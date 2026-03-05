@@ -72,14 +72,14 @@ func setup_checkbox() -> void:
 	type = Type.CHECKBOX
 	panel_width = 74
 
-func setup_color(enable_alpha: bool) -> void:
+func setup_color(alpha_enabled: bool) -> void:
 	widget = ColorEditScene.instantiate()
-	widget.enable_alpha = enable_alpha
-	widget.value = getter.call().to_html(enable_alpha)
+	widget.alpha_enabled = alpha_enabled
+	widget.value = getter.call().to_html(alpha_enabled)
 	add_child(widget)
-	widget.value_changed.connect(_color_modification.bind(enable_alpha))
+	widget.value_changed.connect(_color_modification.bind(alpha_enabled))
 	type = Type.COLOR
-	panel_width = 110 if enable_alpha else 96
+	panel_width = 110 if alpha_enabled else 96
 
 func setup_file_path(extensions: PackedStringArray) -> void:
 	widget = FilePathFieldScene.instantiate()
@@ -146,8 +146,8 @@ func _checkbox_modification() -> void:
 	setter.call(not getter.call())
 	post_modification()
 
-func _color_modification(value: String, enable_alpha: bool) -> void:
-	setter.call(ColorParser.text_to_color(value, Color(), enable_alpha))
+func _color_modification(value: String, alpha_enabled: bool) -> void:
+	setter.call(ColorParser.text_to_color(value, Color(), alpha_enabled))
 	post_modification()
 
 func _generic_modification(value: Variant) -> void:
@@ -177,7 +177,7 @@ func update_widgets() -> void:
 			widget.set_pressed_no_signal(getter.call())
 		Type.COLOR:
 			var setting_value: Color = getter.call()
-			var show_alpha: bool = widget.enable_alpha and setting_value.a != 1.0
+			var show_alpha: bool = widget.alpha_enabled and setting_value.a != 1.0
 			var setting_str := setting_value.to_html(show_alpha)
 			widget.value = setting_str
 			reset_button.visible = (not disabled and getter.call().to_html() != default.to_html())

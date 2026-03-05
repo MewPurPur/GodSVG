@@ -16,37 +16,37 @@ shader_parameter/v = 1.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gihhg"]
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector4(1, 1, 1, 1)
-shader_parameter/interpolation = 6
 shader_parameter/horizontal = false
 shader_parameter/inverted = true
+shader_parameter/interpolation = 6
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fvg6q"]
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector4(1, 1, 1, 1)
-shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
+shader_parameter/interpolation = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dlmj5"]
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector4(1, 1, 1, 1)
-shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
+shader_parameter/interpolation = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p3pbp"]
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector4(1, 1, 1, 1)
-shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
+shader_parameter/interpolation = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_exp51"]
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector4(1, 1, 1, 1)
-shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
+shader_parameter/interpolation = 0
 
 [node name="GoodColorPicker" type="VBoxContainer" unique_id=1539422717]
 offset_right = 198.0
@@ -75,6 +75,7 @@ mouse_filter = 1
 
 [node name="SideSlider" type="MarginContainer" parent="ShapeContainer" unique_id=1797054762]
 layout_mode = 2
+focus_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4

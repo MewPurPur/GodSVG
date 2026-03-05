@@ -16,8 +16,8 @@ var color_space_button_group := ButtonGroup.new()
 var undo_redo := UndoRedoRef.new()
 
 signal slider_mode_changed
-enum SliderMode {RGB, HSV}
-var slider_mode: SliderMode:
+enum ColorModel {RGB, HSV, HSL}
+var slider_mode: ColorModel:
 	set(new_value):
 		if slider_mode != new_value:
 			slider_mode = new_value
@@ -34,21 +34,21 @@ var slider_mode: SliderMode:
 @onready var center: Vector2 = color_wheel_drawn.get_rect().get_center()
 
 var color_wheel_surface := RenderingServer.canvas_item_create()
+var side_slider_surface := RenderingServer.canvas_item_create()
 
 # 0 is the side slider, 1-3 are the remaining sliders, 4 is the alpha slider.
 var sliders_dragged: Array[bool] = [false, false, false, false, false]
 # Tracks are the color rects of the sliders.
-@onready var tracks_arr: Array[ColorRect] = [
-		$ShapeContainer/SideSlider/SideSliderTrack, %Slider1/MarginContainer/ColorTrack,
-		%Slider2/MarginContainer/ColorTrack, %Slider3/MarginContainer/ColorTrack,
-		%Slider4/MarginContainer/ColorTrack]
+@onready var tracks_arr: Array[ColorRect] = [$ShapeContainer/SideSlider/SideSliderTrack,
+		%Slider1/MarginContainer/ColorTrack, %Slider2/MarginContainer/ColorTrack,
+		%Slider3/MarginContainer/ColorTrack, %Slider4/MarginContainer/ColorTrack]
 # Widgets are the margin containers that acts as click areas and draw the arrow.
 @onready var widgets_arr: Array[MarginContainer] = [
 		$ShapeContainer/SideSlider, %Slider1/MarginContainer, %Slider2/MarginContainer,
 		%Slider3/MarginContainer, %Slider4/MarginContainer]
 # Fields are the number fields beside the color tracks.
 @onready var fields_arr: Array[BetterLineEdit] = [
-	null, %Slider1/IntField, %Slider2/IntField, %Slider3/IntField, %Slider4/IntField]
+		null, %Slider1/IntField, %Slider2/IntField, %Slider3/IntField, %Slider4/IntField]
 @onready var alpha_slider: HBoxContainer = %Slider4
 
 # This variable stores what the color string was at the start, for the reset button.
@@ -69,13 +69,12 @@ func backup() -> void:
 	backup_display_color = display_color
 
 # To be called right after the color picker is added.
-func setup_color(new_color: String, default_color: Color) -> void:
-	starting_color = new_color
+func setup_color(new_color: String, initial_color: String, default_color: Color) -> void:
+	starting_color = initial_color
 	color = new_color
 	# Setup the display color.
-	starting_display_color = ColorParser.text_to_color(starting_color, default_color,
-			alpha_enabled)
-	if slider_mode == SliderMode.HSV:
+	starting_display_color = ColorParser.text_to_color(starting_color, default_color, alpha_enabled)
+	if slider_mode == ColorModel.HSV:
 		# Clamping like this doesn't change the hex representation, but it helps avoid
 		# locking certain sliders (e.g. hue slider when saturation is 0).
 		# The HVS order helps to keep the saturation at 0.0001 for some reason.
@@ -84,8 +83,8 @@ func setup_color(new_color: String, default_color: Color) -> void:
 		starting_display_color.s = clampf(starting_display_color.s, 0.0001, 1.0)
 	if not alpha_enabled:
 		starting_display_color.a = 1
-	display_color = starting_display_color
-	slider_mode = Configs.savedata.color_picker_slider_mode
+	display_color = ColorParser.text_to_color(new_color, default_color, alpha_enabled)
+	slider_mode = Configs.savedata.color_picker_current_model
 	update()
 
 
@@ -110,7 +109,7 @@ func sync_theming() -> void:
 	pressed_stylebox.content_margin_bottom = 2.0
 	pressed_stylebox.border_color = Color(ThemeUtils.editable_text_color, 0.7)
 	
-	for color_space: SliderMode in [SliderMode.RGB, SliderMode.HSV]:
+	for color_space: ColorModel in [ColorModel.RGB, ColorModel.HSV]:
 		var btn := Button.new()
 		btn.begin_bulk_theme_override()
 		btn.add_theme_constant_override("align_to_largest_stylebox", 0)
@@ -121,22 +120,27 @@ func sync_theming() -> void:
 		btn.add_theme_stylebox_override("hover_pressed", pressed_stylebox)
 		btn.end_bulk_theme_override()
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		btn.button_group = color_space_button_group
 		btn.toggle_mode = true
 		btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 		
-		var on_slider_mode_changed := func() -> void:
+		var sync_color_space_button_mouse_cursor_shape :=\
+			func() -> void:
 				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if slider_mode == color_space else Control.CURSOR_POINTING_HAND
 		
-		slider_mode_changed.connect(on_slider_mode_changed)
-		btn.tree_exiting.connect(slider_mode_changed.disconnect.bind(on_slider_mode_changed))
-		if color_space == Configs.savedata.color_picker_slider_mode:
+		slider_mode_changed.connect(sync_color_space_button_mouse_cursor_shape)
+		btn.tree_exiting.connect(slider_mode_changed.disconnect.bind(sync_color_space_button_mouse_cursor_shape))
+		sync_color_space_button_mouse_cursor_shape.call()
+		
+		if color_space == Configs.savedata.color_picker_current_model:
 			btn.button_pressed = true
 		btn.pressed.connect(change_slider_mode.bind(color_space))
+		# These color spaces have somewhat common abbreviations in like 3 languages.
+		# But people understsand and often even prefer the English version. Won't be making these translatable.
 		match color_space:
-			SliderMode.RGB: btn.text = "RGB"
-			SliderMode.HSV: btn.text = "HSV"
+			ColorModel.RGB: btn.text = "RGB"
+			ColorModel.HSV: btn.text = "HSV"
+			ColorModel.HSL: btn.text = "HSL"
 		color_space_container.add_child(btn)
 	
 	reset_color_button.add_theme_stylebox_override("focus", focus_stylebox)
@@ -166,7 +170,7 @@ func _ready() -> void:
 	widgets_arr[1].draw.connect(_on_slider1_draw)
 	widgets_arr[2].draw.connect(_on_slider2_draw)
 	widgets_arr[3].draw.connect(_on_slider3_draw)
-	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
+	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0))
 	widgets_arr[1].gui_input.connect(parse_slider_input.bind(1))
 	widgets_arr[2].gui_input.connect(parse_slider_input.bind(2))
 	widgets_arr[3].gui_input.connect(parse_slider_input.bind(3))
@@ -190,23 +194,26 @@ func _ready() -> void:
 	eyedropper_button.tooltip_text = Translator.translate("Eyedropper")
 	# Set up the rest.
 	RenderingServer.canvas_item_set_parent(color_wheel_surface, color_wheel_drawn.get_canvas_item())
+	RenderingServer.canvas_item_set_parent(side_slider_surface, widgets_arr[0].get_canvas_item())
 	
-	var focus_sequence: Array[Control] = [keyword_button, reset_color_button, eyedropper_button]
+	var focus_sequence: Array[Control] = [widgets_arr[0], keyword_button, reset_color_button, eyedropper_button]
 	focus_sequence.append_array(color_space_container.get_children())
 	focus_sequence.append_array(fields_arr.slice(1))
 	HandlerGUI.register_focus_sequence(self, focus_sequence)
+	keyword_button.grab_focus(true)
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(color_wheel_surface)
+	RenderingServer.free_rid(side_slider_surface)
 
 
 func _on_slider_mode_changed() -> void:
 	match slider_mode:
-		SliderMode.RGB:
+		ColorModel.RGB:
 			tracks_arr[1].material.set_shader_parameter("interpolation", 1)
 			tracks_arr[2].material.set_shader_parameter("interpolation", 2)
 			tracks_arr[3].material.set_shader_parameter("interpolation", 3)
-		SliderMode.HSV:
+		ColorModel.HSV:
 			tracks_arr[1].material.set_shader_parameter("interpolation", 4)
 			tracks_arr[2].material.set_shader_parameter("interpolation", 5)
 			tracks_arr[3].material.set_shader_parameter("interpolation", 6)
@@ -296,35 +303,34 @@ func start_slider_drag(idx: int) -> void:
 	sliders_dragged[idx] = true
 	backup()
 
-func move_slider(idx: int, offset: float) -> void:
+func set_slider_offset(idx: int, offset: float, register_change := false) -> void:
 	var new_color := display_color
 	var channel: String
 	match idx:
-		4: channel = "a"
 		0: channel = "v"
 		1: match slider_mode:
-			SliderMode.RGB: channel = "r"
-			SliderMode.HSV: channel = "h"
+			ColorModel.RGB: channel = "r"
+			ColorModel.HSV: channel = "h"
 		2: match slider_mode:
-			SliderMode.RGB: channel = "g"
-			SliderMode.HSV: channel = "s"
+			ColorModel.RGB: channel = "g"
+			ColorModel.HSV: channel = "s"
 		3: match slider_mode:
-			SliderMode.RGB: channel = "b"
-			SliderMode.HSV: channel = "v"
-	new_color = set_color_channel(new_color, channel, offset)
-	set_display_color(new_color)
-	widgets_arr[idx].queue_redraw()
-
-func set_color_channel(col: Color, channel: String, offset: float) -> Color:
+			ColorModel.RGB: channel = "b"
+			ColorModel.HSV: channel = "v"
+		4: channel = "a"
 	match channel:
-		"a": col.a = clampf(offset, 0.0, 1.0)
-		"r": col.r = clampf(offset, 0.0, 1.0)
-		"g": col.g = clampf(offset, 0.0, 1.0)
-		"b": col.b = clampf(offset, 0.0, 1.0)
-		"h": col.h = clampf(offset, 0.0, 0.9999)
-		"s": col.s = clampf(offset, 0.0001, 1.0)
-		"v": col.v = clampf(offset, 0.0001, 1.0)
-	return col
+		"a": new_color.a = clampf(offset, 0.0, 1.0)
+		"r": new_color.r = clampf(offset, 0.0, 1.0)
+		"g": new_color.g = clampf(offset, 0.0, 1.0)
+		"b": new_color.b = clampf(offset, 0.0, 1.0)
+		"h": new_color.h = clampf(offset, 0.0, 0.9999)
+		"s": new_color.s = clampf(offset, 0.0001, 1.0)
+		"v": new_color.v = clampf(offset, 0.0001, 1.0)
+	if register_change:
+		register_visual_change(new_color, false)
+	else:
+		set_display_color(new_color)
+	widgets_arr[idx].queue_redraw()
 
 func end_slider_drag(idx: int) -> void:
 	register_visual_change(display_color)
@@ -337,12 +343,30 @@ func calculate_offset(idx: int, pos: Vector2, is_slider_vertical: bool) -> float
 	else:
 		return (pos.x - tracks_arr[idx].position.x) / tracks_arr[idx].size.x
 
-func parse_slider_input(event: InputEvent, idx: int, is_slider_vertical := false) -> void:
+func parse_slider_input(event: InputEvent, idx: int) -> void:
+	if idx == 0 and widgets_arr[idx].has_focus(true):
+		var delta := 0.0
+		if event.is_action_pressed("ui_down", true, true):
+			delta -= 0.01
+			accept_event()
+		if event.is_action_pressed("ui_up", true, true):
+			delta += 0.01
+			accept_event()
+		
+		if not is_zero_approx(delta):
+			if not sliders_dragged[idx]:
+				start_slider_drag(idx)
+			set_slider_offset(idx, display_color.v + delta)
+		elif sliders_dragged[idx]:
+			end_slider_drag(idx)
+	
+	var is_slider_vertical := (idx == 0)
+	
 	if Utils.is_event_drag_start(event):
 		start_slider_drag(idx)
-		move_slider(idx, calculate_offset(idx, event.position, is_slider_vertical))
+		set_slider_offset(idx, calculate_offset(idx, event.position, is_slider_vertical))
 	elif Utils.is_event_drag(event):
-		move_slider(idx, calculate_offset(idx, event.position, is_slider_vertical))
+		set_slider_offset(idx, calculate_offset(idx, event.position, is_slider_vertical))
 	elif Utils.is_event_drag_end(event):
 		end_slider_drag(idx)
 
@@ -353,11 +377,9 @@ func _on_slider1_text_submitted(new_text: String) -> void:
 	if is_nan(new_value):
 		slider1_update()
 		return
-	var new_color := display_color
 	match slider_mode:
-		SliderMode.RGB: new_color.r = clampf(new_value / 255.0, 0.0, 1.0)
-		SliderMode.HSV: new_color.h = clampf(new_value / 360.0, 0.0, 0.9999)
-	register_visual_change(new_color, false)
+		ColorModel.RGB: set_slider_offset(1, new_value / 255.0, true)
+		ColorModel.HSV: set_slider_offset(1, new_value / 360.0, true)
 	slider1_update()
 
 func _on_slider2_text_submitted(new_text: String) -> void:
@@ -365,11 +387,10 @@ func _on_slider2_text_submitted(new_text: String) -> void:
 	if is_nan(new_value):
 		slider2_update()
 		return
-	var new_color := display_color
 	match slider_mode:
-		SliderMode.RGB: new_color.g = clampf(new_value / 255.0, 0.0, 1.0)
-		SliderMode.HSV: new_color.s = clampf(new_value / 100.0, 0.0001, 1.0)
-	register_visual_change(new_color, false)
+		ColorModel.RGB: set_slider_offset(2, new_value / 255.0, true)
+		ColorModel.HSV: set_slider_offset(2, new_value / 100.0, true)
+	register_visual_change(display_color, false)
 	slider2_update()
 
 func _on_slider3_text_submitted(new_text: String) -> void:
@@ -377,11 +398,10 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 	if is_nan(new_value):
 		slider3_update()
 		return
-	var new_color := display_color
 	match slider_mode:
-		SliderMode.RGB: new_color.b = clampf(new_value / 255.0, 0.0, 1.0)
-		SliderMode.HSV: new_color.v = clampf(new_value / 100.0, 0.0001, 1.0)
-	register_visual_change(new_color, false)
+		ColorModel.RGB: set_slider_offset(3, new_value / 255.0, true)
+		ColorModel.HSV: set_slider_offset(3, new_value / 100.0, true)
+	register_visual_change(display_color, false)
 	slider3_update()
 
 func _on_slider4_text_submitted(new_text: String) -> void:
@@ -389,30 +409,29 @@ func _on_slider4_text_submitted(new_text: String) -> void:
 	if is_nan(new_value):
 		slider4_update()
 		return
-	var new_color := display_color
-	new_color.a = clampf(new_value / 255.0, 0.0, 1.0)
-	register_visual_change(new_color, false)
+	set_slider_offset(4, new_value / 255.0, true)
+	register_visual_change(display_color, false)
 	slider4_update()
 
 func slider1_update() -> void:
 	var number: float
 	match slider_mode:
-		SliderMode.RGB: number = display_color.r * 255
-		SliderMode.HSV: number = display_color.h * 360
+		ColorModel.RGB: number = display_color.r * 255
+		ColorModel.HSV: number = display_color.h * 360
 	_slider_set_text(fields_arr[1], number)
 
 func slider2_update() -> void:
 	var number: float
 	match slider_mode:
-		SliderMode.RGB: number = display_color.g * 255
-		SliderMode.HSV: number = display_color.s * 100
+		ColorModel.RGB: number = display_color.g * 255
+		ColorModel.HSV: number = display_color.s * 100
 	_slider_set_text(fields_arr[2], number)
 
 func slider3_update() -> void:
 	var number: float
 	match slider_mode:
-		SliderMode.RGB: number = display_color.b * 255
-		SliderMode.HSV: number = display_color.v * 100
+		ColorModel.RGB: number = display_color.b * 255
+		ColorModel.HSV: number = display_color.v * 100
 	_slider_set_text(fields_arr[3], number)
 
 func slider4_update() -> void:
@@ -456,9 +475,9 @@ func _on_reset_color_button_pressed() -> void:
 	undo_redo.commit_action()
 
 
-func change_slider_mode(new_slider_mode: SliderMode) -> void:
+func change_slider_mode(new_slider_mode: ColorModel) -> void:
 	slider_mode = new_slider_mode
-	Configs.savedata.color_picker_slider_mode = new_slider_mode
+	Configs.savedata.color_picker_current_model = new_slider_mode
 
 
 # Gray out the start color rect if it's not actually a color.
@@ -481,11 +500,14 @@ func _on_color_rect_draw() -> void:
 
 # Draw inside the side slider to give it a little arrow to the side.
 func _on_side_slider_draw() -> void:
+	RenderingServer.canvas_item_clear(side_slider_surface)
 	var arrow_modulate := ThemeUtils.tinted_contrast_color
 	if not sliders_dragged[0]:
 		arrow_modulate.a = 0.7
-	widgets_arr[0].draw_texture(side_slider_arrow, Vector2(0, tracks_arr[0].position.y +\
-			tracks_arr[0].size.y * (1 - display_color.v) - side_slider_arrow.get_height() / 2.0), arrow_modulate)
+	var arrow_y := tracks_arr[0].position.y + tracks_arr[0].size.y * (1 - display_color.v) - side_slider_arrow.get_height() / 2.0
+	side_slider_arrow.draw(side_slider_surface, Vector2(0, arrow_y), arrow_modulate)
+	if widgets_arr[0].has_focus(true):
+		get_theme_stylebox("focus", "FlatButton").draw(side_slider_surface, Rect2(Vector2(0, arrow_y), Vector2(side_slider_arrow.get_size())).grow(3))
 
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(color_wheel_surface)
@@ -518,18 +540,18 @@ func queue_redraw_widgets() -> void:
 
 func _on_slider1_draw() -> void:
 	match slider_mode:
-		SliderMode.RGB: draw_hslider(1, display_color.r, "R")
-		SliderMode.HSV: draw_hslider(1, display_color.h, "H")
+		ColorModel.RGB: draw_hslider(1, display_color.r, "R")
+		ColorModel.HSV: draw_hslider(1, display_color.h, "H")
 
 func _on_slider2_draw() -> void:
 	match slider_mode:
-		SliderMode.RGB: draw_hslider(2, display_color.g, "G")
-		SliderMode.HSV: draw_hslider(2, display_color.s, "S")
+		ColorModel.RGB: draw_hslider(2, display_color.g, "G")
+		ColorModel.HSV: draw_hslider(2, display_color.s, "S")
 
 func _on_slider3_draw() -> void:
 	match slider_mode:
-		SliderMode.RGB: draw_hslider(3, display_color.b, "B")
-		SliderMode.HSV: draw_hslider(3, display_color.v, "V")
+		ColorModel.RGB: draw_hslider(3, display_color.b, "B")
+		ColorModel.HSV: draw_hslider(3, display_color.v, "V")
 
 func _on_slider4_draw() -> void:
 	draw_hslider(4, display_color.a, "A")

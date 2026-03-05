@@ -615,14 +615,28 @@ const MAX_SNAP = 16384
 			emit_changed()
 			Configs.snap_changed.emit()
 
-@export var color_picker_slider_mode := GoodColorPicker.SliderMode.RGB:
+@export var color_picker_active_models: Array[GoodColorPicker.ColorModel] = [GoodColorPicker.ColorModel.RGB, GoodColorPicker.ColorModel.HSV]:
 	set(new_value):
 		# Validation
-		if not (new_value >= 0 and new_value < GoodColorPicker.SliderMode.size()):
-			new_value = GoodColorPicker.SliderMode.RGB
+		if new_value.is_empty():
+			new_value = [GoodColorPicker.ColorModel.RGB, GoodColorPicker.ColorModel.HSV]
+		else:
+			for mode in new_value:
+				if not (mode >= 0 and mode < GoodColorPicker.ColorModel.size()):
+					new_value = [GoodColorPicker.ColorModel.RGB, GoodColorPicker.ColorModel.HSV]
 		# Main part
-		if color_picker_slider_mode != new_value:
-			color_picker_slider_mode = new_value
+		if color_picker_active_models != new_value:
+			color_picker_active_models = new_value
+			emit_changed()
+
+@export var color_picker_current_model := GoodColorPicker.ColorModel.RGB:
+	set(new_value):
+		# Validation
+		if not (new_value >= 0 and new_value < GoodColorPicker.ColorModel.size()):
+			new_value = GoodColorPicker.ColorModel.RGB
+		# Main part
+		if color_picker_current_model != new_value:
+			color_picker_current_model = new_value
 			emit_changed()
 
 @export var path_command_relative := false:

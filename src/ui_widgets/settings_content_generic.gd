@@ -817,11 +817,11 @@ min_value := -INF, max_value := INF, special_value_exception := NAN, value_text_
 	current_setup_container.add_child(frame)
 	return frame
 
-func add_color_edit(text: String, enable_alpha := true) -> Control:
+func add_color_edit(text: String, alpha_enabled := true) -> Control:
 	var frame := SettingFrameScene.instantiate()
 	frame.text = text
 	setup_frame(frame)
-	frame.setup_color(enable_alpha)
+	frame.setup_color(alpha_enabled)
 	current_setup_container.add_child(frame)
 	return frame
 
