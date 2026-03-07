@@ -287,7 +287,7 @@ func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:
 	var top_popup := add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
 	pos += screen_transform.get_origin() / screen_transform.get_scale()
-	top_popup.position = popup_clamp_pos(top_popup, pos, vp)
+	top_popup.position = popup_clamp_pos(top_popup, pos + Vector2(1, 1), vp)
 
 # Should usually be the global rect of a control.
 func popup_submenu_to_right_or_left_side(submenu: Control, source: Control) -> void:
