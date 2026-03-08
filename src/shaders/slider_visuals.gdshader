@@ -10,57 +10,58 @@ uniform bool inverted = false;
 // HSL --> 7 = Hue, 8 = HSL saturation, 9 = Lightness
 uniform int interpolation = 0;
 
-vec3 rgb2hsv(vec3 c) {
+vec3 rgb_to_hsv(vec3 c) {
 	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
 	vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
 	vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
 	float d = q.x - min(q.w, q.y);
-	float e = 1.0e-10;
+	float e = 1e-10;
 	return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
 
-vec3 hsv2rgb(vec3 c) {
+vec3 hsv_to_rgb(vec3 c) {
 	vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 	vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
 	return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-vec3 rgb2hsl(vec3 c) {
-    float r = c.r;
-    float g = c.g;
-    float b = c.b;
-    float maxc = max(r, max(g, b));
-    float minc = min(r, min(g, b));
-    float L = (maxc + minc) * 0.5;
-    float d = maxc - minc;
+vec3 rgb_to_hsl(vec3 c) {
+	float r = c.r;
+	float g = c.g;
+	float b = c.b;
+	float maxc = max(r, max(g, b));
+	float minc = min(r, min(g, b));
+	float L = (maxc + minc) * 0.5;
+	float d = maxc - minc;
 
-    float H = 0.0;
-    if (d > 1e-10) {
-        if (maxc == r) {
-            H = mod((g - b) / d, 6.0);
-        } else if (maxc == g) {
-            H = ((b - r) / d) + 2.0;
-        } else {
-            H = ((r - g) / d) + 4.0;
-        }
-        H /= 6.0; // normalize to 0..1
-        if (H < 0.0) H += 1.0;
-    } else {
-        H = 0.0; // hue undefined for gray; choose 0
-    }
-
-    float S = 0.0;
-    if (d > 1e-10) {
-        S = d / (1.0 - abs(2.0 * L - 1.0));
-    } else {
-        S = 0.0;
-    }
-
-    return vec3(H, S, L);
+	float H = 0.0;
+	if (d > 1e-10) {
+		if (maxc == r) {
+			H = mod((g - b) / d, 6.0);
+		} else if (maxc == g) {
+			H = ((b - r) / d) + 2.0;
+		} else {
+			H = ((r - g) / d) + 4.0;
+		}
+		H /= 6.0;
+		if (H < 0.0) {
+			H += 1.0;
+		}
+	} else {
+		H = 0.0;
+	}
+	
+	float S = 0.0;
+	if (d > 1e-10) {
+		S = d / (1.0 - abs(2.0 * L - 1.0));
+	} else {
+		S = 0.0;
+	}
+	
+	return vec3(H, S, L);
 }
 
-// HSL -> RGB
-vec3 hsl2rgb(vec3 hsl) {
+vec3 hsl_to_rgb(vec3 hsl) {
 	float H = hsl.x;
 	float S = hsl.y;
 	float L = hsl.z;
@@ -101,7 +102,7 @@ void fragment() {
 	} else if (interpolation == 3) {
 		COLOR = vec4(base_color.r, base_color.g, offset, 1.0);
 	} else if (interpolation >= 4 && interpolation <= 6) {
-		vec3 hsv = rgb2hsv(base_color.rgb);
+		vec3 hsv = rgb_to_hsv(base_color.rgb);
 		if (interpolation == 4) {
 			hsv.x = offset;
 		} else if (interpolation == 5) {
@@ -109,6 +110,16 @@ void fragment() {
 		} else if (interpolation == 6) {
 			hsv.z = offset;
 		}
-		COLOR = vec4(hsv2rgb(hsv), 1.0);
+		COLOR = vec4(hsv_to_rgb(hsv), 1.0);
+	} else {
+		vec3 hsv = rgb_to_hsl(base_color.rgb);
+		if (interpolation == 7) {
+			hsv.x = offset;
+		} else if (interpolation == 8) {
+			hsv.y = offset;
+		} else if (interpolation == 9) {
+			hsv.z = offset;
+		}
+		COLOR = vec4(hsl_to_rgb(hsv), 1.0);
 	}
 }

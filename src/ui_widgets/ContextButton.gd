@@ -49,13 +49,13 @@ func _ready() -> void:
 		mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 
-static func create(new_disabled := false) -> ContextButton:
+static func _create(new_disabled := false) -> ContextButton:
 	var context_button := ContextButton.new()
 	context_button.disabled = new_disabled
 	return context_button
 
 static func create_custom(new_custom_text: String, new_custom_callback: Callable, new_custom_icon: Texture2D = null, new_disabled := false) -> ContextButton:
-	var context_button := ContextButton.create(new_disabled)
+	var context_button := _create(new_disabled)
 	context_button.custom_text = new_custom_text
 	context_button.custom_callback = new_custom_callback
 	context_button.custom_icon = new_custom_icon
@@ -66,13 +66,21 @@ static func create_from_action(new_action: String, new_disabled := false) -> Con
 		push_error("Non-existent action was passed.")
 		return
 	
-	var context_button := ContextButton.create(new_disabled)
+	var context_button := _create(new_disabled)
 	context_button.action = new_action
 	return context_button
 
 static func create_checkbox_from_action(new_action: String, start_toggled_on: bool, new_disabled := false) -> ContextButton:
 	var context_button := ContextButton.create_from_action(new_action, new_disabled)
 	context_button.type = Type.CHECKBOX
+	context_button.toggled_on = start_toggled_on
+	return context_button
+
+static func create_checkbox_custom(new_custom_text: String, new_custom_callback: Callable, start_toggled_on: bool, new_disabled := false) -> ContextButton:
+	var context_button := _create(new_disabled)
+	context_button.type = Type.CHECKBOX
+	context_button.custom_text = new_custom_text
+	context_button.custom_callback = new_custom_callback
 	context_button.toggled_on = start_toggled_on
 	return context_button
 

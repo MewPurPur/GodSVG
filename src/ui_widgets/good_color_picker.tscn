@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="6_aqyoh"]
 [ext_resource type="Texture2D" uid="uid://stpallv5q0rb" path="res://assets/icons/CheckerboardMini.svg" id="6_qq1j3"]
 [ext_resource type="Texture2D" uid="uid://brff7fx0puj6" path="res://assets/icons/Eyedropper.svg" id="6_titg4"]
+[ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://assets/icons/SmallMore.svg" id="7_sjpte"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wl372"]
 shader = ExtResource("2_nf1uk")
@@ -141,9 +142,19 @@ icon = ExtResource("6_titg4")
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ColorSpaceContainer" type="HBoxContainer" parent="SliderContainer" unique_id=2057620932]
+[node name="ColorModelContainer" type="HBoxContainer" parent="SliderContainer" unique_id=2057620932]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="ColorModels" type="HBoxContainer" parent="SliderContainer/ColorModelContainer" unique_id=206985012]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorModelsButton" type="Button" parent="SliderContainer/ColorModelContainer" unique_id=2061688269]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("7_sjpte")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SliderContainer" unique_id=367582515]
 layout_mode = 2
