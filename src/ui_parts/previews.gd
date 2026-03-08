@@ -38,7 +38,7 @@ class IconPreviewTileData extends RefCounted:
 	var more_button_rect: Rect2
 	var bigger_dimension: int
 	var label_text: String
-	var preview_texture: DPITexture
+	var preview_texture: Texture2D
 	
 	func _init(new_index: int) -> void:
 		index = new_index
@@ -109,6 +109,7 @@ func _ready() -> void:
 			sync_tile_positions()
 	)
 	icon_preview_tiles.resized.connect(sync_tile_positions)
+	
 	sync_tiles()
 	HandlerGUI.register_focus_sequence(self, [add_new_preview_button,
 			transparent_color_swatch, black_color_swatch, white_color_swatch, color_edit, more_button])
