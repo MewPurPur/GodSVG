@@ -3,7 +3,6 @@ class_name SaveData extends ConfigResource
 enum ThemePreset {DARK, LIGHT, BLACK, GRAY}
 enum HighlighterPreset {DEFAULT_DARK, DEFAULT_LIGHT}
 
-const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 const ShortcutPanel = preload("res://src/ui_parts/shortcut_panel.gd")
 
 var _palette_validities: Dictionary[String, bool] = {}
@@ -209,6 +208,8 @@ func validate() -> void:
 		default_optimizer = Optimizer.new()
 	if _active_tab_index >= _tabs.size() or _active_tab_index < 0:
 		_active_tab_index = _active_tab_index  # Run the setter.
+	if not color_picker_current_model in color_picker_active_models:
+		color_picker_current_model = color_picker_active_models[0]
 	
 	# End of the method, would need to be rewritten if more things need validation.
 	for location in [LayoutLocation.TOP_LEFT, LayoutLocation.BOTTOM_LEFT]:
@@ -615,28 +616,41 @@ const MAX_SNAP = 16384
 			emit_changed()
 			Configs.snap_changed.emit()
 
-@export var color_picker_active_models: Array[GoodColorPicker.ColorModel] = [GoodColorPicker.ColorModel.RGB, GoodColorPicker.ColorModel.HSV]:
+const MAX_ACTIVE_COLOR_MODELS = 3
+@export var color_picker_active_models: Array[ColorPickerUtils.ColorModel] = [ColorPickerUtils.ColorModel.RGB, ColorPickerUtils.ColorModel.HSV]:
 	set(new_value):
 		# Validation
 		if new_value.is_empty():
-			new_value = [GoodColorPicker.ColorModel.RGB, GoodColorPicker.ColorModel.HSV]
+			new_value = [ColorPickerUtils.ColorModel.RGB, ColorPickerUtils.ColorModel.HSV]
 		else:
 			for mode in new_value:
-				if not (mode >= 0 and mode < GoodColorPicker.ColorModel.size()):
-					new_value = [GoodColorPicker.ColorModel.RGB, GoodColorPicker.ColorModel.HSV]
+				if not (mode >= 0 and mode < ColorPickerUtils.ColorModel.size()):
+					new_value = [ColorPickerUtils.ColorModel.RGB, ColorPickerUtils.ColorModel.HSV]
+			if new_value.size() > MAX_ACTIVE_COLOR_MODELS:
+				new_value.slice(0, MAX_ACTIVE_COLOR_MODELS)
 		# Main part
 		if color_picker_active_models != new_value:
 			color_picker_active_models = new_value
 			emit_changed()
 
-@export var color_picker_current_model := GoodColorPicker.ColorModel.RGB:
+@export var color_picker_current_model := ColorPickerUtils.ColorModel.RGB:
 	set(new_value):
 		# Validation
-		if not (new_value >= 0 and new_value < GoodColorPicker.ColorModel.size()):
-			new_value = GoodColorPicker.ColorModel.RGB
+		if not (new_value >= 0 and new_value < ColorPickerUtils.ColorModel.size() and new_value in color_picker_active_models):
+			new_value = color_picker_active_models[0]
 		# Main part
 		if color_picker_current_model != new_value:
 			color_picker_current_model = new_value
+			emit_changed()
+
+@export var color_picker_current_shape := ColorPickerUtils.PickerShape.VHS_CIRCLE:
+	set(new_value):
+		# Validation
+		if not (new_value >= 0 and new_value < ColorPickerUtils.PickerShape.size()):
+			new_value = ColorPickerUtils.PickerShape.VHS_CIRCLE
+		# Main part
+		if color_picker_current_shape != new_value:
+			color_picker_current_shape = new_value
 			emit_changed()
 
 @export var path_command_relative := false:

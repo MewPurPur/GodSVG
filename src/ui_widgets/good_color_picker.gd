@@ -16,8 +16,6 @@ var color_model_button_group := ButtonGroup.new()
 
 var undo_redo := UndoRedoRef.new()
 
-enum ColorModel {RGB, HSV, HSL}
-
 @onready var color_wheel: MarginContainer = $ShapeContainer/ColorWheel
 @onready var color_wheel_drawn: ColorRect = $ShapeContainer/ColorWheel/ColorWheelDraw
 @onready var color_models_container: HBoxContainer = $SliderContainer/ColorModelContainer/ColorModels
@@ -70,7 +68,7 @@ func setup_color(new_color: String, initial_color: String, default_color: Color)
 	color = new_color
 	# Set up the display color.
 	starting_display_color = ColorParser.text_to_color(starting_color, default_color, alpha_enabled)
-	if Configs.savedata.color_picker_current_model == ColorModel.HSV:
+	if Configs.savedata.color_picker_current_model == ColorPickerUtils.ColorModel.HSV:
 		# Clamping like this doesn't change the hex representation, but it helps avoid
 		# locking certain sliders (e.g. hue slider when saturation is 0).
 		# The HVS order helps to keep the saturation at 0.0001 for some reason.
@@ -83,7 +81,7 @@ func setup_color(new_color: String, initial_color: String, default_color: Color)
 	update()
 
 
-func sync_theming() -> void:
+func sync_to_config() -> void:
 	for child in color_models_container.get_children():
 		child.queue_free()
 	
@@ -104,7 +102,7 @@ func sync_theming() -> void:
 	pressed_stylebox.content_margin_bottom = 2.0
 	pressed_stylebox.border_color = Color(ThemeUtils.editable_text_color, 0.7)
 	
-	for active_color_model: ColorModel in Configs.savedata.color_picker_active_models:
+	for active_color_model: ColorPickerUtils.ColorModel in Configs.savedata.color_picker_active_models:
 		var btn := Button.new()
 		btn.begin_bulk_theme_override()
 		btn.add_theme_constant_override("align_to_largest_stylebox", 0)
@@ -123,7 +121,7 @@ func sync_theming() -> void:
 			func() -> void:
 				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 						Configs.savedata.color_picker_current_model == active_color_model else Control.CURSOR_POINTING_HAND
-		
+		# TODO disconnect or something.
 		color_model_button_group.pressed.connect(sync_color_model_button_mouse_cursor_shape.unbind(1))
 		sync_color_model_button_mouse_cursor_shape.call()
 		
@@ -137,7 +135,7 @@ func sync_theming() -> void:
 				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
 				_on_color_model_changed()
 		)
-		btn.text = color_model_to_string(active_color_model)
+		btn.text = ColorPickerUtils.color_model_to_string(active_color_model)
 		color_models_container.add_child(btn)
 	
 	reset_color_button.add_theme_stylebox_override("focus", focus_stylebox)
@@ -155,8 +153,8 @@ func _ready() -> void:
 	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
-	Configs.theme_changed.connect(sync_theming)
-	sync_theming()
+	Configs.theme_changed.connect(sync_to_config)
+	sync_to_config()
 	# Set up signals.
 	color_wheel.gui_input.connect(_on_color_wheel_gui_input)
 	start_color_rect.draw.connect(_on_start_color_rect_draw)
@@ -207,15 +205,15 @@ func _exit_tree() -> void:
 
 func _on_color_model_changed() -> void:
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB:
+		ColorPickerUtils.ColorModel.RGB:
 			tracks_arr[1].material.set_shader_parameter("interpolation", 1)
 			tracks_arr[2].material.set_shader_parameter("interpolation", 2)
 			tracks_arr[3].material.set_shader_parameter("interpolation", 3)
-		ColorModel.HSV:
+		ColorPickerUtils.ColorModel.HSV:
 			tracks_arr[1].material.set_shader_parameter("interpolation", 4)
 			tracks_arr[2].material.set_shader_parameter("interpolation", 5)
 			tracks_arr[3].material.set_shader_parameter("interpolation", 6)
-		ColorModel.HSL:
+		ColorPickerUtils.ColorModel.HSL:
 			tracks_arr[1].material.set_shader_parameter("interpolation", 7)
 			tracks_arr[2].material.set_shader_parameter("interpolation", 8)
 			tracks_arr[3].material.set_shader_parameter("interpolation", 9)
@@ -225,17 +223,9 @@ func _on_color_model_changed() -> void:
 
 func _on_color_models_button_pressed() -> void:
 	var context_popup := ColorPickerLayoutPopupScene.instantiate()
+	context_popup.color_model_changed.connect(sync_to_config)
 	HandlerGUI.popup_under_rect_center(context_popup, color_models_button.get_global_rect(), get_viewport())
 
-
-func color_model_to_string(model: ColorModel) -> String:
-	# These color models have somewhat common abbreviations in like three languages out there.
-	# But people understand and often even prefer the English version. Won't be making these translatable.
-	match model:
-		ColorModel.RGB: return "RGB"
-		ColorModel.HSV: return "HSV"
-		ColorModel.HSL: return "HSL"
-	return ""
 
 # If the change was continuous, like a color wheel adjustment, the backup color
 # should be used as it stores the color from before the operation.
@@ -324,16 +314,16 @@ func set_slider_offset(idx: int, offset: float, register_change := false) -> voi
 	match idx:
 		0: channel = "v"
 		1: match Configs.savedata.color_picker_current_model:
-			ColorModel.RGB: channel = "r"
-			ColorModel.HSV, ColorModel.HSL: channel = "h"
+			ColorPickerUtils.ColorModel.RGB: channel = "r"
+			ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: channel = "h"
 		2: match Configs.savedata.color_picker_current_model:
-			ColorModel.RGB: channel = "g"
-			ColorModel.HSV: channel = "s"
-			ColorModel.HSL: channel = "s_hsl"
+			ColorPickerUtils.ColorModel.RGB: channel = "g"
+			ColorPickerUtils.ColorModel.HSV: channel = "s"
+			ColorPickerUtils.ColorModel.HSL: channel = "s_hsl"
 		3: match Configs.savedata.color_picker_current_model:
-			ColorModel.RGB: channel = "b"
-			ColorModel.HSV: channel = "v"
-			ColorModel.HSL: channel = "l"
+			ColorPickerUtils.ColorModel.RGB: channel = "b"
+			ColorPickerUtils.ColorModel.HSV: channel = "v"
+			ColorPickerUtils.ColorModel.HSL: channel = "l"
 		4: channel = "a"
 	match channel:
 		"a": new_color.a = clampf(offset, 0.0, 1.0)
@@ -395,8 +385,8 @@ func _on_slider1_text_submitted(new_text: String) -> void:
 		slider1_update()
 		return
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: set_slider_offset(1, new_value / 255.0, true)
-		ColorModel.HSV, ColorModel.HSL: set_slider_offset(1, new_value / 360.0, true)
+		ColorPickerUtils.ColorModel.RGB: set_slider_offset(1, new_value / 255.0, true)
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: set_slider_offset(1, new_value / 360.0, true)
 	slider1_update()
 
 func _on_slider2_text_submitted(new_text: String) -> void:
@@ -405,8 +395,8 @@ func _on_slider2_text_submitted(new_text: String) -> void:
 		slider2_update()
 		return
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: set_slider_offset(2, new_value / 255.0, true)
-		ColorModel.HSV, ColorModel.HSL: set_slider_offset(2, new_value / 100.0, true)
+		ColorPickerUtils.ColorModel.RGB: set_slider_offset(2, new_value / 255.0, true)
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: set_slider_offset(2, new_value / 100.0, true)
 	register_visual_change(display_color, false)
 	slider2_update()
 
@@ -416,8 +406,8 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 		slider3_update()
 		return
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: set_slider_offset(3, new_value / 255.0, true)
-		ColorModel.HSV, ColorModel.HSL: set_slider_offset(3, new_value / 100.0, true)
+		ColorPickerUtils.ColorModel.RGB: set_slider_offset(3, new_value / 255.0, true)
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: set_slider_offset(3, new_value / 100.0, true)
 	register_visual_change(display_color, false)
 	slider3_update()
 
@@ -433,22 +423,22 @@ func _on_slider4_text_submitted(new_text: String) -> void:
 func slider1_update() -> void:
 	var number: float
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: number = display_color.r * 255
-		ColorModel.HSV, ColorModel.HSL: number = display_color.h * 360
+		ColorPickerUtils.ColorModel.RGB: number = display_color.r * 255
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: number = display_color.h * 360
 	_slider_set_text(fields_arr[1], number)
 
 func slider2_update() -> void:
 	var number: float
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: number = display_color.g * 255
-		ColorModel.HSV, ColorModel.HSL: number = display_color.s * 100
+		ColorPickerUtils.ColorModel.RGB: number = display_color.g * 255
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: number = display_color.s * 100
 	_slider_set_text(fields_arr[2], number)
 
 func slider3_update() -> void:
 	var number: float
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: number = display_color.b * 255
-		ColorModel.HSV, ColorModel.HSL: number = display_color.v * 100
+		ColorPickerUtils.ColorModel.RGB: number = display_color.b * 255
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: number = display_color.v * 100
 	_slider_set_text(fields_arr[3], number)
 
 func slider4_update() -> void:
@@ -552,19 +542,19 @@ func queue_redraw_widgets() -> void:
 
 func _on_slider1_draw() -> void:
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: draw_hslider(1, display_color.r, "R")
-		ColorModel.HSV, ColorModel.HSL: draw_hslider(1, display_color.h, "H")
+		ColorPickerUtils.ColorModel.RGB: draw_hslider(1, display_color.r, "R")
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: draw_hslider(1, display_color.h, "H")
 
 func _on_slider2_draw() -> void:
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: draw_hslider(2, display_color.g, "G")
-		ColorModel.HSV, ColorModel.HSL: draw_hslider(2, display_color.s, "S")
+		ColorPickerUtils.ColorModel.RGB: draw_hslider(2, display_color.g, "G")
+		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: draw_hslider(2, display_color.s, "S")
 
 func _on_slider3_draw() -> void:
 	match Configs.savedata.color_picker_current_model:
-		ColorModel.RGB: draw_hslider(3, display_color.b, "B")
-		ColorModel.HSV: draw_hslider(3, display_color.v, "V")
-		ColorModel.HSL: draw_hslider(3, display_color.v, "L")
+		ColorPickerUtils.ColorModel.RGB: draw_hslider(3, display_color.b, "B")
+		ColorPickerUtils.ColorModel.HSV: draw_hslider(3, display_color.v, "V")
+		ColorPickerUtils.ColorModel.HSL: draw_hslider(3, display_color.v, "L")
 
 func _on_slider4_draw() -> void:
 	draw_hslider(4, display_color.a, "A")
