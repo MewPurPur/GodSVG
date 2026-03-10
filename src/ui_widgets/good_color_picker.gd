@@ -117,14 +117,6 @@ func sync_to_config() -> void:
 		btn.toggle_mode = true
 		btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 		
-		var sync_color_model_button_mouse_cursor_shape :=\
-			func() -> void:
-				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-						Configs.savedata.color_picker_current_model == active_color_model else Control.CURSOR_POINTING_HAND
-		# TODO disconnect or something.
-		color_model_button_group.pressed.connect(sync_color_model_button_mouse_cursor_shape.unbind(1))
-		sync_color_model_button_mouse_cursor_shape.call()
-		
 		if active_color_model == Configs.savedata.color_picker_current_model:
 			btn.button_pressed = true
 		btn.pressed.connect(
@@ -133,7 +125,7 @@ func sync_to_config() -> void:
 				for button in color_model_button_group.get_buttons():
 					button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
-				_on_color_model_changed()
+				_on_color_picker_layout_changed()
 		)
 		btn.text = ColorPickerUtils.color_model_to_string(active_color_model)
 		color_models_container.add_child(btn)
@@ -146,6 +138,10 @@ func update_keyword_button() -> void:
 		keyword_button.tooltip_text = Translator.translate("Color keywords")
 		keyword_button.pressed.connect(_on_keyword_button_pressed)
 		keyword_button.show()
+
+func sync_color_model_buttons_mouse_cursor_shape() -> void:
+	for button in color_model_button_group.get_buttons():
+		button.mouse_default_cursor_shape = Control.CURSOR_ARROW if button == color_model_button_group.get_pressed_button() else Control.CURSOR_POINTING_HAND
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
@@ -175,13 +171,16 @@ func _ready() -> void:
 	fields_arr[1].text_submitted.connect(_on_slider_text_submitted.bind(1))
 	fields_arr[2].text_submitted.connect(_on_slider_text_submitted.bind(2))
 	fields_arr[3].text_submitted.connect(_on_slider_text_submitted.bind(3))
-	_on_color_model_changed()
+	_on_color_picker_layout_changed()
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
 		widgets_arr[4].draw.connect(_on_hslider_draw.bind(4))
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
 		tracks_arr[4].resized.connect(queue_redraw_widgets)
 		fields_arr[4].text_submitted.connect(_on_slider_text_submitted.bind(4))
+	
+	color_model_button_group.pressed.connect(sync_color_model_buttons_mouse_cursor_shape.unbind(1))
+	sync_color_model_buttons_mouse_cursor_shape.call()
 	
 	update_keyword_button()
 	color_models_button.pressed.connect(_on_color_models_button_pressed)
@@ -206,7 +205,7 @@ func _exit_tree() -> void:
 	RenderingServer.free_rid(side_slider_surface)
 
 
-func _on_color_model_changed() -> void:
+func _on_color_picker_layout_changed() -> void:
 	match Configs.savedata.color_picker_current_model:
 		ColorPickerUtils.ColorModel.RGB:
 			tracks_arr[1].material.set_shader_parameter("interpolation", 1)
@@ -226,7 +225,7 @@ func _on_color_model_changed() -> void:
 
 func _on_color_models_button_pressed() -> void:
 	var context_popup := ColorPickerLayoutPopupScene.instantiate()
-	context_popup.color_model_changed.connect(sync_to_config)
+	context_popup.color_picker_layout_changed.connect(sync_to_config)
 	HandlerGUI.popup_under_rect_center(context_popup, color_models_button.get_global_rect(), get_viewport())
 
 
