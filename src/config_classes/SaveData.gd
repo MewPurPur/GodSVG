@@ -631,6 +631,8 @@ const MAX_ACTIVE_COLOR_MODELS = 3
 		# Main part
 		if color_picker_active_models != new_value:
 			color_picker_active_models = new_value
+			if not color_picker_current_model in color_picker_active_models:
+				color_picker_current_model = color_picker_active_models[0]
 			emit_changed()
 
 @export var color_picker_current_model := ColorPickerUtils.ColorModel.RGB:
