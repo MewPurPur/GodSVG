@@ -162,26 +162,26 @@ func _ready() -> void:
 	reset_color_button.pressed.connect(_on_reset_color_button_pressed)
 	
 	widgets_arr[0].draw.connect(_on_side_slider_draw)
-	widgets_arr[1].draw.connect(_on_slider1_draw)
-	widgets_arr[2].draw.connect(_on_slider2_draw)
-	widgets_arr[3].draw.connect(_on_slider3_draw)
+	widgets_arr[1].draw.connect(_on_hslider_draw.bind(1))
+	widgets_arr[2].draw.connect(_on_hslider_draw.bind(2))
+	widgets_arr[3].draw.connect(_on_hslider_draw.bind(3))
 	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0))
 	widgets_arr[1].gui_input.connect(parse_slider_input.bind(1))
 	widgets_arr[2].gui_input.connect(parse_slider_input.bind(2))
 	widgets_arr[3].gui_input.connect(parse_slider_input.bind(3))
-	tracks_arr[1].resized.connect(_on_track_resized)
-	tracks_arr[2].resized.connect(_on_track_resized)
-	tracks_arr[3].resized.connect(_on_track_resized)
-	fields_arr[1].text_submitted.connect(_on_slider1_text_submitted)
-	fields_arr[2].text_submitted.connect(_on_slider2_text_submitted)
-	fields_arr[3].text_submitted.connect(_on_slider3_text_submitted)
+	tracks_arr[1].resized.connect(queue_redraw_widgets)
+	tracks_arr[2].resized.connect(queue_redraw_widgets)
+	tracks_arr[3].resized.connect(queue_redraw_widgets)
+	fields_arr[1].text_submitted.connect(_on_slider_text_submitted.bind(1))
+	fields_arr[2].text_submitted.connect(_on_slider_text_submitted.bind(2))
+	fields_arr[3].text_submitted.connect(_on_slider_text_submitted.bind(3))
 	_on_color_model_changed()
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
-		widgets_arr[4].draw.connect(_on_slider4_draw)
+		widgets_arr[4].draw.connect(_on_hslider_draw.bind(4))
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
-		tracks_arr[4].resized.connect(_on_track_resized)
-		fields_arr[4].text_submitted.connect(_on_slider4_text_submitted)
+		tracks_arr[4].resized.connect(queue_redraw_widgets)
+		fields_arr[4].text_submitted.connect(_on_slider_text_submitted.bind(4))
 	
 	update_keyword_button()
 	color_models_button.pressed.connect(_on_color_models_button_pressed)
@@ -196,7 +196,10 @@ func _ready() -> void:
 	focus_sequence.append(color_models_button)
 	focus_sequence.append_array(fields_arr.slice(1))
 	HandlerGUI.register_focus_sequence(self, focus_sequence)
-	keyword_button.grab_focus(true)
+	if keyword_button.visible:
+		keyword_button.grab_focus(true)
+	else:
+		eyedropper_button.grab_focus(true)
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(color_wheel_surface)
@@ -274,10 +277,10 @@ func update() -> void:
 	color_wheel_drawn.queue_redraw()
 	queue_redraw_widgets()
 	# Set the text of the color fields.
-	slider1_update()
-	slider2_update()
-	slider3_update()
-	slider4_update()
+	slider_update(1)
+	slider_update(2)
+	slider_update(3)
+	slider_update(4)
 	# Ensure that the HSV values are never exactly 0 or 1 to make everything draggable.
 	backup_display_color.h = clampf(backup_display_color.h, 0.0, 0.9999)
 	backup_display_color.v = clampf(backup_display_color.v, 0.0001, 1.0)
@@ -379,73 +382,18 @@ func parse_slider_input(event: InputEvent, idx: int) -> void:
 
 # When slider text is submitted, it should be clamped, used, and then the slider should
 # be updated again so the text reflects the new value even if the color didn't change.
-func _on_slider1_text_submitted(new_text: String) -> void:
+func _on_slider_text_submitted(index: int, new_text: String) -> void:
 	var new_value := NumstringParser.evaluate(new_text)
 	if is_nan(new_value):
-		slider1_update()
+		slider_update(index)
 		return
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: set_slider_offset(1, new_value / 255.0, true)
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: set_slider_offset(1, new_value / 360.0, true)
-	slider1_update()
-
-func _on_slider2_text_submitted(new_text: String) -> void:
-	var new_value := NumstringParser.evaluate(new_text)
-	if is_nan(new_value):
-		slider2_update()
-		return
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: set_slider_offset(2, new_value / 255.0, true)
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: set_slider_offset(2, new_value / 100.0, true)
+	set_slider_offset(index, new_value / ColorPickerUtils.get_channel_fidelity(index - 1), true)
 	register_visual_change(display_color, false)
-	slider2_update()
+	slider_update(index)
 
-func _on_slider3_text_submitted(new_text: String) -> void:
-	var new_value := NumstringParser.evaluate(new_text)
-	if is_nan(new_value):
-		slider3_update()
-		return
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: set_slider_offset(3, new_value / 255.0, true)
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: set_slider_offset(3, new_value / 100.0, true)
-	register_visual_change(display_color, false)
-	slider3_update()
-
-func _on_slider4_text_submitted(new_text: String) -> void:
-	var new_value := NumstringParser.evaluate(new_text)
-	if is_nan(new_value):
-		slider4_update()
-		return
-	set_slider_offset(4, new_value / 255.0, true)
-	register_visual_change(display_color, false)
-	slider4_update()
-
-func slider1_update() -> void:
-	var number: float
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: number = display_color.r * 255
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: number = display_color.h * 360
-	_slider_set_text(fields_arr[1], number)
-
-func slider2_update() -> void:
-	var number: float
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: number = display_color.g * 255
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: number = display_color.s * 100
-	_slider_set_text(fields_arr[2], number)
-
-func slider3_update() -> void:
-	var number: float
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: number = display_color.b * 255
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: number = display_color.v * 100
-	_slider_set_text(fields_arr[3], number)
-
-func slider4_update() -> void:
-	_slider_set_text(fields_arr[4], display_color.a * 255)
-
-func _slider_set_text(field: BetterLineEdit, number: float) -> void:
-	field.text = String.num_uint64(roundi(number))
+func slider_update(index: int) -> void:
+	fields_arr[index].text = String.num_uint64(roundi(
+			ColorPickerUtils.get_channel_offset(display_color, index - 1) * ColorPickerUtils.get_channel_fidelity(index - 1)))
 
 
 func _on_keyword_button_pressed() -> void:
@@ -518,46 +466,23 @@ func _draw() -> void:
 	var point_pos := center + Vector2(center.x * cos(display_color.h * TAU), center.y * sin(display_color.h * TAU)) * display_color.s
 	RenderingServer.canvas_item_add_texture_rect(color_wheel_surface, Rect2(point_pos - handle_texture_size / 2, handle_texture_size), handle_texture)
 
-# Helper for drawing the horizontal sliders.
-func draw_hslider(idx: int, offset: float, chr: String) -> void:
-	var arrow_modulate := ThemeUtils.tinted_contrast_color
-	if not sliders_dragged[idx]:
-		arrow_modulate.a = 0.7
-	widgets_arr[idx].draw_texture(slider_arrow, Vector2(tracks_arr[idx].position.x + tracks_arr[idx].size.x * offset - slider_arrow.get_width() / 2.0,
-			tracks_arr[idx].size.y), arrow_modulate)
-	widgets_arr[idx].draw_string(get_theme_default_font(), Vector2(-12, 11), chr, HORIZONTAL_ALIGNMENT_CENTER, 12, 14, ThemeUtils.text_color)
-
-# Make sure the arrows are redrawn when the tracks finish resizing.
-func _on_track_resized() -> void:
-	if not widgets_arr.is_empty():
-		queue_redraw_widgets()
 
 func queue_redraw_widgets() -> void:
-	widgets_arr[0].queue_redraw()
-	widgets_arr[1].queue_redraw()
-	widgets_arr[2].queue_redraw()
-	widgets_arr[3].queue_redraw()
-	if alpha_enabled:
-		widgets_arr[4].queue_redraw()
+	for i in 5:
+		var widget := widgets_arr[i]
+		if is_instance_valid(widget):
+			widget.queue_redraw()
 
-func _on_slider1_draw() -> void:
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: draw_hslider(1, display_color.r, "R")
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: draw_hslider(1, display_color.h, "H")
-
-func _on_slider2_draw() -> void:
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: draw_hslider(2, display_color.g, "G")
-		ColorPickerUtils.ColorModel.HSV, ColorPickerUtils.ColorModel.HSL: draw_hslider(2, display_color.s, "S")
-
-func _on_slider3_draw() -> void:
-	match Configs.savedata.color_picker_current_model:
-		ColorPickerUtils.ColorModel.RGB: draw_hslider(3, display_color.b, "B")
-		ColorPickerUtils.ColorModel.HSV: draw_hslider(3, display_color.v, "V")
-		ColorPickerUtils.ColorModel.HSL: draw_hslider(3, display_color.v, "L")
-
-func _on_slider4_draw() -> void:
-	draw_hslider(4, display_color.a, "A")
+# Helper for drawing the horizontal sliders.
+func _on_hslider_draw(channel_index: int) -> void:
+	var arrow_modulate := ThemeUtils.tinted_contrast_color
+	if not sliders_dragged[channel_index]:
+		arrow_modulate.a *= 0.7
+	widgets_arr[channel_index].draw_texture(slider_arrow, Vector2(tracks_arr[channel_index].position.x + tracks_arr[channel_index].size.x *\
+			ColorPickerUtils.get_channel_offset(display_color, channel_index - 1) -\
+			slider_arrow.get_width() / 2.0, tracks_arr[channel_index].size.y), arrow_modulate)
+	widgets_arr[channel_index].draw_string(get_theme_default_font(), Vector2(-12, 11),
+			ColorPickerUtils.get_channel_letter(channel_index - 1), HORIZONTAL_ALIGNMENT_CENTER, 12, 14, ThemeUtils.text_color)
 
 
 func update_color_button() -> void:

@@ -21,7 +21,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"TranslucentButton"
+theme_type_variation = &"TranslucentButtonThin"
 
 [node name="SectionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=197757298]
 unique_name_in_owner = true
@@ -32,3 +32,21 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+
+[node name="ColorModelButton1" type="Button" parent="MarginContainer/VBoxContainer/ColorModelsContainer" unique_id=1591411056]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButtonThin"
+
+[node name="ColorModelButton2" type="Button" parent="MarginContainer/VBoxContainer/ColorModelsContainer" unique_id=611526861]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButtonThin"
+
+[node name="ColorModelButton3" type="Button" parent="MarginContainer/VBoxContainer/ColorModelsContainer" unique_id=1251329165]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButtonThin"

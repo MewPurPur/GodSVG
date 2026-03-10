@@ -43,14 +43,6 @@ func sync_theming() -> void:
 	panel_sb.content_margin_top = 2
 	panel_sb.content_margin_bottom = 2
 	navigation_panel.add_theme_stylebox_override("panel", panel_sb)
-	
-	var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
-	for theme_item in CONST_ARR:
-		var sb := switch_mode_button.get_theme_stylebox(theme_item).duplicate()
-		sb.content_margin_top -= 2
-		sb.content_margin_bottom -= 2
-		sb.content_margin_left -= 2
-		switch_mode_button.add_theme_stylebox_override(theme_item, sb)
 
 
 # Switching between palette mode and color picker mode.

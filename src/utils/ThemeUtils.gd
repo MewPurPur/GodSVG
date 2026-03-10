@@ -609,23 +609,50 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_color("icon_hover_color", "TranslucentButton", context_icon_hover_color)
 	theme.set_color("icon_pressed_color", "TranslucentButton", context_icon_pressed_color)
 	
-	var normal_translucent_button_stylebox := StyleBoxFlat.new()
-	normal_translucent_button_stylebox.set_corner_radius_all(5)
-	normal_translucent_button_stylebox.set_content_margin_all(4)
-	normal_translucent_button_stylebox.bg_color = hover_overlay_color
-	theme.set_stylebox("normal", "TranslucentButton", normal_translucent_button_stylebox)
+	var translucent_button_normal_stylebox := StyleBoxFlat.new()
+	translucent_button_normal_stylebox.set_corner_radius_all(5)
+	translucent_button_normal_stylebox.set_content_margin_all(4)
+	translucent_button_normal_stylebox.bg_color = hover_overlay_color
+	theme.set_stylebox("normal", "TranslucentButton", translucent_button_normal_stylebox)
 	
-	var hover_translucent_button_stylebox := normal_translucent_button_stylebox.duplicate()
-	hover_translucent_button_stylebox.bg_color = stronger_hover_overlay_color
-	theme.set_stylebox("hover", "TranslucentButton", hover_translucent_button_stylebox)
+	var translucent_button_hover_stylebox := translucent_button_normal_stylebox.duplicate()
+	translucent_button_hover_stylebox.bg_color = stronger_hover_overlay_color
+	theme.set_stylebox("hover", "TranslucentButton", translucent_button_hover_stylebox)
 	
-	var pressed_translucent_button_stylebox := normal_translucent_button_stylebox.duplicate()
-	pressed_translucent_button_stylebox.bg_color = hover_pressed_overlay_color
-	theme.set_stylebox("pressed", "TranslucentButton", pressed_translucent_button_stylebox)
+	var translucent_button_pressed_stylebox := translucent_button_normal_stylebox.duplicate()
+	translucent_button_pressed_stylebox.bg_color = hover_pressed_overlay_color
+	theme.set_stylebox("pressed", "TranslucentButton", translucent_button_pressed_stylebox)
 	
-	var disabled_translucent_button_stylebox := normal_translucent_button_stylebox.duplicate()
-	disabled_translucent_button_stylebox.bg_color = flat_button_color_disabled
-	theme.set_stylebox("disabled", "TranslucentButton", disabled_translucent_button_stylebox)
+	var translucent_button_disabled_stylebox := translucent_button_normal_stylebox.duplicate()
+	translucent_button_disabled_stylebox.bg_color = flat_button_color_disabled
+	theme.set_stylebox("disabled", "TranslucentButton", translucent_button_disabled_stylebox)
+	
+	theme.add_type("TranslucentButtonThin")
+	theme.set_type_variation("TranslucentButtonThin", "Button")
+	theme.set_color("icon_normal_color", "TranslucentButtonThin", context_icon_normal_color)
+	theme.set_color("icon_hover_color", "TranslucentButtonThin", context_icon_hover_color)
+	theme.set_color("icon_pressed_color", "TranslucentButtonThin", context_icon_pressed_color)
+	
+	var translucent_button_thin_normal_stylebox := StyleBoxFlat.new()
+	translucent_button_thin_normal_stylebox.set_corner_radius_all(5)
+	translucent_button_thin_normal_stylebox.content_margin_left = 4
+	translucent_button_thin_normal_stylebox.content_margin_right = 4
+	translucent_button_thin_normal_stylebox.content_margin_top = 2
+	translucent_button_thin_normal_stylebox.content_margin_bottom = 2
+	translucent_button_thin_normal_stylebox.bg_color = hover_overlay_color
+	theme.set_stylebox("normal", "TranslucentButtonThin", translucent_button_thin_normal_stylebox)
+	
+	var translucent_button_thin_hover_stylebox := translucent_button_thin_normal_stylebox.duplicate()
+	translucent_button_thin_hover_stylebox.bg_color = stronger_hover_overlay_color
+	theme.set_stylebox("hover", "TranslucentButtonThin", translucent_button_thin_hover_stylebox)
+	
+	var translucent_button_thin_pressed_stylebox := translucent_button_thin_normal_stylebox.duplicate()
+	translucent_button_thin_pressed_stylebox.bg_color = hover_pressed_overlay_color
+	theme.set_stylebox("pressed", "TranslucentButtonThin", translucent_button_thin_pressed_stylebox)
+	
+	var translucent_button_thin_disabled_stylebox := translucent_button_thin_normal_stylebox.duplicate()
+	translucent_button_thin_disabled_stylebox.bg_color = flat_button_color_disabled
+	theme.set_stylebox("disabled", "TranslucentButtonThin", translucent_button_thin_disabled_stylebox)
 	
 	theme.add_type("FlatButton")
 	theme.set_type_variation("FlatButton", "Button")

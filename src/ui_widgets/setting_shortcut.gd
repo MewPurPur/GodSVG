@@ -50,22 +50,10 @@ func sync() -> void:
 		var new_btn := Button.new()
 		shortcut_container.add_child.call_deferred(new_btn)
 		shortcut_buttons.append(new_btn)
-		new_btn.theme_type_variation = "TranslucentButton"
-		
-		new_btn.begin_bulk_theme_override()
-		const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
-		for theme_type in CONST_ARR:
-			var shortcut_stylebox := get_theme_stylebox(theme_type,
-					"TranslucentButton").duplicate()
-			shortcut_stylebox.content_margin_top = 0.0
-			shortcut_stylebox.content_margin_bottom = 0.0
-			new_btn.add_theme_stylebox_override(theme_type, shortcut_stylebox)
-		new_btn.end_bulk_theme_override()
-		
+		new_btn.theme_type_variation = "TranslucentButtonThin"
 		new_btn.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
 		new_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		new_btn.custom_minimum_size = Vector2(116, 24)
-		
 		new_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		new_btn.focus_mode = Control.FOCUS_NONE
 		if i < events.size():

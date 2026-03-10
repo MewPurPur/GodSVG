@@ -6,14 +6,18 @@ signal color_model_changed
 
 @onready var shape_button: Button = %ShapeButton
 @onready var section_label: Label = %SectionLabel
-@onready var color_models_container: HBoxContainer = %ColorModelsContainer
+@onready var color_model_buttons_array: Array[Button] = [%ColorModelsContainer/ColorModelButton1,
+		%ColorModelsContainer/ColorModelButton2, %ColorModelsContainer/ColorModelButton3]
 
 func _ready() -> void:
 	shape_button.text = "VHS Circle"
 	shape_button.pressed.connect(_on_shape_button_pressed)
-	section_label.text = Translator.translate("Color models")
+	section_label.text = Translator.translate("Color models") + ":"
 	color_model_changed.connect(sync_color_models)
 	sync_color_models()
+	var focus_sequence: Array[Control] = [shape_button]
+	focus_sequence.append_array(color_model_buttons_array)
+	HandlerGUI.register_focus_sequence(self, focus_sequence, true)
 
 func _on_shape_button_pressed() -> void:
 	var btn_arr: Array[ContextButton] = []
@@ -25,25 +29,23 @@ func _on_shape_button_pressed() -> void:
 	HandlerGUI.popup_under_rect(cp, shape_button.get_global_rect(), get_viewport())
 
 func sync_color_models() -> void:
-	for child in color_models_container.get_children():
-		color_models_container.remove_child(child)
-		child.queue_free()
-	
 	for idx in 3:
-		var btn := Button.new()
-		btn.theme_type_variation = "TranslucentButton"
-		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		color_models_container.add_child(btn)
-		if idx < Configs.savedata.color_picker_active_models.size():
-			btn.text = ColorPickerUtils.color_model_to_string(Configs.savedata.color_picker_active_models[idx])
-			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			btn.pressed.connect(_on_occupied_color_space_button_pressed.bind(idx, btn))
-		elif idx == Configs.savedata.color_picker_active_models.size():
-			btn.text = "..."
-			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			btn.pressed.connect(_on_free_color_space_button_pressed.bind(idx, btn))
-		else:
+		var btn := color_model_buttons_array[idx]
+		if btn.pressed.is_connected(_on_occupied_color_space_button_pressed):
+			btn.pressed.disconnect(_on_occupied_color_space_button_pressed)
+		if btn.pressed.is_connected(_on_free_color_space_button_pressed):
+			btn.pressed.disconnect(_on_free_color_space_button_pressed)
+		
+		if idx > Configs.savedata.color_picker_active_models.size():
 			btn.disabled = true
+		else:
+			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			if idx == Configs.savedata.color_picker_active_models.size():
+				btn.text = "..."
+				btn.pressed.connect(_on_free_color_space_button_pressed.bind(idx, btn))
+			else:
+				btn.text = ColorPickerUtils.color_model_to_string(Configs.savedata.color_picker_active_models[idx])
+				btn.pressed.connect(_on_occupied_color_space_button_pressed.bind(idx, btn))
 
 func _on_occupied_color_space_button_pressed(index: int, button: Button) -> void:
 	var btn_arr: Array[ContextButton] = [
@@ -53,10 +55,9 @@ func _on_occupied_color_space_button_pressed(index: int, button: Button) -> void
 	if index > 0:
 		btn_arr.append(ContextButton.create_custom(Translator.translate("Move left"),
 				move_color_model_index.bind(index, false), preload("res://assets/icons/MoveLeft.svg")))
-	elif index < Configs.savedata.color_picker_active_models.size() - 1:
+	if index < Configs.savedata.color_picker_active_models.size() - 1:
 		btn_arr.append(ContextButton.create_custom(Translator.translate("Move right"),
 				move_color_model_index.bind(index, true), preload("res://assets/icons/MoveRight.svg")))
-		return
 	
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"), delete_color_model.bind(index), preload("res://assets/icons/Delete.svg")))
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), button.get_global_rect(), get_viewport())
@@ -85,4 +86,5 @@ func move_color_model_index(index: int, move_right: bool) -> void:
 	var model_to_move := Configs.savedata.color_picker_active_models[index]
 	Configs.savedata.color_picker_active_models[index] = Configs.savedata.color_picker_active_models[new_index]
 	Configs.savedata.color_picker_active_models[new_index] = model_to_move
+	color_model_buttons_array[new_index].grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
 	color_model_changed.emit()
