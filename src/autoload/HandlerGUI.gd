@@ -385,6 +385,9 @@ func _input(event: InputEvent) -> void:
 				focus_owner.grab_focus()
 			else:
 				gather_focus(focus_owner, false).grab_focus()
+		elif ShortcutUtils.is_action_pressed(event, "ui_accept", true):
+			if not focus_owner.has_focus(true):
+				get_viewport().set_input_as_handled()
 
 func gather_focus(control: Control, is_next: bool) -> Control:
 	var new_focus := _gather_focus_internal(control, is_next)

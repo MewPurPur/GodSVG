@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" uid="uid://bof1kkpsf7cmx" path="res://src/ui_widgets/good_color_picker.gd" id="1_0pc78"]
-[ext_resource type="Shader" uid="uid://dwop5cmg7i04p" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
+[ext_resource type="Shader" uid="uid://dwop5cmg7i04p" path="res://src/shaders/color_area.gdshader" id="2_nf1uk"]
 [ext_resource type="Texture2D" uid="uid://7vnn8bloi26s" path="res://assets/icons/Cube.svg" id="4_ewifk"]
 [ext_resource type="Shader" uid="uid://b5e666h18rkbo" path="res://src/shaders/slider_visuals.gdshader" id="5_acxpg"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="5_rh0xc"]
@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://brff7fx0puj6" path="res://assets/icons/Eyedropper.svg" id="6_titg4"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://assets/icons/SmallMore.svg" id="7_sjpte"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wl372"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sjpte"]
 shader = ExtResource("2_nf1uk")
 shader_parameter/v = 1.0
 
@@ -55,33 +55,41 @@ offset_bottom = 344.0
 theme_override_constants/separation = 6
 script = ExtResource("1_0pc78")
 
-[node name="ShapeContainer" type="HBoxContainer" parent="." unique_id=112689325]
+[node name="PickerArea" type="Control" parent="." unique_id=1753607454]
+custom_minimum_size = Vector2(0, 172)
 layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/separation = 0
-alignment = 1
 
-[node name="ColorWheel" type="MarginContainer" parent="ShapeContainer" unique_id=1719868340]
-layout_mode = 2
+[node name="ColorAreaContainer" type="MarginContainer" parent="PickerArea" unique_id=1405936464]
+layout_mode = 0
+offset_right = 172.0
+offset_bottom = 172.0
+size_flags_horizontal = 0
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="ColorWheelDraw" type="ColorRect" parent="ShapeContainer/ColorWheel" unique_id=385358480]
-material = SubResource("ShaderMaterial_wl372")
+[node name="ColorArea" type="ColorRect" parent="PickerArea/ColorAreaContainer" unique_id=1107398551]
+material = SubResource("ShaderMaterial_sjpte")
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="SideSlider" type="MarginContainer" parent="ShapeContainer" unique_id=1797054762]
-layout_mode = 2
+[node name="PrimarySliderContainer" type="MarginContainer" parent="PickerArea" unique_id=1797054762]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+grow_horizontal = 0
+grow_vertical = 2
 focus_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="SideSliderTrack" type="ColorRect" parent="ShapeContainer/SideSlider" unique_id=747943929]
+[node name="PrimarySlider" type="ColorRect" parent="PickerArea/PrimarySliderContainer" unique_id=747943929]
 material = SubResource("ShaderMaterial_gihhg")
 custom_minimum_size = Vector2(18, 0)
 layout_mode = 2
