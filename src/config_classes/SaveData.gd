@@ -209,7 +209,7 @@ func validate() -> void:
 	if _active_tab_index >= _tabs.size() or _active_tab_index < 0:
 		_active_tab_index = _active_tab_index  # Run the setter.
 	if not color_picker_current_model in color_picker_active_models:
-		color_picker_current_model = color_picker_active_models[0]
+		color_picker_current_model = color_picker_current_model  # Run the setter.
 	
 	# End of the method, would need to be rewritten if more things need validation.
 	for location in [LayoutLocation.TOP_LEFT, LayoutLocation.BOTTOM_LEFT]:
@@ -634,6 +634,28 @@ const MAX_ACTIVE_COLOR_MODELS = 3
 			if not color_picker_current_model in color_picker_active_models:
 				color_picker_current_model = color_picker_active_models[0]
 			emit_changed()
+
+func set_color_picker_active_model(index: int, new_model: ColorPickerUtils.ColorModel) -> void:
+	var new_active_models := color_picker_active_models.duplicate()
+	new_active_models[index] = new_model
+	color_picker_active_models = new_active_models
+
+func remove_color_picker_active_model(index: int) -> void:
+	var new_active_models := color_picker_active_models.duplicate()
+	new_active_models.remove_at(index)
+	color_picker_active_models = new_active_models
+
+func add_color_picker_active_model(new_model: ColorPickerUtils.ColorModel) -> void:
+	var new_active_models := color_picker_active_models.duplicate()
+	new_active_models.append(new_model)
+	color_picker_active_models = new_active_models
+
+func move_color_picker_active_model(index: int, new_index: int) -> void:
+	var new_active_models = color_picker_active_models.duplicate()
+	var temp: ColorPickerUtils.ColorModel = new_active_models[index]
+	new_active_models[index] = new_active_models[new_index]
+	new_active_models[new_index] = temp
+	color_picker_active_models = new_active_models
 
 @export var color_picker_current_model := ColorPickerUtils.ColorModel.RGB:
 	set(new_value):

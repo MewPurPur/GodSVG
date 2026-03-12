@@ -25,8 +25,7 @@ func _on_shape_button_pressed() -> void:
 		btn_arr.append(ContextButton.create_custom(ColorPickerUtils.picker_shape_to_string(picker_shape),
 				(func() -> void: Configs.savedata.color_picker_current_shape = picker_shape),
 				null, Configs.savedata.color_picker_current_shape == picker_shape))
-	var cp := ContextPopup.create(btn_arr)
-	HandlerGUI.popup_under_rect(cp, shape_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(ContextPopup.create(btn_arr, false, shape_button.size.x), shape_button.get_global_rect(), get_viewport())
 
 func sync_color_models() -> void:
 	for idx in 3:
@@ -42,7 +41,7 @@ func sync_color_models() -> void:
 			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			if idx == Configs.savedata.color_picker_active_models.size():
 				btn.text = "..."
-				btn.pressed.connect(_on_free_color_space_button_pressed.bind(idx, btn))
+				btn.pressed.connect(_on_free_color_space_button_pressed.bind(btn))
 			else:
 				btn.text = ColorPickerUtils.color_model_to_string(Configs.savedata.color_picker_active_models[idx])
 				btn.pressed.connect(_on_occupied_color_space_button_pressed.bind(idx, btn))
@@ -61,33 +60,24 @@ func _on_occupied_color_space_button_pressed(index: int, button: Button) -> void
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"), delete_color_model.bind(index), preload("res://assets/icons/Delete.svg")))
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), button.get_global_rect(), get_viewport())
 
-func _on_free_color_space_button_pressed(index: int, button: Button) -> void:
+func _on_free_color_space_button_pressed(button: Button) -> void:
 	var btn_arr: Array[ContextButton] = []
 	for model in ColorPickerUtils.ColorModel.values():
 		btn_arr.append(ContextButton.create_custom(ColorPickerUtils.color_model_to_string(model),
-				set_color_model.bind(index, model), null, model in Configs.savedata.color_picker_active_models))
+				add_color_model.bind(model), null, model in Configs.savedata.color_picker_active_models))
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), button.get_global_rect(), get_viewport())
 
-func set_color_model(index: int, new_color_model: ColorPickerUtils.ColorModel) -> void:
-	if index >= Configs.savedata.color_picker_active_models.size():
-		Configs.savedata.color_picker_active_models.append(new_color_model)
-	else:
-		Configs.savedata.color_picker_active_models[index] = new_color_model
+func add_color_model(new_color_model: ColorPickerUtils.ColorModel) -> void:
+	Configs.savedata.add_color_picker_active_model(new_color_model)
 	color_picker_layout_changed.emit()
 
 func delete_color_model(index: int) -> void:
-	if index < Configs.savedata.color_picker_active_models.size():
-		var new_active_models := Configs.savedata.color_picker_active_models.duplicate()
-		new_active_models.remove_at(index)
-		Configs.savedata.color_picker_active_models = new_active_models
+	Configs.savedata.remove_color_picker_active_model(index)
 	color_picker_layout_changed.emit()
 
 func move_color_model_index(index: int, move_right: bool) -> void:
 	var new_index := index + (1 if move_right else -1)
-	var model_to_move := Configs.savedata.color_picker_active_models[index]
-	var new_active_models := Configs.savedata.color_picker_active_models.duplicate()
-	Configs.savedata.color_picker_active_models[index] = Configs.savedata.color_picker_active_models[new_index]
-	Configs.savedata.color_picker_active_models[new_index] = model_to_move
+	Configs.savedata.move_color_picker_active_model(index, new_index)
 	color_model_buttons_array[new_index].grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
 	color_picker_layout_changed.emit()
 
@@ -96,5 +86,10 @@ func edit_color_model(index: int) -> void:
 	for model in ColorPickerUtils.ColorModel.values():
 		btn_arr.append(ContextButton.create_custom(ColorPickerUtils.color_model_to_string(model),
 				set_color_model.bind(index, model), null, model in Configs.savedata.color_picker_active_models))
-	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), color_model_buttons_array[index].get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr, false, color_model_buttons_array[index].size.x),
+			color_model_buttons_array[index].get_global_rect(), get_viewport())
+	color_picker_layout_changed.emit()
+
+func set_color_model(index: int, new_color_model: ColorPickerUtils.ColorModel) -> void:
+	Configs.savedata.set_color_picker_active_model(index, new_color_model)
 	color_picker_layout_changed.emit()
