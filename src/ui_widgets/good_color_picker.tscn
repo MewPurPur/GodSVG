@@ -12,6 +12,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sjpte"]
 shader = ExtResource("2_nf1uk")
+shader_parameter/interpolation = 1
 shader_parameter/v = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gihhg"]
@@ -19,7 +20,7 @@ shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector4(1, 1, 1, 1)
 shader_parameter/horizontal = false
 shader_parameter/inverted = true
-shader_parameter/interpolation = 6
+shader_parameter/interpolation = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fvg6q"]
 shader = ExtResource("5_acxpg")

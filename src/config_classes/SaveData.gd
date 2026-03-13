@@ -667,11 +667,11 @@ func move_color_picker_active_model(index: int, new_index: int) -> void:
 			color_picker_current_model = new_value
 			emit_changed()
 
-@export var color_picker_current_shape := ColorPickerUtils.PickerShape.VHS_CIRCLE:
+@export var color_picker_current_shape := ColorPickerUtils.PickerShape.HS_V_CIRCLE:
 	set(new_value):
 		# Validation
 		if not (new_value >= 0 and new_value < ColorPickerUtils.PickerShape.size()):
-			new_value = ColorPickerUtils.PickerShape.VHS_CIRCLE
+			new_value = ColorPickerUtils.PickerShape.HS_V_CIRCLE
 		# Main part
 		if color_picker_current_shape != new_value:
 			color_picker_current_shape = new_value

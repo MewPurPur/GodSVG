@@ -1,6 +1,90 @@
 class_name ColorPickerUtils extends RefCounted
 
-enum PickerShape {VHS_CIRCLE}
+# 64-bit
+class PreciseColor:
+	var r: float
+	var g: float
+	var b: float
+	var a: float
+	
+	func _init(new_r: float, new_g: float, new_b: float, new_a: float) -> void:
+		r = new_r
+		g = new_g
+		b = new_b
+		a = new_a
+	
+	static func from_color(color: Color) -> PreciseColor:
+		return PreciseColor.new(color.r, color.g, color.b, color.a)
+	
+	func to_color() -> Color:
+		return Color(r, g, b, a)
+	
+	func duplicate() -> PreciseColor:
+		return PreciseColor.new(r, g, b, a)
+	
+	func equals(color: PreciseColor) -> bool:
+		return r == color.r and g == color.g and b == color.b and a == color.a
+	
+	func set_hue(h: float) -> void:
+		var new_color := Color(r, g, b)
+		new_color.h = h
+		new_color.h = clampf(new_color.h, 0.0, 0.9999)
+		new_color.v = clampf(new_color.v, 0.0001, 1.0)
+		new_color.s = clampf(new_color.s, 0.0001, 1.0)
+		r = new_color.r
+		g = new_color.g
+		b = new_color.b
+	
+	func set_saturation(s: float) -> void:
+		var new_color := Color(r, g, b)
+		new_color.s = s
+		new_color.h = clampf(new_color.h, 0.0, 0.9999)
+		new_color.v = clampf(new_color.v, 0.0001, 1.0)
+		new_color.s = clampf(new_color.s, 0.0001, 1.0)
+		r = new_color.r
+		g = new_color.g
+		b = new_color.b
+	
+	func set_value(v: float) -> void:
+		var new_color := Color(r, g, b)
+		new_color.v = v
+		new_color.h = clampf(new_color.h, 0.0, 0.9999)
+		new_color.v = clampf(new_color.v, 0.0001, 1.0)
+		new_color.s = clampf(new_color.s, 0.0001, 1.0)
+		r = new_color.r
+		g = new_color.g
+		b = new_color.b
+	
+	func get_hue() -> float:
+		var max_val := maxf(r, maxf(g, b))
+		var min_val := minf(r, minf(g, b))
+		var delta := max_val - min_val
+		if delta <= 0.0:
+			return 0.0
+		
+		var h := 0.0
+		if max_val == r:
+			h = (g - b) / delta
+		elif max_val == g:
+			h = 2.0 + (b - r) / delta
+		else:
+			h = 4.0 + (r - g) / delta
+		return fposmod(h/6, 1.0)
+	
+	func get_saturation() -> float:
+		var max_val := maxf(r, maxf(g, b))
+		var min_val := minf(r, minf(g, b))
+		if max_val <= 0.0:
+			return 0.0
+		return clampf((max_val - min_val) / max_val, 0.0, 1.0)
+	
+	func get_value() -> float:
+		return maxf(r, maxf(g, b))
+	
+	func get_luminance_imprecise() -> float:
+		return Color(r, g, b).get_luminance()
+
+enum PickerShape {HS_V_CIRCLE, SV_H_SQUARE}
 enum ColorModel {RGB, HSV, HSL}
 
 static func color_model_to_string(model: ColorModel) -> String:
@@ -13,10 +97,16 @@ static func color_model_to_string(model: ColorModel) -> String:
 	return ""
 
 static func picker_shape_to_string(shape: PickerShape) -> String:
-	# TODO Should probably localize these.
 	match shape:
-		PickerShape.VHS_CIRCLE: return "VHS Circle"
+		PickerShape.HS_V_CIRCLE: return "HS+V Circle"
+		PickerShape.SV_H_SQUARE: return "SV+H Square"
 	return ""
+
+static func picker_shape_to_icon(shape: PickerShape) -> Texture2D:
+	match shape:
+		PickerShape.HS_V_CIRCLE: return preload("res://assets/icons/CircleAndSlider.svg")
+		PickerShape.SV_H_SQUARE: return preload("res://assets/icons/SquareAndSlider.svg")
+	return preload("res://assets/icons/Placeholder.svg")
 
 static func get_channel_letter(channel_index: int) -> String:
 	if channel_index == 3:
@@ -27,7 +117,7 @@ static func get_channel_letter(channel_index: int) -> String:
 		ColorModel.HSL: return "HSL"[channel_index]
 	return ""
 
-static func get_channel_offset(color: Color, channel_index: int) -> float:
+static func get_channel_offset(color: PreciseColor, channel_index: int) -> float:
 	if channel_index == 3:
 		return color.a
 	match Configs.savedata.color_picker_current_model:
@@ -38,17 +128,15 @@ static func get_channel_offset(color: Color, channel_index: int) -> float:
 				2: return color.b
 		ColorModel.HSV:
 			match channel_index:
-				0: return color.h
-				1: return color.s
-				2: return color.v
+				0: return color.get_hue()
+				1: return color.get_saturation()
+				2: return color.get_value()
 		ColorModel.HSL:
 			match channel_index:
-				0: return color.h
+				0: return color.get_hue()
 				1:
 					var max_val := maxf(color.r, maxf(color.g, color.b))
 					var min_val := minf(color.r, minf(color.g, color.b))
-					if max_val + min_val == 1.0:
-						return 0.0
 					return (max_val - min_val) / (1.0 - absf(max_val + min_val - 1.0))
 				2: return (maxf(color.r, maxf(color.g, color.b)) + minf(color.r, minf(color.g, color.b))) / 2.0
 	return 0.0
@@ -61,32 +149,30 @@ static func get_channel_fidelity(channel_index: int) -> int:
 		ColorModel.HSV, ColorModel.HSL: return 360 if channel_index == 0 else 100
 	return 1
 
-static func set_channel_offset(color: Color, channel_index: int, offset: float) -> Color:
-	var new_color := color
+static func set_channel_offset(color: PreciseColor, channel_index: int, offset: float) -> void:
 	if channel_index == 3:
-		new_color.a = clampf(offset, 0.0, 1.0)
-		return new_color
+		color.a = clampf(offset, 0.0, 1.0)
 	
 	match Configs.savedata.color_picker_current_model:
 		ColorModel.RGB:
 			match channel_index:
-				0: new_color.r = clampf(offset, 0.0, 1.0)
-				1: new_color.g = clampf(offset, 0.0, 1.0)
-				2: new_color.b = clampf(offset, 0.0, 1.0)
+				0: color.r = clampf(offset, 0.0, 1.0)
+				1: color.g = clampf(offset, 0.0, 1.0)
+				2: color.b = clampf(offset, 0.0, 1.0)
 		ColorModel.HSV:
 			match channel_index:
-				0: new_color.h = clampf(offset, 0.0, 0.9999)
-				1: new_color.s = clampf(offset, 0.0005, 1.0)
-				2: new_color.v = clampf(offset, 0.0005, 1.0)
+				0: color.set_hue(clampf(offset, 0.0, 0.9999))
+				1: color.set_saturation(clampf(offset, 0.0001, 1.0))
+				2: color.set_value(clampf(offset, 0.0001, 1.0))
 		ColorModel.HSL:
 			match channel_index:
-				0: new_color.h = clampf(offset, 0.0, 0.9999)
+				0: color.set_hue(clampf(offset, 0.0, 0.9999))
 				1, 2:
-					var s := clampf(get_channel_offset(new_color, 1) if channel_index == 2 else offset, 0.0005, 1.0)
-					var l := clampf(get_channel_offset(new_color, 2) if channel_index == 1 else offset, 0.0005, 0.9995)
+					var s := clampf(get_channel_offset(color, 1) if channel_index == 2 else offset, 0.0001, 1.0)
+					var l := clampf(get_channel_offset(color, 2) if channel_index == 1 else offset, 0.0001, 0.9999)
 					
 					var c := (1.0 - absf(2.0 * l - 1.0)) * s
-					var hp := color.h * 6
+					var hp := color.get_hue() * 6
 					var x := c * (1.0 - absf(fposmod(hp, 2.0) - 1.0))
 					var m := l - c * 0.5
 					
@@ -101,13 +187,11 @@ static func set_channel_offset(color: Color, channel_index: int, offset: float) 
 						4: r1 = x; b1 = c
 						_: r1 = c; b1 = x
 					
-					new_color.r = clampf(r1 + m, 0.0, 1.0)
-					new_color.g = clampf(g1 + m, 0.0, 1.0)
-					new_color.b = clampf(b1 + m, 0.0, 1.0)
-	return new_color
+					color.r = clampf(r1 + m, 0.0, 1.0)
+					color.g = clampf(g1 + m, 0.0, 1.0)
+					color.b = clampf(b1 + m, 0.0, 1.0)
 
-static func set_primary_slider_offset(color: Color, offset: float) -> Color:
-	var new_color := color
+static func set_primary_slider_offset(color: PreciseColor, offset: float) -> void:
 	match Configs.savedata.color_picker_current_shape:
-		PickerShape.VHS_CIRCLE: new_color.v = clampf(offset, 0.0001, 1.0)
-	return new_color
+		PickerShape.HS_V_CIRCLE: color.set_value(clampf(offset, 0.0001, 1.0))
+		PickerShape.SV_H_SQUARE: color.set_hue(clampf(offset, 0.0, 0.9999))
