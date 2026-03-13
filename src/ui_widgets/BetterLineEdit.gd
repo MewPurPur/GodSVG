@@ -131,7 +131,7 @@ func _gui_input(event: InputEvent) -> void:
 				caret_column = text.length()
 			
 			if text != old_text:
-				text_changed.emit()
+				text_changed.emit(text)
 		
 		accept_event()
 		return

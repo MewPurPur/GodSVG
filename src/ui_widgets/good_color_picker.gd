@@ -33,7 +33,7 @@ var undo_redo := UndoRedoRef.new()
 var color_area_surface := RenderingServer.canvas_item_create()
 var primary_slider_surface := RenderingServer.canvas_item_create()
 
-var primary_slider_dragged: bool = false
+var primary_slider_dragged := false
 var sliders_dragged: Array[bool] = [false, false, false, false]
 # Tracks are the color rects of the sliders.
 @onready var tracks_arr: Array[ColorRect] = [%Slider1/MarginContainer/ColorTrack,
@@ -48,37 +48,30 @@ var sliders_dragged: Array[bool] = [false, false, false, false]
 
 # This variable stores what the color string was at the start, for the reset button.
 var starting_color: String
-var starting_display_color: Color
+var starting_display_color: ColorPickerUtils.PreciseColor
 # These store the old color when using "none" or starting a dragging operation.
 var backup_color: String
-var backup_display_color: Color
+var backup_display_color: ColorPickerUtils.PreciseColor
 # These store the current color string, normally forced to hex.
 var color: String
-var display_color: Color
+var display_color: ColorPickerUtils.PreciseColor
 
 signal color_changed(new_color: String)
 
 
 func backup() -> void:
 	backup_color = color
-	backup_display_color = display_color
+	backup_display_color = display_color.duplicate()
 
 # To be called right after the color picker is added.
 func setup_color(new_color: String, initial_color: String, default_color: Color) -> void:
 	starting_color = initial_color
 	color = new_color
 	# Set up the display color.
-	starting_display_color = ColorParser.text_to_color(starting_color, default_color, alpha_enabled)
-	if Configs.savedata.color_picker_current_model == ColorPickerUtils.ColorModel.HSV:
-		# Clamping like this doesn't change the hex representation, but it helps avoid
-		# locking certain sliders (e.g. hue slider when saturation is 0).
-		# The HVS order helps to keep the saturation at 0.0001 for some reason.
-		starting_display_color.h = clampf(starting_display_color.h, 0.0, 0.9999)
-		starting_display_color.v = clampf(starting_display_color.v, 0.0001, 1.0)
-		starting_display_color.s = clampf(starting_display_color.s, 0.0001, 1.0)
+	starting_display_color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(starting_color, default_color, alpha_enabled))
 	if not alpha_enabled:
 		starting_display_color.a = 1
-	display_color = ColorParser.text_to_color(new_color, default_color, alpha_enabled)
+	display_color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(new_color, default_color, alpha_enabled))
 	update()
 
 
@@ -132,6 +125,7 @@ func sync_to_config() -> void:
 		color_models_container.add_child(btn)
 	
 	reset_color_button.add_theme_stylebox_override("focus", focus_stylebox)
+	_on_color_picker_layout_changed()
 
 # Workaround to set this after ready from external places.
 func update_keyword_button() -> void:
@@ -154,8 +148,9 @@ func _ready() -> void:
 	sync_to_config()
 	# Set up signals.
 	color_area.gui_input.connect(_on_color_area_gui_input)
-	primary_slider_drawn.draw.connect(_on_primary_slider_draw)
 	primary_slider.gui_input.connect(parse_primary_slider_input)
+	primary_slider.focus_entered.connect(queue_redraw)
+	primary_slider.focus_exited.connect(queue_redraw)
 	
 	start_color_rect.draw.connect(_on_start_color_rect_draw)
 	color_rect.draw.connect(_on_color_rect_draw)
@@ -179,12 +174,12 @@ func _ready() -> void:
 	eyedropper_button.tooltip_text = Translator.translate("Eyedropper")
 	# Set up the rest.
 	RenderingServer.canvas_item_set_parent(color_area_surface, color_area_drawn.get_canvas_item())
-	RenderingServer.canvas_item_set_parent(primary_slider_surface, primary_slider.get_canvas_item())
+	RenderingServer.canvas_item_set_parent(primary_slider_surface, primary_slider_drawn.get_canvas_item())
 	
 	var focus_sequence: Array[Control] = [primary_slider, keyword_button, reset_color_button, eyedropper_button]
 	focus_sequence.append_array(color_models_container.get_children())
 	focus_sequence.append(color_models_button)
-	focus_sequence.append_array(fields_arr.slice(1))
+	focus_sequence.append_array(fields_arr)
 	HandlerGUI.register_focus_sequence(self, focus_sequence)
 	if keyword_button.visible:
 		keyword_button.grab_focus(true)
@@ -212,6 +207,14 @@ func _on_color_picker_layout_changed() -> void:
 			tracks_arr[2].material.set_shader_parameter("interpolation", 9)
 	if alpha_enabled:
 		tracks_arr[3].material.set_shader_parameter("interpolation", 0)
+	
+	match Configs.savedata.color_picker_current_shape:
+		ColorPickerUtils.PickerShape.HS_V_CIRCLE:
+			color_area_drawn.material.set_shader_parameter("interpolation", 0)
+			primary_slider_drawn.material.set_shader_parameter("interpolation", 6)
+		ColorPickerUtils.PickerShape.SV_H_SQUARE:
+			color_area_drawn.material.set_shader_parameter("interpolation", 1)
+			primary_slider_drawn.material.set_shader_parameter("interpolation", 4)
 	update()
 
 func _on_color_models_button_pressed() -> void:
@@ -222,13 +225,13 @@ func _on_color_models_button_pressed() -> void:
 
 # If the change was continuous, like a color wheel adjustment, the backup color
 # should be used as it stores the color from before the operation.
-func register_visual_change(new_color: Color, use_backup := true) -> void:
+func register_visual_change(use_backup := true) -> void:
 	# Return early if the color didn't change. If the color is a keyword, all visual changes reset it to a normal color.
-	if not color in ["none", "currentColor"] and new_color == (backup_display_color if use_backup else display_color):
+	if not color in ["none", "currentColor"] and (not use_backup or display_color.equals(backup_display_color)):
 		return
 	
 	undo_redo.create_action()
-	undo_redo.add_do_method(set_color.bind(hex(new_color), new_color))
+	undo_redo.add_do_method(set_color.bind(hex(), display_color))
 	if use_backup:
 		undo_redo.add_undo_method(set_color.bind(backup_color, backup_display_color))
 	else:
@@ -236,51 +239,41 @@ func register_visual_change(new_color: Color, use_backup := true) -> void:
 	undo_redo.commit_action()
 
 
-func set_color(new_color: String, new_display_color: Color) -> void:
+func set_color(new_color: String, new_display_color: ColorPickerUtils.PreciseColor) -> void:
+	display_color = new_display_color.duplicate()
 	if color == new_color:
-		set_display_color(new_display_color)
+		sync_display_color()
 	else:
-		display_color = new_display_color
 		color = new_color
 		update()
 		color_changed.emit(new_color)
 
 
-func set_display_color(new_display_color: Color) -> void:
-	display_color = new_display_color
+func sync_display_color() -> void:
 	update()
-	color_changed.emit(hex(new_display_color))
+	color_changed.emit(hex())
 
 func update() -> void:
 	# Adjust the shaders.
-	primary_slider_drawn.material.set_shader_parameter("v", display_color.v)
-	primary_slider_drawn.material.set_shader_parameter("base_color", Color.from_hsv(display_color.h, display_color.s, 1.0))
-	tracks_arr[0].material.set_shader_parameter("base_color", display_color)
-	tracks_arr[1].material.set_shader_parameter("base_color", display_color)
-	tracks_arr[2].material.set_shader_parameter("base_color", display_color)
-	if alpha_enabled:
-		tracks_arr[3].material.set_shader_parameter("base_color", display_color)
+	if is_instance_valid(display_color):
+		match Configs.savedata.color_picker_current_shape:
+			ColorPickerUtils.PickerShape.HS_V_CIRCLE:
+				var col := display_color.to_color()
+				col.v = 1.0
+				primary_slider_drawn.material.set_shader_parameter("base_color", col)
+			ColorPickerUtils.PickerShape.SV_H_SQUARE:
+				primary_slider_drawn.material.set_shader_parameter("base_color", Color.RED)
+		for i in range(0, 3):
+			tracks_arr[i].material.set_shader_parameter("base_color", display_color.to_color())
+			slider_update(i)
+			if alpha_enabled:
+				tracks_arr[3].material.set_shader_parameter("base_color", display_color.to_color())
 	# Redraw widgets, color indicators, color wheel.
 	color_rect.queue_redraw()
 	start_color_rect.queue_redraw()
 	queue_redraw()
 	color_area_drawn.queue_redraw()
 	queue_redraw_widgets()
-	# Set the text of the color fields.
-	slider_update(0)
-	slider_update(1)
-	slider_update(2)
-	slider_update(3)
-	# Ensure that the HSV values are never exactly 0 or 1 to make everything draggable.
-	backup_display_color.h = clampf(backup_display_color.h, 0.0, 0.9999)
-	backup_display_color.v = clampf(backup_display_color.v, 0.0001, 1.0)
-	backup_display_color.s = clampf(backup_display_color.s, 0.0001, 1.0)
-	display_color.h = clampf(display_color.h, 0.0, 0.9999)
-	display_color.v = clampf(display_color.v, 0.0001, 1.0)
-	display_color.s = clampf(display_color.s, 0.0001, 1.0)
-	if alpha_enabled:
-		backup_display_color.a = clampf(backup_display_color.a, 0.0, 1.0)
-		display_color.a = clampf(display_color.a, 0.0, 1.0)
 	update_color_button()
 
 
@@ -288,14 +281,18 @@ func _on_color_area_gui_input(event: InputEvent) -> void:
 	var is_event_drag_start := Utils.is_event_drag_start(event)
 	if is_event_drag_start:
 		backup()
-	var new_color := display_color
 	if Utils.is_event_drag(event) or is_event_drag_start:
-		var event_pos_on_wheel: Vector2 = event.position + color_area.position - color_area_drawn.position
-		new_color.h = fposmod(center.angle_to_point(event_pos_on_wheel), TAU) / TAU
-		new_color.s = minf(event_pos_on_wheel.distance_to(center) * 2 / color_area_drawn.size.x, 1.0)
-		set_display_color(new_color)
+		var event_pos_in_area: Vector2 = event.position + color_area.position - color_area_drawn.position
+		match Configs.savedata.color_picker_current_shape:
+			ColorPickerUtils.PickerShape.HS_V_CIRCLE:
+				display_color.set_hue(fposmod(center.angle_to_point(event_pos_in_area), TAU) / TAU)
+				display_color.set_saturation(minf(event_pos_in_area.distance_to(center) * 2 / color_area_drawn.size.x, 1.0))
+			ColorPickerUtils.PickerShape.SV_H_SQUARE:
+				display_color.set_saturation(clampf(event_pos_in_area.x / color_area_drawn.size.x, 0.0, 1.0))
+				display_color.set_value(clampf(event_pos_in_area.y / color_area_drawn.size.y, 0.0, 1.0))
+		sync_display_color()
 	if Utils.is_event_drag_end(event):
-		register_visual_change(display_color)
+		register_visual_change()
 
 func start_slider_drag(idx: int) -> void:
 	sliders_dragged[idx] = true
@@ -306,28 +303,28 @@ func start_primary_slider_drag() -> void:
 	backup()
 
 func set_primary_slider_offset(offset: float, register_change := false) -> void:
-	var new_color := ColorPickerUtils.set_primary_slider_offset(display_color, offset)
+	ColorPickerUtils.set_primary_slider_offset(display_color, offset)
 	if register_change:
-		register_visual_change(new_color, false)
+		register_visual_change(false)
 	else:
-		set_display_color(new_color)
+		sync_display_color()
 	primary_slider_drawn.queue_redraw()
 
 func set_slider_offset(index: int, offset: float, register_change := false) -> void:
-	var new_color := ColorPickerUtils.set_channel_offset(display_color, index, offset)
+	ColorPickerUtils.set_channel_offset(display_color, index, offset)
 	if register_change:
-		register_visual_change(new_color, false)
+		register_visual_change(false)
 	else:
-		set_display_color(new_color)
+		sync_display_color()
 	widgets_arr[index].queue_redraw()
 
 func end_slider_drag(idx: int) -> void:
-	register_visual_change(display_color)
+	register_visual_change()
 	sliders_dragged[idx] = false
 	widgets_arr[idx].queue_redraw()
 
 func end_primary_slider_drag() -> void:
-	register_visual_change(display_color)
+	register_visual_change()
 	primary_slider_dragged = false
 	primary_slider_drawn.queue_redraw()
 
@@ -349,26 +346,28 @@ func parse_primary_slider_input(event: InputEvent) -> void:
 	if not is_zero_approx(delta):
 		if not primary_slider_dragged:
 			start_primary_slider_drag()
-		set_primary_slider_offset(display_color.v + delta)
-	elif primary_slider_dragged:
-		end_primary_slider_drag()
-	
-	if Utils.is_event_drag_start(event):
-		start_primary_slider_drag()
-		set_primary_slider_offset(calculate_primary_slider_offset(event.position))
-	elif Utils.is_event_drag(event):
-		set_primary_slider_offset(calculate_primary_slider_offset(event.position))
-	elif Utils.is_event_drag_end(event):
-		end_primary_slider_drag()
+		match Configs.savedata.color_picker_current_shape:
+			ColorPickerUtils.PickerShape.HS_V_CIRCLE: set_primary_slider_offset(display_color.get_value() + delta)
+			ColorPickerUtils.PickerShape.SV_H_SQUARE: set_primary_slider_offset(clampf(display_color.get_hue() + delta, 0.0, 1.0))
+	else:
+		if Utils.is_event_drag_start(event):
+			start_primary_slider_drag()
+			set_primary_slider_offset(calculate_primary_slider_offset(event.position))
+		elif primary_slider_dragged:
+			if Utils.is_event_drag(event):
+				set_primary_slider_offset(calculate_primary_slider_offset(event.position))
+			elif Utils.is_event_drag_end(event):
+				end_primary_slider_drag()
 
 func parse_slider_input(event: InputEvent, index: int) -> void:
 	if Utils.is_event_drag_start(event):
 		start_slider_drag(index)
 		set_slider_offset(index, calculate_hslider_offset(index, event.position))
-	elif Utils.is_event_drag(event):
-		set_slider_offset(index, calculate_hslider_offset(index, event.position))
-	elif Utils.is_event_drag_end(event):
-		end_slider_drag(index)
+	elif sliders_dragged[index]:
+		if Utils.is_event_drag(event):
+			set_slider_offset(index, calculate_hslider_offset(index, event.position))
+		elif Utils.is_event_drag_end(event):
+			end_slider_drag(index)
 
 # When slider text is submitted, it should be clamped, used, and then the slider should
 # be updated again so the text reflects the new value even if the color didn't change.
@@ -378,7 +377,7 @@ func _on_slider_text_submitted(new_text: String, index: int) -> void:
 		slider_update(index)
 		return
 	set_slider_offset(index, new_value / ColorPickerUtils.get_channel_fidelity(index), true)
-	register_visual_change(display_color, false)
+	register_visual_change(false)
 	slider_update(index)
 
 func slider_update(index: int) -> void:
@@ -397,9 +396,7 @@ func _on_keyword_button_pressed() -> void:
 	
 	for btn in btn_arr:
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
-	
-	var context_popup := ContextPopup.create(btn_arr)
-	HandlerGUI.popup_under_rect(context_popup, keyword_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(ContextPopup.create(btn_arr), keyword_button.get_global_rect(), get_viewport())
 
 func set_to_keyword(keyword: String) -> void:
 	undo_redo.create_action()
@@ -431,30 +428,35 @@ func _on_start_color_rect_draw() -> void:
 		start_color_rect.draw_line(Vector2(rect_size.x, 0), Vector2(0, rect_size.y), cross_color, 0.5, true)
 	else:
 		start_color_rect.draw_texture_rect(bg_pattern, rect, true)
-		start_color_rect.draw_rect(rect, starting_display_color)
+		start_color_rect.draw_rect(rect, starting_display_color.to_color())
 
 func _on_color_rect_draw() -> void:
 	var rect := Rect2(Vector2.ZERO, color_rect.size)
 	color_rect.draw_texture_rect(bg_pattern, rect, true)
-	color_rect.draw_rect(rect, display_color)
-
-# Draw inside the side slider to give it a little arrow to the side.
-func _on_primary_slider_draw() -> void:
-	RenderingServer.canvas_item_clear(primary_slider_surface)
-	var arrow_modulate := ThemeUtils.tinted_contrast_color
-	if not primary_slider_dragged:
-		arrow_modulate.a = 0.7
-	var arrow_y := primary_slider.position.y + primary_slider.size.y * (1 - display_color.v) - side_slider_arrow.get_height() / 2.0
-	side_slider_arrow.draw(primary_slider_surface, Vector2(0, arrow_y), arrow_modulate)
-	if primary_slider.has_focus(true):
-		get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, Rect2(Vector2(0, arrow_y), Vector2(side_slider_arrow.get_size())).grow(3))
+	color_rect.draw_rect(rect, display_color.to_color())
 
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(color_area_surface)
+	RenderingServer.canvas_item_clear(primary_slider_surface)
 	# Draw the color wheel handle.
 	var handle_texture_size := handle_texture.get_size()
-	var point_pos := center + Vector2(center.x * cos(display_color.h * TAU), center.y * sin(display_color.h * TAU)) * display_color.s
+	var point_pos: Vector2
+	match Configs.savedata.color_picker_current_shape:
+		ColorPickerUtils.PickerShape.HS_V_CIRCLE:
+			point_pos = center + Vector2(center.x * cos(display_color.get_hue() * TAU),
+					center.y * sin(display_color.get_hue() * TAU)) * display_color.get_saturation()
+		ColorPickerUtils.PickerShape.SV_H_SQUARE:
+			point_pos = Vector2(display_color.get_saturation(), display_color.get_value()) * color_area_drawn.size
 	RenderingServer.canvas_item_add_texture_rect(color_area_surface, Rect2(point_pos - handle_texture_size / 2, handle_texture_size), handle_texture)
+	# Draw the slider handle.
+	var arrow_modulate := ThemeUtils.tinted_contrast_color
+	if not primary_slider_dragged:
+		arrow_modulate.a = 0.7
+	var arrow_y := primary_slider_drawn.size.y * (1 - display_color.get_value()) - side_slider_arrow.get_height() / 2.0
+	var side_arrow_rect_pos := Vector2(-side_slider_arrow.get_width(), arrow_y)
+	side_slider_arrow.draw(primary_slider_surface, side_arrow_rect_pos, arrow_modulate)
+	if primary_slider.has_focus(true):
+		get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, Rect2(side_arrow_rect_pos, Vector2(side_slider_arrow.get_size())).grow(3))
 
 
 func queue_redraw_widgets() -> void:
@@ -485,7 +487,7 @@ func update_color_button() -> void:
 	var accent_hue_color := Color.from_hsv(ThemeUtils.accent_color.h, 1.0, 1.0)
 	
 	reset_color_button.begin_bulk_theme_override()
-	if display_color.get_luminance() < 0.5:
+	if display_color.get_luminance_imprecise() < 0.5:
 		reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
 		reset_color_button.add_theme_color_override("icon_focus_color", Color.WHITE)
 		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.WHITE, 0.76))
@@ -495,21 +497,26 @@ func update_color_button() -> void:
 		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.BLACK, 0.64))
 	reset_color_button.end_bulk_theme_override()
 
-func hex(col: Color) -> String:
+func hex() -> String:
 	# Removing the saturation and hue clamping fixes hex conversion in edge cases.
 	# e.g., H = 0.0001, S = 0.0001, V = 0.5 --> Color(0.5, 0.4999, 0.4999) --> "807f7f".
-	if col.s < 0.001:
-		col.s = 0.0
+	var col := display_color.duplicate()
+	if col.get_saturation() < 0.001:
+		col.set_saturation(0.0)
 	
-	if col.h < 0.001:
-		col.h = 0.0
-	elif col.h > 0.999:
-		col.h = 1.0
+	if col.get_hue() < 0.001:
+		col.set_hue(0.0)
+	elif col.get_hue() > 0.999:
+		col.set_hue(1.0)
 	
-	return col.to_html(alpha_enabled and col.a != 1.0)
+	return col.to_color().to_html(alpha_enabled and col.a != 1.0)
 
 
 func _on_eyedropper_pressed() -> void:
 	var eyedropper_popup := EyedropperPopupScene.instantiate()
-	eyedropper_popup.color_picked.connect(register_visual_change.bind(false))
+	eyedropper_popup.color_picked.connect(_on_eyedropper_color_picker)
 	HandlerGUI.add_popup(eyedropper_popup, false)
+
+func _on_eyedropper_color_picker(new_color: Color) -> void:
+	display_color = ColorPickerUtils.PreciseColor.from_color(new_color)
+	register_visual_change(false)

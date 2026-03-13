@@ -4,28 +4,28 @@ const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 
 signal color_picker_layout_changed
 
-@onready var shape_button: Button = %ShapeButton
+@onready var picker_shape_button: Button = %ShapeButton
 @onready var section_label: Label = %SectionLabel
 @onready var color_model_buttons_array: Array[Button] = [%ColorModelsContainer/ColorModelButton1,
 		%ColorModelsContainer/ColorModelButton2, %ColorModelsContainer/ColorModelButton3]
 
 func _ready() -> void:
-	shape_button.text = "VHS Circle"
-	shape_button.pressed.connect(_on_shape_button_pressed)
+	picker_shape_button.text = "VHS Circle"
+	picker_shape_button.pressed.connect(_on_picker_shape_button_pressed)
 	section_label.text = Translator.translate("Color models") + ":"
 	color_picker_layout_changed.connect(sync_color_models)
 	sync_color_models()
-	var focus_sequence: Array[Control] = [shape_button]
+	var focus_sequence: Array[Control] = [picker_shape_button]
 	focus_sequence.append_array(color_model_buttons_array)
 	HandlerGUI.register_focus_sequence(self, focus_sequence, true)
 
-func _on_shape_button_pressed() -> void:
+func _on_picker_shape_button_pressed() -> void:
 	var btn_arr: Array[ContextButton] = []
 	for picker_shape in ColorPickerUtils.PickerShape.values():
 		btn_arr.append(ContextButton.create_custom(ColorPickerUtils.picker_shape_to_string(picker_shape),
-				(func() -> void: Configs.savedata.color_picker_current_shape = picker_shape),
-				null, Configs.savedata.color_picker_current_shape == picker_shape))
-	HandlerGUI.popup_under_rect(ContextPopup.create(btn_arr, false, shape_button.size.x), shape_button.get_global_rect(), get_viewport())
+				_on_picker_shape_picked.bind(picker_shape), ColorPickerUtils.picker_shape_to_icon(picker_shape),
+				Configs.savedata.color_picker_current_shape == picker_shape))
+	HandlerGUI.popup_under_rect(ContextPopup.create(btn_arr, true, picker_shape_button.size.x), picker_shape_button.get_global_rect(), get_viewport())
 
 func sync_color_models() -> void:
 	for idx in 3:
@@ -45,6 +45,11 @@ func sync_color_models() -> void:
 			else:
 				btn.text = ColorPickerUtils.color_model_to_string(Configs.savedata.color_picker_active_models[idx])
 				btn.pressed.connect(_on_occupied_color_space_button_pressed.bind(idx, btn))
+	picker_shape_button.text = ColorPickerUtils.picker_shape_to_string(Configs.savedata.color_picker_current_shape)
+
+func _on_picker_shape_picked(picker_shape: ColorPickerUtils.PickerShape) -> void:
+	Configs.savedata.color_picker_current_shape = picker_shape
+	color_picker_layout_changed.emit()
 
 func _on_occupied_color_space_button_pressed(index: int, button: Button) -> void:
 	var btn_arr: Array[ContextButton] = [
