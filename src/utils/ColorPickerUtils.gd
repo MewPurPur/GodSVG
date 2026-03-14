@@ -1,6 +1,7 @@
 class_name ColorPickerUtils extends RefCounted
 
-# 64-bit
+# The color picker uses a 64-bit color because the precision is necessary for the approach of
+# things like keeping colors almost-grayscale-but-not-quite to preserve their hue.
 class PreciseColor:
 	var r: float
 	var g: float
@@ -12,6 +13,9 @@ class PreciseColor:
 		g = new_g
 		b = new_b
 		a = new_a
+	
+	func _to_string() -> String:
+		return "PreciseColor(%s, %s, %s, %s)" % [r, g, b, a]
 	
 	static func from_color(color: Color) -> PreciseColor:
 		return PreciseColor.new(color.r, color.g, color.b, color.a)
@@ -28,9 +32,6 @@ class PreciseColor:
 	func set_hue(h: float) -> void:
 		var new_color := Color(r, g, b)
 		new_color.h = h
-		new_color.h = clampf(new_color.h, 0.0, 0.9999)
-		new_color.v = clampf(new_color.v, 0.0001, 1.0)
-		new_color.s = clampf(new_color.s, 0.0001, 1.0)
 		r = new_color.r
 		g = new_color.g
 		b = new_color.b
@@ -38,9 +39,6 @@ class PreciseColor:
 	func set_saturation(s: float) -> void:
 		var new_color := Color(r, g, b)
 		new_color.s = s
-		new_color.h = clampf(new_color.h, 0.0, 0.9999)
-		new_color.v = clampf(new_color.v, 0.0001, 1.0)
-		new_color.s = clampf(new_color.s, 0.0001, 1.0)
 		r = new_color.r
 		g = new_color.g
 		b = new_color.b
@@ -48,12 +46,14 @@ class PreciseColor:
 	func set_value(v: float) -> void:
 		var new_color := Color(r, g, b)
 		new_color.v = v
-		new_color.h = clampf(new_color.h, 0.0, 0.9999)
-		new_color.v = clampf(new_color.v, 0.0001, 1.0)
-		new_color.s = clampf(new_color.s, 0.0001, 1.0)
 		r = new_color.r
 		g = new_color.g
 		b = new_color.b
+	
+	func shift_hsv() -> void:
+		set_hue(clampf(get_hue(), 0.0, 0.9999))
+		set_value(clampf(get_value(), 0.0001, 1.0))
+		set_saturation(clampf(get_saturation(), 0.0001, 1.0))
 	
 	func get_hue() -> float:
 		var max_val := maxf(r, maxf(g, b))
@@ -150,10 +150,13 @@ static func get_channel_fidelity(channel_index: int) -> int:
 	return 1
 
 static func set_channel_offset(color: PreciseColor, channel_index: int, offset: float) -> void:
+	set_channel_offset_for_model(color, channel_index, offset, Configs.savedata.color_picker_current_model)
+
+static func set_channel_offset_for_model(color: PreciseColor, channel_index: int, offset: float, color_model: ColorModel) -> void:
 	if channel_index == 3:
 		color.a = clampf(offset, 0.0, 1.0)
 	
-	match Configs.savedata.color_picker_current_model:
+	match color_model:
 		ColorModel.RGB:
 			match channel_index:
 				0: color.r = clampf(offset, 0.0, 1.0)
@@ -190,6 +193,12 @@ static func set_channel_offset(color: PreciseColor, channel_index: int, offset: 
 					color.r = clampf(r1 + m, 0.0, 1.0)
 					color.g = clampf(g1 + m, 0.0, 1.0)
 					color.b = clampf(b1 + m, 0.0, 1.0)
+
+static func get_primary_slider_offset(color: PreciseColor) -> float:
+	match Configs.savedata.color_picker_current_shape:
+		PickerShape.HS_V_CIRCLE: return color.get_value()
+		PickerShape.SV_H_SQUARE: return color.get_hue()
+	return 0.0
 
 static func set_primary_slider_offset(color: PreciseColor, offset: float) -> void:
 	match Configs.savedata.color_picker_current_shape:
