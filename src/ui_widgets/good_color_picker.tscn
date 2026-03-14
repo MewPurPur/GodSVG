@@ -12,8 +12,8 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sjpte"]
 shader = ExtResource("2_nf1uk")
-shader_parameter/interpolation = 1
-shader_parameter/v = 1.0
+shader_parameter/interpolation = 0
+shader_parameter/third_value = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gihhg"]
 shader = ExtResource("5_acxpg")

@@ -49,7 +49,7 @@ var sliders_dragged: Array[bool] = [false, false, false, false]
 # This variable stores what the color string was at the start, for the reset button.
 var starting_color: String
 var starting_display_color: ColorPickerUtils.PreciseColor
-# These store the old color when using "none" or starting a dragging operation.
+# These store the old color when using keywords or starting a dragging operation.
 var backup_color: String
 var backup_display_color: ColorPickerUtils.PreciseColor
 # These store the current color string, normally forced to hex.
@@ -69,9 +69,11 @@ func setup_color(new_color: String, initial_color: String, default_color: Color)
 	color = new_color
 	# Set up the display color.
 	starting_display_color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(starting_color, default_color, alpha_enabled))
+	starting_display_color.shift_hsv()
 	if not alpha_enabled:
 		starting_display_color.a = 1
 	display_color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(new_color, default_color, alpha_enabled))
+	display_color.shift_hsv()
 	update()
 
 
@@ -163,7 +165,6 @@ func _ready() -> void:
 		fields_arr[i].text_submitted.connect(_on_slider_text_submitted.bind(i))
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
-	_on_color_picker_layout_changed()
 	
 	color_model_button_group.pressed.connect(sync_color_model_buttons_mouse_cursor_shape.unbind(1))
 	sync_color_model_buttons_mouse_cursor_shape.call()
@@ -176,15 +177,18 @@ func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(color_area_surface, color_area_drawn.get_canvas_item())
 	RenderingServer.canvas_item_set_parent(primary_slider_surface, primary_slider_drawn.get_canvas_item())
 	
+	_on_color_picker_layout_changed()
+	if keyword_button.visible:
+		keyword_button.grab_focus(true)
+	else:
+		eyedropper_button.grab_focus(true)
+
+func register_focus_sequence() -> void:
 	var focus_sequence: Array[Control] = [primary_slider, keyword_button, reset_color_button, eyedropper_button]
 	focus_sequence.append_array(color_models_container.get_children())
 	focus_sequence.append(color_models_button)
 	focus_sequence.append_array(fields_arr)
 	HandlerGUI.register_focus_sequence(self, focus_sequence)
-	if keyword_button.visible:
-		keyword_button.grab_focus(true)
-	else:
-		eyedropper_button.grab_focus(true)
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(color_area_surface)
@@ -216,6 +220,7 @@ func _on_color_picker_layout_changed() -> void:
 			color_area_drawn.material.set_shader_parameter("interpolation", 1)
 			primary_slider_drawn.material.set_shader_parameter("interpolation", 4)
 	update()
+	register_focus_sequence()
 
 func _on_color_models_button_pressed() -> void:
 	var context_popup := ColorPickerLayoutPopupScene.instantiate()
@@ -227,7 +232,7 @@ func _on_color_models_button_pressed() -> void:
 # should be used as it stores the color from before the operation.
 func register_visual_change(use_backup := true) -> void:
 	# Return early if the color didn't change. If the color is a keyword, all visual changes reset it to a normal color.
-	if not color in ["none", "currentColor"] and (not use_backup or display_color.equals(backup_display_color)):
+	if use_backup and display_color.equals(backup_display_color) and not color in ["none", "currentColor"]:
 		return
 	
 	undo_redo.create_action()
@@ -238,6 +243,16 @@ func register_visual_change(use_backup := true) -> void:
 		undo_redo.add_undo_method(set_color.bind(color, display_color))
 	undo_redo.commit_action()
 
+func set_to_keyword(keyword: String) -> void:
+	undo_redo.create_action()
+	if color.strip_edges() == keyword:
+		undo_redo.add_do_method(set_color.bind(backup_color, backup_display_color))
+		undo_redo.add_undo_method(set_color.bind(color, display_color))
+	else:
+		backup()
+		undo_redo.add_do_method(set_color.bind(keyword, display_color))
+		undo_redo.add_undo_method(set_color.bind(color, display_color))
+	undo_redo.commit_action()
 
 func set_color(new_color: String, new_display_color: ColorPickerUtils.PreciseColor) -> void:
 	display_color = new_display_color.duplicate()
@@ -261,8 +276,10 @@ func update() -> void:
 				var col := display_color.to_color()
 				col.v = 1.0
 				primary_slider_drawn.material.set_shader_parameter("base_color", col)
+				color_area_drawn.material.set_shader_parameter("third_value", 1.0)
 			ColorPickerUtils.PickerShape.SV_H_SQUARE:
 				primary_slider_drawn.material.set_shader_parameter("base_color", Color.RED)
+				color_area_drawn.material.set_shader_parameter("third_value", display_color.get_hue())
 		for i in range(0, 3):
 			tracks_arr[i].material.set_shader_parameter("base_color", display_color.to_color())
 			slider_update(i)
@@ -285,11 +302,15 @@ func _on_color_area_gui_input(event: InputEvent) -> void:
 		var event_pos_in_area: Vector2 = event.position + color_area.position - color_area_drawn.position
 		match Configs.savedata.color_picker_current_shape:
 			ColorPickerUtils.PickerShape.HS_V_CIRCLE:
-				display_color.set_hue(fposmod(center.angle_to_point(event_pos_in_area), TAU) / TAU)
-				display_color.set_saturation(minf(event_pos_in_area.distance_to(center) * 2 / color_area_drawn.size.x, 1.0))
+				ColorPickerUtils.set_channel_offset_for_model(display_color, 0,
+						fposmod(center.angle_to_point(event_pos_in_area), TAU) / TAU, ColorPickerUtils.ColorModel.HSV)
+				ColorPickerUtils.set_channel_offset_for_model(display_color, 1,
+						minf(event_pos_in_area.distance_to(center) * 2 / color_area_drawn.size.x, 1.0), ColorPickerUtils.ColorModel.HSV)
 			ColorPickerUtils.PickerShape.SV_H_SQUARE:
-				display_color.set_saturation(clampf(event_pos_in_area.x / color_area_drawn.size.x, 0.0, 1.0))
-				display_color.set_value(clampf(event_pos_in_area.y / color_area_drawn.size.y, 0.0, 1.0))
+				ColorPickerUtils.set_channel_offset_for_model(display_color, 1,
+						clampf(event_pos_in_area.x / color_area_drawn.size.x, 0.0, 1.0), ColorPickerUtils.ColorModel.HSV)
+				ColorPickerUtils.set_channel_offset_for_model(display_color, 2,
+						clampf(1 - event_pos_in_area.y / color_area_drawn.size.y, 0.0, 1.0), ColorPickerUtils.ColorModel.HSV)
 		sync_display_color()
 	if Utils.is_event_drag_end(event):
 		register_visual_change()
@@ -398,17 +419,6 @@ func _on_keyword_button_pressed() -> void:
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 	HandlerGUI.popup_under_rect(ContextPopup.create(btn_arr), keyword_button.get_global_rect(), get_viewport())
 
-func set_to_keyword(keyword: String) -> void:
-	undo_redo.create_action()
-	if color.strip_edges() == keyword:
-		undo_redo.add_do_method(set_color.bind(backup_color, backup_display_color))
-		undo_redo.add_undo_method(set_color.bind(color, display_color))
-	else:
-		backup()
-		undo_redo.add_do_method(set_color.bind(keyword, display_color))
-		undo_redo.add_undo_method(set_color.bind(color, display_color))
-	undo_redo.commit_action()
-
 func _on_reset_color_button_pressed() -> void:
 	reset_color_button.disabled = true
 	undo_redo.create_action()
@@ -446,13 +456,13 @@ func _draw() -> void:
 			point_pos = center + Vector2(center.x * cos(display_color.get_hue() * TAU),
 					center.y * sin(display_color.get_hue() * TAU)) * display_color.get_saturation()
 		ColorPickerUtils.PickerShape.SV_H_SQUARE:
-			point_pos = Vector2(display_color.get_saturation(), display_color.get_value()) * color_area_drawn.size
+			point_pos = Vector2(display_color.get_saturation(), 1 - display_color.get_value()) * color_area_drawn.size
 	RenderingServer.canvas_item_add_texture_rect(color_area_surface, Rect2(point_pos - handle_texture_size / 2, handle_texture_size), handle_texture)
 	# Draw the slider handle.
 	var arrow_modulate := ThemeUtils.tinted_contrast_color
 	if not primary_slider_dragged:
 		arrow_modulate.a = 0.7
-	var arrow_y := primary_slider_drawn.size.y * (1 - display_color.get_value()) - side_slider_arrow.get_height() / 2.0
+	var arrow_y := primary_slider_drawn.size.y * (1 - ColorPickerUtils.get_primary_slider_offset(display_color)) - side_slider_arrow.get_height() / 2.0
 	var side_arrow_rect_pos := Vector2(-side_slider_arrow.get_width(), arrow_y)
 	side_slider_arrow.draw(primary_slider_surface, side_arrow_rect_pos, arrow_modulate)
 	if primary_slider.has_focus(true):
@@ -519,4 +529,5 @@ func _on_eyedropper_pressed() -> void:
 
 func _on_eyedropper_color_picker(new_color: Color) -> void:
 	display_color = ColorPickerUtils.PreciseColor.from_color(new_color)
+	sync_display_color()
 	register_visual_change(false)
