@@ -141,7 +141,14 @@ func update_parameter(new_value: float, property: String, idx: int) -> void:
 	State.save_svg()
 
 func _on_relative_button_pressed() -> void:
-	element.get_attribute(attribute_name).toggle_relative_command(hovered_idx)
+	var selections: Array[int] = current_selections.duplicate()
+	if selections.size() <= 1:
+		selections = []
+	if hovered_idx not in selections:
+		selections.append(hovered_idx)
+	selections.sort()
+	for index in selections:
+		element.get_attribute(attribute_name).toggle_relative_command(index)
 	State.save_svg()
 
 func _on_add_move_button_pressed() -> void:
@@ -376,7 +383,14 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char)
 	container.add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
-	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))
+	relative_button.gui_input.connect(func(event: InputEvent):
+		if event is InputEventMouseButton and not event.double_click:
+			relative_button.accept_event()
+			if event.pressed:
+				relative_button.pressed.emit()
+		else:
+			_eat_double_clicks(event, relative_button)
+	)
 	relative_button.position = Vector2(3, 2)
 	relative_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the action button.
