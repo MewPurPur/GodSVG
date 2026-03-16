@@ -84,8 +84,9 @@ class PreciseColor:
 	func get_luminance_imprecise() -> float:
 		return Color(r, g, b).get_luminance()
 
-enum PickerShape {HS_V_CIRCLE, SV_H_SQUARE}
+enum PickerShape {HS_V_CIRCLE, HS_L_CIRCLE, SV_H_SQUARE, SL_H_SQUARE}
 enum ColorModel {RGB, HSV, HSL}
+enum PickerGeometricShape {CIRCLE_AND_BAR, SQUARE_AND_BAR}
 
 static func color_model_to_string(model: ColorModel) -> String:
 	# These color models have somewhat common abbreviations in like three languages out there.
@@ -99,14 +100,20 @@ static func color_model_to_string(model: ColorModel) -> String:
 static func picker_shape_to_string(shape: PickerShape) -> String:
 	match shape:
 		PickerShape.HS_V_CIRCLE: return "HS+V Circle"
+		PickerShape.HS_L_CIRCLE: return "HS+L Circle"
 		PickerShape.SV_H_SQUARE: return "SV+H Square"
+		PickerShape.SL_H_SQUARE: return "SL+H Square"
 	return ""
 
-static func picker_shape_to_icon(shape: PickerShape) -> Texture2D:
+static func picker_shape_get_geometric_shape(shape: PickerShape) -> PickerGeometricShape:
 	match shape:
-		PickerShape.HS_V_CIRCLE: return preload("res://assets/icons/CircleAndSlider.svg")
-		PickerShape.SV_H_SQUARE: return preload("res://assets/icons/SquareAndSlider.svg")
-	return preload("res://assets/icons/Placeholder.svg")
+		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: return PickerGeometricShape.SQUARE_AND_BAR
+	return PickerGeometricShape.CIRCLE_AND_BAR
+
+static func picker_shape_to_icon(shape: PickerShape) -> Texture2D:
+	match picker_shape_get_geometric_shape(shape):
+		PickerGeometricShape.SQUARE_AND_BAR: return preload("res://assets/icons/SquareAndSlider.svg")
+	return preload("res://assets/icons/CircleAndSlider.svg")
 
 static func get_channel_letter(channel_index: int) -> String:
 	if channel_index == 3:
@@ -118,9 +125,12 @@ static func get_channel_letter(channel_index: int) -> String:
 	return ""
 
 static func get_channel_offset(color: PreciseColor, channel_index: int) -> float:
+	return get_channel_offset_for_model(color, channel_index, Configs.savedata.color_picker_current_model)
+
+static func get_channel_offset_for_model(color: PreciseColor, channel_index: int, color_model: ColorModel) -> float:
 	if channel_index == 3:
 		return color.a
-	match Configs.savedata.color_picker_current_model:
+	match color_model:
 		ColorModel.RGB:
 			match channel_index:
 				0: return color.r
@@ -196,11 +206,13 @@ static func set_channel_offset_for_model(color: PreciseColor, channel_index: int
 
 static func get_primary_slider_offset(color: PreciseColor) -> float:
 	match Configs.savedata.color_picker_current_shape:
-		PickerShape.HS_V_CIRCLE: return color.get_value()
+		PickerShape.HS_V_CIRCLE: return get_channel_offset_for_model(color, 2, ColorModel.HSV)
+		PickerShape.HS_L_CIRCLE: return get_channel_offset_for_model(color, 2, ColorModel.HSL)
 		PickerShape.SV_H_SQUARE: return color.get_hue()
 	return 0.0
 
 static func set_primary_slider_offset(color: PreciseColor, offset: float) -> void:
 	match Configs.savedata.color_picker_current_shape:
-		PickerShape.HS_V_CIRCLE: color.set_value(clampf(offset, 0.0001, 1.0))
-		PickerShape.SV_H_SQUARE: color.set_hue(clampf(offset, 0.0, 0.9999))
+		PickerShape.HS_V_CIRCLE: set_channel_offset_for_model(color, 2, offset, ColorModel.HSV)
+		PickerShape.HS_L_CIRCLE: set_channel_offset_for_model(color, 2, offset, ColorModel.HSL)
+		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: set_channel_offset_for_model(color, 0, offset, ColorModel.HSV)

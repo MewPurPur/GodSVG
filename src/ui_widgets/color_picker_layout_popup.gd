@@ -70,7 +70,7 @@ func _on_free_color_space_button_pressed(button: Button) -> void:
 	for model in ColorPickerUtils.ColorModel.values():
 		btn_arr.append(ContextButton.create_custom(ColorPickerUtils.color_model_to_string(model),
 				add_color_model.bind(model), null, model in Configs.savedata.color_picker_active_models))
-	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr, false, button.size.x), button.get_global_rect(), get_viewport())
 
 func add_color_model(new_color_model: ColorPickerUtils.ColorModel) -> void:
 	Configs.savedata.add_color_picker_active_model(new_color_model)
@@ -91,8 +91,8 @@ func edit_color_model(index: int) -> void:
 	for model in ColorPickerUtils.ColorModel.values():
 		btn_arr.append(ContextButton.create_custom(ColorPickerUtils.color_model_to_string(model),
 				set_color_model.bind(index, model), null, model in Configs.savedata.color_picker_active_models))
-	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr, false, color_model_buttons_array[index].size.x),
-			color_model_buttons_array[index].get_global_rect(), get_viewport())
+	var button := color_model_buttons_array[index]
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr, false, button.size.x), button.get_global_rect(), get_viewport())
 	color_picker_layout_changed.emit()
 
 func set_color_model(index: int, new_color_model: ColorPickerUtils.ColorModel) -> void:

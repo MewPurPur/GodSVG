@@ -51,13 +51,13 @@ shader_parameter/inverted = false
 shader_parameter/interpolation = 0
 
 [node name="GoodColorPicker" type="VBoxContainer" unique_id=1539422717]
-offset_right = 198.0
-offset_bottom = 344.0
+offset_right = 200.0
+offset_bottom = 341.0
 theme_override_constants/separation = 6
 script = ExtResource("1_0pc78")
 
 [node name="PickerArea" type="Control" parent="." unique_id=1753607454]
-custom_minimum_size = Vector2(0, 172)
+custom_minimum_size = Vector2(200, 172)
 layout_mode = 2
 
 [node name="ColorAreaContainer" type="MarginContainer" parent="PickerArea" unique_id=1405936464]
