@@ -1,5 +1,7 @@
 shader_type canvas_item;
 
+#include "res://src/shaders/color_models.gdshaderinc"
+
 uniform vec4 base_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform bool horizontal = true;
 uniform bool inverted = false;
@@ -7,87 +9,8 @@ uniform bool inverted = false;
 // 0 = Alpha
 // RGB --> 1 = Red, 2 = Green, 3 = Blue
 // HSV --> 4 = Hue, 5 = HSV saturation, 6 = Value
-// HSL --> 7 = Hue, 8 = HSL saturation, 9 = Lightness
+// HSL --> 4 = Hue, 7 = HSL saturation, 8 = Lightness
 uniform int interpolation = 0;
-
-vec3 rgb_to_hsv(vec3 c) {
-	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-	vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-	vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-	float d = q.x - min(q.w, q.y);
-	float e = 1e-10;
-	return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-}
-
-vec3 hsv_to_rgb(vec3 c) {
-	vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-	vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-	return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
-
-vec3 rgb_to_hsl(vec3 c) {
-	float r = c.r;
-	float g = c.g;
-	float b = c.b;
-	float maxc = max(r, max(g, b));
-	float minc = min(r, min(g, b));
-	float L = (maxc + minc) * 0.5;
-	float d = maxc - minc;
-
-	float H = 0.0;
-	if (d > 1e-10) {
-		if (maxc == r) {
-			H = mod((g - b) / d, 6.0);
-		} else if (maxc == g) {
-			H = ((b - r) / d) + 2.0;
-		} else {
-			H = ((r - g) / d) + 4.0;
-		}
-		H /= 6.0;
-		if (H < 0.0) {
-			H += 1.0;
-		}
-	} else {
-		H = 0.0;
-	}
-	
-	float S = 0.0;
-	if (d > 1e-10) {
-		S = d / (1.0 - abs(2.0 * L - 1.0));
-	} else {
-		S = 0.0;
-	}
-	
-	return vec3(H, S, L);
-}
-
-vec3 hsl_to_rgb(vec3 hsl) {
-	float H = hsl.x;
-	float S = hsl.y;
-	float L = hsl.z;
-	
-	float C = (1.0 - abs(2.0 * L - 1.0)) * S;
-	float Hp = H * 6.0;
-	float X = C * (1.0 - abs(mod(Hp, 2.0) - 1.0));
-	
-	vec3 rgb1;
-	if (0.0 <= Hp && Hp < 1.0) {
-		rgb1 = vec3(C, X, 0.0);
-	} else if (1.0 <= Hp && Hp < 2.0) {
-		rgb1 = vec3(X, C, 0.0);
-	} else if (2.0 <= Hp && Hp < 3.0) {
-		rgb1 = vec3(0.0, C, X);
-	} else if (3.0 <= Hp && Hp < 4.0) {
-		rgb1 = vec3(0.0, X, C);
-	} else if (4.0 <= Hp && Hp < 5.0) {
-		rgb1 = vec3(X, 0.0, C);
-	} else {
-		rgb1 = vec3(C, 0.0, X);
-	}
-	
-	float m = L - 0.5 * C;
-	return rgb1 + vec3(m);
-}
 
 void fragment() {
 	float offset = (horizontal ? UV.x : UV.y);
@@ -101,7 +24,7 @@ void fragment() {
 		COLOR = vec4(base_color.r, offset, base_color.b, 1.0);
 	} else if (interpolation == 3) {
 		COLOR = vec4(base_color.r, base_color.g, offset, 1.0);
-	} else if (interpolation >= 4 && interpolation <= 6) {
+	} else if (interpolation <= 6) {
 		vec3 hsv = rgb_to_hsv(base_color.rgb);
 		if (interpolation == 4) {
 			hsv.x = offset;
@@ -111,15 +34,15 @@ void fragment() {
 			hsv.z = offset;
 		}
 		COLOR = vec4(hsv_to_rgb(hsv), 1.0);
-	} else {
-		vec3 hsv = rgb_to_hsl(base_color.rgb);
+	} else if (interpolation <= 8) {
+		vec3 hsl = rgb_to_hsl(base_color.rgb);
 		if (interpolation == 7) {
-			hsv.x = offset;
+			hsl.y = offset;
 		} else if (interpolation == 8) {
-			hsv.y = offset;
-		} else if (interpolation == 9) {
-			hsv.z = offset;
+			hsl.z = offset;
 		}
-		COLOR = vec4(hsl_to_rgb(hsv), 1.0);
+		COLOR = vec4(hsl_to_rgb(hsl), 1.0);
+	} else {
+		COLOR = base_color;
 	}
 }

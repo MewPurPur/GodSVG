@@ -79,6 +79,7 @@ func setup_color(new_color: String, initial_color: String, default_color: Color)
 
 func sync_to_config() -> void:
 	for child in color_models_container.get_children():
+		color_models_container.remove_child(child)
 		child.queue_free()
 	
 	var normal_stylebox := StyleBoxFlat.new()
@@ -151,17 +152,19 @@ func _ready() -> void:
 	# Set up signals.
 	color_area.gui_input.connect(_on_color_area_gui_input)
 	primary_slider.gui_input.connect(parse_primary_slider_input)
-	primary_slider.focus_entered.connect(queue_redraw)
-	primary_slider.focus_exited.connect(queue_redraw)
+	primary_slider.focus_entered.connect(primary_slider.queue_redraw)
+	primary_slider.focus_exited.connect(primary_slider.queue_redraw)
+	reset_color_button.pressed.connect(_on_reset_color_button_pressed)
 	
 	start_color_rect.draw.connect(_on_start_color_rect_draw)
 	color_rect.draw.connect(_on_color_rect_draw)
-	reset_color_button.pressed.connect(_on_reset_color_button_pressed)
+	color_area_drawn.draw.connect(_on_color_area_draw)
+	primary_slider.draw.connect(_on_primary_slider_draw)
 	
 	for i in (range(0, 4) if alpha_enabled else range(0, 3)):
 		widgets_arr[i].draw.connect(_on_hslider_draw.bind(i))
 		widgets_arr[i].gui_input.connect(parse_slider_input.bind(i))
-		tracks_arr[i].resized.connect(queue_redraw_widgets)
+		tracks_arr[i].resized.connect(full_redraw)
 		fields_arr[i].text_submitted.connect(_on_slider_text_submitted.bind(i))
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
@@ -175,7 +178,7 @@ func _ready() -> void:
 	eyedropper_button.tooltip_text = Translator.translate("Eyedropper")
 	# Set up the rest.
 	RenderingServer.canvas_item_set_parent(color_area_surface, color_area_drawn.get_canvas_item())
-	RenderingServer.canvas_item_set_parent(primary_slider_surface, primary_slider_drawn.get_canvas_item())
+	RenderingServer.canvas_item_set_parent(primary_slider_surface, primary_slider.get_canvas_item())
 	
 	_on_color_picker_layout_changed()
 	if keyword_button.visible:
@@ -206,9 +209,9 @@ func _on_color_picker_layout_changed() -> void:
 			tracks_arr[1].material.set_shader_parameter("interpolation", 5)
 			tracks_arr[2].material.set_shader_parameter("interpolation", 6)
 		ColorPickerUtils.ColorModel.HSL:
-			tracks_arr[0].material.set_shader_parameter("interpolation", 7)
-			tracks_arr[1].material.set_shader_parameter("interpolation", 8)
-			tracks_arr[2].material.set_shader_parameter("interpolation", 9)
+			tracks_arr[0].material.set_shader_parameter("interpolation", 4)
+			tracks_arr[1].material.set_shader_parameter("interpolation", 7)
+			tracks_arr[2].material.set_shader_parameter("interpolation", 8)
 	if alpha_enabled:
 		tracks_arr[3].material.set_shader_parameter("interpolation", 0)
 	
@@ -216,8 +219,14 @@ func _on_color_picker_layout_changed() -> void:
 		ColorPickerUtils.PickerShape.HS_V_CIRCLE:
 			color_area_drawn.material.set_shader_parameter("interpolation", 0)
 			primary_slider_drawn.material.set_shader_parameter("interpolation", 6)
-		ColorPickerUtils.PickerShape.SV_H_SQUARE:
+		ColorPickerUtils.PickerShape.HS_L_CIRCLE:
 			color_area_drawn.material.set_shader_parameter("interpolation", 1)
+			primary_slider_drawn.material.set_shader_parameter("interpolation", 8)
+		ColorPickerUtils.PickerShape.SV_H_SQUARE:
+			color_area_drawn.material.set_shader_parameter("interpolation", 2)
+			primary_slider_drawn.material.set_shader_parameter("interpolation", 4)
+		ColorPickerUtils.PickerShape.SL_H_SQUARE:
+			color_area_drawn.material.set_shader_parameter("interpolation", 3)
 			primary_slider_drawn.material.set_shader_parameter("interpolation", 4)
 	update()
 	register_focus_sequence()
@@ -273,11 +282,12 @@ func update() -> void:
 	if is_instance_valid(display_color):
 		match Configs.savedata.color_picker_current_shape:
 			ColorPickerUtils.PickerShape.HS_V_CIRCLE:
-				var col := display_color.to_color()
-				col.v = 1.0
-				primary_slider_drawn.material.set_shader_parameter("base_color", col)
+				primary_slider_drawn.material.set_shader_parameter("base_color", display_color.to_color())
 				color_area_drawn.material.set_shader_parameter("third_value", 1.0)
-			ColorPickerUtils.PickerShape.SV_H_SQUARE:
+			ColorPickerUtils.PickerShape.HS_L_CIRCLE:
+				primary_slider_drawn.material.set_shader_parameter("base_color", display_color.to_color())
+				color_area_drawn.material.set_shader_parameter("third_value", 0.5)
+			ColorPickerUtils.PickerShape.SV_H_SQUARE, ColorPickerUtils.PickerShape.SL_H_SQUARE:
 				primary_slider_drawn.material.set_shader_parameter("base_color", Color.RED)
 				color_area_drawn.material.set_shader_parameter("third_value", display_color.get_hue())
 		for i in range(0, 3):
@@ -286,11 +296,7 @@ func update() -> void:
 			if alpha_enabled:
 				tracks_arr[3].material.set_shader_parameter("base_color", display_color.to_color())
 	# Redraw widgets, color indicators, color wheel.
-	color_rect.queue_redraw()
-	start_color_rect.queue_redraw()
-	queue_redraw()
-	color_area_drawn.queue_redraw()
-	queue_redraw_widgets()
+	full_redraw()
 	update_color_button()
 
 
@@ -300,13 +306,13 @@ func _on_color_area_gui_input(event: InputEvent) -> void:
 		backup()
 	if Utils.is_event_drag(event) or is_event_drag_start:
 		var event_pos_in_area: Vector2 = event.position + color_area.position - color_area_drawn.position
-		match Configs.savedata.color_picker_current_shape:
-			ColorPickerUtils.PickerShape.HS_V_CIRCLE:
+		match ColorPickerUtils.picker_shape_get_geometric_shape(Configs.savedata.color_picker_current_shape):
+			ColorPickerUtils.PickerGeometricShape.CIRCLE_AND_BAR:
 				ColorPickerUtils.set_channel_offset_for_model(display_color, 0,
 						fposmod(center.angle_to_point(event_pos_in_area), TAU) / TAU, ColorPickerUtils.ColorModel.HSV)
 				ColorPickerUtils.set_channel_offset_for_model(display_color, 1,
 						minf(event_pos_in_area.distance_to(center) * 2 / color_area_drawn.size.x, 1.0), ColorPickerUtils.ColorModel.HSV)
-			ColorPickerUtils.PickerShape.SV_H_SQUARE:
+			ColorPickerUtils.PickerGeometricShape.SQUARE_AND_BAR:
 				ColorPickerUtils.set_channel_offset_for_model(display_color, 1,
 						clampf(event_pos_in_area.x / color_area_drawn.size.x, 0.0, 1.0), ColorPickerUtils.ColorModel.HSV)
 				ColorPickerUtils.set_channel_offset_for_model(display_color, 2,
@@ -329,7 +335,7 @@ func set_primary_slider_offset(offset: float, register_change := false) -> void:
 		register_visual_change(false)
 	else:
 		sync_display_color()
-	primary_slider_drawn.queue_redraw()
+	primary_slider.queue_redraw()
 
 func set_slider_offset(index: int, offset: float, register_change := false) -> void:
 	ColorPickerUtils.set_channel_offset(display_color, index, offset)
@@ -347,13 +353,13 @@ func end_slider_drag(idx: int) -> void:
 func end_primary_slider_drag() -> void:
 	register_visual_change()
 	primary_slider_dragged = false
-	primary_slider_drawn.queue_redraw()
+	primary_slider.queue_redraw()
 
 func calculate_hslider_offset(index: int, pos: Vector2) -> float:
 	return (pos.x - tracks_arr[index].position.x) / tracks_arr[index].size.x
 
 func calculate_primary_slider_offset(pos: Vector2) -> float:
-	return 1.0 - ((pos.y - primary_slider.position.y) / primary_slider.size.y)
+	return 1.0 - ((pos.y - primary_slider_drawn.position.y) / primary_slider_drawn.size.y)
 
 func parse_primary_slider_input(event: InputEvent) -> void:
 	var delta := 0.0
@@ -368,8 +374,12 @@ func parse_primary_slider_input(event: InputEvent) -> void:
 		if not primary_slider_dragged:
 			start_primary_slider_drag()
 		match Configs.savedata.color_picker_current_shape:
-			ColorPickerUtils.PickerShape.HS_V_CIRCLE: set_primary_slider_offset(display_color.get_value() + delta)
-			ColorPickerUtils.PickerShape.SV_H_SQUARE: set_primary_slider_offset(clampf(display_color.get_hue() + delta, 0.0, 1.0))
+			ColorPickerUtils.PickerShape.HS_V_CIRCLE:
+				set_primary_slider_offset(display_color.get_value() + delta)
+			ColorPickerUtils.PickerShape.HS_L_CIRCLE:
+				set_primary_slider_offset(display_color.get_luminance_imprecise() + delta)
+			ColorPickerUtils.PickerShape.SV_H_SQUARE, ColorPickerUtils.PickerShape.SL_H_SQUARE:
+				set_primary_slider_offset(clampf(display_color.get_hue() + delta, 0.0, 1.0))
 	else:
 		if Utils.is_event_drag_start(event):
 			start_primary_slider_drag()
@@ -445,36 +455,39 @@ func _on_color_rect_draw() -> void:
 	color_rect.draw_texture_rect(bg_pattern, rect, true)
 	color_rect.draw_rect(rect, display_color.to_color())
 
-func _draw() -> void:
+func _on_color_area_draw() -> void:
 	RenderingServer.canvas_item_clear(color_area_surface)
-	RenderingServer.canvas_item_clear(primary_slider_surface)
-	# Draw the color wheel handle.
 	var handle_texture_size := handle_texture.get_size()
 	var point_pos: Vector2
-	match Configs.savedata.color_picker_current_shape:
-		ColorPickerUtils.PickerShape.HS_V_CIRCLE:
+	match ColorPickerUtils.picker_shape_get_geometric_shape(Configs.savedata.color_picker_current_shape):
+		ColorPickerUtils.PickerGeometricShape.CIRCLE_AND_BAR:
 			point_pos = center + Vector2(center.x * cos(display_color.get_hue() * TAU),
 					center.y * sin(display_color.get_hue() * TAU)) * display_color.get_saturation()
-		ColorPickerUtils.PickerShape.SV_H_SQUARE:
+		ColorPickerUtils.PickerGeometricShape.SQUARE_AND_BAR:
 			point_pos = Vector2(display_color.get_saturation(), 1 - display_color.get_value()) * color_area_drawn.size
 	RenderingServer.canvas_item_add_texture_rect(color_area_surface, Rect2(point_pos - handle_texture_size / 2, handle_texture_size), handle_texture)
-	# Draw the slider handle.
+
+func _on_primary_slider_draw() -> void:
+	RenderingServer.canvas_item_clear(primary_slider_surface)
 	var arrow_modulate := ThemeUtils.tinted_contrast_color
 	if not primary_slider_dragged:
 		arrow_modulate.a = 0.7
-	var arrow_y := primary_slider_drawn.size.y * (1 - ColorPickerUtils.get_primary_slider_offset(display_color)) - side_slider_arrow.get_height() / 2.0
-	var side_arrow_rect_pos := Vector2(-side_slider_arrow.get_width(), arrow_y)
-	side_slider_arrow.draw(primary_slider_surface, side_arrow_rect_pos, arrow_modulate)
+	var arrow_y := primary_slider_drawn.size.y * (1 - ColorPickerUtils.get_primary_slider_offset(display_color)) +\
+			primary_slider_drawn.position.y - side_slider_arrow.get_height() / 2.0
+	side_slider_arrow.draw(primary_slider_surface, Vector2(0, arrow_y), arrow_modulate)
 	if primary_slider.has_focus(true):
-		get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, Rect2(side_arrow_rect_pos, Vector2(side_slider_arrow.get_size())).grow(3))
+		get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, Rect2(Vector2(0, arrow_y), Vector2(side_slider_arrow.get_size())).grow(3))
 
 
-func queue_redraw_widgets() -> void:
+func full_redraw() -> void:
 	for i in 4:
 		var widget := widgets_arr[i]
 		if is_instance_valid(widget):
 			widget.queue_redraw()
-	primary_slider_drawn.queue_redraw()
+	primary_slider.queue_redraw()
+	color_area_drawn.queue_redraw()
+	color_rect.queue_redraw()
+	start_color_rect.queue_redraw()
 
 # Helper for drawing the horizontal sliders.
 func _on_hslider_draw(channel_index: int) -> void:
