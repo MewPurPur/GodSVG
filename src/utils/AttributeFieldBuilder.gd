@@ -9,18 +9,18 @@ const IdFieldScene = preload("res://src/ui_widgets/id_field.tscn")
 const HrefFieldScene = preload("res://src/ui_widgets/href_field.tscn")
 const UnrecognizedFieldScene = preload("res://src/ui_widgets/unrecognized_field.tscn")
 
-static func create(attribute: String, element: Element) -> Control:
-	match DB.get_attribute_type(attribute):
+static func create(attribute_name: String, element: Element) -> Control:
+	match DB.get_attribute_type(attribute_name):
 		DB.AttributeType.ID: return _generate_no_name(IdFieldScene, element)
 		DB.AttributeType.HREF: return _generate_no_name(HrefFieldScene, element)
-		DB.AttributeType.TRANSFORM_LIST: return _generate(TransformFieldScene, element, attribute)
-		DB.AttributeType.COLOR: return _generate(ColorFieldScene, element, attribute)
-		DB.AttributeType.ENUM: return _generate(EnumFieldScene, element, attribute)
+		DB.AttributeType.TRANSFORM_LIST: return _generate(TransformFieldScene, element, attribute_name)
+		DB.AttributeType.COLOR: return _generate(ColorFieldScene, element, attribute_name)
+		DB.AttributeType.ENUM: return _generate(EnumFieldScene, element, attribute_name)
 		DB.AttributeType.NUMERIC:
-			match DB.ATTRIBUTE_NUMBER_RANGE[attribute]:
-				DB.NumberRange.UNIT: return _generate(NumberSliderScene, element, attribute)
-				_: return _generate(NumberFieldScene, element, attribute)
-		_: return _generate(UnrecognizedFieldScene, element, attribute)
+			match DB.ATTRIBUTE_NUMBER_RANGE[attribute_name]:
+				DB.NumberRange.UNIT: return _generate(NumberSliderScene, element, attribute_name)
+				_: return _generate(NumberFieldScene, element, attribute_name)
+		_: return _generate(UnrecognizedFieldScene, element, attribute_name)
 
 static func _generate(widget: PackedScene, element: Element, attribute: String) -> Control:
 	var widget_instance := widget.instantiate()

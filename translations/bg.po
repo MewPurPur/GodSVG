@@ -435,6 +435,7 @@ msgid "File"
 msgstr "Файл"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/previews.gd
+#: src/ui_widgets/color_picker_layout_popup.gd
 #: src/ui_widgets/settings_content_shortcuts.gd
 msgid "Edit"
 msgstr "Промени"
@@ -486,7 +487,7 @@ msgstr "Форматиране"
 msgid "Optimizer"
 msgstr "Оптимизатор"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
+#: src/ui_parts/settings_menu.gd
 msgid "Palettes"
 msgstr "Палитри"
 
@@ -599,13 +600,34 @@ msgstr "Изтрий цвета"
 msgid "Unnamed"
 msgstr "Неименуван"
 
-#: src/ui_widgets/color_field_popup.gd
+#. Ways to represent colors, like RGB, HSV, HSL.
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Color models"
+msgstr "Цветови модели"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Move left"
+msgstr "Премести наляво"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Move right"
+msgstr "Премести надясно"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Remove"
+msgstr "Премахни"
+
+#: src/ui_widgets/color_popup.gd
+msgid "Color utilities"
+msgstr "Инструменти за цветове"
+
+#: src/ui_widgets/color_popup.gd
+msgid "Back to color picker"
+msgstr "Обратно към цветното колело"
+
+#: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
 msgstr "Търсене на цвят"
-
-#: src/ui_widgets/color_field_popup.gd
-msgid "Color Picker"
-msgstr "Цветно колело"
 
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
@@ -1559,7 +1581,6 @@ msgid "Save the {format} file"
 msgstr "Запази {format} файла"
 
 #: no_export/scripts/update_desktop_file.gd
-#, fuzzy
 msgid "Vector graphics editor"
 msgstr "Редактор за векторни графики"
 

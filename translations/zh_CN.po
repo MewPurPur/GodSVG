@@ -435,6 +435,7 @@ msgid "File"
 msgstr "文件"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/previews.gd
+#: src/ui_widgets/color_picker_layout_popup.gd
 #: src/ui_widgets/settings_content_shortcuts.gd
 msgid "Edit"
 msgstr "编辑"
@@ -486,7 +487,7 @@ msgstr "格式化"
 msgid "Optimizer"
 msgstr "优化器"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
+#: src/ui_parts/settings_menu.gd
 msgid "Palettes"
 msgstr "调色盘"
 
@@ -599,13 +600,38 @@ msgstr "删除颜色"
 msgid "Unnamed"
 msgstr "未命名"
 
-#: src/ui_widgets/color_field_popup.gd
+#. Ways to represent colors, like RGB, HSV, HSL.
+#: src/ui_widgets/color_picker_layout_popup.gd
+#, fuzzy
+msgid "Color models"
+msgstr "颜色关键字"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+#, fuzzy
+msgid "Move left"
+msgstr "移动到"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+#, fuzzy
+msgid "Move right"
+msgstr "移动到"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Remove"
+msgstr "删除"
+
+#: src/ui_widgets/color_popup.gd
+msgid "Color utilities"
+msgstr ""
+
+#: src/ui_widgets/color_popup.gd
+#, fuzzy
+msgid "Back to color picker"
+msgstr "取色器"
+
+#: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
 msgstr "搜索颜色"
-
-#: src/ui_widgets/color_field_popup.gd
-msgid "Color Picker"
-msgstr "取色器"
 
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
@@ -1727,9 +1753,6 @@ msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标�
 
 #~ msgid "Tag color"
 #~ msgstr "元素颜色"
-
-#~ msgid "Remove"
-#~ msgstr "删除"
 
 #~ msgid "Import Reference Image"
 #~ msgstr "导入参考图像"

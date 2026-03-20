@@ -62,7 +62,7 @@ func _on_occupied_color_space_button_pressed(index: int, button: Button) -> void
 		btn_arr.append(ContextButton.create_custom(Translator.translate("Move right"),
 				move_color_model_index.bind(index, true), preload("res://assets/icons/MoveRight.svg")))
 	
-	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"), delete_color_model.bind(index), preload("res://assets/icons/Delete.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Remove"), remove_color_model.bind(index), preload("res://assets/icons/Delete.svg")))
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), button.get_global_rect(), get_viewport())
 
 func _on_free_color_space_button_pressed(button: Button) -> void:
@@ -76,7 +76,7 @@ func add_color_model(new_color_model: ColorPickerUtils.ColorModel) -> void:
 	Configs.savedata.add_color_picker_active_model(new_color_model)
 	color_picker_layout_changed.emit()
 
-func delete_color_model(index: int) -> void:
+func remove_color_model(index: int) -> void:
 	Configs.savedata.remove_color_picker_active_model(index)
 	color_picker_layout_changed.emit()
 

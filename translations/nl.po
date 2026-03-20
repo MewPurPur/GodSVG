@@ -437,6 +437,7 @@ msgid "File"
 msgstr "Bestand"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/previews.gd
+#: src/ui_widgets/color_picker_layout_popup.gd
 #: src/ui_widgets/settings_content_shortcuts.gd
 msgid "Edit"
 msgstr "Bewerken"
@@ -491,7 +492,7 @@ msgstr "Formattering"
 msgid "Optimizer"
 msgstr "Optimaliseren"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
+#: src/ui_parts/settings_menu.gd
 msgid "Palettes"
 msgstr "Paletten"
 
@@ -605,13 +606,38 @@ msgstr "Kleur verwijderen"
 msgid "Unnamed"
 msgstr "Onbenoemd"
 
-#: src/ui_widgets/color_field_popup.gd
+#. Ways to represent colors, like RGB, HSV, HSL.
+#: src/ui_widgets/color_picker_layout_popup.gd
+#, fuzzy
+msgid "Color models"
+msgstr "kleur trefwoorden"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+#, fuzzy
+msgid "Move left"
+msgstr "Verplaats naar"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+#, fuzzy
+msgid "Move right"
+msgstr "Verplaats naar"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Remove"
+msgstr ""
+
+#: src/ui_widgets/color_popup.gd
+msgid "Color utilities"
+msgstr ""
+
+#: src/ui_widgets/color_popup.gd
+#, fuzzy
+msgid "Back to color picker"
+msgstr "Kleurenplukker"
+
+#: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
 msgstr "Zoekkleur"
-
-#: src/ui_widgets/color_field_popup.gd
-msgid "Color Picker"
-msgstr "Kleurenplukker"
 
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
