@@ -23,6 +23,7 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"Evaluate": """Refers to evaluating an expression such as "sin(2*pi/5)".""",
 	"Grid tick interval": "Refers to the specially marked grid ticks, which are more distinct and have a coordinate.",
 	"No ticks": "Refers to the specially marked grid ticks, which are more distinct and have a coordinate.",
+	"Color models": "Ways to represent colors, like RGB, HSV, HSL.",
 }
 
 const TRANSLATIONS_DIR = "translations"

@@ -14,21 +14,34 @@ class PreciseColor:
 		b = new_b
 		a = new_a
 	
-	func _to_string() -> String:
-		return "PreciseColor(%s, %s, %s, %s)" % [r, g, b, a]
-	
 	static func from_color(color: Color) -> PreciseColor:
 		return PreciseColor.new(color.r, color.g, color.b, color.a)
 	
-	func to_color() -> Color:
-		return Color(r, g, b, a)
+	static func from_array(array: PackedFloat64Array) -> PreciseColor:
+		return PreciseColor.new(array[0], array[1], array[2], array[3])
 	
 	func duplicate() -> PreciseColor:
 		return PreciseColor.new(r, g, b, a)
 	
+	func copy_values_from(color: PreciseColor) -> void:
+		r = color.r
+		g = color.g
+		b = color.b
+		a = color.a
+	
+	func _to_string() -> String:
+		return "PreciseColor(%s, %s, %s, %s)" % [r, g, b, a]
+	
+	func to_color() -> Color:
+		return Color(r, g, b, a)
+	
+	func to_array() -> PackedFloat64Array:
+		return PackedFloat64Array([r, g, b, a])
+	
 	func equals(color: PreciseColor) -> bool:
 		return r == color.r and g == color.g and b == color.b and a == color.a
 	
+	# These setters don't seem to need the enhanced precision.
 	func set_hue(h: float) -> void:
 		var new_color := Color(r, g, b)
 		new_color.h = h
@@ -104,6 +117,9 @@ static func picker_shape_to_string(shape: PickerShape) -> String:
 		PickerShape.SV_H_SQUARE: return "SV+H Square"
 		PickerShape.SL_H_SQUARE: return "SL+H Square"
 	return ""
+
+static func get_current_picker_shape_geometric_shape() -> PickerGeometricShape:
+	return picker_shape_get_geometric_shape(Configs.savedata.color_picker_current_shape)
 
 static func picker_shape_get_geometric_shape(shape: PickerShape) -> PickerGeometricShape:
 	match shape:
@@ -181,8 +197,8 @@ static func set_channel_offset_for_model(color: PreciseColor, channel_index: int
 			match channel_index:
 				0: color.set_hue(clampf(offset, 0.0, 0.9999))
 				1, 2:
-					var s := clampf(get_channel_offset(color, 1) if channel_index == 2 else offset, 0.0001, 1.0)
-					var l := clampf(get_channel_offset(color, 2) if channel_index == 1 else offset, 0.0001, 0.9999)
+					var s := clampf(get_channel_offset_for_model(color, 1, color_model) if channel_index == 2 else offset, 0.0001, 1.0)
+					var l := clampf(get_channel_offset_for_model(color, 2, color_model) if channel_index == 1 else offset, 0.0001, 0.9999)
 					
 					var c := (1.0 - absf(2.0 * l - 1.0)) * s
 					var hp := color.get_hue() * 6
@@ -208,7 +224,7 @@ static func get_primary_slider_offset(color: PreciseColor) -> float:
 	match Configs.savedata.color_picker_current_shape:
 		PickerShape.HS_V_CIRCLE: return get_channel_offset_for_model(color, 2, ColorModel.HSV)
 		PickerShape.HS_L_CIRCLE: return get_channel_offset_for_model(color, 2, ColorModel.HSL)
-		PickerShape.SV_H_SQUARE: return color.get_hue()
+		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: return color.get_hue()
 	return 0.0
 
 static func set_primary_slider_offset(color: PreciseColor, offset: float) -> void:
@@ -216,3 +232,67 @@ static func set_primary_slider_offset(color: PreciseColor, offset: float) -> voi
 		PickerShape.HS_V_CIRCLE: set_channel_offset_for_model(color, 2, offset, ColorModel.HSV)
 		PickerShape.HS_L_CIRCLE: set_channel_offset_for_model(color, 2, offset, ColorModel.HSL)
 		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: set_channel_offset_for_model(color, 0, offset, ColorModel.HSV)
+
+static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2) -> void:
+	# Don't clamp coordinates, this allows keyboard navigation to overextend and make it easier to snap to the right value at edges.
+	var channel1_index: int
+	var channel2_index: int
+	var model: ColorModel
+	
+	match Configs.savedata.color_picker_current_shape:
+		PickerShape.HS_V_CIRCLE:
+			channel1_index = 0
+			channel2_index = 1
+			model = ColorModel.HSV
+		PickerShape.HS_L_CIRCLE:
+			channel1_index = 0
+			channel2_index = 1
+			model = ColorModel.HSL
+		PickerShape.SV_H_SQUARE:
+			channel1_index = 1
+			channel2_index = 2
+			model = ColorModel.HSV
+		PickerShape.SL_H_SQUARE:
+			channel1_index = 1
+			channel2_index = 2
+			model = ColorModel.HSL
+	
+	match ColorPickerUtils.get_current_picker_shape_geometric_shape():
+		PickerGeometricShape.CIRCLE_AND_BAR:
+			ColorPickerUtils.set_channel_offset_for_model(color, channel1_index, fposmod(Vector2(0.5, 0.5).angle_to_point(coordinates), TAU) / TAU, model)
+			ColorPickerUtils.set_channel_offset_for_model(color, channel2_index, minf(coordinates.distance_to(Vector2(0.5, 0.5)) * 2.0, 1.0), model)
+		PickerGeometricShape.SQUARE_AND_BAR:
+			ColorPickerUtils.set_channel_offset_for_model(color, channel1_index, clampf(coordinates.x, 0.0, 1.0), model)
+			ColorPickerUtils.set_channel_offset_for_model(color, channel2_index, 1.0 - clampf(coordinates.y, 0.0, 1.0), model)
+
+static func get_color_area_coordinates(color: PreciseColor) -> Vector2:
+	var channel1_index := 0
+	var channel2_index := 0
+	var model: ColorModel
+	
+	match Configs.savedata.color_picker_current_shape:
+		PickerShape.HS_V_CIRCLE:
+			channel1_index = 0
+			channel2_index = 1
+			model = ColorModel.HSV
+		PickerShape.HS_L_CIRCLE:
+			channel1_index = 0
+			channel2_index = 1
+			model = ColorModel.HSL
+		PickerShape.SV_H_SQUARE:
+			channel1_index = 1
+			channel2_index = 2
+			model = ColorModel.HSV
+		PickerShape.SL_H_SQUARE:
+			channel1_index = 1
+			channel2_index = 2
+			model = ColorModel.HSL
+	
+	match ColorPickerUtils.get_current_picker_shape_geometric_shape():
+		PickerGeometricShape.CIRCLE_AND_BAR:
+			return Vector2(0.5, 0.5) + Vector2.from_angle(ColorPickerUtils.get_channel_offset_for_model(color, channel1_index, model) * TAU) *\
+					ColorPickerUtils.get_channel_offset_for_model(color, channel2_index, model) * 0.5
+		PickerGeometricShape.SQUARE_AND_BAR:
+			return Vector2(ColorPickerUtils.get_channel_offset_for_model(color, channel1_index, model),
+					1.0 - ColorPickerUtils.get_channel_offset_for_model(color, channel2_index, model))
+	return Vector2(NAN, NAN)
