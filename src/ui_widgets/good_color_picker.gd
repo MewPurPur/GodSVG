@@ -73,12 +73,12 @@ func setup_color(new_paint: String, initial_paint: String, default_color: Color)
 	# Set up the display color.
 	starting_display_color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(starting_paint, default_color, alpha_enabled))
 	starting_display_color.shift_hsv()
-	backup_paint = initial_paint
-	backup_display_color = starting_display_color.duplicate()
 	if not alpha_enabled:
 		starting_display_color.a = 1
 	display_color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(new_paint, default_color, alpha_enabled))
 	display_color.shift_hsv()
+	backup_display_color = display_color.duplicate()
+	backup_paint = new_paint
 	color_changed.connect(sync_to_color.unbind(1))
 	sync_to_color()
 
