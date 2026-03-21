@@ -205,7 +205,6 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
-max_length = 3
 script = ExtResource("6_aqyoh")
 
 [node name="Slider2" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=1598633778]
@@ -233,7 +232,6 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
-max_length = 3
 script = ExtResource("6_aqyoh")
 
 [node name="Slider3" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=138290662]
@@ -261,7 +259,6 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
-max_length = 3
 script = ExtResource("6_aqyoh")
 
 [node name="Slider4" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=471824461]
@@ -297,5 +294,4 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
-max_length = 3
 script = ExtResource("6_aqyoh")

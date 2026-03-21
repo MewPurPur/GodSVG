@@ -18,9 +18,8 @@ func set_text(new_text: String) -> void:
 func _init() -> void:
 	theme_type_variation = "Dropdown"
 	focus_mode = Control.FOCUS_ALL
+	mouse_exited.connect(queue_redraw)
 
-func _ready() -> void:
-	mouse_exited.connect(_on_mouse_exited)
 
 func _draw() -> void:
 	var normal_sb: StyleBoxFlat = get_theme_stylebox("normal")
@@ -48,9 +47,6 @@ func _draw() -> void:
 	text_line.draw(ci, Vector2(normal_sb.content_margin_left, y_offset), get_theme_color("font_color"))
 
 
-func _on_mouse_exited() -> void:
-	queue_redraw()
-
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		queue_redraw()
@@ -76,9 +72,8 @@ func _enter_edit_mode() -> void:
 	line_edit.size = size
 	line_edit.editable = editing_enabled
 	line_edit.text = _get_line_edit_activation_text()
-	line_edit.text_submitted.connect(_on_text_submitted)
-	line_edit.text_changed.connect(_on_text_changed)
-	line_edit.focus_exited.connect(line_edit.queue_free)
+	line_edit.text_submitted.connect(_on_line_edit_text_submitted)
+	line_edit.editing_toggled.connect(_on_line_edit_editing_toggled)
 	line_edit.add_theme_font_override("font", get_theme_font("font"))
 	add_child(line_edit)
 	line_edit.grab_focus()
@@ -86,11 +81,13 @@ func _enter_edit_mode() -> void:
 func _get_line_edit_activation_text() -> String:
 	return _text
 
-func _on_text_submitted(_new_text: String) -> void:
+func _on_line_edit_text_submitted(_new_text: String) -> void:
 	line_edit.release_focus()
 	queue_redraw()
 
-func _on_text_changed(_new_text: String) -> void:
-	return
+func _on_line_edit_editing_toggled(toggled_on: bool) -> void:
+	if not toggled_on:
+		line_edit.queue_free()
+
 
 @abstract func _get_dropdown_buttons() -> Array[ContextButton]

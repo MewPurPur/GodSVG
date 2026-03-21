@@ -15,7 +15,6 @@ func set_value(new_value: String, save := false) -> void:
 
 func _ready() -> void:
 	add_theme_font_override("font", ThemeUtils.mono_font)
-	super()
 	Configs.basic_colors_changed.connect(sync)
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
