@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
 #. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
@@ -602,19 +602,16 @@ msgstr "未命名"
 
 #. Ways to represent colors, like RGB, HSV, HSL.
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Color models"
-msgstr "颜色关键字"
+msgstr "颜色模型"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move left"
-msgstr "移动到"
+msgstr "左移"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move right"
-msgstr "移动到"
+msgstr "右移"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
 msgid "Remove"
@@ -622,12 +619,11 @@ msgstr "删除"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Color utilities"
-msgstr ""
+msgstr "颜色工具"
 
 #: src/ui_widgets/color_popup.gd
-#, fuzzy
 msgid "Back to color picker"
-msgstr "取色器"
+msgstr "返回至取色器"
 
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
@@ -1585,7 +1581,6 @@ msgid "Save the {format} file"
 msgstr "保存 {format} 文件"
 
 #: no_export/scripts/update_desktop_file.gd
-#, fuzzy
 msgid "Vector graphics editor"
 msgstr "矢量图形编辑器"
 
