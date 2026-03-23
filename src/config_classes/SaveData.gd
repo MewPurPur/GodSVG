@@ -600,7 +600,7 @@ const MAX_FPS_MAX = 600
 			external_call(HandlerGUI.update_window_title)
 
 
-# Session
+# Remembered things that aren't user settings, but must preserve between sessions.
 
 const MAX_SNAP = 16384
 @export var snap := -0.5:  # Negative when disabled.

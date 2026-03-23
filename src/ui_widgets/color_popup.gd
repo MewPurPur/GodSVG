@@ -21,7 +21,7 @@ var show_url: bool
 var current_color := Color.BLACK
 var current_color_availability := CurrentColorAvailability.UNAVAILABLE
 
-var color_picker_shown := true
+var color_picker_shown := State.color_popup_on_picker_page
 
 @onready var content: MarginContainer = %Content
 @onready var navigation_panel: PanelContainer = %NavigationPanel
@@ -48,13 +48,14 @@ func sync_theming() -> void:
 # Switching between palette mode and color picker mode.
 func _on_switch_mode_button_pressed() -> void:
 	color_picker_shown = not color_picker_shown
+	State.color_popup_on_picker_page = color_picker_shown
 	setup_content()
 
 func setup_content() -> void:
 	for child in content.get_children():
 		child.queue_free()
 	
-	if color_picker_shown:
+	if color_picker_shown and State.color_popup_on_picker_page:
 		switch_mode_button.text = Translator.translate("Color utilities")
 		switch_mode_button.icon = config_icon
 		var color_picker := GoodColorPickerScene.instantiate()

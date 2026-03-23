@@ -4,9 +4,9 @@
 	<id>com.godsvg.GodSVG</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>MIT</project_license>
+
 	<name>GodSVG</name>
 	<summary>A vector graphics application for structured SVG editing</summary>
-	<launchable type="desktop-id">com.godsvg.GodSVG.desktop</launchable>
 	<description>
 		<p>
 			GodSVG is a structured SVG editor. It represents the SVG code directly and lets you edit it in real time, without adding any metadata to it. GodSVG aims to be a structured SVG editor with low abstraction, producing clean, precise, optimized files.
@@ -15,19 +15,29 @@
 			SVG is a common vector graphics format, which allows for renderings at unlimited resolution. Unlike raster graphics, which are bound to pixels, SVGs are defined by geometric operations that are agnostic to resolution.
 		</p>
 		<p>
-			Despite being focused on representing the actual code structure of SVGs, GodSVG has a solid user interface derived from this structure. This makes it great for learning how the SVG format works under the hood. GodSVG is also free and open source, providing transparency that the software is trustworthy and has no hidden user-hostile features.
+			Despite being focused on representing the actual code structure of SVGs, GodSVG has a solid user interface derived from this structure, making it helpful for learning how the SVG format works under the hood. GodSVG is also free and open source, providing transparency that the software is trustworthy and has no hidden user-hostile features.
 		</p>
 	</description>
+	<launchable type="desktop-id">com.godsvg.GodSVG.desktop</launchable>
+
+	<content_rating type="oars-1.1" />
+	<branding>
+		<color type="primary" scheme_preference="light">#a0aafb</color>
+		<color type="primary" scheme_preference="dark">#303454</color>
+	</branding>
+
+	<url type="homepage">https://godsvg.com</url>
+	<url type="bugtracker">https://github.com/MewPurPur/GodSVG/issues</url>
+	<url type="faq">https://godsvg.com/#faq</url>
+	<url type="donation">https://godsvg.com/#donate</url>
+	<url type="translate">https://github.com/MewPurPur/GodSVG/tree/main/translations</url>
+
 	<screenshots>
 		<screenshot type="default" width="1040" height="650">
 			<caption>A vector graphic being edited in GodSVG</caption>
 			<image>https://godsvg.com/assets/screenshot1.webp</image>
 		</screenshot>
 	</screenshots>
-	<url type="homepage">https://godsvg.com</url>
-	<url type="bugtracker">https://github.com/MewPurPur/GodSVG/issues</url>
-	<url type="faq">https://godsvg.com/#faq</url>
-	<url type="donation">https://godsvg.com/#donate</url>
-	<url type="translate">https://github.com/MewPurPur/GodSVG/tree/main/translations</url>
+
 	<developer_name>The GodSVG community</developer_name>
 </component>

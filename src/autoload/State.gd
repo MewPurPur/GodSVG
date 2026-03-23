@@ -15,6 +15,8 @@ signal svg_edited
 signal svg_switched_to_another
 signal svg_changed
 
+var color_popup_on_picker_page := true
+
 # "unstable_markup" is the current state, which might have errors (i.e., while using the code editor).
 # "stable_markup" is the last state without errors, and is what the editor is synced to.
 # These both differ from the TabData svg_text, which is the state as saved to file,
