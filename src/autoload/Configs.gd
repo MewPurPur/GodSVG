@@ -21,7 +21,7 @@ signal layout_changed
 
 const _SAVEDATA_PATH = "user://savedata.tres"
 
-## Main point of access to the savefile data. This includes user settings and session data.
+## Main point of access to the savefile data. This includes user settings, but also things saved between sessions.
 var savedata: SaveData:
 	set(new_value):
 		if savedata != new_value and is_instance_valid(new_value):
