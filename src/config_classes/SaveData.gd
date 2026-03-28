@@ -54,6 +54,10 @@ func get_setting_default(setting: String) -> Variant:
 			match highlighter_preset:
 				HighlighterPreset.DEFAULT_DARK: return Color("d5d7f2ac")
 				HighlighterPreset.DEFAULT_LIGHT: return Color("242433ac")
+		"highlighting_xml_entity_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("ad99ffcc")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("2c187aac")
 		"highlighting_cdata_color":
 			match highlighter_preset:
 				HighlighterPreset.DEFAULT_DARK: return Color("ffeda1ac")
@@ -179,6 +183,7 @@ const HIGHLIGHTING_ITEMS: PackedStringArray = [
 	"highlighting_string_color",
 	"highlighting_comment_color",
 	"highlighting_text_color",
+	"highlighting_xml_entity_color",
 	"highlighting_cdata_color",
 	"highlighting_error_color",
 ]
@@ -334,6 +339,13 @@ const CURRENT_VERSION = 1
 	set(new_value):
 		if highlighting_text_color != new_value:
 			highlighting_text_color = new_value
+			emit_changed()
+			Configs.highlighting_colors_changed.emit()
+
+@export var highlighting_xml_entity_color := Color("ad99ffcc"):
+	set(new_value):
+		if highlighting_xml_entity_color != new_value:
+			highlighting_xml_entity_color = new_value
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 

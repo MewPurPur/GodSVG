@@ -927,6 +927,11 @@ msgstr "Цвят на коментарите"
 msgid "Text color"
 msgstr "Цвят на текста"
 
+#. XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "XML entity color"
+msgstr "Цвят на XML обекти"
+
 #. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "CDATA color"

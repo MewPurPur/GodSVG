@@ -6,6 +6,7 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox": "A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has multiple meaningful translations, you can include them all.",
 	"Viewport": "The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.",
 	"CDATA color": "CDATA shouldn't be translated. It's a type of XML section.",
+	"XML entity color": "XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.",
 	"Editor formatter": "Refers to the formatter used for GodSVG's code editor.",
 	"Export formatter": "Refers to the formatter used when exporting.",
 	"Handles": "Refers to the draggable gizmos.",
