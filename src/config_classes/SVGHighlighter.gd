@@ -1,6 +1,8 @@
 ## A syntax highlighter for SVGs, allows for more flexibility than CodeHighlighter.
 class_name SVGHighlighter extends SyntaxHighlighter
 
+const XML_ENTITY_LIST: PackedStringArray = ["&quot;", "&amp;", "&apos;", "&gt;", "&lt;"]
+
 var unrecognized_element_color: Color
 var unrecognized_attribute_color: Color
 
@@ -8,6 +10,7 @@ var symbol_color := Color("abc9ff")
 var string_color := Color("a1ffe0")
 var comment_color := Color("cdcfd280")
 var text_color := Color("cdcfeaac")
+var xml_entity_color := Color("ad99ffcc")
 var cdata_color := Color("ffeda1ac")
 var error_color := Color("ff866b")
 var element_color := Color("ff8ccc"):
@@ -27,6 +30,7 @@ func _init() -> void:
 	string_color = Configs.savedata.highlighting_string_color
 	comment_color = Configs.savedata.highlighting_comment_color
 	text_color = Configs.savedata.highlighting_text_color
+	xml_entity_color = Configs.savedata.highlighting_xml_entity_color
 	cdata_color = Configs.savedata.highlighting_cdata_color
 	error_color = Configs.savedata.highlighting_error_color
 
@@ -41,8 +45,9 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 			svg_text[i] = "a"
 	
 	var color_map: Dictionary[int, Dictionary] = {}
+	var buffer := svg_text.to_utf8_buffer()
 	var parser := XMLParser.new()
-	parser.open_buffer(svg_text.to_utf8_buffer())
+	parser.open_buffer(buffer)
 	while parser.read() == OK:
 		var offset := parser.get_node_offset()
 		match parser.get_node_type():
@@ -84,18 +89,15 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 								return color_map
 					elif not current_attribute_name.is_empty():
 						if c in " \t\n\r":
-							color_map[offset - current_attribute_name.length()] = {"color":
-									get_attribute_color(element_name, current_attribute_name)}
+							color_map[offset - current_attribute_name.length()] = {"color": get_attribute_color(element_name, current_attribute_name)}
 							current_attribute_name = ""
 							expecting_equal_sign = true
 						elif c in "/>":
-							color_map[offset - current_attribute_name.length()] = {"color":
-									get_attribute_color(element_name, current_attribute_name)}
+							color_map[offset - current_attribute_name.length()] = {"color": get_attribute_color(element_name, current_attribute_name)}
 							color_map[offset] = {"color": error_color}
 							return color_map
 						elif c == "=":
-							color_map[offset - current_attribute_name.length()] = {"color":
-									get_attribute_color(element_name, current_attribute_name)}
+							color_map[offset - current_attribute_name.length()] = {"color": get_attribute_color(element_name, current_attribute_name)}
 							color_map[offset] = {"color": symbol_color}
 							current_attribute_name = ""
 							expecting_attribute_value = true
@@ -145,6 +147,13 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 				color_map[offset] = {"color": symbol_color}
 			XMLParser.NODE_TEXT:
 				color_map[offset] = {"color": text_color}
+				var found := svg_text.find("&", offset)
+				while found != -1:
+					for xml_entity in XML_ENTITY_LIST:
+						if svg_text.substr(found, xml_entity.length()) == xml_entity:
+							color_map[found] = {"color": xml_entity_color}
+							color_map[found + xml_entity.length()] = {"color": text_color}
+					found = svg_text.find("&", found + 1)
 			XMLParser.NODE_CDATA:
 				color_map[offset] = {"color": cdata_color}
 			_:

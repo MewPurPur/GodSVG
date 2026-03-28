@@ -943,6 +943,12 @@ msgstr "Commentaarkleur"
 msgid "Text color"
 msgstr "Textkleur"
 
+#. XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "XML entity color"
+msgstr "Accentkleur"
+
 #. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "CDATA color"

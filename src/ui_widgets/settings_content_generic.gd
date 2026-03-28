@@ -484,7 +484,7 @@ func setup_theming_content() -> void:
 	
 	var basic_svg_text := """<circle cx="6" cy="8" r="4" fill="gold" />"""
 	var basic_svg_text_with_syntax_error := """<circle cx="6" cy="8" ==syntax error"""
-	var fancy_svg_text := """<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""
+	var fancy_svg_text := """<!-- Comment --> <text> &lt; Basic text &amp; <![CDATA[ < > & " ' ]]> </text>"""
 	
 	add_section(Translator.translate("Fonts"))
 	current_setup_setting = "main_font_path"
@@ -523,6 +523,9 @@ func setup_theming_content() -> void:
 	add_preview(SettingCodePreview.new(fancy_svg_text))
 	current_setup_setting = "highlighting_text_color"
 	add_color_edit(Translator.translate("Text color"))
+	add_preview(SettingCodePreview.new(fancy_svg_text))
+	current_setup_setting = "highlighting_xml_entity_color"
+	add_color_edit(Translator.translate("XML entity color"))
 	add_preview(SettingCodePreview.new(fancy_svg_text))
 	current_setup_setting = "highlighting_cdata_color"
 	add_color_edit(Translator.translate("CDATA color"))
