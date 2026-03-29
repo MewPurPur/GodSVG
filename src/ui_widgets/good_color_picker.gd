@@ -281,7 +281,9 @@ func set_color(new_paint: String, new_display_color_array: PackedFloat64Array) -
 func sync_to_color() -> void:
 	# Adjust the shaders.
 	if is_instance_valid(display_color):
-		var display_regular_color := display_color.to_color()
+		var shifted_display_color := display_color.duplicate()
+		shifted_display_color.shift_hsv()
+		var display_regular_color := shifted_display_color.to_color()
 		match Configs.savedata.color_picker_current_shape:
 			ColorPickerUtils.PickerShape.HS_V_CIRCLE:
 				primary_slider_drawn.material.set_shader_parameter("base_color", display_regular_color)
