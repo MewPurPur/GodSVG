@@ -313,7 +313,7 @@ func sync_to_color() -> void:
 	var accent_hue_color := Color.from_hsv(ThemeUtils.accent_color.h, 1.0, 1.0)
 	
 	reset_color_button.begin_bulk_theme_override()
-	if display_color.get_luminance_imprecise() < 0.5:
+	if display_color.get_luminance_imprecise() < 0.45:
 		reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
 		reset_color_button.add_theme_color_override("icon_focus_color", Color.WHITE)
 		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.WHITE, 0.76))

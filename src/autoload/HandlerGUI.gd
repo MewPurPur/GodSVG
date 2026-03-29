@@ -75,8 +75,7 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_ABOUT:
-		# TODO Keep track of #101410.
-		open_about.call_deferred()
+		open_about.call_deferred()  # Children can't be added while a notification propagates to all nodes, so defer.
 
 # Handles drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
