@@ -155,7 +155,8 @@ func sync() -> void:
 		update_gradient_texture()
 	queue_redraw()
 
-# TODO remove this method when #94584 is fixed.
+# TODO Once #25296 is fixed, gradient_texture in _draw() can just be replaced with
+# gradient_element.generate_texture() and this method and everything persistent can be removed.
 func update_gradient_texture() -> void:
 	var color_value := element.get_implied_attribute_value(attribute_name)
 	if ColorParser.is_valid_url(color_value):

@@ -43,11 +43,21 @@ class PreciseColor:
 	
 	# These setters don't seem to need the enhanced precision.
 	func set_hue(h: float) -> void:
-		var new_color := Color(r, g, b)
-		new_color.h = h
-		r = new_color.r
-		g = new_color.g
-		b = new_color.b
+		var s := get_saturation()
+		var v := get_value()
+		var h2 := fposmod(h, 1.0) * 6.0
+		var i := int(floor(h2))
+		var f := h2 - float(i)
+		var p := v * (1.0 - s)
+		var q := v * (1.0 - s * f)
+		var t := v * (1.0 - s * (1.0 - f))
+		match i:
+			0: r = v; g = t; b = p
+			1: r = q; g = v; b = p
+			2: r = p; g = v; b = t
+			3: r = p; g = q; b = v
+			4: r = t; g = p; b = v
+			_: r = v; g = p; b = q
 	
 	func set_saturation(s: float) -> void:
 		var new_color := Color(r, g, b)
@@ -95,7 +105,7 @@ class PreciseColor:
 		return maxf(r, maxf(g, b))
 	
 	func get_luminance_imprecise() -> float:
-		return Color(r, g, b).get_luminance()
+		return Color(r, g, b).srgb_to_linear().get_luminance()
 
 enum PickerShape {HS_V_CIRCLE, HS_L_CIRCLE, SV_H_SQUARE, SL_H_SQUARE}
 enum ColorModel {RGB, HSV, HSL}
