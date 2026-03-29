@@ -41,13 +41,12 @@ class PreciseColor:
 	func equals(color: PreciseColor) -> bool:
 		return r == color.r and g == color.g and b == color.b and a == color.a
 	
-	# These setters don't seem to need the enhanced precision.
 	func set_hue(h: float) -> void:
 		var s := get_saturation()
 		var v := get_value()
-		var h2 := fposmod(h, 1.0) * 6.0
-		var i := int(floor(h2))
-		var f := h2 - float(i)
+		var h_adj := fposmod(h, 1.0) * 6.0
+		var i := int(floor(h_adj))
+		var f := h_adj - float(i)
 		var p := v * (1.0 - s)
 		var q := v * (1.0 - s * f)
 		var t := v * (1.0 - s * (1.0 - f))
@@ -60,18 +59,56 @@ class PreciseColor:
 			_: r = v; g = p; b = q
 	
 	func set_saturation(s: float) -> void:
-		var new_color := Color(r, g, b)
-		new_color.s = s
-		r = new_color.r
-		g = new_color.g
-		b = new_color.b
+		var v := get_value()
+		var new_s := clampf(s, 0.0, 1.0)
+		
+		if new_s <= 0.0:
+			r = v
+			g = v
+			b = v
+			return
+		
+		var h_adj := get_hue() * 6.0
+		var i := int(floor(h_adj))
+		var f := h_adj - float(i)
+		
+		var p := v * (1.0 - new_s)
+		var q := v * (1.0 - new_s * f)
+		var t := v * (1.0 - new_s * (1.0 - f))
+		
+		match i:
+			0: r = v; g = t; b = p
+			1: r = q; g = v; b = p
+			2: r = p; g = v; b = t
+			3: r = p; g = q; b = v
+			4: r = t; g = p; b = v
+			_: r = v; g = p; b = q
 	
 	func set_value(v: float) -> void:
-		var new_color := Color(r, g, b)
-		new_color.v = v
-		r = new_color.r
-		g = new_color.g
-		b = new_color.b
+		var s := get_saturation()
+		var new_v := maxf(v, 0.0)
+		
+		if s <= 0.0:
+			r = new_v
+			g = new_v
+			b = new_v
+			return
+		
+		var h_adj := get_hue() * 6.0
+		var i := int(floor(h_adj))
+		var f := h_adj - float(i)
+		
+		var p := new_v * (1.0 - s)
+		var q := new_v * (1.0 - s * f)
+		var t := new_v * (1.0 - s * (1.0 - f))
+		
+		match i:
+			0: r = new_v; g = t; b = p
+			1: r = q; g = new_v; b = p
+			2: r = p; g = new_v; b = t
+			3: r = p; g = q; b = new_v
+			4: r = t; g = p; b = new_v
+			_: r = new_v; g = p; b = q
 	
 	func shift_hsv() -> void:
 		set_hue(clampf(get_hue(), 0.0, 0.9999))
