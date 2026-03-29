@@ -1082,6 +1082,7 @@ func add_empty_tab() -> void:
 	emit_changed()
 	Configs.tabs_changed.emit()
 	set_active_tab_index(_tabs.size() - 1)
+	get_active_tab().set_initial_svg_text(TabData.DEFAULT_SVG)
 
 ## Adds a new path with the given path. If a tab with the path already exists, it's set as the active tab instead.
 func add_tab_with_path(new_file_path: String) -> void:

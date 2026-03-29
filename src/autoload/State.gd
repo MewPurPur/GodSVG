@@ -44,9 +44,7 @@ func _enter_tree() -> void:
 	Configs.active_tab_changed.connect(setup_from_tab)
 	setup_from_tab.call_deferred()  # Let everything load before emitting signals.
 	
-	# Need to wait a frame so the import warnings panel becomes available.
-	await get_tree().process_frame
-	FileUtils.apply_svgs_from_paths(OS.get_cmdline_args(), false)
+	FileUtils.apply_svgs_from_paths.call_deferred(OS.get_cmdline_args(), false)  # Let the import warnings panel become available.
 
 
 func _on_svg_edited() -> void:
