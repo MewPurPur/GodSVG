@@ -137,4 +137,4 @@ func _ready() -> void:
 		license_text.add_theme_font_size_override("font_size", 11)
 		license_text.text = licenses_dict[license_name]
 		license_vbox.add_child(license_text)
-		license_texts_label.add_child(license_vbox)
+		license_texts.add_child(license_vbox)
