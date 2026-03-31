@@ -150,7 +150,7 @@ msgstr "Темная (OLED)"
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Gray"
-msgstr ""
+msgstr "Серая"
 
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
@@ -451,7 +451,7 @@ msgstr "Просмотр"
 
 #: src/ui_parts/mac_menu.gd
 msgid "Window"
-msgstr ""
+msgstr "Окно"
 
 #: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
 msgid "Help"
@@ -529,9 +529,8 @@ msgid "Configure Shortcut Panel"
 msgstr "Настроить в панели сочетаний клавиш"
 
 #: src/ui_parts/tab_bar.gd
-#, fuzzy
 msgid "Close multiple"
-msgstr "Закрыть вкладку"
+msgstr "Закрыть несколько вкладок"
 
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
@@ -604,32 +603,28 @@ msgstr "Без названия"
 
 #. Ways to represent colors, like RGB, HSV, HSL.
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Color models"
-msgstr "Ключевые слова цвета"
+msgstr "Цветовые модели"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move left"
-msgstr "Подвинуть до"
+msgstr "Подвинуть влево"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move right"
-msgstr "Подвинуть до"
+msgstr "Подвинуть вправо"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
 msgid "Remove"
-msgstr ""
+msgstr "Удалить"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Color utilities"
-msgstr ""
+msgstr "Инструменты цвета"
 
 #: src/ui_widgets/color_popup.gd
-#, fuzzy
 msgid "Back to color picker"
-msgstr "Цветовая пипетка"
+msgstr "Вернуться к выбору цвета"
 
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
@@ -732,7 +727,6 @@ msgid "Apply all of this preset's defaults"
 msgstr "Применить все стандартные значения этого пресета"
 
 #: src/ui_widgets/setting_frame.gd
-#, fuzzy
 msgid "Clear"
 msgstr "Очистить все"
 
@@ -936,9 +930,8 @@ msgstr "Цвет текста"
 
 #. XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "XML entity color"
-msgstr "Цвет акцента"
+msgstr "Цвет мнемоников XML"
 
 #. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_widgets/settings_content_generic.gd
@@ -992,9 +985,8 @@ msgid "Color {index}"
 msgstr "Цвет {index}"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Canvas"
-msgstr "Цвет полотна"
+msgstr "Полотно"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Canvas color"
@@ -1007,16 +999,16 @@ msgstr "Цвет сетки"
 #. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
-msgstr ""
+msgstr "Интервал делений сетки"
 
 #. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
-msgstr ""
+msgstr "Без делений"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Basic colors"
-msgstr "Базовый цвет"
+msgstr "Базовые цвета"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Valid color"
@@ -1104,9 +1096,8 @@ msgid "The setting can't be changed on this platform."
 msgstr "Эту опцию нельзя изменить на текущей платформе."
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
-msgstr "Форматировщик может изменить форматирование SVG и атрибутов, вроде путей. Эти изменения не влияют на структуру файла или более сложных атрибутов, вроде путей. Форматировщик может быть настроен чтобы сделать SVG красивее или компактнее."
+msgstr "Форматировщик может изменить форматирование SVG и атрибутов. Эти изменения не влияют на структуру файла или более сложных атрибутов, вроде путей. Форматировщик может быть настроен чтобы сделать SVG красивее или компактнее."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of the formatter configs."
@@ -1269,7 +1260,6 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "Файл {file_path} уже редактируется внутри GodSVG."
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
 msgstr "Если вы хотите отменить внесенные после после сохранения изменения, воспользуйтесь {reset_svg}."
 
@@ -1597,7 +1587,6 @@ msgid "Save the {format} file"
 msgstr "Сохранить {format} файл"
 
 #: no_export/scripts/update_desktop_file.gd
-#, fuzzy
 msgid "Vector graphics editor"
 msgstr "Редактор векторной графики"
 
