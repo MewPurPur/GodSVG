@@ -50,17 +50,26 @@ shader_parameter/horizontal = true
 shader_parameter/inverted = false
 shader_parameter/interpolation = 0
 
-[node name="GoodColorPicker" type="VBoxContainer" unique_id=1539422717]
+[node name="GoodColorPicker" type="MarginContainer" unique_id=2024296627]
+offset_top = 347.0
 offset_right = 200.0
-offset_bottom = 341.0
-theme_override_constants/separation = 6
+offset_bottom = 347.0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
 script = ExtResource("1_0pc78")
 
-[node name="PickerArea" type="Control" parent="." unique_id=1753607454]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1539422717]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PickerArea" type="Control" parent="VBoxContainer" unique_id=1753607454]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 172)
 layout_mode = 2
 
-[node name="ColorAreaInputArea" type="MarginContainer" parent="PickerArea" unique_id=1405936464]
+[node name="ColorAreaInputArea" type="MarginContainer" parent="VBoxContainer/PickerArea" unique_id=1405936464]
 layout_mode = 0
 offset_right = 172.0
 offset_bottom = 172.0
@@ -71,13 +80,13 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="ColorArea" type="ColorRect" parent="PickerArea/ColorAreaInputArea" unique_id=1107398551]
+[node name="ColorArea" type="ColorRect" parent="VBoxContainer/PickerArea/ColorAreaInputArea" unique_id=1107398551]
 material = SubResource("ShaderMaterial_sjpte")
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="PrimarySliderInputArea" type="MarginContainer" parent="PickerArea" unique_id=1797054762]
+[node name="PrimarySliderInputArea" type="MarginContainer" parent="VBoxContainer/PickerArea" unique_id=1797054762]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -91,26 +100,27 @@ theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="PrimarySlider" type="ColorRect" parent="PickerArea/PrimarySliderInputArea" unique_id=747943929]
+[node name="PrimarySlider" type="ColorRect" parent="VBoxContainer/PickerArea/PrimarySliderInputArea" unique_id=747943929]
 material = SubResource("ShaderMaterial_gihhg")
 custom_minimum_size = Vector2(18, 0)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="ColorContainer" type="HBoxContainer" parent="." unique_id=304615092]
+[node name="ColorContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=304615092]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="KeywordButton" type="Button" parent="ColorContainer" unique_id=1965249288]
+[node name="KeywordButton" type="Button" parent="VBoxContainer/ColorContainer" unique_id=1965249288]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_ewifk")
 
-[node name="ColorsDisplay" type="HBoxContainer" parent="ColorContainer" unique_id=1140463134]
+[node name="ColorsDisplay" type="HBoxContainer" parent="VBoxContainer/ColorContainer" unique_id=1140463134]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
@@ -118,17 +128,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/separation = 0
 
-[node name="StartColorRect" type="Control" parent="ColorContainer/ColorsDisplay" unique_id=1014461573]
+[node name="StartColorRect" type="Control" parent="VBoxContainer/ColorContainer/ColorsDisplay" unique_id=1014461573]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ColorRect" type="Control" parent="ColorContainer/ColorsDisplay" unique_id=560003720]
+[node name="ColorRect" type="Control" parent="VBoxContainer/ColorContainer/ColorsDisplay" unique_id=560003720]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ResetColorButton" type="Button" parent="ColorContainer/ColorsDisplay/ColorRect" unique_id=1295573575]
+[node name="ResetColorButton" type="Button" parent="VBoxContainer/ColorContainer/ColorsDisplay/ColorRect" unique_id=1295573575]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -141,51 +151,54 @@ theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
 icon = ExtResource("5_rh0xc")
 icon_alignment = 1
 
-[node name="EyedropperButton" type="Button" parent="ColorContainer" unique_id=1876688761]
+[node name="EyedropperButton" type="Button" parent="VBoxContainer/ColorContainer" unique_id=1876688761]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 theme_override_font_sizes/font_size = 10
 icon = ExtResource("6_titg4")
 
-[node name="SliderContainer" type="VBoxContainer" parent="." unique_id=1276853973]
+[node name="SliderContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1276853973]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ColorModelContainer" type="HBoxContainer" parent="SliderContainer" unique_id=2057620932]
+[node name="ColorModelContainer" type="HBoxContainer" parent="VBoxContainer/SliderContainer" unique_id=2057620932]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ColorModels" type="HBoxContainer" parent="SliderContainer/ColorModelContainer" unique_id=206985012]
+[node name="ColorModels" type="HBoxContainer" parent="VBoxContainer/SliderContainer/ColorModelContainer" unique_id=206985012]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ColorModelsButton" type="Button" parent="SliderContainer/ColorModelContainer" unique_id=2061688269]
+[node name="ColorModelsButton" type="Button" parent="VBoxContainer/SliderContainer/ColorModelContainer" unique_id=2061688269]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("7_sjpte")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SliderContainer" unique_id=367582515]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/SliderContainer" unique_id=367582515]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Spacer" type="Control" parent="SliderContainer/HBoxContainer" unique_id=1612977865]
+[node name="Spacer" type="Control" parent="VBoxContainer/SliderContainer/HBoxContainer" unique_id=1612977865]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="TracksContainer" type="VBoxContainer" parent="SliderContainer/HBoxContainer" unique_id=1877225528]
+[node name="TracksContainer" type="VBoxContainer" parent="VBoxContainer/SliderContainer/HBoxContainer" unique_id=1877225528]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 alignment = 2
 
-[node name="Slider1" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=851427053]
+[node name="Slider1" type="HBoxContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer" unique_id=851427053]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="InputArea" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1" unique_id=1412553273]
+[node name="InputArea" type="MarginContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider1" unique_id=1412553273]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -193,26 +206,26 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="Track" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/InputArea" unique_id=172837594]
+[node name="Track" type="ColorRect" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider1/InputArea" unique_id=172837594]
 material = SubResource("ShaderMaterial_fvg6q")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1" unique_id=685943662]
+[node name="IntField" type="LineEdit" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider1" unique_id=685943662]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
 script = ExtResource("6_aqyoh")
 
-[node name="Slider2" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=1598633778]
+[node name="Slider2" type="HBoxContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer" unique_id=1598633778]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="InputArea" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2" unique_id=1992652617]
+[node name="InputArea" type="MarginContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider2" unique_id=1992652617]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -220,26 +233,26 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="Track" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/InputArea" unique_id=2039286117]
+[node name="Track" type="ColorRect" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider2/InputArea" unique_id=2039286117]
 material = SubResource("ShaderMaterial_dlmj5")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2" unique_id=452541113]
+[node name="IntField" type="LineEdit" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider2" unique_id=452541113]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
 script = ExtResource("6_aqyoh")
 
-[node name="Slider3" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=138290662]
+[node name="Slider3" type="HBoxContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer" unique_id=138290662]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="InputArea" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3" unique_id=331993906]
+[node name="InputArea" type="MarginContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider3" unique_id=331993906]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -247,27 +260,27 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="Track" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/InputArea" unique_id=750166284]
+[node name="Track" type="ColorRect" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider3/InputArea" unique_id=750166284]
 material = SubResource("ShaderMaterial_p3pbp")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3" unique_id=944688313]
+[node name="IntField" type="LineEdit" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider3" unique_id=944688313]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
 script = ExtResource("6_aqyoh")
 
-[node name="Slider4" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer" unique_id=471824461]
+[node name="Slider4" type="HBoxContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer" unique_id=471824461]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="InputArea" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4" unique_id=109570350]
+[node name="InputArea" type="MarginContainer" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider4" unique_id=109570350]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -275,13 +288,13 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/InputArea" unique_id=1603275331]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider4/InputArea" unique_id=1603275331]
 layout_mode = 2
 texture = ExtResource("6_qq1j3")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="Track" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/InputArea" unique_id=573111272]
+[node name="Track" type="ColorRect" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider4/InputArea" unique_id=573111272]
 z_index = -1
 material = SubResource("ShaderMaterial_exp51")
 custom_minimum_size = Vector2(0, 13)
@@ -289,7 +302,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4" unique_id=706389396]
+[node name="IntField" type="LineEdit" parent="VBoxContainer/SliderContainer/HBoxContainer/TracksContainer/Slider4" unique_id=706389396]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"

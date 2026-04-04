@@ -21,9 +21,7 @@ var show_url: bool
 var current_color := Color.BLACK
 var current_color_availability := CurrentColorAvailability.UNAVAILABLE
 
-var color_picker_shown := State.color_popup_on_picker_page
-
-@onready var content: MarginContainer = %Content
+@onready var content: Control = %Content
 @onready var navigation_panel: PanelContainer = %NavigationPanel
 @onready var switch_mode_button: Button = %NavigationPanel/SwitchModeButton
 
@@ -34,6 +32,11 @@ func setup(new_current_value: String, new_effective_color: Color) -> void:
 
 func _ready() -> void:
 	switch_mode_button.pressed.connect(_on_switch_mode_button_pressed)
+	if not State.color_popup_on_picker_page:
+		# Use the size from the color picker page.
+		State.color_popup_on_picker_page = true
+		setup_content()
+		State.color_popup_on_picker_page = false
 	setup_content()
 	theme_changed.connect(sync_theming)
 	sync_theming()
@@ -47,17 +50,15 @@ func sync_theming() -> void:
 
 # Switching between palette mode and color picker mode.
 func _on_switch_mode_button_pressed() -> void:
-	color_picker_shown = not color_picker_shown
-	State.color_popup_on_picker_page = color_picker_shown
+	State.color_popup_on_picker_page = not State.color_popup_on_picker_page
 	setup_content()
 
 func setup_content() -> void:
 	for child in content.get_children():
 		child.queue_free()
 	
-	if color_picker_shown and State.color_popup_on_picker_page:
-		switch_mode_button.text = Translator.translate("Color utilities")
-		switch_mode_button.icon = config_icon
+	if State.color_popup_on_picker_page:
+		set_swatch_mode_button_text_and_icon(Translator.translate("Color utilities"), config_icon)
 		var color_picker := GoodColorPickerScene.instantiate()
 		color_picker.alpha_enabled = alpha_enabled
 		color_picker.is_none_keyword_available = is_none_keyword_available
@@ -67,15 +68,29 @@ func setup_content() -> void:
 		color_picker.color_changed.connect(_on_color_changed)
 		#HandlerGUI.register_focus_sequence(color_picker, [color_picker, switch_mode_button])
 	else:
-		switch_mode_button.text = Translator.translate("Back to color picker")
-		switch_mode_button.icon = go_back_icon
+		set_swatch_mode_button_text_and_icon(Translator.translate("Back to color picker"), go_back_icon)
 		var color_utils := ColorUtilitiesAreaScene.instantiate()
 		color_utils.is_none_keyword_available = is_none_keyword_available
 		color_utils.show_current_color = (current_color_availability == CurrentColorAvailability.INTERESTING)
 		color_utils.show_url = show_url
+		color_utils.current_color = current_color
 		content.add_child(color_utils)
 		color_utils.setup_color(current_value)
 		color_utils.color_changed.connect(_on_color_changed)
+
+func set_swatch_mode_button_text_and_icon(new_text: String, new_icon: DPITexture) -> void:
+	var font := switch_mode_button.get_theme_font("font")
+	var font_size := ThemeDB.get_default_theme().get_font_size("font_size", "TranslucentButton")
+	var sb := switch_mode_button.get_theme_stylebox("normal")
+	switch_mode_button.custom_minimum_size.y = font.get_height(font_size) + sb.content_margin_top + sb.content_margin_bottom
+	
+	switch_mode_button.remove_theme_font_size_override("font_size")
+	while font.get_string_size(new_text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).x > 180:
+		font_size -= 1
+	switch_mode_button.add_theme_font_size_override("font_size", font_size)
+	
+	switch_mode_button.text = new_text
+	switch_mode_button.icon = new_icon
 
 func _on_color_changed(new_color: String) -> void:
 	current_value = new_color

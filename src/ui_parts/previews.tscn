@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dpn15qyr7xsds" path="res://src/ui_parts/previews.gd" id="1_uogc6"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_pm7dr"]
-[ext_resource type="PackedScene" uid="uid://bujllg1bqlub6" path="res://src/ui_widgets/color_swatch.tscn" id="3_auodr"]
-[ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_widgets/color_edit.tscn" id="4_mkhk3"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://assets/icons/More.svg" id="5_ue2r5"]
 [ext_resource type="Script" uid="uid://bniafq6ma1iln" path="res://src/ui_widgets/ProceduralControl.gd" id="6_6v74c"]
 
@@ -22,6 +20,7 @@ metadata/_custom_type_script = "uid://ojo0537b6hcy"
 
 [node name="ActionContainer" type="HBoxContainer" parent="." unique_id=1812445449]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="AddNewPreviewButton" type="Button" parent="ActionContainer" unique_id=1393167346]
@@ -33,33 +32,9 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_pm7dr")
 
-[node name="ColorsContainer" type="HBoxContainer" parent="ActionContainer" unique_id=1645315072]
-layout_mode = 2
-size_flags_horizontal = 6
-
-[node name="TransparentColorSwatch" parent="ActionContainer/ColorsContainer" unique_id=940556769 instance=ExtResource("3_auodr")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-
-[node name="BlackColorSwatch" parent="ActionContainer/ColorsContainer" unique_id=181031709 instance=ExtResource("3_auodr")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-
-[node name="WhiteColorSwatch" parent="ActionContainer/ColorsContainer" unique_id=780192261 instance=ExtResource("3_auodr")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-
-[node name="ColorEdit" parent="ActionContainer/ColorsContainer" unique_id=382124865 instance=ExtResource("4_mkhk3")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-enable_alpha = true
-
 [node name="MoreButton" type="Button" parent="ActionContainer" unique_id=1528240669]
 layout_mode = 2
+size_flags_horizontal = 10
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_ue2r5")

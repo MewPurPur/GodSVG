@@ -8,8 +8,8 @@ var advanced_mode := false
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("debug", toggle_debug)
-	shortcuts.add_shortcut("advanced_debug", toggle_debug.bind(true))
+	shortcuts.add_shortcut("debug", toggle_debug, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("advanced_debug", toggle_debug.bind(true), ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	set_debug_visibility(false)

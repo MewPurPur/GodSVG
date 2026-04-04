@@ -1,17 +1,6 @@
-extends ScrollContainer
+extends VBoxContainer
 
-const ColorSwatchScene = preload("res://src/ui_widgets/color_swatch.tscn")
-
-# Useful here, because it avoids the Palette validation.
-class MockPalette:
-	var title: String
-	var colors: PackedStringArray
-	var color_names: PackedStringArray
-	
-	func _init(new_title: String, new_colors: PackedStringArray, new_color_names: PackedStringArray) -> void:
-		title = new_title
-		colors = new_colors
-		color_names = new_color_names
+const PalettePreviewScene = preload("res://src/ui_widgets/palette_preview.tscn")
 
 # If the currentColor keyword is available, but uninteresting, don't show it.
 enum CurrentColorAvailability {UNAVAILABLE, UNINTERESTING, INTERESTING}
@@ -45,41 +34,53 @@ func rebuild_content(search_text := "") -> void:
 	search_field.placeholder_text = Translator.translate("Search color")
 	var reserved_colors := PackedStringArray()
 	var reserved_color_names := PackedStringArray()
+	var reserved_paints: Dictionary[int, Color]
+	var reserved_textures: Dictionary[int, DPITexture]
 	if is_none_keyword_available:
 		reserved_colors.append("none")
 		reserved_color_names.append("No color")
+		reserved_paints[reserved_colors.size() - 1] = Color.TRANSPARENT
 	if show_current_color:
 		reserved_colors.append("currentColor")
 		reserved_color_names.append("Current color")
+		reserved_paints[reserved_colors.size() - 1] = current_color
 	if show_url:
 		for element in State.root_element.get_all_valid_element_descendants():
 			if element.has_attribute("id"):
-				if element is ElementLinearGradient:
-					reserved_color_names.append("Linear gradient")
-					reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
-				elif element is ElementRadialGradient:
-					reserved_color_names.append("Radial gradient")
-					reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
+				if element is ElementBaseGradient:
+					if element is ElementLinearGradient:
+						reserved_color_names.append("Linear gradient")
+					elif element is ElementRadialGradient:
+						reserved_color_names.append("Radial gradient")
+					var color := element.get_attribute_value("id")
+					reserved_colors.append("url(#%s)" % color)
+					reserved_textures[reserved_colors.size() - 1] = State.root_element.get_element_by_id(color).generate_texture()
 	
-	var reserved_palette := MockPalette.new("", reserved_colors, reserved_color_names)
-	var displayed_palettes: Array[MockPalette] = [reserved_palette]
+	var reserved_swatch_container := PalettePreviewScene.instantiate()
+	reserved_swatch_container.setup_fake(reserved_color_names, reserved_colors, reserved_paints, reserved_textures, current_value)
+	reserved_swatch_container.swatch_selected.connect(_on_swatch_selected.bind(reserved_colors))
+	palettes_content_container.add_child(reserved_swatch_container)
+	
 	for palette in Configs.savedata.get_palettes():
-		if Configs.savedata.is_palette_valid(palette):
-			displayed_palettes.append(MockPalette.new(palette.title, palette.get_colors(),
-					palette.get_color_names()))
-	
-	for palette in displayed_palettes:
-		var indices_to_show := PackedInt32Array()
-		for i in palette.colors.size():
-			if search_text.is_empty() or search_text.is_subsequence_ofn(palette.color_names[i]):
-				indices_to_show.append(i)
+		if not Configs.savedata.is_palette_valid(palette):
+			continue
 		
-		if indices_to_show.is_empty():
+		var trimmed_palette: Palette
+		if search_text.is_empty():
+			trimmed_palette = Palette.new(palette.title)
+			trimmed_palette.setup(palette.get_colors(), palette.get_color_names())
+		else:
+			trimmed_palette = Palette.new(palette.title)
+			for i in palette.get_color_count():
+				if search_text.is_subsequence_ofn(palette.get_color_name(i)):
+					trimmed_palette.insert_color(trimmed_palette.get_color_count(), palette.get_color(i), palette.get_color_name(i))
+		
+		if trimmed_palette.get_color_count() == 0:
 			continue
 		
 		var palette_container := VBoxContainer.new()
 		# Don't add a label for the reserved palette with an empty name.
-		if not palette.title.is_empty():
+		if not trimmed_palette.title.is_empty():
 			var palette_label := Label.new()
 			palette_label.text = palette.title
 			palette_label.theme_type_variation = "TitleLabel"
@@ -87,24 +88,14 @@ func rebuild_content(search_text := "") -> void:
 			palette_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 			palette_container.add_child(palette_label)
 		
-		var swatch_container := HFlowContainer.new()
-		swatch_container.add_theme_constant_override("h_separation", 3)
-		for i in indices_to_show:
-			var swatch := ColorSwatchScene.instantiate()
-			var color_to_show := palette.colors[i]
-			swatch.color = color_to_show
-			swatch.color_name = palette.color_names[i]
-			swatch.current_color = current_color
-			swatch.pressed.connect(func() -> void: pick_color(color_to_show))
-			swatch_container.add_child(swatch)
-			if not current_value.is_empty() and ColorParser.are_colors_same(
-			ColorParser.add_hash_if_hex(color_to_show), current_value):
-				swatch.disabled = true
-				swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		var swatch_container := PalettePreviewScene.instantiate()
+		swatch_container.setup(trimmed_palette, current_value)
+		swatch_container.swatch_selected.connect(_on_swatch_selected.bind(trimmed_palette.get_colors()))
 		palette_container.add_child(swatch_container)
 		palettes_content_container.add_child(palette_container)
 
-func pick_color(color: String) -> void:
+func _on_swatch_selected(index: int, color_strings: PackedStringArray) -> void:
+	var color := color_strings[index]
 	current_value = color
 	color_changed.emit(color)
 	rebuild_content()

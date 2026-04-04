@@ -196,8 +196,8 @@ func add_popup(new_popup: Control, add_shadow := true) -> Control:
 	if add_shadow:
 		var shadow_container := PanelContainer.new()
 		var sb := StyleBoxFlat.new()
-		sb.bg_color = Color(0, 0, 0, 0.1)
-		sb.shadow_color = Color(0, 0, 0, 0.1)
+		sb.bg_color = ThemeUtils.shadow_color
+		sb.shadow_color = ThemeUtils.shadow_color
 		sb.shadow_size = 8
 		if new_popup is PanelContainer:
 			var stylebox_wrapped := new_popup.get_theme_stylebox("panel")
@@ -269,17 +269,21 @@ func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
 # Should usually be the global rect of a control.
 func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
 	var top_popup := add_popup(popup)
+	top_popup.resized.connect(_move_popup_under_rect_center.bind(top_popup, rect, vp))
+	_move_popup_under_rect_center(top_popup, rect, vp)
+
+func _move_popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
 	var screen_transform := vp.get_screen_transform()
 	var screen_h := vp.get_visible_rect().size.y
-	var popup_pos := Vector2(rect.position.x - top_popup.size.x / 2.0 + rect.size.x / 2, 0)
+	var popup_pos := Vector2(rect.position.x - popup.size.x / 2.0 + rect.size.x / 2, 0)
 	# Popup below if there's enough space or we're in the bottom half of the screen.
-	if rect.position.y + rect.size.y + top_popup.size.y < screen_h or rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
+	if rect.position.y + rect.size.y + popup.size.y < screen_h or rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
 		popup_pos.y = rect.position.y + rect.size.y
 	else:
-		popup_pos.y = rect.position.y - top_popup.size.y
+		popup_pos.y = rect.position.y - popup.size.y
 	# Align horizontally and other things.
 	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
-	top_popup.position = popup_clamp_pos(top_popup, popup_pos, vp)
+	popup.position = popup_clamp_pos(popup, popup_pos, vp)
 
 # Should usually be the global position of the mouse.
 func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:

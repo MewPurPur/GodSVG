@@ -55,7 +55,7 @@ layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="ColorEdit" parent="ConfigureContainer/BottomContainer" unique_id=212726817 instance=ExtResource("5_idufj")]
+[node name="ColorEdit" parent="ConfigureContainer/BottomContainer" unique_id=344180497 instance=ExtResource("5_idufj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4

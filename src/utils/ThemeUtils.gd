@@ -94,6 +94,7 @@ static var overlay_panel_inner_color: Color
 static var overlay_panel_border_color: Color
 
 static var scrollbar_pressed_color: Color
+static var scrollbar_background_color: Color
 
 static var focus_color: Color
 static var weak_focus_color: Color
@@ -110,6 +111,8 @@ static var text_edit_alternative_inner_color: Color
 
 static var selected_tab_color: Color
 static var selected_tab_border_color: Color
+
+static var shadow_color: Color
 
 static func color_difference(color1: Color, color2: Color) -> float:
 	return (absf(color1.r - color2.r) + absf(color1.g - color2.g) + absf(color1.b - color2.b)) / 3.0
@@ -226,6 +229,7 @@ static func recalculate_colors() -> void:
 	overlay_panel_border_color.v = lerpf(overlay_panel_border_color.v, 1.0, 0.125)
 	
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
+	scrollbar_background_color = Color(0, 0, 0, 0.16) if is_theme_dark else Color(0, 0, 0, 0.1)
 	
 	focus_color = accent_color
 	weak_focus_color = Color(focus_color, 0.72)
@@ -248,6 +252,8 @@ static func recalculate_colors() -> void:
 	
 	selected_tab_color = softer_intermediate_hover_color.lerp(accent_color, 0.2)
 	selected_tab_border_color = Color(accent_color, 0.88)
+	
+	shadow_color = Color(0, 0, 0, 0.1 if ThemeUtils.is_theme_dark else 0.08)
 
 static func rebuild_fonts() -> void:
 	main_font.base_font = FontFile.new()
@@ -274,10 +280,11 @@ static func generate_theme() -> Theme:
 	_setup_checkbutton(theme)
 	_setup_dropdown(theme)
 	_setup_itemlist(theme)
+	_setup_label(theme)
 	_setup_lineedit(theme)
+	_setup_palette_preview(theme)
 	_setup_scrollbar(theme)
 	_setup_separator(theme)
-	_setup_label(theme)
 	_setup_tabcontainer(theme)
 	_setup_textedit(theme)
 	_setup_tooltip(theme)
@@ -314,9 +321,6 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	
 	theme.add_type("Window")
 	theme.set_stylebox("embedded_border", "Window", stylebox)
-	
-	theme.add_type("AcceptDialog")
-	theme.set_stylebox("panel", "AcceptDialog", spacious_stylebox)
 	
 	theme.add_type("SubtleFlatPanel")
 	theme.set_type_variation("SubtleFlatPanel", "PanelContainer")
@@ -772,30 +776,6 @@ static func _setup_button(theme: Theme) -> void:
 	pressed_sidetab_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("pressed", "SideTab", pressed_sidetab_stylebox)
 	theme.set_stylebox("hover_pressed", "SideTab", pressed_sidetab_stylebox)
-	
-	theme.add_type("Swatch")
-	theme.set_type_variation("Swatch", "Button")
-	var swatch_stylebox := StyleBoxFlat.new()
-	swatch_stylebox.set_corner_radius_all(3)
-	
-	var normal_swatch_stylebox := swatch_stylebox.duplicate()
-	normal_swatch_stylebox.bg_color = intermediate_color
-	theme.set_stylebox("normal", "Swatch", normal_swatch_stylebox)
-	
-	var hover_swatch_stylebox := swatch_stylebox.duplicate()
-	hover_swatch_stylebox.bg_color = intermediate_color.blend(stronger_hover_overlay_color)
-	theme.set_stylebox("hover", "Swatch", hover_swatch_stylebox)
-	
-	var swatch_focus_stylebox := swatch_stylebox.duplicate()
-	swatch_focus_stylebox.draw_center = false
-	swatch_focus_stylebox.border_color = focus_color
-	swatch_focus_stylebox.set_border_width_all(2)
-	theme.set_stylebox("focus", "Swatch", swatch_focus_stylebox)
-	
-	var pressed_swatch_stylebox := swatch_stylebox.duplicate()
-	pressed_swatch_stylebox.bg_color = common_button_border_color_pressed
-	theme.set_stylebox("pressed", "Swatch", pressed_swatch_stylebox)
-	theme.set_stylebox("disabled", "Swatch", pressed_swatch_stylebox)
 
 static func _setup_context_button(theme: Theme) -> void:
 	theme.add_type("ContextButton")
@@ -1161,6 +1141,38 @@ static func _setup_lineedit(theme: Theme) -> void:
 	theme.set_stylebox("focus", "GoodColorPickerLineEdit", empty_stylebox)
 	theme.set_stylebox("read_only", "GoodColorPickerLineEdit", empty_stylebox)
 
+static func _setup_palette_preview(theme: Theme) -> void:
+	theme.add_type("PalettePreview")
+	theme.set_type_variation("PalettePreview", "Control")
+	
+	var focus_stylebox := StyleBoxFlat.new()
+	focus_stylebox.bg_color = shadow_color
+	focus_stylebox.set_border_width_all(2)
+	focus_stylebox.border_color = Color(accent_color, 0.32)
+	focus_stylebox.set_corner_radius_all(3)
+	theme.set_stylebox("focus", "PalettePreview", focus_stylebox)
+	
+	var swatch_stylebox := StyleBoxFlat.new()
+	swatch_stylebox.set_corner_radius_all(3)
+	
+	var normal_swatch_stylebox := swatch_stylebox.duplicate()
+	normal_swatch_stylebox.bg_color = intermediate_color
+	theme.set_stylebox("swatch_normal", "PalettePreview", normal_swatch_stylebox)
+	
+	var hover_swatch_stylebox := swatch_stylebox.duplicate()
+	hover_swatch_stylebox.bg_color = intermediate_color.blend(stronger_hover_overlay_color)
+	theme.set_stylebox("swatch_hover", "PalettePreview", hover_swatch_stylebox)
+	
+	var swatch_focus_stylebox := swatch_stylebox.duplicate()
+	swatch_focus_stylebox.draw_center = false
+	swatch_focus_stylebox.border_color = focus_color
+	swatch_focus_stylebox.set_border_width_all(2)
+	theme.set_stylebox("swatch_focus", "PalettePreview", swatch_focus_stylebox)
+	
+	var selected_swatch_stylebox := swatch_stylebox.duplicate()
+	selected_swatch_stylebox.bg_color = common_button_border_color_pressed
+	theme.set_stylebox("swatch_selected", "PalettePreview", selected_swatch_stylebox)
+
 static func _setup_scrollbar(theme: Theme) -> void:
 	theme.add_type("HScrollBar")
 	var h_stylebox := StyleBoxFlat.new()
@@ -1184,7 +1196,7 @@ static func _setup_scrollbar(theme: Theme) -> void:
 	h_scroll_stylebox.set_corner_radius_all(3)
 	h_scroll_stylebox.content_margin_top = 4.0
 	h_scroll_stylebox.content_margin_bottom = 4.0
-	h_scroll_stylebox.bg_color = softer_base_color
+	h_scroll_stylebox.bg_color = scrollbar_background_color
 	theme.set_stylebox("scroll", "HScrollBar", h_scroll_stylebox)
 	
 	theme.add_type("VScrollBar")
@@ -1210,7 +1222,7 @@ static func _setup_scrollbar(theme: Theme) -> void:
 	v_scroll_stylebox.set_corner_radius_all(3)
 	v_scroll_stylebox.content_margin_left = 4.0
 	v_scroll_stylebox.content_margin_right = 4.0
-	v_scroll_stylebox.bg_color = softer_base_color
+	v_scroll_stylebox.bg_color = scrollbar_background_color
 	theme.set_stylebox("scroll", "VScrollBar", v_scroll_stylebox)
 
 static func _setup_separator(theme: Theme) -> void:
