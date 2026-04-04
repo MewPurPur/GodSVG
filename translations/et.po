@@ -602,32 +602,28 @@ msgstr "Nimetu"
 
 #. Ways to represent colors, like RGB, HSV, HSL.
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Color models"
-msgstr "Värvi võtmesõnad"
+msgstr "Värvimudelid"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move left"
-msgstr "Liigu"
+msgstr "Liiguta vasakule"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move right"
-msgstr "Liigu"
+msgstr "Liiguta paremale"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
 msgid "Remove"
-msgstr ""
+msgstr "Eemalda"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Color utilities"
-msgstr ""
+msgstr "Värvihaldusvahendid"
 
 #: src/ui_widgets/color_popup.gd
-#, fuzzy
 msgid "Back to color picker"
-msgstr "Värvivalija"
+msgstr "Tagasi värvivalijasse"
 
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
@@ -933,9 +929,8 @@ msgstr "Teksti värv"
 
 #. XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "XML entity color"
-msgstr "Aktsentvärv"
+msgstr "XML-entity värv"
 
 #. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1592,16 +1587,16 @@ msgstr "Salvesta {format} fail"
 
 #: no_export/scripts/update_desktop_file.gd
 msgid "Vector graphics editor"
-msgstr ""
+msgstr "Vektorgraafika redaktor"
 
 #: no_export/scripts/update_desktop_file.gd
 msgid "A vector graphics application for structured SVG editing"
-msgstr ""
+msgstr "Vektorkraafika rakendus SVG struktureeritud redigeerimiseks"
 
 #. A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has multiple meaningful translations, you can include them all.
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
-msgstr ""
+msgstr "svg;vektor;graafika;joonista;disain;illustratsioon;pilt;kunst;skeem;diagramm;logo;ikoon;redigeerija;kuju;2D;kood;sinine;rebane"
 
 #~ msgid "Keep comments"
 #~ msgstr "Hoia kommentaarid alles"
