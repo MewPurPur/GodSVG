@@ -42,7 +42,7 @@ jobs:
       PLATFORM: "Linux"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: godsvg
 
@@ -85,30 +85,13 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build
-          godot --headless --export-release "${{ env.PLATFORM }}" build/GodSVG.x86_64
-
-      - name: Debug — show export templates & file info
-        run: |
-          echo "HOME: $HOME"
-          echo "Expected template dir: $HOME/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE_TYPE}"
-          ls -la "$HOME/.local/share/godot/export_templates/" || true
-          ls -la "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE_TYPE}" || true
-          echo "--- template file ---"
-          file "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE_TYPE}/linux_release.x86_64" || true
-          echo "--- exported artifact ---"
-          file godsvg/build/GodSVG.x86_64 || true
-          if command -v readelf >/dev/null 2>&1; then
-            echo "--- readelf symbol count (template) ---"
-            readelf -s "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE_TYPE}/linux_release.x86_64" 2>/dev/null | head -n 20 || true
-            echo "--- readelf symbol count (artifact) ---"
-            readelf -s godsvg/build/GodSVG.x86_64 2>/dev/null | head -n 20 || true
-          fi
+          godot --headless --export-release "${{ env.PLATFORM }}" build/${{ env.PROJECT_NAME }}.x86_64
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PROJECT_NAME }}.Linux
-          path: godsvg/build/GodSVG.x86_64
+          path: godsvg/build/${{ env.PROJECT_NAME }}.x86_64
           if-no-files-found: error
           retention-days: 28
 
@@ -119,7 +102,7 @@ jobs:
       PLATFORM: "Windows"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: godsvg
 
@@ -172,13 +155,13 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build
-          godot --headless --export-release "Windows Desktop" build/GodSVG.exe
+          godot --headless --export-release "Windows Desktop" build/${{ env.PROJECT_NAME }}.exe
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PROJECT_NAME }}.Windows
-          path: godsvg/build/GodSVG.exe
+          path: godsvg/build/${{ env.PROJECT_NAME }}.exe
           if-no-files-found: error
           retention-days: 28
 
@@ -189,7 +172,7 @@ jobs:
       PLATFORM: "macOS"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: godsvg
 
@@ -255,13 +238,13 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build
-          godot --headless --export-release "macOS" build/GodSVG.zip
+          godot --headless --export-release "macOS" build/${{ env.PROJECT_NAME }}.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PROJECT_NAME }}.MacOS
-          path: godsvg/build/GodSVG.zip
+          path: godsvg/build/${{ env.PROJECT_NAME }}.zip
           if-no-files-found: error
           retention-days: 28
 
@@ -272,7 +255,7 @@ jobs:
       PLATFORM: "Web"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: godsvg
 
@@ -326,12 +309,12 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build/web
-          godot --headless --export-release "Web" build/web/GodSVG.html
+          godot --headless --export-release "Web" build/web/${{ env.PROJECT_NAME }}.html
           cd build/web
-          mv GodSVG.html index.html
+          mv ${{ env.PROJECT_NAME }}.html index.html
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PROJECT_NAME }}.Web
           path: godsvg/build/web
@@ -345,7 +328,7 @@ jobs:
       PLATFORM: "Android"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: godsvg
 
@@ -353,13 +336,13 @@ jobs:
         id: setup
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: 17
           distribution: temurin
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Check Installed Android SDK Packages
         run: |
@@ -418,7 +401,7 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build/android
-          godot --headless --export-debug "Android" build/android/GodSVG.Android.debug.apk
+          godot --headless --export-debug "Android" build/android/${{ env.PROJECT_NAME }}.Android.debug.apk
 
       - name: Export release project
         if: github.event_name == 'workflow_dispatch'
@@ -430,20 +413,20 @@ jobs:
           cd godsvg
           mkdir -p build/android
           echo "${{ secrets.KEYSTORE }}" | base64 -d > /tmp/release.keystore
-          godot --headless --export-release "Android" build/android/GodSVG.Android.apk
+          godot --headless --export-release "Android" build/android/${{ env.PROJECT_NAME }}.Android.apk
 
       - name: Upload debug artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PROJECT_NAME }}.debug.Android
-          path: godsvg/build/android/GodSVG.Android.debug.apk
+          path: godsvg/build/android/${{ env.PROJECT_NAME }}.Android.debug.apk
           if-no-files-found: error
           retention-days: 28
 
       - name: Upload release artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PROJECT_NAME }}.Android
-          path: godsvg/build/android/GodSVG.Android.apk
+          path: godsvg/build/android/${{ env.PROJECT_NAME }}.Android.apk
           if-no-files-found: ignore
           retention-days: 28
