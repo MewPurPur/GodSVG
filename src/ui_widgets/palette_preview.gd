@@ -54,6 +54,7 @@ func _init() -> void:
 func _ready() -> void:
 	mouse_exited.connect(queue_redraw)
 	focus_exited.connect(unfocus)
+	focus_entered.connect(_on_focus_entered)
 	swatch_selected.connect(_on_swatch_selected)
 
 func _gui_input(event: InputEvent) -> void:
@@ -343,6 +344,9 @@ func popup_add_color() -> void:
 
 func unfocus() -> void:
 	focus_index = -1
+
+func _on_focus_entered() -> void:
+	focus_index = 0
 
 
 func get_color(index: int) -> String:
