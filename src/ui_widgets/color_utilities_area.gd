@@ -15,7 +15,10 @@ var current_color := Color.BLACK
 @onready var palettes_content_container: VBoxContainer = %PalettesContent
 @onready var search_field: BetterLineEdit = %SearchField
 
+var palette_previews: Array[Control] = []
+
 func _ready() -> void:
+	search_field.placeholder_text = Translator.translate("Search color")
 	search_field.text_changed.connect(rebuild_content)
 	search_field.text_change_canceled.connect(rebuild_content)
 	var shortcuts := ShortcutsRegistration.new()
@@ -31,7 +34,8 @@ func setup_color(new_color: String) -> void:
 func rebuild_content(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
 		child.queue_free()
-	search_field.placeholder_text = Translator.translate("Search color")
+	palette_previews.clear()
+	
 	var reserved_colors := PackedStringArray()
 	var reserved_color_names := PackedStringArray()
 	var reserved_paints: Dictionary[int, Color]
@@ -60,6 +64,7 @@ func rebuild_content(search_text := "") -> void:
 	reserved_swatch_container.setup_fake(reserved_color_names, reserved_colors, reserved_paints, reserved_textures, current_value)
 	reserved_swatch_container.swatch_selected.connect(_on_swatch_selected.bind(reserved_colors))
 	palettes_content_container.add_child(reserved_swatch_container)
+	palette_previews.append(reserved_swatch_container)
 	
 	for palette in Configs.savedata.get_palettes():
 		if not Configs.savedata.is_palette_valid(palette):
@@ -93,9 +98,14 @@ func rebuild_content(search_text := "") -> void:
 		swatch_container.swatch_selected.connect(_on_swatch_selected.bind(trimmed_palette.get_colors()))
 		palette_container.add_child(swatch_container)
 		palettes_content_container.add_child(palette_container)
+		palette_previews.append(swatch_container)
+	
+	HandlerGUI.register_focus_sequence(palettes_content_container, palette_previews)
 
 func _on_swatch_selected(index: int, color_strings: PackedStringArray) -> void:
 	var color := color_strings[index]
 	current_value = color
 	color_changed.emit(color)
-	rebuild_content()
+	for preview in palette_previews:
+		preview.current_value = current_value
+		preview.queue_redraw()
