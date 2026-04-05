@@ -4,29 +4,51 @@
 [ext_resource type="FontVariation" uid="uid://bo626nsycqtaj" path="res://assets/fonts/MainFont.tres" id="2_k4gbl"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="3_korb8"]
 
-[node name="ColorUtilitiesArea" type="ScrollContainer" unique_id=1509890288]
-custom_minimum_size = Vector2(0, 305)
-horizontal_scroll_mode = 0
+[node name="ColorUtilitiesArea" type="VBoxContainer" unique_id=198993909]
+offset_right = 92.0
+offset_bottom = 305.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
 script = ExtResource("1_yf3be")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=285192416]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 12
-
-[node name="SearchBox" type="MarginContainer" parent="VBoxContainer" unique_id=1829539302]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1055805140]
 layout_mode = 2
 theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 4
 
-[node name="SearchField" type="LineEdit" parent="VBoxContainer/SearchBox" unique_id=212077368]
+[node name="SearchField" type="LineEdit" parent="MarginContainer" unique_id=212077368]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_k4gbl")
 script = ExtResource("3_korb8")
 
-[node name="PalettesContent" type="VBoxContainer" parent="VBoxContainer" unique_id=1119384803]
+[node name="HSeparator" type="HSeparator" parent="." unique_id=910833290]
+layout_mode = 2
+theme_type_variation = &"SmallHSeparator"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1509890288]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer" unique_id=1651588276]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer" unique_id=285192416]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="PalettesContent" type="VBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer" unique_id=1119384803]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

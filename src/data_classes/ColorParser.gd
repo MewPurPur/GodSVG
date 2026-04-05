@@ -152,21 +152,22 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 			return _get_url_id(col1) == _get_url_id(col2)
 	
 	# Represent both colors as 6-digit hex codes to serve as basis for comparison.
-	for i in 2:
-		var col := col1 if i == 0 else col2
-		# Start of conversion logic.
-		if is_valid_rgb(col):
-			col = text_to_color(col).to_html(false)
-		elif is_valid_hex(col) and col.length() == 4:
-			col = col[1] + col[1] + col[2] + col[2] + col[3] + col[3]
-		elif is_valid_named(col, false):
-			col = AttributeColor.get_named_colors()[col]
-		col = col.trim_prefix("#")
-		# End of conversion logic.
-		if i == 0:
-			col1 = col
-		elif i == 1:
-			col2 = col
+	if is_valid_rgb(col1):
+		col1 = text_to_color(col1).to_html(false)
+	elif is_valid_hex(col1) and col1.length() == 4:
+		col1 = col1[1] + col1[1] + col1[2] + col1[2] + col1[3] + col1[3]
+	elif is_valid_named(col1, false):
+		col1 = AttributeColor.get_named_colors()[col1]
+	col1 = col1.trim_prefix("#")
+	
+	if is_valid_rgb(col2):
+		col2 = text_to_color(col2).to_html(false)
+	elif is_valid_hex(col2) and col2.length() == 4:
+		col2 = col2[1] + col2[1] + col2[2] + col2[2] + col2[3] + col2[3]
+	elif is_valid_named(col2, false):
+		col2 = AttributeColor.get_named_colors()[col2]
+	col2 = col2.trim_prefix("#")
+	
 	return col1 == col2
 
 

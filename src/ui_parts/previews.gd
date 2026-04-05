@@ -1,6 +1,5 @@
 extends VTitledPanel
 
-const ColorSwatch = preload("res://src/ui_widgets/color_swatch.gd")
 const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
@@ -21,10 +20,6 @@ const MAX_ICON_PREVIEW_SIZE = 128
 @onready var scaled_preview_panel: PanelContainer = %ScaledPreviewPanel
 @onready var size_label: Label = %SizeLabel
 @onready var split_container: SplitContainer = %SplitContainer
-@onready var transparent_color_swatch: ColorSwatch = %TransparentColorSwatch
-@onready var black_color_swatch: ColorSwatch = %BlackColorSwatch
-@onready var white_color_swatch: ColorSwatch = %WhiteColorSwatch
-@onready var color_edit: ColorEdit = %ColorEdit
 @onready var preview_top_panel: PanelContainer = $SplitContainer/PreviewTopPanel
 @onready var more_button: Button = $ActionContainer/MoreButton
 @onready var size_label_margins: MarginContainer = %SizeLabelMargins
@@ -80,16 +75,6 @@ func _ready() -> void:
 	icon_preview_tiles.mouse_exited.connect(_on_tiles_mouse_exited)
 	more_button.pressed.connect(_on_more_button_pressed)
 	
-	transparent_color_swatch.color = "none"
-	transparent_color_swatch.pressed.connect(func() -> void: color_edit.value = "#fff0")
-	black_color_swatch.color = "#000"
-	black_color_swatch.pressed.connect(func() -> void: color_edit.value = "#000")
-	white_color_swatch.color = "#fff"
-	white_color_swatch.pressed.connect(func() -> void: color_edit.value = "#fff")
-	
-	color_edit.value_changed.connect(_update_preview_background)
-	color_edit.value = Configs.savedata.previews_background.to_html()
-	
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	
@@ -110,8 +95,7 @@ func _ready() -> void:
 	)
 	icon_preview_tiles.resized.connect(sync_tile_positions)
 	sync_tiles()
-	HandlerGUI.register_focus_sequence(self, [add_new_preview_button,
-			transparent_color_swatch, black_color_swatch, white_color_swatch, color_edit, more_button])
+	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, more_button])
 
 
 func sync_theming() -> void:
@@ -284,7 +268,7 @@ func _edit_tile_size(tile: IconPreviewTileData) -> void:
 	edit_field.position = icon_preview_tiles.position + tile.position + tile.label_rect.position - Vector2(3, 4)
 	edit_field.size = tile.label_rect.size
 	edit_field.add_theme_font_override("font", ThemeUtils.main_font)
-	edit_field.focus_exited.connect(edit_field.queue_free)
+	edit_field.editing_toggled.connect(_on_edit_field_editing_toggled)
 	edit_field.value_changed.connect(_on_edit_field_value_changed)
 	edit_field.grab_focus()
 	edit_field.select_all()
@@ -296,6 +280,10 @@ func _on_edit_field_value_changed(new_value: float) -> void:
 	sync_tiles()
 	if edited_tile_index == selected_tile_index:
 		_select_tile(edited_tile_index)
+
+func _on_edit_field_editing_toggled(toggled_on: bool) -> void:
+	if not toggled_on:
+		edit_field.queue_free()
 
 func _delete_tile(tile: IconPreviewTileData) -> void:
 	var sizes := Configs.savedata.preview_sizes.duplicate()
@@ -334,15 +322,16 @@ func _add_new_tile() -> void:
 	Configs.savedata.preview_sizes = old_icon_sizes
 	sync_tiles()
 
-func _update_preview_background(new_value: String) -> void:
-	Configs.savedata.previews_background = ColorParser.text_to_color(new_value, Color.BLACK, true)
-	sync_tiles()
-	if Configs.savedata.previews_background == Color.TRANSPARENT:
-		scaled_preview_panel.remove_theme_stylebox_override("panel")
-	else:
-		var colored_sb := StyleBoxFlat.new()
-		colored_sb.bg_color = Configs.savedata.previews_background
-		scaled_preview_panel.add_theme_stylebox_override("panel", colored_sb)
+# TODO reinstate
+#func _update_preview_background(new_value: String) -> void:
+	#Configs.savedata.previews_background = ColorParser.text_to_color(new_value, Color.BLACK, true)
+	#sync_tiles()
+	#if Configs.savedata.previews_background == Color.TRANSPARENT:
+		#scaled_preview_panel.remove_theme_stylebox_override("panel")
+	#else:
+		#var colored_sb := StyleBoxFlat.new()
+		#colored_sb.bg_color = Configs.savedata.previews_background
+		#scaled_preview_panel.add_theme_stylebox_override("panel", colored_sb)
 
 
 func _on_more_button_pressed() -> void:

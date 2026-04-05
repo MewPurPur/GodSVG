@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends MarginContainer
 
 const ColorPickerLayoutPopupScene = preload("res://src/ui_widgets/color_picker_layout_popup.tscn")
 const EyedropperPopupScene = preload("res://src/ui_widgets/eyedropper_popup.tscn")
@@ -18,24 +18,24 @@ var color_model_button_group := ButtonGroup.new()
 
 var undo_redo := UndoRedoRef.new()
 
-@onready var color_models_container: HBoxContainer = $SliderContainer/ColorModelContainer/ColorModels
-@onready var color_models_button: Button = $SliderContainer/ColorModelContainer/ColorModelsButton
+@onready var color_models_container: HBoxContainer = %ColorModels
+@onready var color_models_button: Button = %ColorModelsButton
 @onready var start_color_rect: Control = %ColorsDisplay/StartColorRect
 @onready var color_rect: Control = %ColorsDisplay/ColorRect
-@onready var keyword_button: Button = $ColorContainer/KeywordButton
+@onready var keyword_button: Button = %KeywordButton
 @onready var reset_color_button: Button = %ColorsDisplay/ColorRect/ResetColorButton
-@onready var eyedropper_button: Button = $ColorContainer/EyedropperButton
+@onready var eyedropper_button: Button = %EyedropperButton
 @onready var alpha_slider: HBoxContainer = %Slider4
 
 
-@onready var color_area: MarginContainer = $PickerArea/ColorAreaInputArea
-@onready var color_area_drawn: ColorRect = $PickerArea/ColorAreaInputArea/ColorArea
+@onready var color_area: MarginContainer = %PickerArea/ColorAreaInputArea
+@onready var color_area_drawn: ColorRect = %PickerArea/ColorAreaInputArea/ColorArea
 var color_area_surface := RenderingServer.canvas_item_create()
 var color_area_dragged := false
 var color_area_scrolled_time := -1.0
 
-@onready var primary_slider: MarginContainer = $PickerArea/PrimarySliderInputArea
-@onready var primary_slider_drawn: ColorRect = $PickerArea/PrimarySliderInputArea/PrimarySlider
+@onready var primary_slider: MarginContainer = %PickerArea/PrimarySliderInputArea
+@onready var primary_slider_drawn: ColorRect = %PickerArea/PrimarySliderInputArea/PrimarySlider
 var primary_slider_surface := RenderingServer.canvas_item_create()
 var primary_slider_dragged := false
 var primary_slider_scrolled_time := -1.0
@@ -236,6 +236,12 @@ func _on_color_picker_layout_changed() -> void:
 		ColorPickerUtils.PickerShape.SL_H_SQUARE:
 			color_area_drawn.material.set_shader_parameter("interpolation", 3)
 			primary_slider_drawn.material.set_shader_parameter("interpolation", 4)
+		ColorPickerUtils.PickerShape.HL_S_SQUARE:
+			color_area_drawn.material.set_shader_parameter("interpolation", 4)
+			primary_slider_drawn.material.set_shader_parameter("interpolation", 7)
+		ColorPickerUtils.PickerShape.NORMAL_MAP:
+			color_area_drawn.material.set_shader_parameter("interpolation", 100)
+			primary_slider_drawn.material.set_shader_parameter("interpolation", 100)
 	sync_to_color()
 	register_focus_sequence()
 
@@ -294,6 +300,12 @@ func sync_to_color() -> void:
 			ColorPickerUtils.PickerShape.SV_H_SQUARE, ColorPickerUtils.PickerShape.SL_H_SQUARE:
 				primary_slider_drawn.material.set_shader_parameter("base_color", Color.RED)
 				color_area_drawn.material.set_shader_parameter("third_value", display_color.get_hue())
+			ColorPickerUtils.PickerShape.HL_S_SQUARE:
+				primary_slider_drawn.material.set_shader_parameter("base_color", display_regular_color)
+				color_area_drawn.material.set_shader_parameter("third_value", display_color.get_hue())
+			ColorPickerUtils.PickerShape.NORMAL_MAP:
+				primary_slider_drawn.material.set_shader_parameter("base_color", display_regular_color)
+				color_area_drawn.material.set_shader_parameter("third_value", 1.0)
 		for i in (range(0, 4) if alpha_enabled else range(0, 3)):
 			tracks_arr[i].material.set_shader_parameter("base_color", display_regular_color)
 			sync_hslider(i)
@@ -315,7 +327,7 @@ func sync_to_color() -> void:
 	var accent_hue_color := Color.from_hsv(ThemeUtils.accent_color.h, 1.0, 1.0)
 	
 	reset_color_button.begin_bulk_theme_override()
-	if display_color.get_luminance_imprecise() < 0.45:
+	if display_color.get_luminance_imprecise() < 0.5:
 		reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
 		reset_color_button.add_theme_color_override("icon_focus_color", Color.WHITE)
 		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.WHITE, 0.76))
@@ -519,8 +531,18 @@ func _on_color_rect_draw() -> void:
 
 func _on_color_area_draw() -> void:
 	RenderingServer.canvas_item_clear(color_area_surface)
-	var handle_texture_size := handle_texture.get_size()
 	var point_pos := color_area_drawn.position
+	var handle_texture_size := handle_texture.get_size()
+	
+	# Unique case.
+	match Configs.savedata.color_picker_current_shape:
+		ColorPickerUtils.PickerShape.NORMAL_MAP:
+			var x := display_color.r * 2.0 - 1.0
+			var y := display_color.g * 2.0 - 1.0
+			if absf(Vector3(x, y, display_color.b * 2.0 - 1.0).length_squared() - 1.0) > 0.02:
+				return
+			point_pos += color_area_drawn.size / 2 * Vector2(x, -y)
+	
 	match ColorPickerUtils.get_current_picker_shape_geometric_shape():
 		ColorPickerUtils.PickerGeometricShape.CIRCLE_AND_BAR:
 			var angle_value := display_color.get_hue()
@@ -541,6 +563,9 @@ func _on_color_area_draw() -> void:
 				ColorPickerUtils.PickerShape.SL_H_SQUARE:
 					horizontal_value = ColorPickerUtils.get_channel_offset_for_model(display_color, 1, ColorPickerUtils.ColorModel.HSL)
 					vertical_value = ColorPickerUtils.get_channel_offset_for_model(display_color, 2, ColorPickerUtils.ColorModel.HSL)
+				ColorPickerUtils.PickerShape.HL_S_SQUARE:
+					horizontal_value = ColorPickerUtils.get_channel_offset_for_model(display_color, 0, ColorPickerUtils.ColorModel.HSL)
+					vertical_value = ColorPickerUtils.get_channel_offset_for_model(display_color, 2, ColorPickerUtils.ColorModel.HSL)
 			point_pos += Vector2(horizontal_value, 1 - vertical_value) * color_area_drawn.size
 	RenderingServer.canvas_item_add_texture_rect(color_area_surface, Rect2(point_pos - handle_texture_size / 2, handle_texture_size), handle_texture)
 	if color_area.has_focus(true):
@@ -548,11 +573,14 @@ func _on_color_area_draw() -> void:
 
 func _on_primary_slider_draw() -> void:
 	RenderingServer.canvas_item_clear(primary_slider_surface)
+	var primary_slider_offset := ColorPickerUtils.get_primary_slider_offset(display_color)
+	if primary_slider_offset < 0.0 or primary_slider_offset > 1.0:
+		return
+	
 	var arrow_modulate := ThemeUtils.tinted_contrast_color
 	if not primary_slider_dragged and primary_slider_scrolled_time < 0:
 		arrow_modulate.a = 0.7
-	var arrow_y := primary_slider_drawn.size.y * (1 - ColorPickerUtils.get_primary_slider_offset(display_color)) +\
-			primary_slider_drawn.position.y - side_slider_arrow.get_height() / 2.0
+	var arrow_y := primary_slider_drawn.size.y * (1 - primary_slider_offset) + primary_slider_drawn.position.y - side_slider_arrow.get_height() / 2.0
 	side_slider_arrow.draw(primary_slider_surface, Vector2(0, arrow_y), arrow_modulate)
 	if primary_slider.has_focus(true):
 		get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, Rect2(Vector2(0, arrow_y), Vector2(side_slider_arrow.get_size())).grow(3))

@@ -194,9 +194,8 @@ func _gui_input(event: InputEvent) -> void:
 					if hovered_idx == Configs.savedata.get_active_tab_index():
 						scroll_to_active()
 					else:
-						# Give time for deferred callbacks that might change the active SVG.
-						# For example, the code editor might get unfocused by clicking on a tab,
-						# changing the SVG, so this should be deferred.
+						# Give time for deferred callbacks that might change the active SVG. For example, the code editor
+						# might get unfocused by clicking on a tab, changing the SVG, so this should be deferred.
 						Configs.savedata.set_active_tab_index.call_deferred(hovered_idx)
 				if event.button_index == MOUSE_BUTTON_LEFT:
 					var scroll_backwards_area_rect := get_scroll_backwards_area_rect()

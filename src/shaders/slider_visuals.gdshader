@@ -10,6 +10,7 @@ uniform bool inverted = false;
 // RGB --> 1 = Red, 2 = Green, 3 = Blue
 // HSV --> 4 = Hue, 5 = HSV saturation, 6 = Value
 // HSL --> 4 = Hue, 7 = HSL saturation, 8 = Lightness
+// 100 = Normal intensity
 uniform int interpolation = 0;
 
 void fragment() {
@@ -42,6 +43,16 @@ void fragment() {
 			hsl.z = offset;
 		}
 		COLOR = vec4(hsl_to_rgb(hsl), 1.0);
+	} else if (interpolation == 100) {
+		vec2 dir = normalize(base_color.rgb * 2.0 - 1.0).xy;
+		float len = length(dir);
+		if (len > 0.00001) {
+		    dir /= len;
+		} else {
+		    dir = vec2(0.0);
+		}
+		vec2 xy = dir * offset;
+		COLOR = vec4(vec3(xy, sqrt(max(0.0, 1.0 - dot(xy, xy)))) * 0.5 + 0.5, 1.0);
 	} else {
 		COLOR = base_color;
 	}

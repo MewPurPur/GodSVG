@@ -142,9 +142,9 @@ class PreciseColor:
 		return maxf(r, maxf(g, b))
 	
 	func get_luminance_imprecise() -> float:
-		return Color(r, g, b).srgb_to_linear().get_luminance()
+		return Color(r, g, b).get_luminance()
 
-enum PickerShape {HS_V_CIRCLE, HS_L_CIRCLE, SV_H_SQUARE, SL_H_SQUARE}
+enum PickerShape {HS_V_CIRCLE, HS_L_CIRCLE, SV_H_SQUARE, SL_H_SQUARE, HL_S_SQUARE, NORMAL_MAP}
 enum ColorModel {RGB, HSV, HSL}
 enum PickerGeometricShape {CIRCLE_AND_BAR, SQUARE_AND_BAR}
 
@@ -163,6 +163,8 @@ static func picker_shape_to_string(shape: PickerShape) -> String:
 		PickerShape.HS_L_CIRCLE: return "HS+L Circle"
 		PickerShape.SV_H_SQUARE: return "SV+H Square"
 		PickerShape.SL_H_SQUARE: return "SL+H Square"
+		PickerShape.HL_S_SQUARE: return "HL+S Square"
+		PickerShape.NORMAL_MAP: return "Normal Circle"
 	return ""
 
 static func get_current_picker_shape_geometric_shape() -> PickerGeometricShape:
@@ -170,7 +172,7 @@ static func get_current_picker_shape_geometric_shape() -> PickerGeometricShape:
 
 static func picker_shape_get_geometric_shape(shape: PickerShape) -> PickerGeometricShape:
 	match shape:
-		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: return PickerGeometricShape.SQUARE_AND_BAR
+		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE, PickerShape.HL_S_SQUARE: return PickerGeometricShape.SQUARE_AND_BAR
 	return PickerGeometricShape.CIRCLE_AND_BAR
 
 static func picker_shape_to_icon(shape: PickerShape) -> Texture2D:
@@ -271,16 +273,46 @@ static func get_primary_slider_offset(color: PreciseColor) -> float:
 	match Configs.savedata.color_picker_current_shape:
 		PickerShape.HS_V_CIRCLE: return get_channel_offset_for_model(color, 2, ColorModel.HSV)
 		PickerShape.HS_L_CIRCLE: return get_channel_offset_for_model(color, 2, ColorModel.HSL)
+		PickerShape.HL_S_SQUARE: return get_channel_offset_for_model(color, 1, ColorModel.HSL)
 		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: return color.get_hue()
+		PickerShape.NORMAL_MAP:
+			var n = Vector3(color.r * 2 - 1, color.g * 2 - 1, color.b * 2 - 1)
+			return Vector2(n.x, n.y).length()
 	return 0.0
 
 static func set_primary_slider_offset(color: PreciseColor, offset: float) -> void:
 	match Configs.savedata.color_picker_current_shape:
 		PickerShape.HS_V_CIRCLE: set_channel_offset_for_model(color, 2, offset, ColorModel.HSV)
 		PickerShape.HS_L_CIRCLE: set_channel_offset_for_model(color, 2, offset, ColorModel.HSL)
+		PickerShape.HL_S_SQUARE: set_channel_offset_for_model(color, 1, offset, ColorModel.HSL)
 		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: set_channel_offset_for_model(color, 0, offset, ColorModel.HSV)
+		PickerShape.NORMAL_MAP:
+			var n := Vector3(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0, color.b * 2.0 - 1.0)
+			var dir = Vector2(n.x, n.y)
+			if dir.length() > 0.0:
+				dir = dir.normalized()
+			var p = dir * clampf(offset, 0.0001, 0.9999)
+			var z = sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y))
+			var v = Vector3(p.x, p.y, z)
+			color.r = v.x * 0.5 + 0.5
+			color.g = v.y * 0.5 + 0.5
+			color.b = v.z * 0.5 + 0.5
 
 static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2) -> void:
+	# Unique case.
+	match Configs.savedata.color_picker_current_shape:
+		PickerShape.NORMAL_MAP:
+			var p := coordinates * 2 - Vector2(1, 1)
+			p.y = -p.y
+			if p.length() > 1.0:
+				p = p.normalized()
+			var z := sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y))
+			var n := Vector3(p.x, p.y, z)
+			color.r = n.x * 0.5 + 0.5
+			color.g = n.y * 0.5 + 0.5
+			color.b = n.z * 0.5 + 0.5
+			return
+	
 	# Don't clamp coordinates, this allows keyboard navigation to overextend and make it easier to snap to the right value at edges.
 	var channel1_index: int
 	var channel2_index: int
@@ -303,6 +335,10 @@ static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2
 			channel1_index = 1
 			channel2_index = 2
 			model = ColorModel.HSL
+		PickerShape.HL_S_SQUARE:
+			channel1_index = 0
+			channel2_index = 2
+			model = ColorModel.HSL
 	
 	match ColorPickerUtils.get_current_picker_shape_geometric_shape():
 		PickerGeometricShape.CIRCLE_AND_BAR:
@@ -313,6 +349,11 @@ static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2
 			ColorPickerUtils.set_channel_offset_for_model(color, channel2_index, 1.0 - clampf(coordinates.y, 0.0, 1.0), model)
 
 static func get_color_area_coordinates(color: PreciseColor) -> Vector2:
+	match Configs.savedata.color_picker_current_shape:
+		PickerShape.NORMAL_MAP:
+			var n := Vector3(color.r * 2 - 1, color.g * 2 - 1, color.b * 2 - 1)
+			return Vector2(n.x, -n.y) * 0.5 + Vector2(0.5, 0.5)
+	
 	var channel1_index := 0
 	var channel2_index := 0
 	var model: ColorModel
@@ -332,6 +373,10 @@ static func get_color_area_coordinates(color: PreciseColor) -> Vector2:
 			model = ColorModel.HSV
 		PickerShape.SL_H_SQUARE:
 			channel1_index = 1
+			channel2_index = 2
+			model = ColorModel.HSL
+		PickerShape.HL_S_SQUARE:
+			channel1_index = 0
 			channel2_index = 2
 			model = ColorModel.HSL
 	
