@@ -18,17 +18,19 @@ func set_value(new_value: Variant, emit_changed := true) -> void:
 		set_text(get_value_string(_value))
 
 
-func _on_text_submitted(new_text: String) -> void:
+func _on_line_edit_text_submitted(new_text: String) -> void:
 	var new_value: Variant = new_text
 	if new_text in aliases:
 		new_text = aliases[new_text]
 	if new_value in values:
 		set_value(new_value)
+	super(new_text)
 
-func _on_text_changed(new_text: String) -> void:
+func _on_line_edit_text_changed(new_text: String) -> void:
 	if new_text in aliases:
 		new_text = aliases[new_text]
 	line_edit.add_theme_color_override("font_color", Configs.savedata.get_validity_color(not new_text in values))
+	super(new_text)
 
 func _get_dropdown_buttons() -> Array[ContextButton]:
 	var btn_arr: Array[ContextButton] = []

@@ -21,12 +21,13 @@ func set_value(new_value: float, emit_changed := true) -> void:
 		set_text(get_value_string(_value))
 
 
-func _on_text_submitted(new_text: String) -> void:
+func _on_line_edit_text_submitted(new_text: String) -> void:
 	var new_value := NumstringParser.evaluate(new_text)
 	if new_value == special_value_exception:
 		set_value(new_value)
 	else:
 		set_value(clampf(new_value, min_value, max_value))
+	super(new_text)
 
 func _get_dropdown_buttons() -> Array[ContextButton]:
 	var btn_arr: Array[ContextButton] = [ContextButton.create_custom("", _enter_edit_mode, edit_icon)]

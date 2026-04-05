@@ -96,7 +96,8 @@ func _gui_input(event: InputEvent) -> void:
 		grab_focus()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "ui_right", true):
-		if has_focus(true) and focus_index < get_color_count() - 1:
+		if has_focus(true) and (focus_index < get_color_count() - 1 or\
+		(configuration_mode and focus_index < get_color_count())):
 			focus_index += 1
 		grab_focus()
 		accept_event()
@@ -108,13 +109,17 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "ui_down", true):
 		var column_count := get_column_count()
-		if has_focus(true) and focus_index < get_color_count() - column_count:
+		if has_focus(true) and (focus_index < get_color_count() - column_count or\
+		(configuration_mode and focus_index < get_color_count() - column_count + 1)):
 			focus_index += column_count
 		grab_focus()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "ui_accept", true):
 		if has_focus(true):
-			swatch_selected.emit(focus_index)
+			if focus_index == get_color_count():
+				popup_add_color()
+			else:
+				swatch_selected.emit(focus_index)
 		accept_event()
 
 func _draw() -> void:
@@ -199,6 +204,8 @@ func _draw() -> void:
 		else:
 			normal_sb.draw(ci, rect)
 		plus_icon.draw(ci, rect.position + (rect.size - plus_icon.get_size()) / 2, get_theme_color(icon_theming, "Button"))
+		if has_focus(true) and focus_index == palette.get_color_count():
+			get_theme_stylebox("swatch_focus", "PalettePreview").draw(ci, rect)
 	
 	custom_minimum_size.y = get_index_rect(get_color_count() - 1).end.y
 

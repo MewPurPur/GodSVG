@@ -24,7 +24,7 @@ func correct_edit() -> void:
 		editing_toggled.emit(true)
 
 func correct_unedit() -> void:
-	if is_editing():
+	if is_editing() or (not editable and has_focus()):
 		unedit()
 		editing_toggled.emit(false)
 
@@ -142,7 +142,7 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("ui_cancel"):
-		if is_editing():
+		if is_editing() or (not editable and has_focus()):
 			accept_event()
 			correct_unedit()
 		return

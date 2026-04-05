@@ -56,15 +56,16 @@ func _get_dropdown_buttons() -> Array[ContextButton]:
 		btn_arr.append(btn)
 	return btn_arr
 
-
-func _on_text_submitted(new_text: String) -> void:
+func _on_line_edit_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or new_text in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]:
 		set_value(new_text, true)
 	else:
 		sync()
+	super(new_text)
 
-func _on_text_changed(new_text: String) -> void:
+func _on_line_edit_text_changed(new_text: String) -> void:
 	line_edit.add_theme_color_override("font_color", Configs.savedata.get_validity_color(not new_text in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]))
+	super(new_text)
 
 func _get_line_edit_activation_text() -> String:
 	return element.get_attribute_value(attribute_name)
