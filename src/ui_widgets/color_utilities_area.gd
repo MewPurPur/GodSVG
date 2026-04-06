@@ -15,6 +15,7 @@ var current_color := Color.BLACK
 @onready var palettes_content_container: VBoxContainer = %PalettesContent
 @onready var search_field: BetterLineEdit = %SearchField
 
+var undo_redo := UndoRedoRef.new()
 var palette_previews: Array[Control] = []
 
 func _ready() -> void:
@@ -22,8 +23,8 @@ func _ready() -> void:
 	search_field.text_changed.connect(rebuild_content)
 	search_field.text_change_canceled.connect(rebuild_content)
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("ui_undo", Callable())
-	shortcuts.add_shortcut("ui_redo", Callable())
+	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
+	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
 	shortcuts.add_shortcut("find", search_field.grab_focus)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 
@@ -104,6 +105,15 @@ func rebuild_content(search_text := "") -> void:
 
 func _on_swatch_selected(index: int, color_strings: PackedStringArray) -> void:
 	var color := color_strings[index]
+	if current_value == color:
+		return
+	
+	undo_redo.create_action()
+	undo_redo.add_do_method(set_color.bind(color))
+	undo_redo.add_undo_method(set_color.bind(current_value))
+	undo_redo.commit_action()
+
+func set_color(color: String) -> void:
 	current_value = color
 	color_changed.emit(color)
 	for preview in palette_previews:
