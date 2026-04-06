@@ -4,6 +4,7 @@ class_name Formatter extends ConfigResource
 
 enum Preset {COMPACT, PRETTY}
 enum ShorthandTags {ALWAYS, ALL_EXCEPT_CONTAINERS, NEVER}
+enum FormattingStyle {COMPACT, PRETTY, SPACIOUS}
 enum NamedColorUse {ALWAYS, WHEN_SHORTER_OR_EQUAL, WHEN_SHORTER, NEVER}
 enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
 
@@ -21,6 +22,13 @@ static func get_shorthand_tags_value_text_map() -> Dictionary[ShorthandTags, Str
 		ShorthandTags.ALWAYS: Translator.translate("Always"),
 		ShorthandTags.ALL_EXCEPT_CONTAINERS: Translator.translate("All except containers"),
 		ShorthandTags.NEVER: Translator.translate("Never"),
+	}
+
+static func get_formatting_style_value_text_map() -> Dictionary[FormattingStyle, String]:
+	return {
+		FormattingStyle.COMPACT: Translator.translate("Compact"),
+		FormattingStyle.PRETTY: Translator.translate("Pretty"),
+		FormattingStyle.SPACIOUS: Translator.translate("Spacious"),
 	}
 
 static func get_named_color_use_value_text_map() -> Dictionary[NamedColorUse, String]:
@@ -58,10 +66,10 @@ func get_setting_default(setting: String) -> Variant:
 		"color_primary_syntax": return PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX
 		"color_capital_hex": return false
 		
+		"xml_formatting_style": return FormattingStyle.COMPACT if preset == Preset.COMPACT else FormattingStyle.PRETTY
 		"xml_remove_comments": return preset == Preset.COMPACT
 		"xml_shorthand_tags": return ShorthandTags.ALWAYS if preset == Preset.COMPACT else ShorthandTags.ALL_EXCEPT_CONTAINERS
 		"xml_shorthand_tags_space_out_slash": return preset == Preset.PRETTY
-		"xml_pretty_formatting": return preset == Preset.PRETTY
 		"number_remove_leading_zero": return preset == Preset.COMPACT
 		"number_use_exponent_if_shorter": return preset == Preset.COMPACT
 		"color_use_named_colors": return NamedColorUse.WHEN_SHORTER if preset == Preset.COMPACT else NamedColorUse.ALWAYS
@@ -105,6 +113,12 @@ func _init(new_preset := Preset.COMPACT) -> void:
 			emit_changed()
 
 
+@export var xml_formatting_style := FormattingStyle.COMPACT:
+	set(new_value):
+		if xml_formatting_style != new_value:
+			xml_formatting_style = new_value
+			emit_changed()
+
 @export var xml_remove_comments := true:
 	set(new_value):
 		if xml_remove_comments != new_value:
@@ -131,12 +145,6 @@ func _init(new_preset := Preset.COMPACT) -> void:
 	set(new_value):
 		if xml_shorthand_tags_space_out_slash != new_value:
 			xml_shorthand_tags_space_out_slash = new_value
-			emit_changed()
-
-@export var xml_pretty_formatting := false:
-	set(new_value):
-		if xml_pretty_formatting != new_value:
-			xml_pretty_formatting = new_value
 			emit_changed()
 
 @export var xml_indentation_use_spaces := false:

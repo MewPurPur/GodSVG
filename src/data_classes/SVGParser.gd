@@ -81,7 +81,7 @@ static func root_to_markup(root_element: ElementRoot, formatter: Formatter) -> S
 # If make_attributes_absolute is true, converts percentage-based attributes into absolute values so cutouts can be safely made.
 static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes_absolute := false) -> String:
 	var markup := ""
-	if formatter.xml_pretty_formatting:
+	if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 		markup = formatter.get_indent_string().repeat(xnode.xid.size())
 	
 	if not xnode.is_element():
@@ -92,7 +92,7 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 			BasicXNode.NodeType.COMMENT: markup += "<!--%s-->" % xnode.get_text()
 			BasicXNode.NodeType.CDATA: markup += "<![CDATA[%s]]>" % xnode.get_text()
 			_: markup += xnode.get_text()
-		if formatter.xml_pretty_formatting:
+		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += "\n"
 		return markup
 	
@@ -125,27 +125,31 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 	markup += '<' + element.name
 	for attribute: Attribute in attribute_array:
 		var value := attribute.get_formatted_value(formatter)
-		
-		if not '"' in value:
-			markup += ' %s="%s"' % [attribute.name, value]
+		var quote := "'" if '"' in value else '"'
+		if formatter.xml_formatting_style == Formatter.FormattingStyle.SPACIOUS:
+			markup += "\n" + formatter.get_indent_string().repeat(element.xid.size() + 1)
 		else:
-			markup += " %s='%s'" % [attribute.name, value]
+			markup += " "
+		markup += attribute.name + "=" + quote + value + quote
+	
+	if formatter.xml_formatting_style == Formatter.FormattingStyle.SPACIOUS and not attribute_array.is_empty():
+		markup += "\n" + formatter.get_indent_string().repeat(element.xid.size())
 	
 	if not element.has_children() and (formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALWAYS or\
 	(formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and not element.name in Formatter.CONTAINER_ELEMENTS)):
 		markup += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
-		if formatter.xml_pretty_formatting:
+		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += '\n'
 	else:
 		markup += '>'
-		if formatter.xml_pretty_formatting:
+		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += '\n'
 		for child in element.get_children():
 			markup += _xnode_to_markup(child, formatter, make_attributes_absolute)
-		if formatter.xml_pretty_formatting:
+		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += formatter.get_indent_string().repeat(element.xid.size())
 		markup += '</%s>' % element.name
-		if formatter.xml_pretty_formatting:
+		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += '\n'
 	return markup
 
