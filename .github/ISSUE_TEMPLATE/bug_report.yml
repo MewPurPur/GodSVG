@@ -8,7 +8,7 @@ body:
       label: Version
       description: |
         On which version of GodSVG did you encounter the bug?
-      placeholder:|
+      placeholder: |
         Example: "1.0-alpha12"
     validations:
       required: true
