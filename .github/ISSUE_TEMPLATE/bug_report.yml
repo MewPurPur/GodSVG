@@ -2,12 +2,24 @@ name: Bug report
 description: Report a bug in GodSVG
 labels: ["bug"]
 body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: |
+        On which version of GodSVG did you encounter the bug?
+      placeholder:|
+        Example: "1.0-alpha12"
+    validations:
+      required: true
   - type: textarea
     id: bug-description
     attributes:
-      label: Bug Description
+      label: Description
       description: |
         Give a clear and concise description of what the bug is and what the expected behavior is.
         For non-trivial issues, provide reproduction steps, screenshots and video if relevant, and the platform you used GodSVG on.
+        Use separate bug reports for unrelated bugs.
+        Tip: If you're posting a video, opening "Debug" inside GodSVG (F3 by default) visualizes the inputs GodSVG is getting.
     validations:
       required: true
