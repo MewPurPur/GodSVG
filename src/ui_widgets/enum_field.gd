@@ -70,6 +70,9 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 func _get_line_edit_activation_text() -> String:
 	return element.get_attribute_value(attribute_name)
 
+func _get_line_edit_activation_placeholder_text() -> String:
+	return element.get_default(attribute_name)
+
 
 func sync() -> void:
 	var new_value := element.get_attribute_value(attribute_name)

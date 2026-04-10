@@ -202,37 +202,31 @@ func setup_formatting_content() -> void:
 		Formatter.get_formatting_style_value_text_map()
 	)
 	var xml_formatting_style_root_element := ElementRoot.new()
-	if current_setup_resource.xml_formatting_style == Formatter.FormattingStyle.SPACIOUS:
-		var xml_formatting_style_circle_element := ElementPath.new()
-		xml_formatting_style_circle_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
-		xml_formatting_style_circle_element.set_attribute("fill", "silver")
-		xml_formatting_style_root_element.insert_child(0, xml_formatting_style_circle_element)
-	else:
-		var xml_formatting_style_linear_gradient_element := ElementLinearGradient.new()
-		xml_formatting_style_linear_gradient_element.set_attribute("id", "a")
-		xml_formatting_style_linear_gradient_element.set_attribute("x1", 6)
-		xml_formatting_style_linear_gradient_element.set_attribute("y1", 4)
-		xml_formatting_style_linear_gradient_element.set_attribute("x2", 8)
-		xml_formatting_style_linear_gradient_element.set_attribute("y2", 2)
-		var xml_formatting_style_stop_1 := ElementStop.new()
-		xml_formatting_style_stop_1.set_attribute("stop-color", "silver")
-		xml_formatting_style_stop_1.set_attribute("offset", "0")
-		var xml_formatting_style_stop_2 := ElementStop.new()
-		xml_formatting_style_stop_2.set_attribute("stop-color", "gold")
-		xml_formatting_style_stop_2.set_attribute("offset", "1")
-		xml_formatting_style_linear_gradient_element.insert_child(0, xml_formatting_style_stop_1)
-		xml_formatting_style_linear_gradient_element.insert_child(0, xml_formatting_style_stop_2)
-		var xml_formatting_style_circle_element := ElementCircle.new()
-		xml_formatting_style_circle_element.set_attribute("cx", 6)
-		xml_formatting_style_circle_element.set_attribute("cy", 8)
-		xml_formatting_style_circle_element.set_attribute("r", 4)
-		xml_formatting_style_circle_element.set_attribute("fill", "url(#a)")
-		xml_formatting_style_root_element.insert_child(0, xml_formatting_style_linear_gradient_element)
-		xml_formatting_style_root_element.insert_child(1, xml_formatting_style_circle_element)
+	var xml_formatting_style_linear_gradient_element := ElementLinearGradient.new()
+	xml_formatting_style_linear_gradient_element.set_attribute("id", "a")
+	xml_formatting_style_linear_gradient_element.set_attribute("x1", 6)
+	xml_formatting_style_linear_gradient_element.set_attribute("y1", 4)
+	xml_formatting_style_linear_gradient_element.set_attribute("x2", 8)
+	xml_formatting_style_linear_gradient_element.set_attribute("y2", 2)
+	var xml_formatting_style_stop_1 := ElementStop.new()
+	xml_formatting_style_stop_1.set_attribute("stop-color", "silver")
+	xml_formatting_style_stop_1.set_attribute("offset", "0")
+	var xml_formatting_style_stop_2 := ElementStop.new()
+	xml_formatting_style_stop_2.set_attribute("stop-color", "gold")
+	xml_formatting_style_stop_2.set_attribute("offset", "1")
+	xml_formatting_style_linear_gradient_element.insert_child(0, xml_formatting_style_stop_1)
+	xml_formatting_style_linear_gradient_element.insert_child(0, xml_formatting_style_stop_2)
+	var xml_formatting_style_circle_element := ElementCircle.new()
+	xml_formatting_style_circle_element.set_attribute("cx", 6)
+	xml_formatting_style_circle_element.set_attribute("cy", 8)
+	xml_formatting_style_circle_element.set_attribute("r", 4)
+	xml_formatting_style_circle_element.set_attribute("fill", "url(#a)")
+	xml_formatting_style_root_element.insert_child(0, xml_formatting_style_linear_gradient_element)
+	xml_formatting_style_root_element.insert_child(1, xml_formatting_style_circle_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_formatting_style_root_element))
 	
 	current_setup_setting = "xml_indentation_use_spaces"
-	add_checkbox(Translator.translate("Use spaces instead of tabs"), current_setup_resource.xml_formatting_style != Formatter.FormattingStyle.COMPACT)
+	add_checkbox(Translator.translate("Use spaces instead of tabs"), current_setup_resource.xml_formatting_style == Formatter.FormattingStyle.COMPACT)
 	add_preview(SettingTextPreview.new(Translator.translate(
 			"When enabled, uses spaces instead of a single tab for indentation."),
 			SettingTextPreview.get_no_effect_in_configuration_warning(
@@ -242,7 +236,7 @@ func setup_formatting_content() -> void:
 	add_numeric_dropdown(Translator.translate("Number of indentation spaces"),
 			PackedFloat64Array([2, 3, 4, 6, 8]), true, Formatter.INDENTS_MIN, Formatter.INDENTS_MAX, NAN, {},
 			not (current_setup_resource.xml_formatting_style != Formatter.FormattingStyle.COMPACT and current_setup_resource.xml_indentation_use_spaces))
-	if current_setup_resource.xml_formatting_style != Formatter.FormattingStyle.COMPACT and current_setup_resource.xml_indentation_use_spaces:
+	if current_setup_resource.xml_formatting_style == Formatter.FormattingStyle.COMPACT and current_setup_resource.xml_indentation_use_spaces:
 		var xml_indentation_spaces_root_element := ElementRoot.new()
 		var xml_indentation_spaces_circle_element := ElementCircle.new()
 		xml_indentation_spaces_circle_element.set_attribute("cx", 6)

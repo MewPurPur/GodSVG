@@ -5,9 +5,7 @@ const PalettePreviewScene = preload("res://src/ui_widgets/palette_preview.tscn")
 # If the currentColor keyword is available, but uninteresting, don't show it.
 enum CurrentColorAvailability {UNAVAILABLE, UNINTERESTING, INTERESTING}
 
-signal color_changed(new_color: String)
 var is_none_keyword_available := false
-var current_value: String
 var show_url: bool
 var show_current_color := false
 var current_color := Color.BLACK
@@ -15,7 +13,7 @@ var current_color := Color.BLACK
 @onready var palettes_content_container: VBoxContainer = %PalettesContent
 @onready var search_field: BetterLineEdit = %SearchField
 
-var undo_redo := UndoRedoRef.new()
+var color_config: ColorPickerUtils.ColorConfig
 var palette_previews: Array[Control] = []
 
 func _ready() -> void:
@@ -23,14 +21,18 @@ func _ready() -> void:
 	search_field.text_changed.connect(rebuild_content)
 	search_field.text_change_canceled.connect(rebuild_content)
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
-	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
 	shortcuts.add_shortcut("find", search_field.grab_focus)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 
-func setup_color(new_color: String) -> void:
-	current_value = new_color
+func setup_color(new_color_config: ColorPickerUtils.ColorConfig) -> void:
+	color_config = new_color_config
+	color_config.color_changed.connect(_on_color_changed)
 	rebuild_content()
+
+func _on_color_changed() -> void:
+	for preview in palette_previews:
+		preview.current_value = color_config.color.paint
+		preview.queue_redraw()
 
 func rebuild_content(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
@@ -62,7 +64,7 @@ func rebuild_content(search_text := "") -> void:
 					reserved_textures[reserved_colors.size() - 1] = State.root_element.get_element_by_id(color).generate_texture()
 	
 	var reserved_swatch_container := PalettePreviewScene.instantiate()
-	reserved_swatch_container.setup_fake(reserved_color_names, reserved_colors, reserved_paints, reserved_textures, current_value)
+	reserved_swatch_container.setup_fake(reserved_color_names, reserved_colors, reserved_paints, reserved_textures, color_config.color.paint)
 	reserved_swatch_container.swatch_selected.connect(_on_swatch_selected.bind(reserved_colors))
 	palettes_content_container.add_child(reserved_swatch_container)
 	palette_previews.append(reserved_swatch_container)
@@ -95,7 +97,7 @@ func rebuild_content(search_text := "") -> void:
 			palette_container.add_child(palette_label)
 		
 		var swatch_container := PalettePreviewScene.instantiate()
-		swatch_container.setup(trimmed_palette, current_value)
+		swatch_container.setup(trimmed_palette, color_config.color.paint)
 		swatch_container.swatch_selected.connect(_on_swatch_selected.bind(trimmed_palette.get_colors()))
 		palette_container.add_child(swatch_container)
 		palettes_content_container.add_child(palette_container)
@@ -105,17 +107,6 @@ func rebuild_content(search_text := "") -> void:
 
 func _on_swatch_selected(index: int, color_strings: PackedStringArray) -> void:
 	var color := color_strings[index]
-	if current_value == color:
+	if color_config.color.paint == color:
 		return
-	
-	undo_redo.create_action()
-	undo_redo.add_do_method(set_color.bind(color))
-	undo_redo.add_undo_method(set_color.bind(current_value))
-	undo_redo.commit_action()
-
-func set_color(color: String) -> void:
-	current_value = color
-	color_changed.emit(color)
-	for preview in palette_previews:
-		preview.current_value = current_value
-		preview.queue_redraw()
+	color_config.set_color_to_string(color)
