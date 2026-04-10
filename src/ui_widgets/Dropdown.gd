@@ -72,6 +72,7 @@ func _enter_edit_mode() -> void:
 	line_edit.size = size
 	line_edit.editable = editing_enabled
 	line_edit.text = _get_line_edit_activation_text()
+	line_edit.placeholder_text = _get_line_edit_activation_placeholder_text()
 	line_edit.text_submitted.connect(_on_line_edit_text_submitted)
 	line_edit.text_changed.connect(_on_line_edit_text_changed)
 	line_edit.editing_toggled.connect(_on_line_edit_editing_toggled)
@@ -81,6 +82,9 @@ func _enter_edit_mode() -> void:
 
 func _get_line_edit_activation_text() -> String:
 	return _text
+
+func _get_line_edit_activation_placeholder_text() -> String:
+	return ""
 
 func _on_line_edit_text_submitted(_new_text: String) -> void:
 	line_edit.release_focus()

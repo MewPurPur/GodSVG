@@ -10,6 +10,7 @@ uniform bool inverted = false;
 // RGB --> 1 = Red, 2 = Green, 3 = Blue
 // HSV --> 4 = Hue, 5 = HSV saturation, 6 = Value
 // HSL --> 4 = Hue, 7 = HSL saturation, 8 = Lightness
+// TODO OKHSL --> 9 = OKHSL hue, 10 = OKHSL saturation, 11 = OKHSL lightness
 // 100 = Normal intensity
 uniform int interpolation = 0;
 

@@ -3,6 +3,7 @@ class_name ColorPickerUtils extends RefCounted
 # The color picker uses a 64-bit color because the precision is necessary for the approach of
 # things like keeping colors almost-grayscale-but-not-quite to preserve their hue.
 class PreciseColor:
+	var paint: String
 	var r: float
 	var g: float
 	var b: float
@@ -13,6 +14,7 @@ class PreciseColor:
 		g = new_g
 		b = new_b
 		a = new_a
+		paint = Color(r, g, b, a).to_html(a != 1.0)
 	
 	static func from_color(color: Color) -> PreciseColor:
 		return PreciseColor.new(color.r, color.g, color.b, color.a)
@@ -21,13 +23,16 @@ class PreciseColor:
 		return PreciseColor.new(array[0], array[1], array[2], array[3])
 	
 	func duplicate() -> PreciseColor:
-		return PreciseColor.new(r, g, b, a)
+		var new_color := PreciseColor.new(r, g, b, a)
+		new_color.paint = paint
+		return new_color
 	
 	func copy_values_from(color: PreciseColor) -> void:
 		r = color.r
 		g = color.g
 		b = color.b
 		a = color.a
+		calibrate_paint()
 	
 	func _to_string() -> String:
 		return "PreciseColor(%s, %s, %s, %s)" % [r, g, b, a]
@@ -41,7 +46,17 @@ class PreciseColor:
 	func equals(color: PreciseColor) -> bool:
 		return r == color.r and g == color.g and b == color.b and a == color.a
 	
-	func set_hue(h: float) -> void:
+	func set_paint(new_paint: String) -> void:
+		paint = new_paint
+		if Color.html_is_valid(new_paint):
+			var color := Color.html(new_paint)
+			r = color.r
+			g = color.g
+			b = color.b
+			a = color.a
+			shift_hsv()
+	
+	func set_hue(h: float, update_paint := true) -> void:
 		var s := get_saturation()
 		var v := get_value()
 		var h_adj := fposmod(h, 1.0) * 6.0
@@ -57,8 +72,10 @@ class PreciseColor:
 			3: r = p; g = q; b = v
 			4: r = t; g = p; b = v
 			_: r = v; g = p; b = q
+		if update_paint:
+			calibrate_paint()
 	
-	func set_saturation(s: float) -> void:
+	func set_saturation(s: float, update_paint := true) -> void:
 		var v := get_value()
 		var new_s := clampf(s, 0.0, 1.0)
 		
@@ -83,8 +100,10 @@ class PreciseColor:
 			3: r = p; g = q; b = v
 			4: r = t; g = p; b = v
 			_: r = v; g = p; b = q
+		if update_paint:
+			calibrate_paint()
 	
-	func set_value(v: float) -> void:
+	func set_value(v: float, update_paint := true) -> void:
 		var s := get_saturation()
 		var new_v := maxf(v, 0.0)
 		
@@ -109,11 +128,14 @@ class PreciseColor:
 			3: r = p; g = q; b = new_v
 			4: r = t; g = p; b = new_v
 			_: r = new_v; g = p; b = q
+		if update_paint:
+			calibrate_paint()
 	
 	func shift_hsv() -> void:
-		set_hue(clampf(get_hue(), 0.0, 0.9999))
-		set_value(clampf(get_value(), 0.0001, 1.0))
-		set_saturation(clampf(get_saturation(), 0.0001, 1.0))
+		set_hue(clampf(get_hue(), 0.0, 0.9999), false)
+		set_value(clampf(get_value(), 0.0001, 1.0), false)
+		set_saturation(clampf(get_saturation(), 0.0001, 1.0), false)
+		calibrate_paint()
 	
 	func get_hue() -> float:
 		var max_val := maxf(r, maxf(g, b))
@@ -143,6 +165,51 @@ class PreciseColor:
 	
 	func get_luminance_imprecise() -> float:
 		return Color(r, g, b).get_luminance()
+	
+	# Removing the saturation and hue clamping fixes paint conversion in edge cases.
+	# e.g., H = 0.0001, S = 0.0001, V = 0.5 --> Color(0.5, 0.4999, 0.4999) --> "807f7f".
+	func calibrate_paint() -> void:
+		var color := duplicate()
+		color.set_saturation(snappedf(get_saturation(), 1/1600.0), false)
+		color.set_hue(snappedf(get_hue(), 1/5760.0), false)
+		paint = color.to_color().to_html(a != 1.0)
+
+class ColorConfig:
+	# "Initial" variables store what the color string was when the color picker was opened.
+	# "Backup" variables store the old color when using keywords or starting a dragging operation.
+	var color: ColorPickerUtils.PreciseColor  # Current paint.
+	var initial_color: ColorPickerUtils.PreciseColor  # The paint when the color picker was opened.
+	var backup_color: ColorPickerUtils.PreciseColor  # The paint before starting a dragging operation.
+	signal color_changed
+	var undo_redo := UndoRedoRef.new()
+	
+	func _set_color(new_paint: String, new_color_array: PackedFloat64Array) -> void:
+		color = ColorPickerUtils.PreciseColor.from_array(new_color_array)
+		color.paint = new_paint
+		backup_color.copy_values_from(color)
+		backup_color.paint = new_paint
+		color_changed.emit()
+	
+	func _set_color_paint(new_paint: String) -> void:
+		color.set_paint(new_paint)
+		color_changed.emit()
+	
+	func set_color_to_string(new_paint: String) -> void:
+		new_paint = new_paint.strip_edges()
+		if color.paint.strip_edges() == new_paint:
+			return
+		undo_redo.create_action()
+		undo_redo.add_do_method(_set_color_paint.bind(new_paint))
+		undo_redo.add_undo_method(_set_color_paint.bind(color.paint))
+		undo_redo.commit_action()
+	
+	func register_visual_change() -> void:
+		if Color.html_is_valid(color.paint) and color.equals(backup_color):
+			return
+		undo_redo.create_action()
+		undo_redo.add_do_method(_set_color.bind(color.paint, color.to_array()))
+		undo_redo.add_undo_method(_set_color.bind(backup_color.paint, backup_color.to_array()))
+		undo_redo.commit_action()
 
 enum PickerShape {HS_V_CIRCLE, HS_L_CIRCLE, SV_H_SQUARE, SL_H_SQUARE, HL_S_SQUARE, NORMAL_MAP}
 enum ColorModel {RGB, HSV, HSL}
