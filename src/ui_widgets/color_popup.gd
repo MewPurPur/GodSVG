@@ -73,7 +73,7 @@ func setup_content() -> void:
 		color_picker.is_none_keyword_available = is_none_keyword_available
 		color_picker.is_current_color_keyword_available = (current_color_availability != CurrentColorAvailability.UNAVAILABLE)
 		content.add_child(color_picker)
-		#HandlerGUI.register_focus_sequence(color_picker, [color_picker, switch_mode_button])
+		HandlerGUI.register_focus_sequence(self, [color_picker, switch_mode_button])
 	else:
 		set_swatch_mode_button_text_and_icon(Translator.translate("Back to color picker"), go_back_icon)
 		var color_utils := ColorUtilitiesAreaScene.instantiate()
@@ -83,6 +83,7 @@ func setup_content() -> void:
 		color_utils.current_color = current_color
 		content.add_child(color_utils)
 		color_utils.setup_color(color_config)
+		HandlerGUI.register_focus_sequence(self, [color_utils, switch_mode_button])
 
 func set_swatch_mode_button_text_and_icon(new_text: String, new_icon: DPITexture) -> void:
 	var font := switch_mode_button.get_theme_font("font")

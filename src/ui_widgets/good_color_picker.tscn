@@ -134,7 +134,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ColorRect" type="Control" parent="VBoxContainer/ColorContainer/ColorsDisplay" unique_id=560003720]
-clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
