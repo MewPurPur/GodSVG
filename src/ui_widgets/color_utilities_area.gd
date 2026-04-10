@@ -23,6 +23,7 @@ func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("find", search_field.grab_focus)
 	HandlerGUI.register_shortcuts(self, shortcuts)
+	HandlerGUI.register_focus_sequence(self, [search_field, palettes_content_container])
 
 func setup_color(new_color_config: ColorPickerUtils.ColorConfig) -> void:
 	color_config = new_color_config

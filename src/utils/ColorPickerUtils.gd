@@ -56,6 +56,28 @@ class PreciseColor:
 			a = color.a
 			shift_hsv()
 	
+	func set_r(new_r: float) -> void:
+		r = new_r
+		calibrate_paint()
+	
+	func set_g(new_g: float) -> void:
+		g = new_g
+		calibrate_paint()
+	
+	func set_b(new_b: float) -> void:
+		b = new_b
+		calibrate_paint()
+	
+	func set_a(new_a: float) -> void:
+		a = new_a
+		calibrate_paint()
+	
+	func set_rgb(new_r: float, new_g: float, new_b: float) -> void:
+		r = new_r
+		g = new_g
+		b = new_b
+		calibrate_paint()
+	
 	func set_hue(h: float, update_paint := true) -> void:
 		var s := get_saturation()
 		var v := get_value()
@@ -296,14 +318,14 @@ static func set_channel_offset(color: PreciseColor, channel_index: int, offset: 
 
 static func set_channel_offset_for_model(color: PreciseColor, channel_index: int, offset: float, color_model: ColorModel) -> void:
 	if channel_index == 3:
-		color.a = clampf(offset, 0.0, 1.0)
+		color.set_a(clampf(offset, 0.0, 1.0))
 	
 	match color_model:
 		ColorModel.RGB:
 			match channel_index:
-				0: color.r = clampf(offset, 0.0, 1.0)
-				1: color.g = clampf(offset, 0.0, 1.0)
-				2: color.b = clampf(offset, 0.0, 1.0)
+				0: color.set_r(clampf(offset, 0.0, 1.0))
+				1: color.set_g(clampf(offset, 0.0, 1.0))
+				2: color.set_b(clampf(offset, 0.0, 1.0))
 		ColorModel.HSV:
 			match channel_index:
 				0: color.set_hue(clampf(offset, 0.0, 0.9999))
@@ -332,9 +354,7 @@ static func set_channel_offset_for_model(color: PreciseColor, channel_index: int
 						4: r1 = x; b1 = c
 						_: r1 = c; b1 = x
 					
-					color.r = clampf(r1 + m, 0.0, 1.0)
-					color.g = clampf(g1 + m, 0.0, 1.0)
-					color.b = clampf(b1 + m, 0.0, 1.0)
+					color.set_rgb(clampf(r1 + m, 0.0, 1.0), clampf(g1 + m, 0.0, 1.0), clampf(b1 + m, 0.0, 1.0))
 
 static func get_primary_slider_offset(color: PreciseColor) -> float:
 	match Configs.savedata.color_picker_current_shape:
@@ -361,9 +381,7 @@ static func set_primary_slider_offset(color: PreciseColor, offset: float) -> voi
 			var p = dir * clampf(offset, 0.0001, 0.9999)
 			var z = sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y))
 			var v = Vector3(p.x, p.y, z)
-			color.r = v.x * 0.5 + 0.5
-			color.g = v.y * 0.5 + 0.5
-			color.b = v.z * 0.5 + 0.5
+			color.set_rgb(v.x * 0.5 + 0.5, v.y * 0.5 + 0.5, v.z * 0.5 + 0.5)
 
 static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2) -> void:
 	# Unique case.
@@ -375,9 +393,7 @@ static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2
 				p = p.normalized()
 			var z := sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y))
 			var n := Vector3(p.x, p.y, z)
-			color.r = n.x * 0.5 + 0.5
-			color.g = n.y * 0.5 + 0.5
-			color.b = n.z * 0.5 + 0.5
+			color.set_rgb(n.x * 0.5 + 0.5, n.y * 0.5 + 0.5, n.z * 0.5 + 0.5)
 			return
 	
 	# Don't clamp coordinates, this allows keyboard navigation to overextend and make it easier to snap to the right value at edges.

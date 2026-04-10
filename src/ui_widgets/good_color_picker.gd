@@ -8,6 +8,7 @@ const slider_arrow = preload("res://assets/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://assets/icons/SliderArrowSide.svg")
 const bg_pattern = preload("res://assets/icons/CheckerboardMini.svg")
 
+const NORMAL_CIRCLE_THRESHOLD = 0.02
 const KEYBOARD_DELAY_DURATION = 0.5
 
 var alpha_enabled := false
@@ -107,7 +108,9 @@ func sync_to_config() -> void:
 		btn.text = ColorPickerUtils.color_model_to_string(active_color_model)
 		color_models_container.add_child(btn)
 	
-	reset_color_button.add_theme_stylebox_override("focus", focus_stylebox)
+	var expanded_focus_stylebox := focus_stylebox.duplicate()
+	expanded_focus_stylebox.set_expand_margin_all(3)
+	reset_color_button.add_theme_stylebox_override("focus", expanded_focus_stylebox)
 	_on_color_picker_layout_changed()
 
 
@@ -484,7 +487,9 @@ func _on_color_area_draw() -> void:
 		ColorPickerUtils.PickerShape.NORMAL_MAP:
 			var x := color_config.color.r * 2.0 - 1.0
 			var y := color_config.color.g * 2.0 - 1.0
-			if absf(Vector3(x, y, color_config.color.b * 2.0 - 1.0).length_squared() - 1.0) > 0.02:
+			if absf(Vector3(x, y, color_config.color.b * 2.0 - 1.0).length_squared() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
+				if color_area.has_focus(true):
+					get_theme_stylebox("focus", "FlatButton").draw(color_area_surface, color_area_drawn.get_rect().grow(3))
 				return
 			point_pos += color_area_drawn.size / 2 * Vector2(x, -y)
 	
@@ -518,6 +523,17 @@ func _on_color_area_draw() -> void:
 
 func _on_primary_slider_draw() -> void:
 	RenderingServer.canvas_item_clear(primary_slider_surface)
+	
+	# Unique case.
+	match Configs.savedata.color_picker_current_shape:
+		ColorPickerUtils.PickerShape.NORMAL_MAP:
+			var x := color_config.color.r * 2.0 - 1.0
+			var y := color_config.color.g * 2.0 - 1.0
+			if absf(Vector3(x, y, color_config.color.b * 2.0 - 1.0).length_squared() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
+				if primary_slider.has_focus(true):
+					get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, primary_slider_drawn.get_rect().grow(3))
+				return
+	
 	var primary_slider_offset := ColorPickerUtils.get_primary_slider_offset(color_config.color)
 	if primary_slider_offset < 0.0 or primary_slider_offset > 1.0:
 		return
