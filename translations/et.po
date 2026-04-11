@@ -968,7 +968,7 @@ msgstr "Esiletõstetud valiku värv"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Selection rectangle"
-msgstr "Selection rectangle"
+msgstr "Valiku ristkülik"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
