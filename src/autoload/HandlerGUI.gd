@@ -392,6 +392,7 @@ func _input(event: InputEvent) -> void:
 			if not focus_owner.has_focus(true):
 				get_viewport().set_input_as_handled()
 
+# Get the previous or the next focus to the given control.
 func gather_focus(control: Control, is_next: bool) -> Control:
 	var new_focus := _gather_focus_internal(control, is_next)
 	while not (is_instance_valid(new_focus) and new_focus.is_visible_in_tree() and new_focus.focus_mode == Control.FOCUS_ALL):
@@ -402,21 +403,34 @@ func gather_focus(control: Control, is_next: bool) -> Control:
 	return new_focus
 
 func _gather_focus_internal(control: Control, is_next: bool) -> Control:
-	for focus_master in focus_sequences:
-		var sequence: Array[Control] = focus_sequences[focus_master]
-		var control_idx := sequence.find(control)
-		if control_idx != -1:
-			var new_control_idx := control_idx + (1 if is_next else -1)
-			# Get next control in sequence, otherwise go down a level.
-			if new_control_idx >= 0 and new_control_idx <= sequence.size() - 1:
-				var new_control := sequence[new_control_idx]
-				if new_control in focus_sequences:
-					var new_sequence: Array[Control] = focus_sequences[new_control]
-					if not new_sequence.is_empty():
-						return new_sequence[0] if is_next else new_sequence[-1]
-				return new_control
-			return focus_master
-	return null
+	if is_next and control in focus_sequences:
+		var children: Array[Control] = focus_sequences[control]
+		if not children.is_empty():
+			return children[0]
+	var current := control
+	while true:
+		var parent: Control
+		for p in focus_sequences:
+			if current in focus_sequences[p]:
+				parent = p
+				break
+		if parent == null:
+			return null
+		
+		var siblings: Array[Control] = focus_sequences[parent]
+		var next_idx := siblings.find(current) + (1 if is_next else -1)
+		if next_idx >= 0 and next_idx < siblings.size():
+			var descendant := siblings[next_idx]
+			while descendant in focus_sequences:
+				var children: Array[Control] = focus_sequences[descendant]
+				if children.is_empty():
+					break
+				descendant = children[0 if is_next else -1]
+			return descendant
+		if not is_next:
+			return parent
+		current = parent
+	return current
 
 
 func _unhandled_input(event: InputEvent) -> void:
