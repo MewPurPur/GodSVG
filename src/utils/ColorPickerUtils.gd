@@ -214,17 +214,14 @@ class ColorConfig:
 		backup_color.paint = new_paint
 		color_changed.emit()
 	
-	func _set_color_paint(new_paint: String) -> void:
-		color.set_paint(new_paint)
-		color_changed.emit()
-	
 	func set_color_to_string(new_paint: String) -> void:
 		new_paint = new_paint.strip_edges()
 		if color.paint.strip_edges() == new_paint:
 			return
+		var color_arr := color.to_array()
 		undo_redo.create_action()
-		undo_redo.add_do_method(_set_color_paint.bind(new_paint))
-		undo_redo.add_undo_method(_set_color_paint.bind(color.paint))
+		undo_redo.add_do_method(_set_color.bind(new_paint, color_arr))
+		undo_redo.add_undo_method(_set_color.bind(color.paint, color_arr))
 		undo_redo.commit_action()
 	
 	func register_visual_change() -> void:
