@@ -85,6 +85,8 @@ func setup_content(is_setup_initial := false) -> void:
 		color_utils.current_color = current_color
 		content.add_child(color_utils)
 		color_utils.setup_color(color_config)
+		if is_setup_initial:
+			color_utils.setup_initial_focus()
 		HandlerGUI.register_focus_sequence(self, [color_utils, switch_mode_button])
 
 func set_swatch_mode_button_text_and_icon(new_text: String, new_icon: DPITexture) -> void:

@@ -31,6 +31,9 @@ func setup_color(new_color_config: ColorPickerUtils.ColorConfig) -> void:
 	color_config.color_changed.connect(_on_color_changed)
 	rebuild_content()
 
+func setup_initial_focus() -> void:
+	search_field.grab_focus()
+
 func _on_color_changed() -> void:
 	for preview in palette_previews:
 		preview.current_value = color_config.color.paint
