@@ -8,7 +8,6 @@ const slider_arrow = preload("res://assets/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://assets/icons/SliderArrowSide.svg")
 const bg_pattern = preload("res://assets/icons/CheckerboardMini.svg")
 
-const NORMAL_CIRCLE_THRESHOLD = 0.02
 const KEYBOARD_DELAY_DURATION = 0.5
 
 var alpha_enabled := false
@@ -161,8 +160,9 @@ func _ready() -> void:
 	
 	color_config.color_changed.connect(sync_to_color)
 	sync_to_color()
-	
 	_on_color_picker_layout_changed()
+
+func setup_initial_focus() -> void:
 	if keyword_button.visible:
 		keyword_button.grab_focus(true)
 	else:
@@ -487,7 +487,8 @@ func _on_color_area_draw() -> void:
 		ColorPickerUtils.PickerShape.NORMAL_MAP:
 			var x := color_config.color.r * 2.0 - 1.0
 			var y := color_config.color.g * 2.0 - 1.0
-			if absf(Vector3(x, y, color_config.color.b * 2.0 - 1.0).length_squared() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
+			var z := color_config.color.b * 2.0 - 1.0
+			if z < 0 or absf(Vector3(x, y, z).length() - 1.0) > ColorPickerUtils.NORMAL_CIRCLE_THRESHOLD:
 				if color_area.has_focus(true):
 					get_theme_stylebox("focus", "FlatButton").draw(color_area_surface, color_area_drawn.get_rect().grow(3))
 				return
@@ -529,7 +530,8 @@ func _on_primary_slider_draw() -> void:
 		ColorPickerUtils.PickerShape.NORMAL_MAP:
 			var x := color_config.color.r * 2.0 - 1.0
 			var y := color_config.color.g * 2.0 - 1.0
-			if absf(Vector3(x, y, color_config.color.b * 2.0 - 1.0).length_squared() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
+			var z := color_config.color.b * 2.0 - 1.0
+			if z < 0 or absf(Vector3(x, y, z).length() - 1.0) > ColorPickerUtils.NORMAL_CIRCLE_THRESHOLD:
 				if primary_slider.has_focus(true):
 					get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, primary_slider_drawn.get_rect().grow(3))
 				return

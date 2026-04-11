@@ -48,9 +48,6 @@ new_reserved_paints: Dictionary[int, Color], new_reserved_textures: Dictionary[i
 	fake_reserved_textures = new_reserved_textures
 	current_value = new_current_value
 
-func _init() -> void:
-	focus_mode = Control.FOCUS_ALL
-
 func _ready() -> void:
 	mouse_exited.connect(queue_redraw)
 	focus_exited.connect(unfocus)

@@ -41,7 +41,7 @@ func _ready() -> void:
 		State.color_popup_on_picker_page = true
 		setup_content()
 		State.color_popup_on_picker_page = false
-	setup_content()
+	setup_content(true)
 	theme_changed.connect(sync_theming)
 	sync_theming()
 	var shortcuts := ShortcutsRegistration.new()
@@ -61,7 +61,7 @@ func _on_switch_mode_button_pressed() -> void:
 	State.color_popup_on_picker_page = not State.color_popup_on_picker_page
 	setup_content()
 
-func setup_content() -> void:
+func setup_content(is_setup_initial := false) -> void:
 	for child in content.get_children():
 		child.queue_free()
 	
@@ -73,6 +73,8 @@ func setup_content() -> void:
 		color_picker.is_none_keyword_available = is_none_keyword_available
 		color_picker.is_current_color_keyword_available = (current_color_availability != CurrentColorAvailability.UNAVAILABLE)
 		content.add_child(color_picker)
+		if is_setup_initial:
+			color_picker.setup_initial_focus()
 		HandlerGUI.register_focus_sequence(self, [color_picker, switch_mode_button])
 	else:
 		set_swatch_mode_button_text_and_icon(Translator.translate("Back to color picker"), go_back_icon)

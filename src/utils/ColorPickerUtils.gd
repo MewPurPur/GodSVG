@@ -1,5 +1,7 @@
 class_name ColorPickerUtils extends RefCounted
 
+const NORMAL_CIRCLE_THRESHOLD = 0.02
+
 # The color picker uses a 64-bit color because the precision is necessary for the approach of
 # things like keeping colors almost-grayscale-but-not-quite to preserve their hue.
 class PreciseColor:
@@ -363,7 +365,10 @@ static func get_primary_slider_offset(color: PreciseColor) -> float:
 		PickerShape.HL_S_SQUARE: return get_channel_offset_for_model(color, 1, ColorModel.HSL)
 		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: return color.get_hue()
 		PickerShape.NORMAL_MAP:
-			var n = Vector3(color.r * 2 - 1, color.g * 2 - 1, color.b * 2 - 1)
+			var z := color.b * 2.0 - 1.0
+			var n = Vector3(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0, z)
+			if z < 0 or absf(n.length() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
+				return 0.0
 			return Vector2(n.x, n.y).length()
 	return 0.0
 
@@ -434,7 +439,10 @@ static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2
 static func get_color_area_coordinates(color: PreciseColor) -> Vector2:
 	match Configs.savedata.color_picker_current_shape:
 		PickerShape.NORMAL_MAP:
-			var n := Vector3(color.r * 2 - 1, color.g * 2 - 1, color.b * 2 - 1)
+			var z := color.b * 2.0 - 1.0
+			var n := Vector3(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0, z)
+			if z < 0 or absf(n.length() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
+				return Vector2(0.5, 0.5)
 			return Vector2(n.x, -n.y) * 0.5 + Vector2(0.5, 0.5)
 	
 	var channel1_index := 0
