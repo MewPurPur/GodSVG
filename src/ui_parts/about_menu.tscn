@@ -5,16 +5,16 @@
 [ext_resource type="Script" uid="uid://d0k6h7yuu4oeu" path="res://src/ui_widgets/GoodTabContainer.gd" id="3_8rw4q"]
 
 [node name="AboutMenu" type="PanelContainer" unique_id=1843558257]
-custom_minimum_size = Vector2(580, 420)
+custom_minimum_size = Vector2(592, 420)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -2.0
-offset_top = -2.0
-offset_right = 2.0
-offset_bottom = 2.0
+offset_left = -290.0
+offset_top = -210.0
+offset_right = 290.0
+offset_bottom = 210.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"OverlayPanel"

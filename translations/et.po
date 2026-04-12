@@ -116,6 +116,10 @@ msgid "Never"
 msgstr "Mitte kunagi"
 
 #: src/config_classes/Formatter.gd
+msgid "Spacious"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
 msgstr "Kui on lühem või võrdne"
 
@@ -662,10 +666,6 @@ msgid "After"
 msgstr "Pärast"
 
 #: src/ui_widgets/palette_config.gd
-msgid "Add new color"
-msgstr "Lisa värv"
-
-#: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
 msgstr "Nimetuid värvipalette ei kuvata."
 
@@ -780,8 +780,9 @@ msgid "Space out the slash of shorthand tags"
 msgstr "Lisa tühikuid tag-i lühisüntaksi kaldkriipsu juurde"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Use pretty formatting"
-msgstr "Kasuta ilusat vormindust"
+#, fuzzy
+msgid "Formatting style"
+msgstr "Vorming"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use spaces instead of tabs"
@@ -1597,6 +1598,12 @@ msgstr "Vektorkraafika rakendus SVG struktureeritud redigeerimiseks"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vektor;graafika;joonista;disain;illustratsioon;pilt;kunst;skeem;diagramm;logo;ikoon;redigeerija;kuju;2D;kood;sinine;rebane"
+
+#~ msgid "Add new color"
+#~ msgstr "Lisa värv"
+
+#~ msgid "Use pretty formatting"
+#~ msgstr "Kasuta ilusat vormindust"
 
 #~ msgid "Keep comments"
 #~ msgstr "Hoia kommentaarid alles"

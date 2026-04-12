@@ -116,6 +116,10 @@ msgid "Never"
 msgstr ""
 
 #: src/config_classes/Formatter.gd
+msgid "Spacious"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
 msgstr ""
 
@@ -662,10 +666,6 @@ msgid "After"
 msgstr ""
 
 #: src/ui_widgets/palette_config.gd
-msgid "Add new color"
-msgstr ""
-
-#: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
 msgstr ""
 
@@ -780,7 +780,7 @@ msgid "Space out the slash of shorthand tags"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Use pretty formatting"
+msgid "Formatting style"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
