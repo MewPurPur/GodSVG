@@ -72,7 +72,7 @@ func rebuild_content(search_text := "") -> void:
 		var reserved_swatch_container := PalettePreviewScene.instantiate()
 		reserved_swatch_container.setup_fake(reserved_color_names, reserved_colors, reserved_paints, reserved_textures, color_config.color.paint)
 		reserved_swatch_container.swatch_selected.connect(_on_swatch_selected.bind(reserved_colors))
-		reserved_swatch_container.focus_entered.connect(scroll_to_palette_preview.bind(reserved_swatch_container))
+		reserved_swatch_container.visible_focus_changed.connect(scroll_to_palette_preview.bind(reserved_swatch_container))
 		palettes_content_container.add_child(reserved_swatch_container)
 		palette_previews.append(reserved_swatch_container)
 	
@@ -106,7 +106,7 @@ func rebuild_content(search_text := "") -> void:
 		var swatch_container := PalettePreviewScene.instantiate()
 		swatch_container.setup(trimmed_palette, color_config.color.paint)
 		swatch_container.swatch_selected.connect(_on_swatch_selected.bind(trimmed_palette.get_colors()))
-		swatch_container.focus_entered.connect(scroll_to_palette_preview.bind(swatch_container))
+		swatch_container.visible_focus_changed.connect(scroll_to_palette_preview.bind(swatch_container))
 		palette_container.add_child(swatch_container)
 		palettes_content_container.add_child(palette_container)
 		palette_previews.append(swatch_container)
@@ -115,6 +115,7 @@ func rebuild_content(search_text := "") -> void:
 
 func scroll_to_palette_preview(palette_preview: Control) -> void:
 	var y_to_show := int(palette_preview.global_position.y - scroll_container.global_position.y + scroll_container.scroll_vertical)
+	y_to_show += palette_preview.get_index_rect(palette_preview.focus_index).position.y
 	scroll_container.scroll_vertical = clampi(scroll_container.scroll_vertical, maxi(0, y_to_show - int(scroll_container.size.y) + 30), maxi(0, y_to_show - 24))
 
 func _on_swatch_selected(index: int, color_strings: PackedStringArray) -> void:
