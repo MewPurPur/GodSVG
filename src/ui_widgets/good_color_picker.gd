@@ -444,10 +444,10 @@ func sync_hslider(index: int) -> void:
 func _on_keyword_button_pressed() -> void:
 	var btn_arr: Array[ContextButton] = []
 	if is_none_keyword_available:
-		btn_arr.append(ContextButton.create_custom("none", color_config.set_color_to_string.bind("none"),
+		btn_arr.append(ContextButton.create_custom("none", color_config.set_color_to_keyword.bind("none"),
 				preload("res://assets/icons/NoneColor.svg"), color_config.color.paint == "none"))
 	if is_current_color_keyword_available:
-		btn_arr.append(ContextButton.create_custom("currentColor", color_config.set_color_to_string.bind("currentColor"),
+		btn_arr.append(ContextButton.create_custom("currentColor", color_config.set_color_to_keyword.bind("currentColor"),
 				preload("res://assets/icons/Paste.svg"), color_config.color.paint == "currentColor"))
 	
 	for btn in btn_arr:
