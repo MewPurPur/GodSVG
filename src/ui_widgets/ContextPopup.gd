@@ -155,18 +155,12 @@ func _draw() -> void:
 				icon_color = button.get_theme_color("icon_focus_color")
 			arrow.draw(ci, button_rect.end - (ContextButton.PADDING + 16.0) * Vector2(1, 1), icon_color)
 		elif button.type == ContextButton.Type.CHECKBOX:
-			var checkbox_icon: Texture2D
+			var theme_type: String
 			if button.toggled_on:
-				if button.disabled:
-					checkbox_icon = get_theme_icon("checked_disabled", "CheckBox")
-				else:
-					checkbox_icon = get_theme_icon("checked", "CheckBox")
+				theme_type = "checked_disabled" if button.disabled else "checked"
 			else:
-				if button.disabled:
-					checkbox_icon = get_theme_icon("unchecked_disabled", "CheckBox")
-				else:
-					checkbox_icon = get_theme_icon("unchecked", "CheckBox")
-			checkbox_icon.draw(ci, button_rect.position + ContextButton.PADDING * Vector2(1, 1))
+				theme_type = "unchecked_disabled" if button.disabled else "unchecked"
+			get_theme_icon(theme_type, "CheckBox").draw(ci, button_rect.position + ContextButton.PADDING * Vector2(1, 1))
 		
 		var button_icon := button.get_icon()
 		var button_text := button.get_text()

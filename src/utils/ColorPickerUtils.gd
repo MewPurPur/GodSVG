@@ -199,8 +199,6 @@ class PreciseColor:
 		paint = color.to_color().to_html(a != 1.0)
 
 class ColorConfig:
-	# "Initial" variables store what the color string was when the color picker was opened.
-	# "Backup" variables store the old color when using keywords or starting a dragging operation.
 	var color: ColorPickerUtils.PreciseColor  # Current paint.
 	var initial_color: ColorPickerUtils.PreciseColor  # The paint when the color picker was opened.
 	var backup_color: ColorPickerUtils.PreciseColor  # The paint before starting a dragging operation.

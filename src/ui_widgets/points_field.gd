@@ -319,7 +319,6 @@ func setup_point_controls(idx: int) -> Control:
 	var action_button := Button.new()
 	action_button.icon = more_icon
 	action_button.theme_type_variation = "FlatButton"
-	action_button.focus_mode = Control.FOCUS_NONE
 	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	container.add_child(action_button)
@@ -347,6 +346,7 @@ func setup_point_controls(idx: int) -> Control:
 	container.add_child(y_field)
 	y_field.position = Vector2(52, 2)
 	y_field.size = Vector2(44, 18)
+	HandlerGUI.register_focus_sequence(points_container, [x_field, y_field, action_button])
 	return container
 
 

@@ -367,7 +367,6 @@ func setup_path_command_controls(idx: int) -> Control:
 	commands_container.add_child(container)
 	# Setup the relative button.
 	var relative_button := Button.new()
-	relative_button.focus_mode = Control.FOCUS_NONE
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
@@ -383,7 +382,6 @@ func setup_path_command_controls(idx: int) -> Control:
 	var action_button := Button.new()
 	action_button.icon = more_icon
 	action_button.theme_type_variation = "FlatButton"
-	action_button.focus_mode = Control.FOCUS_NONE
 	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	container.add_child(action_button)
@@ -447,6 +445,10 @@ func setup_path_command_controls(idx: int) -> Control:
 		fields[0].position.x = 25
 		for i in fields.size() - 1:
 			fields[i + 1].position.x = fields[i].get_end().x + spacings[i]
+	var focus_sequence: Array[Control] = [relative_button]
+	focus_sequence += fields
+	focus_sequence.append(action_button)
+	HandlerGUI.register_focus_sequence(commands_container, focus_sequence)
 	return container
 
 

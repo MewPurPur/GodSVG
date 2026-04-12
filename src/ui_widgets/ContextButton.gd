@@ -1,5 +1,5 @@
-## ContextButtons need to behave almost like buttons, but they have no pressed state and a kind of weird
-## fusion between the hover state and focus. So I implemented them as a custom control.
+## ContextButtons need to behave almost like buttons, but they have no pressed state and a kind of
+## weird fusion between the hover state and focus. So I implemented them as a custom control.
 class_name ContextButton extends Control
 
 const PADDING = 3.0
