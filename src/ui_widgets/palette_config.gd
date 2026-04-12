@@ -72,9 +72,8 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 	name_edit.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["font_color", "font_hover_color"]
 	for theme_type in CONST_ARR:
-		# If the new text matches the current title, show warning color
-		# if the palette is currently invalid. If the new text is different,
-		# check if it's unused, i.e., would be a valid title.
+		# If the new text matches the current title, show warning color if the palette is currently invalid.
+		# If the new text is different, check if it's unused, i.e., would be a valid title.
 		name_edit.add_theme_color_override(theme_type,
 				Configs.savedata.get_validity_color(false, (new_text != palette.title and not Configs.savedata.is_palette_title_unused(new_text)) or\
 				(new_text == palette.title and Configs.savedata.is_palette_valid(palette))))

@@ -13,6 +13,7 @@ const SWATCH_SIZE = 22.0
 const SEPARATION = 3.0
 
 signal swatch_selected(index: int)
+signal visible_focus_changed
 
 var ci := get_canvas_item()
 var surfaces: Array[RID] = []
@@ -92,18 +93,21 @@ func _gui_input(event: InputEvent) -> void:
 		if has_focus(true) and focus_index > 0:
 			focus_index -= 1
 		grab_focus()
+		visible_focus_changed.emit()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "ui_right", true):
 		if has_focus(true) and (focus_index < get_color_count() - 1 or\
 		(configuration_mode and focus_index < get_color_count())):
 			focus_index += 1
 		grab_focus()
+		visible_focus_changed.emit()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "ui_up", true):
 		var column_count := get_column_count()
 		if has_focus(true) and focus_index >= column_count:
 			focus_index -= column_count
 		grab_focus()
+		visible_focus_changed.emit()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "ui_down", true):
 		var column_count := get_column_count()
@@ -111,6 +115,7 @@ func _gui_input(event: InputEvent) -> void:
 		(configuration_mode and focus_index < get_color_count() - column_count + 1)):
 			focus_index += column_count
 		grab_focus()
+		visible_focus_changed.emit()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "ui_accept", true):
 		if has_focus(true):
@@ -146,7 +151,7 @@ func _draw() -> void:
 			else:
 				normal_sb.draw(ci, rect)
 		
-		if has_focus(true) and index == focus_index:
+		if has_focus(true) and index == focus_index or (is_instance_valid(proposed_drop_data) and index == proposed_drop_data.index):
 			get_theme_stylebox("swatch_focus", "PalettePreview").draw(ci, rect)
 		
 		var inner_rect := rect.grow(-2)
@@ -344,6 +349,7 @@ func unfocus() -> void:
 
 func _on_focus_entered() -> void:
 	focus_index = 0
+	visible_focus_changed.emit()
 
 
 func get_color(index: int) -> String:

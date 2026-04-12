@@ -380,6 +380,8 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			if not focus_owner.has_focus(true):
 				focus_owner.grab_focus()
+				if focus_owner.has_signal("visible_focus_changed"):
+					focus_owner.visible_focus_changed.emit()
 			else:
 				gather_focus(focus_owner, true).grab_focus()
 		elif ShortcutUtils.is_action_pressed(event, "ui_focus_prev", true):
