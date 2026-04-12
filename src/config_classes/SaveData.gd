@@ -52,16 +52,16 @@ func get_setting_default(setting: String) -> Variant:
 				HighlighterPreset.DEFAULT_LIGHT: return Color("3e3e4080")
 		"highlighting_text_color":
 			match highlighter_preset:
-				HighlighterPreset.DEFAULT_DARK: return Color("d5d7f2ac")
-				HighlighterPreset.DEFAULT_LIGHT: return Color("242433ac")
+				HighlighterPreset.DEFAULT_DARK: return Color("ffffb3aa")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("66660faa")
 		"highlighting_xml_entity_color":
 			match highlighter_preset:
-				HighlighterPreset.DEFAULT_DARK: return Color("ad99ffcc")
-				HighlighterPreset.DEFAULT_LIGHT: return Color("2c187aac")
+				HighlighterPreset.DEFAULT_DARK: return Color("f2cea9bb")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("733f0bbb")
 		"highlighting_cdata_color":
 			match highlighter_preset:
-				HighlighterPreset.DEFAULT_DARK: return Color("ffeda1ac")
-				HighlighterPreset.DEFAULT_LIGHT: return Color("40360dac")
+				HighlighterPreset.DEFAULT_DARK: return Color("ccb87abb")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("4d3900bb")
 		"highlighting_error_color":
 			match highlighter_preset:
 				HighlighterPreset.DEFAULT_DARK: return Color("f55")
@@ -335,21 +335,21 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
-@export var highlighting_text_color := Color("d5d7f2ac"):
+@export var highlighting_text_color := Color("ffffb3aa"):
 	set(new_value):
 		if highlighting_text_color != new_value:
 			highlighting_text_color = new_value
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
-@export var highlighting_xml_entity_color := Color("ad99ffcc"):
+@export var highlighting_xml_entity_color := Color("f2cea9bb"):
 	set(new_value):
 		if highlighting_xml_entity_color != new_value:
 			highlighting_xml_entity_color = new_value
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
-@export var highlighting_cdata_color := Color("ffeda1ac"):
+@export var highlighting_cdata_color := Color("ccb87abb"):
 	set(new_value):
 		if highlighting_cdata_color != new_value:
 			highlighting_cdata_color = new_value
