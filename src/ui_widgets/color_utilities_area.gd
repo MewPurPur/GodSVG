@@ -68,12 +68,13 @@ func rebuild_content(search_text := "") -> void:
 					reserved_colors.append("url(#%s)" % color)
 					reserved_textures[reserved_colors.size() - 1] = State.root_element.get_element_by_id(color).generate_texture()
 	
-	var reserved_swatch_container := PalettePreviewScene.instantiate()
-	reserved_swatch_container.setup_fake(reserved_color_names, reserved_colors, reserved_paints, reserved_textures, color_config.color.paint)
-	reserved_swatch_container.swatch_selected.connect(_on_swatch_selected.bind(reserved_colors))
-	reserved_swatch_container.focus_entered.connect(scroll_to_palette_preview.bind(reserved_swatch_container))
-	palettes_content_container.add_child(reserved_swatch_container)
-	palette_previews.append(reserved_swatch_container)
+	if not reserved_colors.is_empty():
+		var reserved_swatch_container := PalettePreviewScene.instantiate()
+		reserved_swatch_container.setup_fake(reserved_color_names, reserved_colors, reserved_paints, reserved_textures, color_config.color.paint)
+		reserved_swatch_container.swatch_selected.connect(_on_swatch_selected.bind(reserved_colors))
+		reserved_swatch_container.focus_entered.connect(scroll_to_palette_preview.bind(reserved_swatch_container))
+		palettes_content_container.add_child(reserved_swatch_container)
+		palette_previews.append(reserved_swatch_container)
 	
 	for palette in Configs.savedata.get_palettes():
 		if not Configs.savedata.is_palette_valid(palette):

@@ -37,7 +37,9 @@ func sync_color_models() -> void:
 		
 		if idx > Configs.savedata.color_picker_active_models.size():
 			btn.disabled = true
+			btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		else:
+			btn.disabled = false
 			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			if idx == Configs.savedata.color_picker_active_models.size():
 				btn.text = "..."
@@ -62,7 +64,8 @@ func _on_occupied_color_space_button_pressed(index: int, button: Button) -> void
 		btn_arr.append(ContextButton.create_custom(Translator.translate("Move right"),
 				move_color_model_index.bind(index, true), preload("res://assets/icons/MoveRight.svg")))
 	
-	btn_arr.append(ContextButton.create_custom(Translator.translate("Remove"), remove_color_model.bind(index), preload("res://assets/icons/Delete.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Remove"), remove_color_model.bind(index),
+			preload("res://assets/icons/Delete.svg"), Configs.savedata.color_picker_active_models.size() <= 1))
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), button.get_global_rect(), get_viewport())
 
 func _on_free_color_space_button_pressed(button: Button) -> void:

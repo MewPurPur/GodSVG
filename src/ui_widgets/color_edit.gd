@@ -35,14 +35,13 @@ func sync() -> void:
 
 func _on_pressed() -> void:
 	var color_picker := ColorPopupScene.instantiate()
-	color_picker.setup(ColorParser.add_hash_if_hex(value), ColorParser.text_to_color(value))
 	color_picker.alpha_enabled = alpha_enabled
+	color_picker.setup(ColorParser.add_hash_if_hex(value), ColorParser.text_to_color(value))
 	HandlerGUI.popup_under_rect(color_picker, get_global_rect(), get_viewport())
 	color_picker.color_picked.connect(_on_color_picked.unbind(1))
 
 func _on_text_changed(new_text: String) -> void:
-	font_color = Configs.savedata.get_validity_color(
-			not ColorParser.is_valid(ColorParser.add_hash_if_hex(new_text), alpha_enabled))
+	font_color = Configs.savedata.get_validity_color(not ColorParser.is_valid(ColorParser.add_hash_if_hex(new_text), alpha_enabled))
 
 func _draw() -> void:
 	super()

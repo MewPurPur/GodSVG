@@ -159,8 +159,7 @@ static func text_to_palettes(text: String) -> Array[Palette]:
 					var invalid_color := Color(255, 255, 255)
 					var col_str := parser.get_named_attribute_value_safe("value").strip_edges()
 					if ColorParser.text_to_color(col_str, invalid_color) != invalid_color:
-						parsed_color_names.append(
-								parser.get_named_attribute_value_safe("name").strip_edges())
+						parsed_color_names.append(parser.get_named_attribute_value_safe("name").strip_edges())
 						parsed_colors.append(col_str)
 			XMLParser.NODE_ELEMENT_END:
 				if parser.get_node_name() == "palette":

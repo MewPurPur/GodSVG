@@ -18,11 +18,11 @@ func _ready() -> void:
 	color_name_edit.editing_toggled.connect(_on_editing_toggled)
 	color_edit.value_changed.connect(change_color)
 	edit_button.pressed.connect(_on_edit_button_pressed)
+	delete_button.pressed.connect(_on_delete_button_pressed)
 	delete_button.pressed.connect(queue_free)
 	palette.changed_deferred.connect(sync)
 	sync()
 	HandlerGUI.register_focus_sequence(self, [edit_button, color_name_edit, color_edit, delete_button], true)
-
 
 func sync_localization() -> void:
 	%LabelContainer/EditButton.tooltip_text = Translator.translate("Edit color name")
@@ -46,6 +46,10 @@ func _on_editing_toggled(toggled_on: bool) -> void:
 	if not toggled_on:
 		color_name_edit.hide()
 		label_container.show()
+
+func _on_delete_button_pressed() -> void:
+	palette.remove_color(index)
+	palette.changed_deferred.disconnect(sync)
 
 func sync() -> void:
 	var color_name := palette.get_color_name(index)
