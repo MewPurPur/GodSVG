@@ -117,6 +117,10 @@ msgid "Never"
 msgstr "Никогда"
 
 #: src/config_classes/Formatter.gd
+msgid "Spacious"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
 msgstr "Когда короче или равно"
 
@@ -663,10 +667,6 @@ msgid "After"
 msgstr "После"
 
 #: src/ui_widgets/palette_config.gd
-msgid "Add new color"
-msgstr "Добавить новый цвет"
-
-#: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
 msgstr "Палитры без названия не будут отображаться."
 
@@ -781,8 +781,9 @@ msgid "Space out the slash of shorthand tags"
 msgstr "Ставить пробел после тега"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Use pretty formatting"
-msgstr "Использовать красивое форматирование"
+#, fuzzy
+msgid "Formatting style"
+msgstr "Форматирование"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use spaces instead of tabs"
@@ -1598,6 +1599,12 @@ msgstr "Графическое приложение для структурир�
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "свг;вектор;графика;рисование;дизайн;иллюстрация;изображение;искусство;диаграмма;иконка;лого;редактор;путь;форма;2д;код;синий;лис"
+
+#~ msgid "Add new color"
+#~ msgstr "Добавить новый цвет"
+
+#~ msgid "Use pretty formatting"
+#~ msgstr "Использовать красивое форматирование"
 
 #~ msgid "Keep comments"
 #~ msgstr "Сохранять коментарии"

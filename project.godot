@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="GodSVG"
-config/version="1.0-alpha14"
+config/version="1.0-alpha15"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/editor_scene.tscn"
 config/use_custom_user_dir=true
