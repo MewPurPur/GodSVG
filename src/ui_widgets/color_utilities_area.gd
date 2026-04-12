@@ -122,4 +122,4 @@ func _on_swatch_selected(index: int, color_strings: PackedStringArray) -> void:
 	var color := color_strings[index]
 	if color_config.color.paint == color:
 		return
-	color_config.set_color_to_string(color)
+	color_config.set_color_to_paint(color)
