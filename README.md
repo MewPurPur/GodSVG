@@ -25,17 +25,15 @@
 
 Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). Android versions are currently experimental. 
 
-For MacOS, you'll have to [disable Gatekeeper](https://disable-gatekeeper.github.io/), as I don't have the time or money to deal with Apple's gatekeeping. 
+<details><summary>Remove GodSVG from quarantine on MacOS</summary>
 
-<details><summary>Remove GodSVG from quarantine on Mac OS</summary>
+For MacOS, you'll have to [disable Gatekeeper](https://disable-gatekeeper.github.io/), as I don't have the time or money to deal with Apple's gatekeeping.
 
-You can force the system to accept GodSVG, by running the following in the terminal, after having installed GodSVG in the `/Applications` folder. 
-
+Alternatively, you can force the system to accept GodSVG by running the following in the terminal, after having installed GodSVG in the `/Applications` folder: 
 ```
 xattr -d com.apple.quarantine /Applications/GodSVG.app
 ```
 </details>
-
 
 <details><summary>Verifying the APK signature on Android</summary>
 
