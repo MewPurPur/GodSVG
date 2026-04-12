@@ -117,7 +117,7 @@ msgstr "从不"
 
 #: src/config_classes/Formatter.gd
 msgid "Spacious"
-msgstr ""
+msgstr "宽敞"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -780,9 +780,8 @@ msgid "Space out the slash of shorthand tags"
 msgstr "在简写标签斜线前添加空格"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Formatting style"
-msgstr "格式化"
+msgstr "格式化样式"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use spaces instead of tabs"
