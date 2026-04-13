@@ -1,6 +1,7 @@
 extends PanelContainer
 
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
+const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
 const BasicDropdown = preload("res://src/ui_widgets/dropdown_basic.gd")
 const PreviewRect = preload("res://src/ui_widgets/preview_rect.gd")
 
@@ -29,6 +30,10 @@ var dimensions := Vector2.ZERO
 @onready var info_tooltip: MarginContainer = %InfoTooltip
 @onready var quality_related_container: HBoxContainer = %QualityRelatedContainer
 @onready var titled_panel: HTitledPanel = %TitledPanel
+@onready var background_container: HBoxContainer = %BackgroundContainer
+@onready var png_background_color_edit: ColorEdit = %PngBackgroundColorEdit
+@onready var jpeg_background_color_edit: ColorEdit = %JpegBackgroundColorEdit
+@onready var webp_background_color_edit: ColorEdit = %WebpBackgroundColorEdit
 
 
 func _ready() -> void:
@@ -78,6 +83,7 @@ func _ready() -> void:
 	%ScaleContainer/Label.text = Translator.translate("Scale")
 	%WidthContainer/Label.text = Translator.translate("Width") + ":"
 	%HeightContainer/Label.text = Translator.translate("Height") + ":"
+	%BackgroundContainer/BackgroundLabel.text = Translator.translate("Background") + ":"
 	cancel_button.text = Translator.translate("Cancel")
 	export_button.text = Translator.translate("Export")
 	clipboard_button.tooltip_text = Translator.translate("Copy")

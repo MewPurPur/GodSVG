@@ -46,7 +46,7 @@ class PreciseColor:
 		return PackedFloat64Array([r, g, b, a])
 	
 	func equals(color: PreciseColor) -> bool:
-		return r == color.r and g == color.g and b == color.b and a == color.a and paint == color.paint
+		return r == color.r and g == color.g and b == color.b and a == color.a and ColorParser.are_colors_same(paint, color.paint)
 	
 	func set_paint(new_paint: String) -> void:
 		paint = new_paint

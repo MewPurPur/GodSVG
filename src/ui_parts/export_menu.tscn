@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bpr5yv7pbv13g" path="res://src/ui_widgets/dropdown_basic.tscn" id="5_y6ex0"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="6_w1sag"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://assets/icons/Copy.svg" id="7_rt6ij"]
+[ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_widgets/color_edit.tscn" id="8_rt6ij"]
 
 [node name="ExportMenu" type="PanelContainer" unique_id=1854415588]
 anchors_preset = 8
@@ -82,7 +83,7 @@ texture = ExtResource("2_rk3rd")
 
 [node name="TexturePreview" parent="MarginContainer/VBoxContainer/TitledPanel/PreviewContainer" unique_id=293807613 instance=ExtResource("2_ewk0a")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 160)
+custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel" unique_id=1828943266]
@@ -102,6 +103,7 @@ theme_override_constants/margin_left = 8
 [node name="DimensionsLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/HBoxContainer/MarginContainer" unique_id=2117439266]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
 [node name="ClipboardButton" type="Button" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/HBoxContainer" unique_id=1277132014]
@@ -125,7 +127,6 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" unique_id=1142379641]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 
 [node name="Dropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" unique_id=1383013352 instance=ExtResource("5_y6ex0")]
 custom_minimum_size = Vector2(60, 22)
@@ -167,7 +168,6 @@ size_flags_horizontal = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/QualityRelatedContainer/QualityHBox" unique_id=746629822]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 
 [node name="Quality" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/QualityRelatedContainer/QualityHBox" unique_id=1877942302 instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
@@ -176,6 +176,30 @@ min_value = 1.0
 max_value = 100.0
 initial_value = 75.0
 is_float = false
+
+[node name="BackgroundContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" unique_id=1138971744]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BackgroundLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/BackgroundContainer" unique_id=233325954]
+layout_mode = 2
+
+[node name="PngBackgroundHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/BackgroundContainer" unique_id=1725620321]
+layout_mode = 2
+
+[node name="PngBackgroundColorEdit" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/BackgroundContainer/PngBackgroundHBox" unique_id=344180497 instance=ExtResource("8_rt6ij")]
+unique_name_in_owner = true
+layout_mode = 2
+alpha_enabled = true
+
+[node name="JpegBackgroundColorEdit" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/BackgroundContainer" unique_id=270409268 instance=ExtResource("8_rt6ij")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="WebpBackgroundColorEdit" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/BackgroundContainer" unique_id=964026445 instance=ExtResource("8_rt6ij")]
+unique_name_in_owner = true
+layout_mode = 2
+alpha_enabled = true
 
 [node name="SizeContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" unique_id=655521479]
 unique_name_in_owner = true
@@ -198,7 +222,6 @@ theme_override_constants/separation = 4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/LeftPanel/ScaleContainer" unique_id=2075659167]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 
 [node name="Scale" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/LeftPanel/ScaleContainer" unique_id=1820866613 instance=ExtResource("6_w1sag")]
@@ -221,7 +244,6 @@ size_flags_horizontal = 8
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/WidthContainer" unique_id=770391433]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 
 [node name="Width" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/WidthContainer" unique_id=1909763681 instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
@@ -238,7 +260,6 @@ size_flags_horizontal = 8
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/HeightContainer" unique_id=1044777353]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 
 [node name="Height" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/HeightContainer" unique_id=1361280949 instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true

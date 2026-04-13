@@ -1,4 +1,4 @@
-class_name ImageExportData
+class_name ImageExportData extends Resource
 
 const image_types_dict: Dictionary[String, String] = {
 	"svg": "image/svg+xml",
@@ -8,31 +8,35 @@ const image_types_dict: Dictionary[String, String] = {
 	"webp": "image/webp",
 }
 
-signal changed
-
 var format := "svg":
 	set(new_value):
 		if new_value != format:
 			format = new_value
-			changed.emit()
+			emit_changed()
 
 var upscale_amount := 1.0:
 	set(new_value):
 		if new_value != upscale_amount:
 			upscale_amount = new_value
-			changed.emit()
+			emit_changed()
 
 var quality := 0.75:
 	set(new_value):
 		if new_value != quality:
 			quality = new_value
-			changed.emit()
+			emit_changed()
 
 var lossy := false:
 	set(new_value):
 		if new_value != lossy:
 			lossy = new_value
-			changed.emit()
+			emit_changed()
+
+var background_color := Color.TRANSPARENT:
+	set(new_value):
+		if new_value != background_color:
+			background_color = new_value
+			emit_changed()
 
 
 static func svg_to_buffer() -> PackedByteArray:
@@ -55,7 +59,10 @@ func generate_image() -> Image:
 	export_svg.set_attribute("height", export_svg.height)
 	export_svg.set_attribute("width", export_svg.width * upscale_amount)
 	export_svg.set_attribute("height", export_svg.height * upscale_amount)
+	var path_element := ElementRect.new()
+	path_element.set_attribute("width", export_svg.width)
+	path_element.set_attribute("height", export_svg.height)
+	export_svg.insert_child(0, path_element)
 	var img := Image.new()
 	img.load_svg_from_string(SVGParser.root_to_export_markup(export_svg))
-	img.fix_alpha_edges()  # See godot issue 82579.
 	return img
