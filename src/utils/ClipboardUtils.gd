@@ -34,18 +34,19 @@ static func is_supported(format: String) -> bool:
 	
 ## Returns an object containing the error information, as well as an "OK" type.
 static func copy_image(export_data: ImageExportData) -> ClipboardError:
-	if not is_supported(export_data.format):
+	var format := export_data.get_format()
+	if not is_supported(format):
 		return ClipboardError.new(ErrorType.UNSUPPORTED_PLATFORM, [])
-	if export_data.format == "svg":
+	if format == "svg":
 		DisplayServer.clipboard_set(State.get_export_text())
 		return ClipboardError.new(ErrorType.OK, [])
-	var mime_type := ImageExportData.image_types_dict[export_data.format]
+	var mime_type := ImageExportData.image_types_dict[format]
 	var cmd_output := []
 	match OS.get_name():
 		"Windows":
 			var temp_path := _save_temp_to_disk(export_data)
 			var ps_script := ""
-			if export_data.format == "webp":
+			if format == "webp":
 				ps_script = """
 					Add-Type -AssemblyName PresentationCore
 					$uri = [Uri]'file:///%s'
@@ -101,7 +102,7 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 				return ClipboardError.new(ErrorType.FAILED_EXECUTING, cmd_output, " ".join(cmd))
 		"macOS":
 			var temp_path := _save_temp_to_disk(export_data)
-			var e := OS.execute("osascript", ["-e", r'set the clipboard to read file POSIX file \"%s\" as «class %sf»' % [temp_path, export_data.format.to_upper()]], cmd_output, true)
+			var e := OS.execute("osascript", ["-e", r'set the clipboard to read file POSIX file \"%s\" as «class %sf»' % [temp_path, format.to_upper()]], cmd_output, true)
 			_clean_temp(temp_path)
 			return ClipboardError.new(ErrorType.FAILED_EXECUTING if e == -1 else ErrorType.OK, cmd_output, "osascript")
 		"Android":
@@ -127,9 +128,8 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 			return ClipboardError.new(ErrorType.UNSUPPORTED_PLATFORM, cmd_output)
 
 static func _save_temp_to_disk(export_data: ImageExportData) -> String:
-	var image_buf := export_data.image_to_buffer(export_data.generate_image())
-	var file := FileAccess.create_temp(FileAccess.ModeFlags.WRITE, "export", export_data.format, true)
-	file.store_buffer(image_buf)
+	var file := FileAccess.create_temp(FileAccess.ModeFlags.WRITE, "export", export_data.get_format(), true)
+	file.store_buffer(export_data.image_to_buffer(export_data.generate_image()))
 	file.close()
 	return file.get_path_absolute()
 

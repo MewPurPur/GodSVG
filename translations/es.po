@@ -308,29 +308,13 @@ msgstr "Exportar configuración"
 msgid "Format"
 msgstr "Formato"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Lossless"
-msgstr "Sin pérdida"
-
-#: src/ui_parts/export_menu.gd
-msgid "Quality"
-msgstr "Calidad"
-
-#: src/ui_parts/export_menu.gd
-msgid "Scale"
-msgstr "Escala"
-
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Width"
-msgstr "Ancho"
-
-#: src/ui_parts/export_menu.gd
-msgid "Height"
-msgstr "Alto"
-
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Copiar"
+
+#: src/ui_parts/export_menu.gd
+msgid "Estimated size"
+msgstr ""
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -858,6 +842,10 @@ msgstr "Eliminar parámetros innecesarios"
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "Determina la configuración del optimizador predeterminado, que se utiliza al ejecutar manualmente la acción \"{optimize}\"."
 
+#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
+msgid "Lossless"
+msgstr "Sin pérdida"
+
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"
 msgstr "Convertir formas"
@@ -981,6 +969,11 @@ msgstr "Rectángulo de selección"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr "Velocidad"
+
+#: src/ui_widgets/settings_content_generic.gd
+#: src/utils/ImageExportDataRaster.gd
+msgid "Width"
+msgstr "Ancho"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1275,6 +1268,24 @@ msgstr "Si deseas revertir las ediciones realizadas desde la última vez que se 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "¿Quieres guardar los cambios realizados en {file_name}?"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Calidad"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
+#: src/utils/ImageExportDataWEBP.gd
+#, fuzzy
+msgid "Background"
+msgstr "Color del fondo"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Scale"
+msgstr "Escala"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Height"
+msgstr "Alto"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1634,9 +1645,6 @@ msgstr ""
 
 #~ msgid "Handle colors"
 #~ msgstr "Colores de los controladores"
-
-#~ msgid "Background color"
-#~ msgstr "Color del fondo"
 
 #~ msgid "Uncapped framerate"
 #~ msgstr "Velocidad ilimitada de fotogramas"

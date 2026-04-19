@@ -135,7 +135,7 @@ static func text_to_color(color: String, backup := Color.BLACK, allow_alpha := f
 		return backup
 
 ## Compares two color strings by whether they represent the same color.
-static func are_colors_same(col1: String, col2: String) -> bool:
+static func are_colors_same(col1: String, col2: String, allow_alpha := false) -> bool:
 	col1 = col1.strip_edges()
 	col2 = col2.strip_edges()
 	# Handle color keywords that can't be represented as hex.
@@ -153,7 +153,7 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 	
 	# Represent both colors as 6-digit hex codes to serve as basis for comparison.
 	if is_valid_rgb(col1):
-		col1 = text_to_color(col1).to_html(false)
+		col1 = text_to_color(col1).to_html(allow_alpha)
 	elif is_valid_hex(col1) and col1.length() == 4:
 		col1 = col1[1] + col1[1] + col1[2] + col1[2] + col1[3] + col1[3]
 	elif is_valid_named(col1, false):
@@ -161,7 +161,7 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 	col1 = col1.trim_prefix("#")
 	
 	if is_valid_rgb(col2):
-		col2 = text_to_color(col2).to_html(false)
+		col2 = text_to_color(col2).to_html(allow_alpha)
 	elif is_valid_hex(col2) and col2.length() == 4:
 		col2 = col2[1] + col2[1] + col2[2] + col2[2] + col2[3] + col2[3]
 	elif is_valid_named(col2, false):

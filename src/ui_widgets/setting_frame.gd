@@ -75,7 +75,8 @@ func setup_checkbox() -> void:
 func setup_color(alpha_enabled: bool) -> void:
 	widget = ColorEditScene.instantiate()
 	widget.alpha_enabled = alpha_enabled
-	widget.value = getter.call().to_html(alpha_enabled)
+	var color: Color = getter.call()
+	widget.set_initial_value(color.to_html(alpha_enabled and color.a < 1.0))
 	add_child(widget)
 	widget.value_changed.connect(_color_modification.bind(alpha_enabled))
 	type = Type.COLOR
@@ -146,8 +147,8 @@ func _checkbox_modification() -> void:
 	setter.call(not getter.call())
 	post_modification()
 
-func _color_modification(value: String, alpha_enabled: bool) -> void:
-	setter.call(ColorParser.text_to_color(value, Color(), alpha_enabled))
+func _color_modification(value: String, _is_final: bool, _old_final_value: String, alpha_enabled: bool) -> void:
+	setter.call(ColorParser.text_to_color(value, Color.BLACK, alpha_enabled))
 	post_modification()
 
 func _generic_modification(value: Variant) -> void:
@@ -177,9 +178,7 @@ func update_widgets() -> void:
 			widget.set_pressed_no_signal(getter.call())
 		Type.COLOR:
 			var setting_value: Color = getter.call()
-			var show_alpha: bool = widget.alpha_enabled and setting_value.a != 1.0
-			var setting_str := setting_value.to_html(show_alpha)
-			widget.value = setting_str
+			widget.set_value_no_signal(setting_value.to_html(widget.alpha_enabled and setting_value.a != 1.0))
 			reset_button.visible = (not disabled and getter.call().to_html() != default.to_html())
 		Type.DROPDOWN:
 			widget.set_value(getter.call())

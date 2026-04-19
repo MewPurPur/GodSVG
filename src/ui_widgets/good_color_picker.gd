@@ -261,7 +261,8 @@ func sync_to_color() -> void:
 			reset_color_button.disabled = false
 			var accent_hue_color := Color.from_hsv(ThemeUtils.accent_color.h, 1.0, 1.0)
 			reset_color_button.begin_bulk_theme_override()
-			if color_config.color.get_luminance_imprecise() < 0.5:
+			# The average luminoscity of the checkerboard pattern is 2/3.
+			if lerpf(2/3.0, color_config.color.get_luminance_imprecise(), color_config.color.a) < 0.5:
 				reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
 				reset_color_button.add_theme_color_override("icon_focus_color", Color.WHITE)
 				reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.WHITE, 0.76))
@@ -417,6 +418,7 @@ func parse_hslider_input(event: InputEvent, index: int) -> void:
 		elif Utils.is_event_drag_end(event):
 			hsliders_dragged[index] = false
 			color_config.register_visual_change()
+			widgets_arr[index].queue_redraw()
 			return
 	
 	if should_change_offset:
@@ -542,7 +544,7 @@ func _on_primary_slider_draw() -> void:
 	
 	var arrow_modulate := ThemeUtils.tinted_contrast_color
 	if not primary_slider_dragged and primary_slider_scrolled_time < 0:
-		arrow_modulate.a = 0.7
+		arrow_modulate.a = 2/3.0
 	var arrow_y := primary_slider_drawn.size.y * (1 - primary_slider_offset) + primary_slider_drawn.position.y - side_slider_arrow.get_height() / 2.0
 	side_slider_arrow.draw(primary_slider_surface, Vector2(0, arrow_y), arrow_modulate)
 	if primary_slider.has_focus(true):
@@ -553,7 +555,7 @@ func _on_hslider_draw(index: int) -> void:
 	RenderingServer.canvas_item_clear(surface)
 	var arrow_modulate := ThemeUtils.tinted_contrast_color
 	if not hsliders_dragged[index]:
-		arrow_modulate.a *= 0.7
+		arrow_modulate.a *= 2/3.0
 	get_theme_default_font().draw_string(surface, Vector2(-12, 11), ColorPickerUtils.get_channel_letter(index),
 			HORIZONTAL_ALIGNMENT_CENTER, 12, 14, ThemeUtils.text_color)
 	var arrow_x := tracks_arr[index].position.x + tracks_arr[index].size.x *\

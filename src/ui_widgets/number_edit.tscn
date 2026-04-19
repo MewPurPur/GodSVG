@@ -4,6 +4,6 @@
 
 [node name="NumberEdit" type="LineEdit" unique_id=2109030887]
 custom_minimum_size = Vector2(0, 22)
-offset_right = 35.8125
-offset_bottom = 21.0
+offset_right = 68.5
+offset_bottom = 31.0
 script = ExtResource("1_dywrg")

@@ -65,7 +65,7 @@ static func _save_svg_with_custom_final_callback(final_callback: Callable) -> vo
 		_save_svg_as_with_custom_final_callback(final_callback)
 
 static func _save_svg_as_with_custom_final_callback(final_callback: Callable) -> void:
-	open_export_dialog(ImageExportData.new(), final_callback)
+	open_export_dialog(ImageExportDataSVG.new(), final_callback)
 
 static func save_svg() -> void:
 	_save_svg_with_custom_final_callback(Callable())
@@ -75,38 +75,40 @@ static func save_svg_as() -> void:
 
 static func open_export_dialog(export_data: ImageExportData, final_callback := Callable()) -> void:
 	OS.request_permissions()
+	var format := export_data.get_format()
+	
 	if OS.has_feature("web"):
 		var buffer: PackedByteArray
-		if export_data.format == "svg":
-			buffer = ImageExportData.svg_to_buffer()
+		if format == "svg":
+			buffer = ImageExportDataSVG.svg_to_buffer()
 		else:
 			buffer = export_data.image_to_buffer(export_data.generate_image())
-		_web_save(buffer, ImageExportData.image_types_dict[export_data.format])
+		_web_save(buffer, ImageExportData.image_types_dict[format])
 		if final_callback.is_valid():
 			final_callback.call()
 	else:
 		if _is_native_preferred():
-			var native_callback := func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+			var native_callback :=\
+				func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
 					if has_selected:
 						_finish_export(files[0], export_data)
 						if final_callback.is_valid():
 							final_callback.call()
 			
 			DisplayServer.file_dialog_show(
-					TranslationUtils.get_file_dialog_save_mode_title_text(export_data.format),
-					Configs.savedata.get_active_tab_dir(),
-					_choose_file_name() + "." + export_data.format, false,
-					DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
-					PackedStringArray(["*." + export_data.format]), native_callback)
+					TranslationUtils.get_file_dialog_save_mode_title_text(format),
+					Configs.savedata.get_active_tab_dir(), _choose_file_name() + "." + format, false,
+					DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, PackedStringArray(["*." + format]), native_callback)
 		else:
-			var non_native_callback := func(paths: PackedStringArray) -> void:
+			var non_native_callback :=\
+				func(paths: PackedStringArray) -> void:
 					_finish_export(paths[0], export_data)
 					if final_callback.is_valid():
 						final_callback.call()
 			
 			var export_dialog := GoodFileDialogScene.instantiate()
 			export_dialog.setup(Configs.savedata.get_active_tab_dir(), _choose_file_name(),
-					GoodFileDialog.FileMode.SAVE, PackedStringArray([export_data.format]))
+					GoodFileDialog.FileMode.SAVE, PackedStringArray([format]))
 			HandlerGUI.add_menu(export_dialog)
 			export_dialog.files_selected.connect(non_native_callback)
 
@@ -137,20 +139,17 @@ static func open_xml_export_dialog(xml: String, file_name: String) -> void:
 
 static func _finish_export(file_path: String, export_data: ImageExportData) -> void:
 	if file_path.get_extension().is_empty():
-		file_path += "." + export_data.format
-	
+		file_path += "." + export_data.get_format()
 	Configs.savedata.add_recent_dir(file_path.get_base_dir())
 	
-	match export_data.format:
-		"png": export_data.generate_image().save_png(file_path)
-		"jpg", "jpeg": export_data.generate_image().save_jpg(file_path, export_data.quality)
-		"webp": export_data.generate_image().save_webp(file_path, export_data.lossy, export_data.quality)
-		_:
-			# When saving SVG, also modify the file path to associate it with the graphic being edited.
-			var active_tab := Configs.savedata.get_active_tab()
-			active_tab.svg_file_path = file_path
-			active_tab.save_to_bound_path()
-	HandlerGUI.remove_all_menus()  # At least for now this is what's always needed.
+	# When saving SVG, also modify the file path to associate it with the graphic being edited.
+	if export_data is ImageExportDataSVG:
+		var active_tab := Configs.savedata.get_active_tab()
+		active_tab.svg_file_path = file_path
+		active_tab.save_to_bound_path()
+	else:
+		export_data.generate_and_save_image_to_path(file_path)
+	HandlerGUI.remove_all_menus()  # Not right, but at least for now, this is what's always needed.
 
 
 static func _finish_xml_export(file_path: String, xml: String) -> void:

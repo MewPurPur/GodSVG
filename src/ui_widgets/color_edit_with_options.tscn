@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ekji4yw0jqoo"]
+
+[ext_resource type="Script" uid="uid://c4h4br64hqdga" path="res://src/ui_widgets/color_edit_with_options.gd" id="1_3hs86"]
+[ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_widgets/color_edit.tscn" id="1_u7pte"]
+[ext_resource type="PackedScene" uid="uid://b3vra46vse87w" path="res://src/ui_widgets/palette_preview.tscn" id="3_w5ot8"]
+
+[node name="ColorEditWithOptions" type="HBoxContainer" unique_id=503957909]
+offset_right = 72.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_3hs86")
+
+[node name="ColorEdit" parent="." unique_id=344180497 instance=ExtResource("1_u7pte")]
+layout_mode = 2
+focus_mode = 2
+
+[node name="PalettePreview" parent="." unique_id=698504130 instance=ExtResource("3_w5ot8")]
+layout_mode = 2
+size_flags_horizontal = 3

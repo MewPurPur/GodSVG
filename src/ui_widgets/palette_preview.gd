@@ -25,15 +25,22 @@ var fake_colors: PackedStringArray
 var fake_reserved_paints: Dictionary[int, Color]
 var fake_reserved_textures: Dictionary[int, DPITexture]
 
-var index_positions: Dictionary[int, Vector2]
-
+var hover_index := -1:
+	set(new_value):
+		if hover_index != new_value:
+			hover_index = new_value
+			queue_redraw()
 var pressed_index := -1
 var focus_index := -1:
 	set(new_value):
 		if focus_index != new_value:
 			focus_index = new_value
 			queue_redraw()
-var current_value := ""
+var current_value := "":
+	set(new_value):
+		if current_value != new_value:
+			current_value = new_value
+			queue_redraw()
 
 func setup(new_palette: Palette, new_current_value := "") -> void:
 	palette = new_palette
@@ -50,7 +57,7 @@ new_reserved_paints: Dictionary[int, Color], new_reserved_textures: Dictionary[i
 	current_value = new_current_value
 
 func _ready() -> void:
-	mouse_exited.connect(queue_redraw)
+	mouse_exited.connect(_on_mouse_exited)
 	focus_exited.connect(unfocus)
 	focus_entered.connect(_on_focus_entered)
 	swatch_selected.connect(_on_swatch_selected)
@@ -87,6 +94,7 @@ func _gui_input(event: InputEvent) -> void:
 				mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	
 	if event is InputEventMouse:
+		hover_index = get_index_at_pos(event.position)
 		queue_redraw()
 	
 	if ShortcutUtils.is_action_pressed(event, "ui_left", true):
@@ -134,16 +142,12 @@ func _draw() -> void:
 	
 	for index in get_color_count():
 		var rect := get_index_rect(index)
-		var is_hovered := rect.has_point(mouse_pos) and get_rect()
-		if not (HandlerGUI.popup_stack.is_empty() or HandlerGUI.popup_stack.back().is_ancestor_of(self)) or\
-		not (HandlerGUI.menu_stack.is_empty() or HandlerGUI.menu_stack.back().is_ancestor_of(self)):
-			is_hovered = false
 		var color := get_color(index)
 		
 		if not has_focus(true):
 			if not current_value.is_empty() and ColorParser.are_colors_same(ColorParser.add_hash_if_hex(color), current_value):
 				get_theme_stylebox("swatch_selected", "PalettePreview").draw(ci, rect)
-			elif is_hovered:
+			elif hover_index == index:
 				if index == pressed_index:
 					get_theme_stylebox("swatch_selected", "PalettePreview").draw(ci, rect)
 				else:
@@ -162,7 +166,7 @@ func _draw() -> void:
 			if fake_reserved_paints.has(index):
 				parsed_color = fake_reserved_paints[index]
 			else:
-				parsed_color = ColorParser.text_to_color(color)
+				parsed_color = ColorParser.text_to_color(color, Color.BLACK, true)
 			
 			if parsed_color.a != 1:
 				draw_texture_rect(checkerboard, inner_rect, false)
@@ -172,32 +176,29 @@ func _draw() -> void:
 		if configuration_mode and Rect2(Vector2.ZERO, size).has_point(mouse_pos):
 			# Draw the gear icon. Configuration mode will always have a real palette, so it's safe.
 			if not is_instance_valid(proposed_drop_data) or proposed_drop_data.palette != palette:
-				if is_hovered:
+				if hover_index == index:
 					gear_icon.draw(ci, rect.position + (rect.size - gear_icon.get_size()) / 2)
 				continue
 			
 			if is_instance_valid(proposed_drop_data) and not proposed_drop_data.index in [proposed_drop_index - 1, proposed_drop_index]:
 				# Draw the drag-and-drop indicator.
+				var drop_sb: StyleBoxFlat
 				if proposed_drop_index == index:
-					var drop_sb := StyleBoxFlat.new()
-					drop_sb.draw_center = false
-					drop_sb.border_color = Configs.savedata.basic_color_valid
-					drop_sb.set_corner_radius_all(3)
+					drop_sb = StyleBoxFlat.new()
 					drop_sb.border_width_left = 2
-					drop_sb.draw(ci, rect)
 				elif proposed_drop_index == index + 1:
-					var drop_sb := StyleBoxFlat.new()
+					drop_sb = StyleBoxFlat.new()
+					drop_sb.border_width_right = 2
+				if is_instance_valid(drop_sb):
 					drop_sb.draw_center = false
 					drop_sb.border_color = Configs.savedata.basic_color_valid
 					drop_sb.set_corner_radius_all(3)
-					drop_sb.border_width_right = 2
 					drop_sb.draw(ci, rect)
 	
 	if configuration_mode:
 		var rect := get_index_rect(palette.get_color_count())
-		var is_hovered := rect.has_point(mouse_pos)
 		var icon_theming := "icon_normal_color"
-		if is_hovered:
+		if hover_index == palette.get_color_count():
 			if pressed_index == palette.get_color_count():
 				get_theme_stylebox("swatch_selected", "PalettePreview").draw(ci, rect)
 				icon_theming = "icon_pressed_color"
@@ -236,6 +237,13 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	rtl.push_mono()
 	rtl.add_text(get_color(index))
 	return rtl
+
+func _on_mouse_exited() -> void:
+	hover_index = -1
+	queue_redraw()
+
+func _get_minimum_size() -> Vector2:
+	return Vector2(SWATCH_SIZE, SWATCH_SIZE)
 
 
 func get_column_count() -> int:

@@ -1,6 +1,6 @@
 extends VTitledPanel
 
-const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
+const ColorEditWithOptions = preload("res://src/ui_widgets/color_edit_with_options.gd")
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
 const NumberEditScene = preload("res://src/ui_widgets/number_edit.tscn")
@@ -23,6 +23,7 @@ const MAX_ICON_PREVIEW_SIZE = 128
 @onready var preview_top_panel: PanelContainer = $SplitContainer/PreviewTopPanel
 @onready var more_button: Button = $ActionContainer/MoreButton
 @onready var size_label_margins: MarginContainer = %SizeLabelMargins
+@onready var color_edit_with_options: ColorEditWithOptions = $ActionContainer/ColorEditWithOptions
 
 class IconPreviewTileData extends RefCounted:
 	var index := -1
@@ -75,6 +76,9 @@ func _ready() -> void:
 	icon_preview_tiles.mouse_exited.connect(_on_tiles_mouse_exited)
 	more_button.pressed.connect(_on_more_button_pressed)
 	
+	color_edit_with_options.setup(true, PackedStringArray(["#ffffff00", "#ffffff", "#000000"]), Configs.savedata.previews_background.to_html())
+	color_edit_with_options.color_picked.connect(_update_preview_background.unbind(2))
+	
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	
@@ -95,7 +99,7 @@ func _ready() -> void:
 	)
 	icon_preview_tiles.resized.connect(sync_tile_positions)
 	sync_tiles()
-	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, more_button])
+	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, color_edit_with_options, more_button])
 
 
 func sync_theming() -> void:
@@ -322,16 +326,15 @@ func _add_new_tile() -> void:
 	Configs.savedata.preview_sizes = old_icon_sizes
 	sync_tiles()
 
-# TODO reinstate
-#func _update_preview_background(new_value: String) -> void:
-	#Configs.savedata.previews_background = ColorParser.text_to_color(new_value, Color.BLACK, true)
-	#sync_tiles()
-	#if Configs.savedata.previews_background == Color.TRANSPARENT:
-		#scaled_preview_panel.remove_theme_stylebox_override("panel")
-	#else:
-		#var colored_sb := StyleBoxFlat.new()
-		#colored_sb.bg_color = Configs.savedata.previews_background
-		#scaled_preview_panel.add_theme_stylebox_override("panel", colored_sb)
+func _update_preview_background(new_value: String) -> void:
+	Configs.savedata.previews_background = ColorParser.text_to_color(new_value, Color.BLACK, true)
+	sync_tiles()
+	if Configs.savedata.previews_background == Color.TRANSPARENT:
+		scaled_preview_panel.remove_theme_stylebox_override("panel")
+	else:
+		var colored_sb := StyleBoxFlat.new()
+		colored_sb.bg_color = Configs.savedata.previews_background
+		scaled_preview_panel.add_theme_stylebox_override("panel", colored_sb)
 
 
 func _on_more_button_pressed() -> void:

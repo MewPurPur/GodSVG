@@ -310,29 +310,13 @@ msgstr "Exporter la configuration"
 msgid "Format"
 msgstr "Format"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Lossless"
-msgstr "Sans perte"
-
-#: src/ui_parts/export_menu.gd
-msgid "Quality"
-msgstr "Qualité"
-
-#: src/ui_parts/export_menu.gd
-msgid "Scale"
-msgstr "Échelle"
-
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Width"
-msgstr "Largeur"
-
-#: src/ui_parts/export_menu.gd
-msgid "Height"
-msgstr "Hauteur"
-
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Copier"
+
+#: src/ui_parts/export_menu.gd
+msgid "Estimated size"
+msgstr ""
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -869,6 +853,10 @@ msgstr "Retirer les paramètres inutiles"
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
 
+#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
+msgid "Lossless"
+msgstr "Sans perte"
+
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
 msgid "Convert shapes"
@@ -999,6 +987,11 @@ msgstr "Sélectionnez une image"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+#: src/utils/ImageExportDataRaster.gd
+msgid "Width"
+msgstr "Largeur"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1303,6 +1296,24 @@ msgstr "Si vous voulez réinitialiser vos modifications au dernier enregistremen
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Voulez-vous enregistrer les modifications de {file_name} ?"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Qualité"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
+#: src/utils/ImageExportDataWEBP.gd
+#, fuzzy
+msgid "Background"
+msgstr "Couleur d'arrière-plan"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Scale"
+msgstr "Échelle"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Height"
+msgstr "Hauteur"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1665,9 +1676,6 @@ msgstr ""
 
 #~ msgid "Handle colors"
 #~ msgstr "Couleurs des poignées"
-
-#~ msgid "Background color"
-#~ msgstr "Couleur d'arrière-plan"
 
 #~ msgid "Uncapped framerate"
 #~ msgstr "Taux de rafraîchissement sans limite"

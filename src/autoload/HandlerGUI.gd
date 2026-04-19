@@ -656,11 +656,10 @@ func open_export() -> void:
 		message = Translator.translate("The graphic can be exported only as SVG because its size is not defined.")
 	message += "\n\n" + Translator.translate("Do you want to proceed?")
 	
-	var svg_export_data := ImageExportData.new()
 	var confirm_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirm_dialog)
 	confirm_dialog.setup(Translator.translate("Export SVG"), message,
-			Translator.translate("Export"), FileUtils.open_export_dialog.bind(svg_export_data))
+			Translator.translate("Export"), FileUtils.open_export_dialog.bind(ImageExportDataSVG.new()))
 
 
 func update_window_title() -> void:
