@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://d1or2vdui25ww"]
+
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="1_7lhn3"]
+[ext_resource type="Script" uid="uid://dghu0qy5b3crh" path="res://src/ui_widgets/export_scale_config.gd" id="1_crd08"]
+
+[node name="ExportScaleConfig" type="HBoxContainer" unique_id=435197886]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_crd08")
+
+[node name="LeftPanel" type="PanelContainer" parent="." unique_id=1540231317]
+layout_mode = 2
+theme_type_variation = &"ContrastFlatPanel"
+
+[node name="ScaleContainer" type="VBoxContainer" parent="LeftPanel" unique_id=1103310376]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="ScaleLabel" type="Label" parent="LeftPanel/ScaleContainer" unique_id=1410616183]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="ScaleEdit" parent="LeftPanel/ScaleContainer" unique_id=2109030887 instance=ExtResource("1_7lhn3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(47, 22)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="RightPanel" type="PanelContainer" parent="." unique_id=977326471]
+layout_mode = 2
+theme_type_variation = &"ContrastFlatPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightPanel" unique_id=901677]
+layout_mode = 2
+
+[node name="WidthContainer" type="HBoxContainer" parent="RightPanel/VBoxContainer" unique_id=1378546322]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="WidthLabel" type="Label" parent="RightPanel/VBoxContainer/WidthContainer" unique_id=1961906121]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="WidthEdit" parent="RightPanel/VBoxContainer/WidthContainer" unique_id=850866150 instance=ExtResource("1_7lhn3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(47, 22)
+layout_mode = 2
+min_value = 1.0
+is_float = false
+
+[node name="HeightContainer" type="HBoxContainer" parent="RightPanel/VBoxContainer" unique_id=1846056218]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="HeightLabel" type="Label" parent="RightPanel/VBoxContainer/HeightContainer" unique_id=1313145530]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HeightEdit" parent="RightPanel/VBoxContainer/HeightContainer" unique_id=1527201442 instance=ExtResource("1_7lhn3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(47, 22)
+layout_mode = 2
+min_value = 1.0
+is_float = false

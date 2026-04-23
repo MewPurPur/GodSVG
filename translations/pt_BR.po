@@ -309,29 +309,13 @@ msgstr "Configuração de exportação"
 msgid "Format"
 msgstr "Formato"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Lossless"
-msgstr "Sem perdas"
-
-#: src/ui_parts/export_menu.gd
-msgid "Quality"
-msgstr "Qualidade"
-
-#: src/ui_parts/export_menu.gd
-msgid "Scale"
-msgstr "Escala"
-
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Width"
-msgstr "Largura"
-
-#: src/ui_parts/export_menu.gd
-msgid "Height"
-msgstr "Altura"
-
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Copiar"
+
+#: src/ui_parts/export_menu.gd
+msgid "Estimated size"
+msgstr ""
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -859,6 +843,10 @@ msgstr "Remover parâmetros desnecessários"
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "Determina as configurações para o otimizador padrão, usado quando manualmente executando a ação \"{optimize}\"."
 
+#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
+msgid "Lossless"
+msgstr "Sem perdas"
+
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"
 msgstr "Converter formas"
@@ -982,6 +970,11 @@ msgstr "Retângulo de seleção"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr "Velocidade"
+
+#: src/ui_widgets/settings_content_generic.gd
+#: src/utils/ImageExportDataRaster.gd
+msgid "Width"
+msgstr "Largura"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1276,6 +1269,24 @@ msgstr "Se você deseja reverter as suas edições desde o último salvamento, u
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Você deseja salvar as alterações feitas em {file_name}?"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Qualidade"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
+#: src/utils/ImageExportDataWEBP.gd
+#, fuzzy
+msgid "Background"
+msgstr "Cor do plano de fundo"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Scale"
+msgstr "Escala"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Height"
+msgstr "Altura"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1635,9 +1646,6 @@ msgstr "svg;vetor;gráficos;desenho;design;ilustração;imagem;arte;diagrama;íc
 
 #~ msgid "Handle colors"
 #~ msgstr "Cor de alça"
-
-#~ msgid "Background color"
-#~ msgstr "Cor do plano de fundo"
 
 #~ msgid "Reset all to default"
 #~ msgstr "Redefinir tudo para o padrão"

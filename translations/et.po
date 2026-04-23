@@ -308,29 +308,13 @@ msgstr "Ekspordi konfiguratsioon"
 msgid "Format"
 msgstr "Formaat"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Lossless"
-msgstr "Kadudeta"
-
-#: src/ui_parts/export_menu.gd
-msgid "Quality"
-msgstr "Kvaliteet"
-
-#: src/ui_parts/export_menu.gd
-msgid "Scale"
-msgstr "Skaala"
-
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Width"
-msgstr "Laius"
-
-#: src/ui_parts/export_menu.gd
-msgid "Height"
-msgstr "Kõrgus"
-
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Kopeeri"
+
+#: src/ui_parts/export_menu.gd
+msgid "Estimated size"
+msgstr ""
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -852,6 +836,10 @@ msgstr "Eemalda ebavajalikud parameetrid"
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "Määrab vaikeoptimeerija sätted, mida kasutatakse kui käivitatakse \"{optimize}\" toiming."
 
+#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
+msgid "Lossless"
+msgstr "Kadudeta"
+
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"
 msgstr "Teisenda kujundeid"
@@ -974,6 +962,11 @@ msgstr "Valiku ristkülik"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr "Kiirus"
+
+#: src/ui_widgets/settings_content_generic.gd
+#: src/utils/ImageExportDataRaster.gd
+msgid "Width"
+msgstr "Laius"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1266,6 +1259,24 @@ msgstr "Kui te soovite eemaldada muudatused tehtud alates eelmise salvestamise h
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Kas soovite salvestada {file_name} kallal tehtud muudatused?"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Kvaliteet"
+
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
+#: src/utils/ImageExportDataWEBP.gd
+#, fuzzy
+msgid "Background"
+msgstr "Tausta värv"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Scale"
+msgstr "Skaala"
+
+#: src/utils/ImageExportDataRaster.gd
+msgid "Height"
+msgstr "Kõrgus"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1625,9 +1636,6 @@ msgstr "svg;vektor;graafika;joonista;disain;illustratsioon;pilt;kunst;skeem;diag
 
 #~ msgid "Handle colors"
 #~ msgstr "Pideme värv"
-
-#~ msgid "Background color"
-#~ msgstr "Tausta värv"
 
 #~ msgid "Reset all to default"
 #~ msgstr "Lähtesta kõik vaikeväärtustele"

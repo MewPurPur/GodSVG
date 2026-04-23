@@ -46,7 +46,8 @@ class PreciseColor:
 		return PackedFloat64Array([r, g, b, a])
 	
 	func equals(color: PreciseColor) -> bool:
-		return r == color.r and g == color.g and b == color.b and a == color.a and ColorParser.are_colors_same(paint, color.paint)
+		return absf(r - color.r) < 0.000000009 and absf(g - color.g) < 0.000000009 and\
+				absf(b - color.b) < 0.000000009 and absf(a - color.a) < 0.000000009 and ColorParser.are_colors_same(paint, color.paint, true)
 	
 	func set_paint(new_paint: String) -> void:
 		paint = new_paint
@@ -333,10 +334,11 @@ static func set_channel_offset_for_model(color: PreciseColor, channel_index: int
 	
 	match color_model:
 		ColorModel.RGB:
+			# Clamp away from the extremes even in this mode, so you can't set one slider to be less than the others.
 			match channel_index:
-				0: color.set_r(clampf(offset, 0.0, 1.0))
-				1: color.set_g(clampf(offset, 0.0, 1.0))
-				2: color.set_b(clampf(offset, 0.0, 1.0))
+				0: color.set_r(clampf(offset, 0.0001, 0.9999))
+				1: color.set_g(clampf(offset, 0.0001, 0.9999))
+				2: color.set_b(clampf(offset, 0.0001, 0.9999))
 		ColorModel.HSV:
 			match channel_index:
 				0: color.set_hue(clampf(offset, 0.0, 0.9999))

@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://dpn15qyr7xsds" path="res://src/ui_parts/previews.gd" id="1_uogc6"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_pm7dr"]
+[ext_resource type="PackedScene" uid="uid://ekji4yw0jqoo" path="res://src/ui_widgets/color_edit_with_options.tscn" id="3_mmd1s"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://assets/icons/More.svg" id="5_ue2r5"]
 [ext_resource type="Script" uid="uid://bniafq6ma1iln" path="res://src/ui_widgets/ProceduralControl.gd" id="6_6v74c"]
 
-[node name="IconPreiew" type="Container" unique_id=813250713]
+[node name="Previews" type="Container" unique_id=813250713]
 offset_bottom = 169.0
 size_flags_vertical = 3
 script = ExtResource("1_uogc6")
@@ -32,9 +33,13 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_pm7dr")
 
+[node name="ColorEditWithOptions" parent="ActionContainer" unique_id=1672116557 instance=ExtResource("3_mmd1s")]
+layout_mode = 2
+size_flags_horizontal = 6
+
 [node name="MoreButton" type="Button" parent="ActionContainer" unique_id=1528240669]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_ue2r5")
