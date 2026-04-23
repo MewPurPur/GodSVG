@@ -671,7 +671,7 @@ func setup_other_content() -> void:
 	
 	add_section(Translator.translate("Display"))
 	# Prepare parameters for the UI scale setting.
-	var usable_screen_size := HandlerGUI.get_usable_rect()
+	var usable_screen_size := HandlerGUI.get_usable_rect_size()
 	var min_ui_scale := HandlerGUI.get_min_ui_scale(usable_screen_size)
 	var max_ui_scale := HandlerGUI.get_max_ui_scale(usable_screen_size)
 	var dropdown_values := [SaveData.ScalingApproach.AUTO]

@@ -32,6 +32,7 @@ func inject_ui_to_control(main_container: VBoxContainer, dimensions: Vector2) ->
 	quality_edit.min_value = 1.0
 	quality_edit.max_value = 100.0
 	quality_edit.is_float = false
+	quality_edit.initial_value = quality * 100
 	quality_edit.custom_minimum_size.x = 40
 	quality_hbox.add_child(quality_edit)
 	var background_hbox := HBoxContainer.new()
