@@ -58,7 +58,6 @@ func render_handle_textures() -> void:
 	
 	var img := Image.new()
 	img.load_svg_from_string(atlas_svg_markup, Configs.savedata.handle_size)
-	img.fix_alpha_edges()
 	handle_textures = ImageTexture.create_from_image(img)
 	
 	handle_size = Configs.savedata.handle_size * 10.0

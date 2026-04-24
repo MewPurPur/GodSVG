@@ -22,7 +22,6 @@ func setup_svg(svg_text: String, dimensions: Vector2) -> void:
 	var img := Image.new()
 	var err := img.load_svg_from_string(svg_text, scaling_factor)
 	if err == OK:
-		img.fix_alpha_edges()
 		_set_image(img)
 
 func setup_image(config: ImageExportDataRaster) -> void:
