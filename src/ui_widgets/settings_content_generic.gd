@@ -442,7 +442,7 @@ func setup_optimizer_content() -> void:
 	convert_shapes_line.set_attribute("y2", "14")
 	convert_shapes_line.set_attribute("stroke", "gold")
 	convert_shapes_root_element.insert_child(2, convert_shapes_line)
-	var convert_shapes_polygon := ElementLine.new()
+	var convert_shapes_polygon := ElementPolygon.new()
 	convert_shapes_polygon.set_attribute("points", "2 2 9 14 5 12 5 2")
 	convert_shapes_polygon.set_attribute("stroke", "silver")
 	convert_shapes_root_element.insert_child(3, convert_shapes_polygon)
