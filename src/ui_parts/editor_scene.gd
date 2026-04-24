@@ -71,7 +71,7 @@ func update_layout() -> void:
 	var horizontal_splitter := HSplitContainer.new()
 	horizontal_splitter.size_flags_horizontal = Control.SIZE_FILL
 	horizontal_splitter.add_theme_constant_override("separation", 8)
-	horizontal_splitter.split_offset = Configs.savedata.horizontal_splitter_offset
+	horizontal_splitter.split_offsets = PackedInt32Array([Configs.savedata.horizontal_splitter_offset])
 	horizontal_splitter.dragged.connect(_on_horizontal_splitter_dragged)
 	panel_container.add_child(horizontal_splitter)
 	
@@ -98,7 +98,7 @@ func update_layout() -> void:
 	var left_vertical_split_container := VSplitContainer.new()
 	left_vertical_split_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left_vertical_split_container.add_theme_constant_override("separation", 10)
-	left_vertical_split_container.split_offset = Configs.savedata.left_vertical_splitter_offset
+	left_vertical_split_container.split_offsets = PackedInt32Array([Configs.savedata.left_vertical_splitter_offset])
 	left_vertical_split_container.dragged.connect(_on_left_vertical_splitter_dragged)
 	
 	if not top_left.is_empty():

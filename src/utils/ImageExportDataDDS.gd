@@ -22,7 +22,7 @@ func inject_ui_to_control(main_container: VBoxContainer, dimensions: Vector2) ->
 	background_edit.setup(true, PackedStringArray(["#ffffff00", "#ffffff", "#000000"]), background_color)
 	background_hbox.add_child(background_edit)
 	var export_scale_config := ExportScaleConfigScene.instantiate()
-	export_scale_config.setup(dimensions, upscale_amount, 65535)  # The limitation is actually 2 million pixels.
+	export_scale_config.setup(dimensions, upscale_amount, 16383)  # The limitation is actually 2 million pixels.
 	main_container.add_child(export_scale_config)
 	
 	background_edit.color_picked.connect(set_background_color)

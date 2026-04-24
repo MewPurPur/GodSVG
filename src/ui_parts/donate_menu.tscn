@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dq1muwo84c6yv" path="res://assets/icons/foreign_logos/PatreonLogo.svg" id="4_0irlu"]
 
 [node name="DonateMenu" type="PanelContainer" unique_id=1414198719]
-custom_minimum_size = Vector2(300, 240)
+custom_minimum_size = Vector2(280, 220)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

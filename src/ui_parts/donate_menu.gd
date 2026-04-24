@@ -68,21 +68,18 @@ func set_link(new_link: Link) -> void:
 		return
 	
 	var title: String
-	var pros: PackedStringArray
-	var cons: PackedStringArray
+	var pros := PackedStringArray()
+	var cons := PackedStringArray()
 	match new_link:
 		Link.GITHUB:
 			title = "Github Sponsors"
-			pros = PackedStringArray(["Low extra fees", "Can donate an arbitrary amount", "Includes all perks"])
-			cons = PackedStringArray()
+			pros = PackedStringArray(["Low extra fees", "Can donate arbitrary amounts"])
 		Link.KO_FI:
 			title = "Ko-Fi"
-			pros = PackedStringArray(["Low extra fees", "Can donate an arbitrary amount"])
-			cons = PackedStringArray(["No perks"])
+			pros = PackedStringArray(["Low extra fees", "Can donate arbitrary amounts"])
 		Link.PATREON:
 			title = "Patreon"
-			pros = PackedStringArray(["Includes all perks"])
-			cons = PackedStringArray(["Higher extra fees", "Can only donate fixed amounts"])
+			cons = PackedStringArray(["Higher extra fees", "Can't donate arbitrary amounts"])
 	
 	clarifications.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	clarifications.clear()
