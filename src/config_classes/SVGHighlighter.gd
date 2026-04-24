@@ -9,9 +9,9 @@ var unrecognized_attribute_color: Color
 var symbol_color := Color("abc9ff")
 var string_color := Color("a1ffe0")
 var comment_color := Color("d4d6d980")
-var text_color := Color("ffffb3aa")
-var xml_entity_color := Color("f2cea9bb")
-var cdata_color := Color("ccb87abb")
+var text_color := Color("ffffb3cc")
+var xml_entity_color := Color("f2ba91dd")
+var cdata_color := Color("bfac73dd")
 var error_color := Color("ff5555")
 var element_color := Color("ff8ccc"):
 	set(new_value):
