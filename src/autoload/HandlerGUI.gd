@@ -505,21 +505,20 @@ func is_node_on_top_menu_or_popup(node: Node) -> bool:
 func get_window_default_size() -> Vector2i:
 	return Vector2i(ProjectSettings.get_setting("display/window/size/viewport_width"), ProjectSettings.get_setting("display/window/size/viewport_height"))
 
-func get_usable_rect() -> Vector2i:
+func get_usable_rect_size() -> Vector2i:
 	var window := get_window()
 	return Vector2i(DisplayServer.screen_get_usable_rect(DisplayServer.window_get_current_screen()).size - window.get_size_with_decorations() + window.size)
 
 func get_max_ui_scale(usable_screen_size: Vector2i) -> float:
-	var window_default_size := get_window_default_size()
 	# How much can the default size be increased before it takes all usable screen space.
-	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
+	var max_expansion := Vector2(usable_screen_size) / Vector2(get_window_default_size())
 	return clampf(snappedf(minf(max_expansion.x, max_expansion.y) - 0.005, 0.01), 0.75, 4.0)
 
 func get_min_ui_scale(usable_screen_size: Vector2i) -> float:
 	return maxf(snappedf(get_max_ui_scale(usable_screen_size) / 2.0 - 0.125, 0.25), 0.75)
 
 func get_auto_ui_scale() -> float:
-	var usable_screen_size := get_usable_rect()
+	var usable_screen_size := get_usable_rect_size()
 	if usable_screen_size.x == 0 or usable_screen_size.y == 0:
 		return 1.0
 	
@@ -535,8 +534,13 @@ func get_auto_ui_scale() -> float:
 	# The wider the screen, the bigger the automatically chosen UI scale.
 	var aspect_ratio := usable_screen_size.aspect()
 	var auto_scale := max_ui_scale * clampf(aspect_ratio * 0.375, 0.6, 0.8)
+	
+	# Must care about DPI on mobile.
 	if OS.get_name() == "Android":
-		auto_scale *= 1.1  # Default to giving mobile a bit more space.
+		var dpi := DisplayServer.screen_get_dpi(DisplayServer.window_get_current_screen())
+		var min_dpi_based_scale := dpi / 300.0  # Don't let devices go much below this threshold.
+		if min_dpi_based_scale > auto_scale:
+			auto_scale = lerpf(auto_scale, min_dpi_based_scale, 0.75)  # Mostly trust the DPI, but not blindly.
 	return clampf(snappedf(auto_scale, 0.25), min_ui_scale, max_ui_scale)
 
 
@@ -547,7 +551,7 @@ func update_ui_scale() -> void:
 	
 	var old_scale_factor := window.content_scale_factor
 	var window_default_size := get_window_default_size()
-	var usable_screen_size := get_usable_rect()
+	var usable_screen_size := get_usable_rect_size()
 	var max_scale := get_max_ui_scale(usable_screen_size)
 	var min_scale := get_min_ui_scale(usable_screen_size)
 	
@@ -582,8 +586,7 @@ func prompt_quit() -> void:
 	remove_all_menus()
 	var confirm_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirm_dialog)
-	confirm_dialog.setup(Translator.translate("Quit GodSVG"),
-			Translator.translate("Do you want to quit GodSVG?"),
+	confirm_dialog.setup(Translator.translate("Quit GodSVG"), Translator.translate("Do you want to quit GodSVG?"),
 			Translator.translate("Quit"), get_tree().quit)
 
 

@@ -13,6 +13,7 @@ var export_data_resources: Dictionary[String, ImageExportData] = {
 	"png": ImageExportDataPNG.new(),
 	"jpg": ImageExportDataJPG.new(),
 	"webp": ImageExportDataWEBP.new(),
+	"dds": ImageExportDataDDS.new(),
 }
 var current_format := ""
 var dimensions := Vector2.ZERO
@@ -127,7 +128,7 @@ func _on_edited_export_data_changed() -> void:
 	var export_size: int
 	if export_data is ImageExportDataRaster:
 		texture_preview.setup_image(export_data)
-		var export_size_factor: float = export_data.upscale_amount * maxf(dimensions.x, dimensions.y) / texture_preview.MAX_IMAGE_DIMENSION
+		var export_size_factor := roundf(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) / texture_preview.MAX_IMAGE_DIMENSION
 		# Calculate or estimate size. WebP fares better when scaled.
 		if not export_data is ImageExportDataWEBP:
 			export_size_factor **= 2

@@ -314,7 +314,7 @@ msgstr "Копирай"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
-msgstr ""
+msgstr "Oриентировъчен размер"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd

@@ -164,8 +164,9 @@ static func _finish_reference_load(data: Variant, file_path: String, final_callb
 	match Utils.get_lowercase_extension(file_path):
 		"svg": img.load_svg_from_string(data)
 		"png": img.load_png_from_buffer(data)
-		"jpg", "jpeg": img.load_jpg_from_buffer(data)
+		"jpg", "jpeg", "jfif", "jfi", "jif", "jpe": img.load_jpg_from_buffer(data)
 		"webp": img.load_webp_from_buffer(data)
+		"dds": img.load_dds_from_buffer(data)
 	final_callback.call(img)
 
 
@@ -646,4 +647,7 @@ static func _web_save(buffer: PackedByteArray, format_name: String) -> void:
 	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 	if file_name.is_empty():
 		file_name = "export"
+	# Standardize to jpg like on mobile.
+	if format_name == "image/jpeg":
+		file_name += ".jpg"
 	JavaScriptBridge.download_buffer(buffer, file_name, format_name)

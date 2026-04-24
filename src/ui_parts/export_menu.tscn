@@ -126,14 +126,23 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 22)
 layout_mode = 2
-values = ["svg", "png", "jpg", "webp"]
+values = ["svg", "png", "jpg", "webp", "dds"]
 aliases = Dictionary[String, Variant]({
+"DDS": "dds",
+"JFI": "jpg",
+"JFIF": "jpg",
+"JIF": "jpg",
+"JPE": "jpg",
 "JPEG": "jpg",
 "JPG": "jpg",
 "PNG": "png",
 "SVG": "svg",
 "WEBP": "webp",
 "WebP": "webp",
+"jfi": "jpg",
+"jfif": "jpg",
+"jif": "jpg",
+"jpe": "jpg",
 "jpeg": "jpg"
 })
 editing_enabled = true

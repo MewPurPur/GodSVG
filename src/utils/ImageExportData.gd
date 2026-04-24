@@ -5,7 +5,12 @@ const image_types_dict: Dictionary[String, String] = {
 	"png": "image/png",
 	"jpg": "image/jpeg",
 	"jpeg": "image/jpeg",
+	"jfif": "image/jpeg",
+	"jfi": "image/jpeg",
+	"jif": "image/jpeg",
+	"jpe": "image/jpeg",
 	"webp": "image/webp",
+	"dds": "image/vnd-ms.dds",
 }
 
 var borrowed_undo_redo: UndoRedoRef

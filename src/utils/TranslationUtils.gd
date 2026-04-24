@@ -159,7 +159,7 @@ static func _get_extension_readable_name(extension: String) -> String:
 		"svg": return "SVG"
 		"png": return "PNG"
 		"webp": return "WebP"
-		"jpeg": return "JPEG"
-		"jpg": return "JPG"
+		"dds": return "DDS"
+		"jpeg", "jpg", "jfif", "jfi", "jif", "jpe": return "JPEG"
 		"xml": return "XML"
 		_: return extension

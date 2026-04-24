@@ -2,7 +2,6 @@
 class_name ContextPopup extends PanelContainer
 
 const arrow = preload("res://assets/icons/PopupArrow.svg")
-var ci := get_canvas_item()
 
 var focus_index := -1:
 	set(new_value):
@@ -12,6 +11,9 @@ var focus_index := -1:
 
 var buttons: Array[ContextButton] = []
 var align_left := true
+
+func _init() -> void:
+	clip_contents = true
 
 func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
@@ -135,6 +137,10 @@ static func _common_initial_setup() -> ScrollContainer:
 
 
 func _draw() -> void:
+	var vbox := get_child(0).get_child(0)
+	var vbox_ci: RID = vbox.get_canvas_item()
+	RenderingServer.canvas_item_clear(vbox_ci)
+	
 	var text_offset := ContextButton.PADDING
 	for button in buttons:
 		if (is_instance_valid(button.get_icon()) and align_left) or button.type == ContextButton.Type.CHECKBOX:
@@ -143,24 +149,24 @@ func _draw() -> void:
 	
 	for button_idx in buttons.size():
 		var button := buttons[button_idx]
-		var button_rect := Rect2(button.global_position - global_position, button.size)
+		var button_rect := Rect2(button.global_position - vbox.global_position, button.size)
 		if button.disabled:
-			button.get_theme_stylebox("disabled").draw(ci, button_rect)
+			button.get_theme_stylebox("disabled").draw(vbox_ci, button_rect)
 		elif button_idx == focus_index:
-			button.get_theme_stylebox("focus").draw(ci, button_rect)
+			button.get_theme_stylebox("focus").draw(vbox_ci, button_rect)
 		
 		if button.type == ContextButton.Type.ARROW:
 			var icon_color := button.get_theme_color("icon_color")
 			if button_idx == focus_index:
 				icon_color = button.get_theme_color("icon_focus_color")
-			arrow.draw(ci, button_rect.end - (ContextButton.PADDING + 16.0) * Vector2(1, 1), icon_color)
+			arrow.draw(vbox_ci, button_rect.end - (ContextButton.PADDING + 16.0) * Vector2(1, 1), icon_color)
 		elif button.type == ContextButton.Type.CHECKBOX:
 			var theme_type: String
 			if button.toggled_on:
 				theme_type = "checked_disabled" if button.disabled else "checked"
 			else:
 				theme_type = "unchecked_disabled" if button.disabled else "unchecked"
-			get_theme_icon(theme_type, "CheckBox").draw(ci, button_rect.position + ContextButton.PADDING * Vector2(1, 1))
+			get_theme_icon(theme_type, "CheckBox").draw(vbox_ci, button_rect.position + ContextButton.PADDING * Vector2(1, 1))
 		
 		var button_icon := button.get_icon()
 		var button_text := button.get_text()
@@ -173,9 +179,9 @@ func _draw() -> void:
 			
 			var icon_size := button_icon.get_size() * 16.0 / maxi(button_icon.get_width(), button_icon.get_height())
 			if button_text.is_empty() and not align_left:
-				button_icon.draw_rect(ci, Rect2(button_rect.get_center() - icon_size / 2, icon_size), false, icon_color)
+				button_icon.draw_rect(vbox_ci, Rect2(button_rect.get_center() - icon_size / 2, icon_size), false, icon_color)
 			else:
-				button_icon.draw_rect(ci, Rect2(button_rect.position + Vector2(1, 1) * ContextButton.PADDING, icon_size), false, icon_color)
+				button_icon.draw_rect(vbox_ci, Rect2(button_rect.position + Vector2(1, 1) * ContextButton.PADDING, icon_size), false, icon_color)
 		
 		if not button_text.is_empty():
 			var font := button.get_theme_font("font")
@@ -191,7 +197,7 @@ func _draw() -> void:
 			else:
 				text_width -= text_offset * 2
 			
-			font.draw_string(ci, button_rect.position + Vector2(text_offset, 16), button_text,
+			font.draw_string(vbox_ci, button_rect.position + Vector2(text_offset, 16), button_text,
 					HORIZONTAL_ALIGNMENT_LEFT if align_left else HORIZONTAL_ALIGNMENT_CENTER, text_width, font_size, font_color)
 			
 			var button_dim_text := button.get_dim_text()
@@ -199,7 +205,7 @@ func _draw() -> void:
 				var dim_font_color := ThemeUtils.subtle_text_color
 				if button.disabled:
 					dim_font_color.a *= 0.6
-				font.draw_string(ci, button_rect.position + Vector2(0, 16), button_dim_text,
+				font.draw_string(vbox_ci, button_rect.position + Vector2(0, 16), button_dim_text,
 						HORIZONTAL_ALIGNMENT_RIGHT, button_rect.size.x - ContextButton.PADDING, font_size, dim_font_color)
 
 func _input(event: InputEvent) -> void:

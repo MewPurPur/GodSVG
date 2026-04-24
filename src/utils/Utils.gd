@@ -1,6 +1,6 @@
 @abstract class_name Utils
 
-const IMAGE_FORMATS: PackedStringArray = ["png", "jpg", "jpeg", "webp", "svg"]
+const IMAGE_FORMATS: PackedStringArray = ["png", "jpg", "jpeg", "jpe", "jfif", "jfi", "jif", "webp", "dds", "svg"]
 const DYNAMIC_FONT_FORMATS: PackedStringArray = ["ttf", "otf", "woff", "woff2", "pfb", "pfm"]
 
 const MAX_NUMERIC_PRECISION = 6
