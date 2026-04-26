@@ -104,6 +104,7 @@ jobs:
           cp godsvg/no_export/distribution/com.godsvg.GodSVG.desktop AppDir/godsvg.desktop
           cp godsvg/assets/logos/icon.png AppDir/godsvg.png
           cp godsvg/no_export/distribution/com.godsvg.GodSVG.metainfo.xml AppDir/usr/share/metainfo
+          ln -sf godsvg.png AppDir/.DirIcon
           cat > AppDir/AppRun <<EOL
           #!/bin/sh
           exec "\$APPDIR/usr/bin/godsvg" "\$@"
