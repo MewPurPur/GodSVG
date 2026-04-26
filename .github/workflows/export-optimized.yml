@@ -96,6 +96,37 @@ jobs:
           if-no-files-found: error
           retention-days: 28
 
+      - name: Create AppDir structure
+        run: |
+          mkdir -p AppDir/usr/bin
+          mkdir -p AppDir/usr/share/metainfo
+          cp godsvg/build/${FULL_NAME}.x86_64 AppDir/usr/bin/godsvg
+          cp godsvg/no_export/distribution/com.godsvg.GodSVG.desktop AppDir/godsvg.desktop
+          cp godsvg/assets/logos/icon.png AppDir/godsvg.png
+          cp godsvg/no_export/distribution/com.godsvg.GodSVG.metainfo.xml AppDir/usr/share/metainfo
+          cat > AppDir/AppRun <<EOL
+          #!/bin/sh
+          exec "\$APPDIR/usr/bin/godsvg" "\$@"
+          EOL
+          chmod +x AppDir/AppRun
+
+      - name: Download AppImageTool
+        run: |
+          wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+
+      - name: Build AppImage
+        run: |
+          ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir ${{ env.FULL_NAME }}.AppImage
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.FULL_NAME }}.Linux.AppImage
+          path: ${{ env.FULL_NAME }}.AppImage
+          if-no-files-found: error
+          retention-days: 28
+
   build-windows:
     name: Export GodSVG for Windows
     runs-on: ubuntu-latest
