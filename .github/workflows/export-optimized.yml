@@ -91,7 +91,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.FULL_NAME }}.Linux
+          name: ${{ env.FULL_NAME }}.Linux.x86_64
           path: godsvg/build/${{ env.FULL_NAME }}.x86_64
           if-no-files-found: error
           retention-days: 28
