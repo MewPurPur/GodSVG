@@ -9,6 +9,7 @@ on:
 
 env:
   PROJECT_NAME: GodSVG
+  VERSION_NAME: 1.0-alpha15
   # Which Godot version to use for exporting (e.g., 4.4.1, 4.5)
   GODOT_VERSION: 4.6
   # Which Godot release to use for exporting (e.g., stable, dev5, rc2)
@@ -27,8 +28,8 @@ env:
   # - mbedtls: needed for HTTP requests.
   # - text_server_adv: Currently unneeded, but needed for languages like Arabic.
   # - freetype: Something about font rendering.
-  # build_proflie disables a lot of unused classes.
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no d3d12=no vulkan=no use_volk=no disable_3d=yes disable_physics_2d=yes disable_navigation_2d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.gdbuild
+  # build_profile disables a lot of unused classes.
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no d3d12=no vulkan=no use_volk=no disable_3d=yes disable_physics_2d=yes disable_navigation_2d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_webp_enabled=yes module_dds_enabled=yes module_text_server_adv_enabled=yes graphite=no module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.gdbuild
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static
@@ -85,13 +86,13 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build
-          godot --headless --export-release "${{ env.PLATFORM }}" build/${{ env.PROJECT_NAME }}.x86_64
+          godot --headless --export-release "${{ env.PLATFORM }}" build/${{ env.FULL_NAME }}.x86_64
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.PROJECT_NAME }}.Linux
-          path: godsvg/build/${{ env.PROJECT_NAME }}.x86_64
+          name: ${{ env.FULL_NAME }}.Linux
+          path: godsvg/build/${{ env.FULL_NAME }}.x86_64
           if-no-files-found: error
           retention-days: 28
 
@@ -155,13 +156,13 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build
-          godot --headless --export-release "Windows Desktop" build/${{ env.PROJECT_NAME }}.exe
+          godot --headless --export-release "Windows Desktop" build/${{ env.FULL_NAME }}.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.PROJECT_NAME }}.Windows
-          path: godsvg/build/${{ env.PROJECT_NAME }}.exe
+          name: ${{ env.FULL_NAME }}.Windows
+          path: godsvg/build/${{ env.FULL_NAME }}.exe
           if-no-files-found: error
           retention-days: 28
 
@@ -238,13 +239,13 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build
-          godot --headless --export-release "macOS" build/${{ env.PROJECT_NAME }}.zip
+          godot --headless --export-release "macOS" build/${{ env.FULL_NAME }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.PROJECT_NAME }}.MacOS
-          path: godsvg/build/${{ env.PROJECT_NAME }}.zip
+          name: ${{ env.FULL_NAME }}.MacOS
+          path: godsvg/build/${{ env.FULL_NAME }}.zip
           if-no-files-found: error
           retention-days: 28
 
@@ -309,14 +310,14 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build/web
-          godot --headless --export-release "Web" build/web/${{ env.PROJECT_NAME }}.html
+          godot --headless --export-release "Web" build/web/${{ env.FULL_NAME }}.html
           cd build/web
-          mv ${{ env.PROJECT_NAME }}.html index.html
+          mv ${{ env.FULL_NAME }}.html index.html
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.PROJECT_NAME }}.Web
+          name: ${{ env.FULL_NAME }}.Web
           path: godsvg/build/web
           if-no-files-found: error
           retention-days: 28
@@ -401,7 +402,7 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build/android
-          godot --headless --export-debug "Android" build/android/${{ env.PROJECT_NAME }}.Android.debug.apk
+          godot --headless --export-debug "Android" build/android/${{ env.FULL_NAME }}.Android.debug.apk
 
       - name: Export release project
         if: github.event_name == 'workflow_dispatch'
@@ -413,20 +414,20 @@ jobs:
           cd godsvg
           mkdir -p build/android
           echo "${{ secrets.KEYSTORE }}" | base64 -d > /tmp/release.keystore
-          godot --headless --export-release "Android" build/android/${{ env.PROJECT_NAME }}.Android.apk
+          godot --headless --export-release "Android" build/android/${{ env.FULL_NAME }}.Android.apk
 
       - name: Upload debug artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.PROJECT_NAME }}.debug.Android
-          path: godsvg/build/android/${{ env.PROJECT_NAME }}.Android.debug.apk
+          name: ${{ env.FULL_NAME }}.debug.Android
+          path: godsvg/build/android/${{ env.FULL_NAME }}.Android.debug.apk
           if-no-files-found: error
           retention-days: 28
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.PROJECT_NAME }}.Android
-          path: godsvg/build/android/${{ env.PROJECT_NAME }}.Android.apk
+          name: ${{ env.FULL_NAME }}.Android
+          path: godsvg/build/android/${{ env.FULL_NAME }}.Android.apk
           if-no-files-found: ignore
           retention-days: 28
