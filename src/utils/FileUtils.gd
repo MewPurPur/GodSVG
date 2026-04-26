@@ -80,10 +80,10 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 	if OS.has_feature("web"):
 		var buffer: PackedByteArray
 		if format == "svg":
-			buffer = ImageExportDataSVG.svg_to_buffer()
+			buffer = export_data.image_to_buffer(null)
 		else:
 			buffer = export_data.image_to_buffer(export_data.generate_image())
-		_web_save(buffer, ImageExportData.image_types_dict[format])
+		_web_save(buffer, ImageExportData.get_extension_mime_type(format))
 		if final_callback.is_valid():
 			final_callback.call()
 	else:

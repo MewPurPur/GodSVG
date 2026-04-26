@@ -40,7 +40,7 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 	if format == "svg":
 		DisplayServer.clipboard_set(State.get_export_text())
 		return ClipboardError.new(ErrorType.OK, [])
-	var mime_type := ImageExportData.image_types_dict[format]
+	var mime_type := ImageExportData.get_extension_mime_type(format)
 	var cmd_output := []
 	match OS.get_name():
 		"Windows":

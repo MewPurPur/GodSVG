@@ -1,17 +1,13 @@
 @abstract class_name ImageExportData extends Resource
 
-const image_types_dict: Dictionary[String, String] = {
-	"svg": "image/svg+xml",
-	"png": "image/png",
-	"jpg": "image/jpeg",
-	"jpeg": "image/jpeg",
-	"jfif": "image/jpeg",
-	"jfi": "image/jpeg",
-	"jif": "image/jpeg",
-	"jpe": "image/jpeg",
-	"webp": "image/webp",
-	"dds": "image/vnd-ms.dds",
-}
+static func get_extension_mime_type(extension: String) -> String:
+	match extension:
+		"svg": return "image/svg+xml"
+		"png": return "image/png"
+		"jpg", "jpeg", "jpe", "jfif", "jfi", "jif": return "image/jpeg"
+		"webp": return "image/webp"
+		"dds": return "image/vnd-ms.dds"
+	return ""
 
 var borrowed_undo_redo: UndoRedoRef
 
