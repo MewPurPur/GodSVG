@@ -12,6 +12,11 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Calculate env variables
+      shell: bash
+      run: |
+        echo "FULL_NAME=${PROJECT_NAME}_v${VERSION_NAME}" >> $GITHUB_ENV
+
     - name: Hash the build parameters
       id: buildhash
       shell: bash
