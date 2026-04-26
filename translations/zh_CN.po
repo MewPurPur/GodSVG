@@ -314,7 +314,7 @@ msgstr "复制"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
-msgstr ""
+msgstr "预估大小"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -1265,7 +1265,6 @@ msgstr "质量"
 
 #: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
 #: src/utils/ImageExportDataWEBP.gd
-#, fuzzy
 msgid "Background"
 msgstr "背景颜色"
 

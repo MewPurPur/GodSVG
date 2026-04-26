@@ -24,7 +24,7 @@ env:
   # graphite=no I'm not sure why we have disabled, but it's a font-shaping engine.
   # All modules are disabled by default, except for the following:
   # - gdscript, svg: Obvious.
-  # - jpg, webp: For exporting SVGs as different formats.
+  # - jpg, webp, dds: For exporting SVGs as different formats.
   # - mbedtls: needed for HTTP requests.
   # - text_server_adv: Currently unneeded, but needed for languages like Arabic.
   # - freetype: Something about font rendering.
