@@ -11,11 +11,11 @@ env:
   PROJECT_NAME: GodSVG
   VERSION_NAME: 1.0-alpha15
   # Which Godot version to use for exporting (e.g., 4.4.1, 4.5)
-  GODOT_VERSION: 4.6
+  GODOT_VERSION: 4.7
   # Which Godot release to use for exporting (e.g., stable, dev5, rc2)
-  GODOT_RELEASE_TYPE: stable
-  # Commit hash (found in Github releases)
-  GODOT_COMMIT_HASH: 89cea143987d564363e15d207438530651d943ac
+  GODOT_RELEASE_TYPE: beta1
+  # Commit hash (found in Github releases for releases, or blog posts for dev versions)
+  GODOT_COMMIT_HASH: 1c8cc9e7e2c9a083cf726e74193d3824fb38cda4
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # d3d12=no, vulkan=no, use_volk=no since we use Compatibility Renderer. TODO disable rendering_device too (Godot issue #103100).
   # disable_3d=yes since we don't use 3D features. This automatically disables 3D physics, 3D navigation, and XR.
