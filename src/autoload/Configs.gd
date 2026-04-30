@@ -65,6 +65,7 @@ func _enter_tree() -> void:
 	savedata.get_active_tab().activate()
 	sync_canvas_color()
 	sync_locale()
+	sync_vsync()
 	sync_max_fps()
 	sync_keep_screen_on()
 	sync_fonts()
