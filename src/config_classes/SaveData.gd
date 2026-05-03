@@ -16,7 +16,7 @@ func get_setting_default(setting: String) -> Variant:
 		"mono_font_path": return ""
 		"base_color":
 			match theme_preset:
-				ThemePreset.DARK: return Color("10101d")
+				ThemePreset.DARK: return Color("10121d")
 				ThemePreset.LIGHT: return Color("e6f0ff")
 				ThemePreset.BLACK: return Color("000")
 				ThemePreset.GRAY: return Color("262626")
@@ -252,7 +252,7 @@ const CURRENT_VERSION = 1
 			theme_preset = new_value
 			emit_changed()
 
-@export var base_color := Color("10101d"):
+@export var base_color := Color("10121d"):
 	set(new_value):
 		if base_color != new_value:
 			base_color = new_value

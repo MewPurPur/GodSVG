@@ -50,8 +50,7 @@ func _enter_tree() -> void:
 		if is_instance_valid(savedata):
 			savedata_reset_needed = false
 	
-	# Build everything from scratch if the savedata didn't exist or was invalid.
-	# Reset settings to their defaults.
+	# Build everything from scratch if the savedata didn't exist or was invalid. Reset settings to their defaults.
 	if savedata_reset_needed:
 		savedata = SaveData.new()
 		savedata.reset_to_default()

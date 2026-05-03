@@ -218,15 +218,14 @@ static func recalculate_colors() -> void:
 	context_icon_hover_color = tinted_contrast_color
 	context_icon_pressed_color = max_contrast_color
 	
-	flat_button_color_disabled = Color(Color.BLACK, maxf(0.16, 0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2)) if is_theme_dark\
-			else Color(Color.BLACK, 0.055)
+	flat_button_color_disabled = Color(Color.BLACK, maxf(0.16,
+			0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2)) if is_theme_dark else Color(Color.BLACK, 0.055)
 	
 	subtle_flat_panel_color = base_color
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)
 	overlay_panel_inner_color = base_color.lerp(extreme_theme_color, 0.1)
 	overlay_panel_border_color = base_color.lerp(max_contrast_color, 0.32)
-	overlay_panel_border_color.s = minf(overlay_panel_border_color.s * 4.0, lerpf(overlay_panel_border_color.s, 1.0, 0.6))
-	overlay_panel_border_color.v = lerpf(overlay_panel_border_color.v, 1.0, 0.125)
+	overlay_panel_border_color.ok_hsl_s = minf(overlay_panel_border_color.ok_hsl_s * 4.0, lerpf(overlay_panel_border_color.ok_hsl_s, 1.0, 0.6))
 	
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
 	scrollbar_background_color = Color(0, 0, 0, 0.16) if is_theme_dark else Color(0, 0, 0, 0.1)
