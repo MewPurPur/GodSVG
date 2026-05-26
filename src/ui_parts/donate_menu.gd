@@ -16,6 +16,12 @@ var current_link := Link.NONE
 @onready var hbox: HBoxContainer = %MarginContainer/HBoxContainer
 @onready var title_label: Label = %TitleLabel
 
+@onready var button_links: Dictionary[Button, Link] = {
+	github_link: Link.GITHUB,
+	ko_fi_link: Link.KO_FI,
+	patreon_link: Link.PATREON,
+}
+
 func _ready() -> void:
 	for button: Button in [github_link, ko_fi_link, patreon_link]:
 		button.begin_bulk_theme_override()
@@ -32,9 +38,14 @@ func _ready() -> void:
 	github_link.pressed.connect(OS.shell_open.bind("https://github.com/sponsors/MewPurPur"))
 	ko_fi_link.pressed.connect(OS.shell_open.bind("https://ko-fi.com/mewpurpur"))
 	patreon_link.pressed.connect(OS.shell_open.bind("https://www.patreon.com/GodSVG"))
-	github_link.mouse_entered.connect(set_link.bind(Link.GITHUB))
-	ko_fi_link.mouse_entered.connect(set_link.bind(Link.KO_FI))
-	patreon_link.mouse_entered.connect(set_link.bind(Link.PATREON))
+	for button in button_links:
+		var link := button_links[button]
+		button.mouse_entered.connect(set_link.bind(link))
+		button.focus_entered.connect(_on_link_focused.bind(button, link))
+		button.focus_exited.connect(set_link.bind(Link.NONE))
+		button.add_user_signal("visible_focus_changed")
+		button.connect("visible_focus_changed", set_link.bind(link))
+	
 	margin_container.gui_input.connect(_on_margin_container_gui_input)
 	margin_container.mouse_exited.connect(set_link.bind(Link.NONE))
 	HandlerGUI.register_focus_sequence(self, [github_link, ko_fi_link, patreon_link, close_button], true)
@@ -47,16 +58,23 @@ func _on_margin_container_gui_input(event: InputEvent) -> void:
 	if current_link == Link.NONE:
 		return
 	
+	for button in button_links:
+		if button.has_focus(true):
+			return
+	
 	var hbox_pos := hbox.position
 	
 	var padding := Vector2(13, 13)
 	var double_padding := padding * 2.0
 	
-	if (current_link == Link.GITHUB and not Rect2(hbox_pos + github_link.position - padding, github_link.size + double_padding).has_point(event.position)) or\
-	(current_link == Link.KO_FI and not Rect2(hbox_pos + ko_fi_link.position - padding, ko_fi_link.size + double_padding).has_point(event.position)) or\
-	(current_link == Link.PATREON and not Rect2(hbox_pos + patreon_link.position - padding, patreon_link.size + double_padding).has_point(event.position)):
-		set_link(Link.NONE)
+	for button in button_links:
+		if (current_link == button_links[button] and not Rect2(hbox_pos + button.position - padding, button.size + double_padding).has_point(event.position)):
+			set_link(Link.NONE)
 
+
+func _on_link_focused(button: Button, link: Link) -> void:
+	if button.has_focus(true):
+		set_link(link)
 
 func set_link(new_link: Link) -> void:
 	current_link = new_link
