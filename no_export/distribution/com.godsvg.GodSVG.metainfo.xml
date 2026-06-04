@@ -39,5 +39,13 @@
 		</screenshot>
 	</screenshots>
 
-	<developer_name>The GodSVG community</developer_name>
+	<developer id="com.godsvg">
+		<name>The GodSVG community</name>
+	</developer>
+
+	<supports>
+		<control>pointing</control>
+		<control>keyboard</control>
+		<control>tablet</control>
+	</supports>
 </component>
