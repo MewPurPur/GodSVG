@@ -37,6 +37,6 @@ In both cases, once you're finished, you must update the Godot project settings 
 2. Search for the translation you want to change and do so.
 3. Create a pull request with your changes.
 
-# Testing translations
+## Testing translations
 
 Translation changes can be viewed by running the project from the Godot editor. The new language must be added in the project settings to show up.
