@@ -13,6 +13,8 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"Dash length": "Refers to the selection rectangle's animated dashed stroke.",
 	"Excluded": "Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.",
 	"Update check failed": "When checking for updates.",
+	"Points to insert": "Refers to a number of points.",
+	"Set as initial": "Refers to, for example, changing which point in a polygon counts as \"first\".",
 	"Project Founder and Manager": "If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.",
 	"V-Sync": "Stands for \"Vertical Synchronization\".",
 	"Previews": "Refers to a part of the layout where icons are previewed at various sizes.",

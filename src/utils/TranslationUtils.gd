@@ -53,6 +53,8 @@ static func get_action_description(action_name: String, for_button := false) -> 
 		"delete": return Translator.translate("Delete") if for_button else Translator.translate("Delete the selection")
 		"move_up": return Translator.translate("Move up") if for_button else Translator.translate("Move the selection up")
 		"move_down": return Translator.translate("Move down") if for_button else Translator.translate("Move the selection down")
+		"set_as_origin": return Translator.translate("Set as initial") if for_button else Translator.translate("Set point as initial")
+		"reverse_order": return Translator.translate("Reverse order")
 		"find": return Translator.translate("Find")
 		"zoom_in": return Translator.translate("Zoom in")
 		"zoom_out": return Translator.translate("Zoom out")

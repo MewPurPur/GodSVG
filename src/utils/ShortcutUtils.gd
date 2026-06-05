@@ -34,6 +34,8 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"duplicate": true,
 		"move_up": true,
 		"move_down": true,
+		"set_as_origin": true,
+		"reverse_order": true,
 		"delete": true,
 		"find": true,
 		"evaluate": true,
@@ -104,6 +106,8 @@ static func get_action_icon(action: String) -> DPITexture:
 		"duplicate": return preload("res://assets/icons/Duplicate.svg")
 		"move_up": return preload("res://assets/icons/MoveUp.svg")
 		"move_down": return preload("res://assets/icons/MoveDown.svg")
+		"set_as_origin": return preload("res://assets/icons/NewOrigin.svg")
+		"reverse_order": return preload("res://assets/icons/Reverse.svg")
 		"delete": return preload("res://assets/icons/Delete.svg")
 		"find": return preload("res://assets/icons/Search.svg")
 		"zoom_in": return preload("res://assets/icons/Plus.svg")

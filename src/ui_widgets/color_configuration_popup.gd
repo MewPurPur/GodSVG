@@ -1,8 +1,10 @@
 extends PanelContainer
 
+const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
+
 @onready var color_label: Label = %LabelContainer/ColorLabel
 @onready var color_name_edit: BetterLineEdit = %ConfigureContainer/TopContainer/ColorNameEdit
-@onready var color_edit: LineEditButton = %ConfigureContainer/BottomContainer/ColorEdit
+@onready var color_edit: ColorEdit = %ConfigureContainer/BottomContainer/ColorEdit
 @onready var edit_button: Button = $ConfigureContainer/TopContainer/LabelContainer/EditButton
 @onready var delete_button: Button = %ConfigureContainer/BottomContainer/DeleteButton
 @onready var label_container: HBoxContainer = %LabelContainer
@@ -12,11 +14,11 @@ var index: int
 
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
-	color_edit.value = palette.get_color(index)
+	color_edit.set_value(palette.get_color(index))
 	sync_localization()
 	color_name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	color_name_edit.editing_toggled.connect(_on_editing_toggled)
-	color_edit.value_changed.connect(change_color)
+	color_edit.value_changed.connect(change_color.unbind(2))
 	edit_button.pressed.connect(_on_edit_button_pressed)
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	delete_button.pressed.connect(queue_free)

@@ -79,6 +79,9 @@ func get_all_xnode_descendants() -> Array[XNode]:
 
 
 func replace_child(idx: int, new_xnode: XNode) -> void:
+	if not is_instance_valid(new_xnode):
+		return
+	
 	var old_xnode := get_child(idx)
 	_child_elements[idx] = new_xnode
 	if new_xnode.is_element():

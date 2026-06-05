@@ -139,9 +139,14 @@ func get_xnode_editor_rect(xid: PackedInt32Array, inner_index := -1) -> Rect2:
 		return Rect2(xnode_pos + inner_rect.position, inner_rect.size)
 
 # This function assumes there exists an element editor for the corresponding XID.
-func scroll_to_view_element_editor(xid: PackedInt32Array, inner_idx := -1) -> void:
-	# Await the layout shift if inspector was not visible until now, or was resized
-	# since last being visible.
+func scroll_to_view_element_editor(xid: PackedInt32Array, inner_idx := -1, locked := false) -> void:
+	# Await the layout shift if inspector was not visible until now, or was resized since last being visible.
 	# TODO The frame delay is quite noticable and that's sad. Look for another solution.
 	await get_tree().process_frame
-	scroll_container.get_v_scroll_bar().value = get_xnode_editor_rect(xid, inner_idx).position.y - scroll_container.size.y / 5
+	var xnode_editor_rect := get_xnode_editor_rect(xid, inner_idx)
+	var scrollbar := scroll_container.get_v_scroll_bar()
+	if locked:
+		scrollbar.value = xnode_editor_rect.position.y - scroll_container.size.y / 5
+	else:
+		var buffer := scroll_container.size.y / 10
+		scrollbar.value = clampf(scrollbar.value, xnode_editor_rect.end.y - scroll_container.size.y + buffer, xnode_editor_rect.position.y - buffer)

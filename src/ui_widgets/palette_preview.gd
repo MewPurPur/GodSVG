@@ -77,8 +77,8 @@ func _gui_input(event: InputEvent) -> void:
 			elif event.is_released() and pressed_index == get_color_count():
 				popup_add_color()
 				pressed_index = -1
-			elif event.is_released() and pressed_index != -1 and (configuration_mode or not (current_value.is_empty() or\
-			ColorParser.are_colors_same(ColorParser.add_hash_if_hex(get_color(index)), current_value))):
+			elif event.is_released() and pressed_index != -1 and (configuration_mode or current_value.is_empty() or\
+			not ColorParser.are_colors_same(ColorParser.add_hash_if_hex(get_color(index)), current_value)):
 				if index == pressed_index:
 					swatch_selected.emit(index)
 				pressed_index = -1

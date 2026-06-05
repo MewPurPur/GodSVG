@@ -137,7 +137,15 @@ func sync() -> void:
 
 
 func update_parameter(new_value: float, property: String, idx: int) -> void:
-	element.get_attribute(attribute_name).set_command_property(idx, property, new_value)
+	var attrib: AttributePathdata = element.get_attribute(attribute_name)
+	var cmd := attrib.get_command(idx)
+	if cmd.relative:
+		match property:
+			"x", "x1", "x2": new_value += cmd.start_x
+			"y", "y1", "y2": new_value += cmd.start_y
+		attrib.set_command_property(idx, property, new_value)
+	else:
+		attrib.set_command_property(idx, property, new_value)
 	State.save_svg()
 
 func _on_relative_button_pressed() -> void:
@@ -146,6 +154,7 @@ func _on_relative_button_pressed() -> void:
 
 func _on_add_move_button_pressed() -> void:
 	element.get_attribute(attribute_name).insert_command(0, "M")
+	State.normal_select(element.xid, 0, true)
 	State.save_svg()
 
 
@@ -203,7 +212,14 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 			if event.is_pressed():
 				if event.double_click:
 					var subpath_range: Vector2i = element.get_attribute(attribute_name).get_subpath(cmd_idx)
-					State.normal_select(element.xid, subpath_range.x)
+					if event.is_command_or_control_pressed():
+						State.ctrl_select(element.xid, subpath_range.x)
+						# ctrl_select() can deselect the first path command in the subpath, so make sure it's reselected if so.
+						# This way we still get the conveniences in ctrl_select like changing the pivot.
+						if not State.is_selected(element.xid, subpath_range.x):
+							State.ctrl_select(element.xid, subpath_range.x)
+					else:
+						State.normal_select(element.xid, subpath_range.x)
 					State.shift_select(element.xid, subpath_range.y)
 				elif event.is_command_or_control_pressed():
 					State.ctrl_select(element.xid, cmd_idx)
@@ -226,7 +242,10 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 
 func _commands_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
-	for i: int in element.get_attribute(attribute_name).get_command_count():
+	var path_attribute: AttributePathdata = element.get_attribute(attribute_name)
+	var cmd_count := path_attribute.get_command_count()
+	
+	for i in cmd_count:
 		var v_offset := STRIP_HEIGHT * i
 		# Draw the background hover or selection stylebox.
 		var hovered := State.is_hovered(element.xid, i)
@@ -246,7 +265,7 @@ func _commands_draw() -> void:
 		if i == hovered_idx or i == focused_idx:
 			continue
 		
-		var cmd: PathCommand = element.get_attribute(attribute_name).get_command(i)
+		var cmd := path_attribute.get_command(i)
 		var cmd_char := cmd.command_char
 		# Draw the action button.
 		more_icon.draw(ci, Vector2(commands_container.size.x - 19, 4 + v_offset), ThemeUtils.context_icon_normal_color)
@@ -289,21 +308,34 @@ func _commands_draw() -> void:
 			"M", "L", "T": draw_numfield_arr(rect, [3], ["x", "y"], cmd)
 			"H": draw_numfield(rect, "x", cmd)
 			"V": draw_numfield(rect, "y", cmd)
+	
+	for start_idx in path_attribute.subpath_start_indices:
+		var subpath_polyline_positions := PackedVector2Array()
+		var current_subpath := path_attribute.get_subpath(start_idx)
+		var subpath_start := current_subpath.x
+		var subpath_end_shifted := current_subpath.y + 1
+		subpath_polyline_positions += PackedVector2Array([Vector2(0, subpath_start * STRIP_HEIGHT + 8), Vector2(-6, subpath_start * STRIP_HEIGHT + 8),
+				Vector2(-6, subpath_end_shifted * STRIP_HEIGHT - 8), Vector2(0, subpath_end_shifted * STRIP_HEIGHT - 8)])
+		
+		var fully_selected := true
+		for i in range(subpath_start, subpath_end_shifted):
+			if not State.is_selected(element.xid, i):
+				fully_selected = false
+				break
+		var color := Color(ThemeUtils.max_contrast_color, 0.24 if fully_selected else 0.1)
+		RenderingServer.canvas_item_add_polyline(ci, subpath_polyline_positions, PackedColorArray([color, color, color, color]), 2.0 if fully_selected else 1.0)
 
 func draw_angle_numfield(rect: Rect2, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
-			NumstringParser.basic_num_to_text(path_command.get("rot"), true),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), NumstringParser.basic_num_to_text(path_command.get("rot"), true),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 func draw_numfield(rect: Rect2, property: String, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
-			NumstringParser.basic_num_to_text(path_command.get(property)),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), NumstringParser.basic_num_to_text(get_presented_num(path_command, property)),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
-func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: PackedStringArray,
-path_command: PathCommand) -> void:
+func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: PackedStringArray, path_command: PathCommand) -> void:
 	draw_numfield(first_rect, names[0], path_command)
 	for i in spacings.size():
 		first_rect.position.x = first_rect.end.x + spacings[i]
@@ -435,7 +467,7 @@ func setup_path_command_controls(idx: int) -> Control:
 		for i in fields.size():
 			var field := fields[i]
 			var property_name := property_names[i]
-			field.set_value(cmd.get(property_name))
+			field.set_value(get_presented_num(cmd, property_name))
 			field.tooltip_text = property_name
 			field.value_changed.connect(update_parameter.bind(property_name, idx))
 			field.focus_entered.connect(activate_focused.bind(idx))
@@ -457,6 +489,14 @@ func numfield(cmd_idx: int) -> BetterLineEdit:
 	new_field.focus_entered.connect(State.normal_select.bind(element.xid, cmd_idx))
 	return new_field
 
+func get_presented_num(path_command: PathCommand, property: String) -> float:
+	var num: float = path_command.get(property)
+	if path_command.relative:
+		match property:
+			"x", "x1", "x2": num -= path_command.start_x
+			"y", "y1", "y2": num -= path_command.start_y
+	return num
+
 
 func _on_action_button_pressed(action_button_ref: Button) -> void:
 	# Update the selection immediately, since if this path command is
@@ -464,6 +504,5 @@ func _on_action_button_pressed(action_button_ref: Button) -> void:
 	State.normal_select(element.xid, hovered_idx)
 	var viewport := get_viewport()
 	var action_button_rect := action_button_ref.get_global_rect()
-	HandlerGUI.popup_under_rect_center(State.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport),
+	HandlerGUI.popup_under_rect_center(State.get_selection_context(HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport),
 			Utils.LayoutPart.INSPECTOR), action_button_rect, viewport)

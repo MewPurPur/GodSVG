@@ -92,6 +92,11 @@ msgid "Insert After"
 msgstr "Insérer après"
 
 #: src/autoload/State.gd
+#, fuzzy
+msgid "Insert Multiple After"
+msgstr "Insérer après"
+
+#: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
 msgstr "L'onglet est lié au chemin d'accès {file_path}. Voulez-vous restaurer le SVG à partir de ce chemin ?"
 
@@ -298,10 +303,6 @@ msgstr "Dimensions"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "La taille de l'image de prévisualisation est limitée à {dimensions}"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Size"
-msgstr "Taille"
-
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Exporter la configuration"
@@ -313,6 +314,10 @@ msgstr "Format"
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Copier"
+
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
+msgid "Size"
+msgstr "Taille"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
@@ -383,6 +388,11 @@ msgstr "Ouvrir"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
 msgstr "Copier le chemin"
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Open in File Manager"
+msgstr "Afficher dans l'explorateur de fichiers"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
@@ -629,6 +639,19 @@ msgstr "Pipette"
 msgid "Search color"
 msgstr "Rechercher la couleur"
 
+#: src/ui_widgets/export_scale_config.gd
+msgid "Scale"
+msgstr "Échelle"
+
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Width"
+msgstr "Largeur"
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Height"
+msgstr "Hauteur"
+
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
 msgstr ""
@@ -647,6 +670,11 @@ msgstr "Nouvelle forme"
 
 #: src/ui_widgets/id_field.gd
 msgid "No ID"
+msgstr ""
+
+#. Refers to a number of points.
+#: src/ui_widgets/insert_multiple_points_popup.gd
+msgid "Points to insert"
 msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
@@ -698,9 +726,26 @@ msgstr "Copier en tant que XML"
 msgid "Save as XML"
 msgstr "Enregistrer en tant que XML"
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Exact conversions"
+msgstr ""
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Lossy conversions"
+msgstr ""
+
+#: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Relatif"
+
+#: src/ui_widgets/path_insert_popup.gd
+#, fuzzy
+msgid "Keep open"
+msgstr "Garder les commentaires"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
+msgstr ""
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -987,11 +1032,6 @@ msgstr "Sélectionnez une image"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-#: src/utils/ImageExportDataRaster.gd
-msgid "Width"
-msgstr "Largeur"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1297,23 +1337,15 @@ msgstr "Si vous voulez réinitialiser vos modifications au dernier enregistremen
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Voulez-vous enregistrer les modifications de {file_name} ?"
 
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "Qualité"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
-#: src/utils/ImageExportDataWEBP.gd
+#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
+#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
 #, fuzzy
 msgid "Background"
 msgstr "Couleur d'arrière-plan"
 
-#: src/utils/ImageExportDataRaster.gd
-msgid "Scale"
-msgstr "Échelle"
-
-#: src/utils/ImageExportDataRaster.gd
-msgid "Height"
-msgstr "Hauteur"
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Qualité"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1443,6 +1475,19 @@ msgstr "Descendre"
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
 msgstr "Descendre les éléments sélectionnés"
+
+#. Refers to, for example, changing which point in a polygon counts as "first".
+#: src/utils/TranslationUtils.gd
+msgid "Set as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Set point as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Reverse order"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1655,9 +1700,6 @@ msgstr ""
 
 #~ msgid "Use pretty formatting"
 #~ msgstr "Utiliser le formatage élégant"
-
-#~ msgid "Keep comments"
-#~ msgstr "Garder les commentaires"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "Aller au dossier parent"

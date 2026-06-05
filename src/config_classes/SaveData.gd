@@ -689,10 +689,16 @@ func move_color_picker_active_model(index: int, new_index: int) -> void:
 			color_picker_current_shape = new_value
 			emit_changed()
 
-@export var path_command_relative := false:
+@export var path_command_insert_relative := false:
 	set(new_value):
-		if path_command_relative != new_value:
-			path_command_relative = new_value
+		if path_command_insert_relative != new_value:
+			path_command_insert_relative = new_value
+			emit_changed()
+
+@export var path_command_insert_keep_open := false:
+	set(new_value):
+		if path_command_insert_keep_open != new_value:
+			path_command_insert_keep_open = new_value
 			emit_changed()
 
 @export var file_dialog_show_hidden := false:

@@ -49,11 +49,12 @@ func render_handle_textures() -> void:
 		"#" + Configs.savedata.handle_hovered_selected_color.to_html(false),
 	]
 	
-	var atlas_svg_markup := """<svg width="20" height="40" xmlns="http://www.w3.org/2000/svg">"""
+	var atlas_svg_markup := """<svg width="30" height="40" xmlns="http://www.w3.org/2000/svg">"""
 	for i in outer_color_strings.size():
 		var outer_color_string := outer_color_strings[i]
 		atlas_svg_markup += """<circle cx="5" cy="%d" r="3.25" stroke-width="1.5" fill="%s" stroke="%s"/>""" % [5 + i * 10, inner_color_string, outer_color_string]
 		atlas_svg_markup += """<circle cx="15" cy="%d" r="2.4" stroke-width="1.2" fill="%s" stroke="%s"/>""" % [5 + i * 10, inner_color_string, outer_color_string]
+		atlas_svg_markup += """<rect x="22" y="%d" width="6" height="6" stroke-width="1.5" fill="%s" stroke="%s" stroke-linejoin="round"/>""" % [2 + i * 10, inner_color_string, outer_color_string]
 	atlas_svg_markup += "</svg>"
 	
 	var img := Image.new()
@@ -185,12 +186,18 @@ func generate_path_handles(element: Element) -> Array[Handle]:
 			var tangent := PathHandle.new(element, idx, "x2", "y2")
 			tangent.display_mode = Handle.Display.SMALL
 			path_handles.append(tangent)
-		path_handles.append(PathHandle.new(element, idx, "x", "y"))
+		var main_handle := PathHandle.new(element, idx, "x", "y")
+		if path_command.command_char in "Mm":
+			main_handle.display_mode = Handle.Display.SQUARE
+		path_handles.append(main_handle)
 	return path_handles
 
 func generate_polyhandles(element: Element) -> Array[Handle]:
 	var polyhandles: Array[Handle] = []
-	for idx: int in element.get_attribute("points").get_list_size() / 2:
+	var first_handle := PolyHandle.new(element, 0)
+	first_handle.display_mode = Handle.Display.SQUARE
+	polyhandles.append(first_handle)
+	for idx: int in range(1, element.get_attribute("points").get_list_size() / 2):
 		polyhandles.append(PolyHandle.new(element, idx))
 	return polyhandles
 
@@ -463,12 +470,11 @@ func _draw() -> void:
 				
 				var current_mode := Utils.InteractionType.NONE
 				
-				for cmd_idx in pathdata.get_command_count():
+				for cmd_idx in range(1, pathdata.get_command_count()):
 					# Drawing logic.
 					var points := PackedVector2Array()
 					var tangent_points := PackedVector2Array()
 					var cmd := pathdata.get_command(cmd_idx)
-					var relative := cmd.relative
 					
 					current_mode = Utils.InteractionType.NONE
 					if canvas.is_hovered(element.xid, cmd_idx, true):
@@ -479,78 +485,44 @@ func _draw() -> void:
 						current_mode += Utils.InteractionType.SELECTED
 					
 					match cmd.command_char.to_upper():
-						"L":
-							# Line contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var end := cmd.get_start_coords() + v if relative else v
-							points = PackedVector2Array([cmd.get_start_coords(), end])
-						"H":
-							# Horizontal line contour.
-							var v := Vector2(cmd.x, 0)
-							var end := cmd.get_start_coords() + v if relative else Vector2(v.x, cmd.start_y)
-							points = PackedVector2Array([cmd.get_start_coords(), end])
-						"V":
-							# Vertical line contour.
-							var v := Vector2(0, cmd.y)
-							var end := cmd.get_start_coords() + v if relative else Vector2(cmd.start_x, v.y)
-							points = PackedVector2Array([cmd.get_start_coords(), end])
-						"C":
-							# Cubic Bezier curve contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := Vector2(cmd.x1, cmd.y1)
-							var v2 := Vector2(cmd.x2, cmd.y2)
-							var cp1 := cmd.get_start_coords()
-							var cp4 := cp1 + v if relative else v
-							var cp2 := v1 if relative else v1 - cp1
-							var cp3 := v2 - v
-							
-							points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
-							tangent_points.append_array(PackedVector2Array([cp1, cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
-						"S":
-							# Shorthand cubic Bezier curve contour.
-							if cmd_idx == 0:
-								break
-							
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := pathdata.get_implied_S_control(cmd_idx)
-							var v2 := Vector2(cmd.x2, cmd.y2)
-							
-							var cp1 := cmd.get_start_coords()
-							var cp4 := cp1 + v if relative else v
-							var cp2 := v1 if relative else v1 - cp1
-							var cp3 := v2 - v
-							
-							points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
-							tangent_points.append_array(PackedVector2Array([cp1, cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
-						"Q":
-							# Quadratic Bezier curve contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := Vector2(cmd.x1, cmd.y1)
-							var cp1 := cmd.get_start_coords()
-							var cp2 := cp1 + v1 if relative else v1
-							var cp3 := cp1 + v if relative else v
-							
+						"L": # Line contour.
+							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(cmd.x, cmd.y)])
+						"H": # Horizontal line contour.
+							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(cmd.x, cmd.start_y)])
+						"V": # Vertical line contour.
+							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(cmd.start_x, cmd.y)])
+						"C": # Cubic Bezier curve contour.
+							var cp1 := Vector2(cmd.start_x, cmd.start_y)
+							var cp4 := Vector2(cmd.x, cmd.y)
+							var cp2 := Vector2(cmd.x1, cmd.y1)
+							var cp3 := Vector2(cmd.x2, cmd.y2)
+							points = Utils.get_cubic_bezier_points(cp1, cp2 - cp1, cp3 - cp4, cp4)
+							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp3, cp4]))
+						"S": # Shorthand cubic Bezier curve contour.
+							var cp1 := Vector2(cmd.start_x, cmd.start_y)
+							var cp4 := Vector2(cmd.x, cmd.y)
+							var cp2 := Utils64Bit.get_vector(pathdata.get_implied_S_control(cmd_idx))
+							var cp3 := Vector2(cmd.x2, cmd.y2)
+							points = Utils.get_cubic_bezier_points(cp1, cp2 - cp1, cp3 - cp4, cp4)
+							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp3, cp4]))
+						"Q": # Quadratic Bezier curve contour.
+							var cp1 := Vector2(cmd.start_x, cmd.start_y)
+							var cp2 := Vector2(cmd.x1, cmd.y1)
+							var cp3 := Vector2(cmd.x, cmd.y)
 							points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
 							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
-						"T":
-							# Shorthand quadratic Bezier curve contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := pathdata.get_implied_T_control(cmd_idx)
-							
-							var cp1 := cmd.get_start_coords()
-							var cp2 := v1 + cp1 if relative else v1
-							var cp3 := cp1 + v if relative else v
-							
+						"T": # Shorthand quadratic Bezier curve contour.
+							var cp1 := Vector2(cmd.start_x, cmd.start_y)
+							var cp2 := Utils64Bit.get_vector(pathdata.get_implied_T_control(cmd_idx))
+							var cp3 := Vector2(cmd.x, cmd.y)
 							if is_nan(cp2.x) and is_nan(cp2.y):
 								points = PackedVector2Array([cp1, cp3])
 							else:
 								points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
 								tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
-						"A":
-							# Elliptical arc contour.
-							var start := cmd.get_start_coords()
-							var v := Vector2(cmd.x, cmd.y)
-							var end := start + v if relative else v
+						"A": # Elliptical arc contour.
+							var start := Vector2(cmd.start_x, cmd.start_y)
+							var end := Vector2(cmd.x, cmd.y)
 							# Correct for out-of-range radii.
 							if start == end:
 								continue
@@ -617,8 +589,7 @@ func _draw() -> void:
 							
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
-						"Z":
-							# Path closure contour.
+						"Z": # Path closure contour.
 							var prev_M_idx := cmd_idx - 1
 							var prev_M_cmd := pathdata.get_command(prev_M_idx)
 							while prev_M_idx >= 0:
@@ -629,11 +600,7 @@ func _draw() -> void:
 							if prev_M_idx == -1:
 								break
 							
-							var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
-							if prev_M_cmd.relative:
-								end += prev_M_cmd.get_start_coords()
-							
-							points = PackedVector2Array([cmd.get_start_coords(), end])
+							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(prev_M_cmd.x, prev_M_cmd.y)])
 						"M":
 							continue
 					

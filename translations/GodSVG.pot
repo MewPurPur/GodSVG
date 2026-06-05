@@ -91,6 +91,10 @@ msgid "Insert After"
 msgstr ""
 
 #: src/autoload/State.gd
+msgid "Insert Multiple After"
+msgstr ""
+
+#: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
 msgstr ""
 
@@ -295,10 +299,6 @@ msgstr ""
 msgid "Preview image size is limited to {dimensions}"
 msgstr ""
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Size"
-msgstr ""
-
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr ""
@@ -309,6 +309,10 @@ msgstr ""
 
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
+msgid "Size"
 msgstr ""
 
 #: src/ui_parts/export_menu.gd
@@ -378,6 +382,10 @@ msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Open in File Manager"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
@@ -616,6 +624,19 @@ msgstr ""
 msgid "Search color"
 msgstr ""
 
+#: src/ui_widgets/export_scale_config.gd
+msgid "Scale"
+msgstr ""
+
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Width"
+msgstr ""
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Height"
+msgstr ""
+
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
 msgstr ""
@@ -634,6 +655,11 @@ msgstr ""
 
 #: src/ui_widgets/id_field.gd
 msgid "No ID"
+msgstr ""
+
+#. Refers to a number of points.
+#: src/ui_widgets/insert_multiple_points_popup.gd
+msgid "Points to insert"
 msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
@@ -684,8 +710,24 @@ msgstr ""
 msgid "Save as XML"
 msgstr ""
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Exact conversions"
+msgstr ""
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Lossy conversions"
+msgstr ""
+
+#: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
+msgstr ""
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "Keep open"
+msgstr ""
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
 msgstr ""
 
 #: src/ui_widgets/pathdata_field.gd
@@ -959,11 +1001,6 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-#: src/utils/ImageExportDataRaster.gd
-msgid "Width"
 msgstr ""
 
 #. Refers to the selection rectangle's animated dashed stroke.
@@ -1258,21 +1295,13 @@ msgstr ""
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr ""
 
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr ""
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
-#: src/utils/ImageExportDataWEBP.gd
+#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
+#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
 msgid "Background"
 msgstr ""
 
-#: src/utils/ImageExportDataRaster.gd
-msgid "Scale"
-msgstr ""
-
-#: src/utils/ImageExportDataRaster.gd
-msgid "Height"
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
@@ -1402,6 +1431,19 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
+msgstr ""
+
+#. Refers to, for example, changing which point in a polygon counts as "first".
+#: src/utils/TranslationUtils.gd
+msgid "Set as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Set point as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Reverse order"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

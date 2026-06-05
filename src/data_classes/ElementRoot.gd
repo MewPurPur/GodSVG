@@ -177,8 +177,10 @@ func duplicate_xnodes(xids: Array[PackedInt32Array]) -> void:
 			xids_added[xid_idx][-1] += 1
 	xnodes_added.emit(xids_added)
 
-func replace_xnode(id: PackedInt32Array, new_xnode: XNode) -> void:
-	get_xnode(id).parent.replace_child(id[-1], new_xnode)
+func replace_xnodes(xids: Array[PackedInt32Array], new_xnodes: Array[XNode]) -> void:
+	for idx in xids.size():
+		var id := xids[idx]
+		get_xnode(id).parent.replace_child(id[-1], new_xnodes[idx])
 	miscellaneous_xnode_layout_change.emit()
 
 
@@ -208,26 +210,26 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 					if element.can_replace("circle"):
 						if not_applied:
 							return true
-						replace_xnode(element.xid, element.get_replacement("circle"))
+						replace_xnodes([element.xid], [element.get_replacement("circle")])
 				"rect":
 					# If possible, turn rounded rects into circles or ellipses.
 					if element.can_replace("circle"):
 						if not_applied:
 							return true
-						replace_xnode(element.xid, element.get_replacement("circle"))
+						replace_xnodes([element.xid], [element.get_replacement("circle")])
 					elif element.can_replace("ellipse"):
 						if not_applied:
 							return true
-						replace_xnode(element.xid, element.get_replacement("ellipse"))
+						replace_xnodes([element.xid], [element.get_replacement("ellipse")])
 					elif element.get_rx() == 0:
 						# If the rectangle is not rounded, turn it into a path.
 						if not_applied:
 							return true
-						replace_xnode(element.xid, element.get_replacement("path"))
+						replace_xnodes([element.xid], [element.get_replacement("path")])
 				"polygon", "line", "polyline":
 					if not_applied:
 						return true
-					replace_xnode(element.xid, element.get_replacement("path"))
+					replace_xnodes([element.xid], [element.get_replacement("path")])
 		
 		if optimizer.simplify_path_parameters:
 			if element.name == "path":
@@ -258,16 +260,16 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 							conversion_indices.append(cmd_idx)
 							conversion_cmd_chars.append("h")
 					elif cmd_char == "L":
-						if command.x == command.get_start_coords().x:
+						if command.x == command.start_x:
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
 							conversion_cmd_chars.append("V")
-						elif command.y == command.get_start_coords().y:
+						elif command.y == command.start_y:
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
 							conversion_cmd_chars.append("H")
-				pathdata.convert_many_commands(conversion_indices, conversion_cmd_chars)
+				pathdata.convert_commands_multi_method(conversion_indices, conversion_cmd_chars)
 	
 	return false

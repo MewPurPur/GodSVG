@@ -19,12 +19,8 @@ func _init(new_element: Element, command_idx: int, x_name: String, y_name: Strin
 func set_pos(new_pos: PackedFloat64Array) -> void:
 	if precise_pos != new_pos:
 		var path_attribute: AttributePathdata = element.get_attribute(pathdata_name)
-		var cmd := path_attribute.get_command(command_index)
 		if Input.is_key_pressed(KEY_CTRL):
 			new_pos = LineConstraint.constrain(path_attribute, command_index, new_pos, x_param, y_param)
-		if cmd.relative:
-			new_pos[0] -= cmd.start_x
-			new_pos[1] -= cmd.start_y
 		
 		path_attribute.set_command_property(command_index, x_param, new_pos[0])
 		path_attribute.set_command_property(command_index, y_param, new_pos[1])
@@ -38,12 +34,12 @@ func sync() -> void:
 	var command: PathCommand = element.get_attribute(pathdata_name).get_command(command_index)
 	if x_param in command:
 		var command_x: float = command.get(x_param)
-		precise_pos[0] = command.start_x + command_x if command.relative else command_x
+		precise_pos[0] = command_x
 	else:
 		precise_pos[0] = command.start_x
 	if y_param in command:
 		var command_y: float = command.get(y_param)
-		precise_pos[1] = command.start_y + command_y if command.relative else command_y
+		precise_pos[1] = command_y
 	else:
 		precise_pos[1] = command.start_y
 	super()
@@ -66,8 +62,8 @@ class LineConstraint:
 	static func constrain(path: AttributePathdata, idx: int, pos: PackedFloat64Array, x_param: String, y_param: String) -> PackedFloat64Array:
 		var cmd := path.get_command(idx)
 		
-		# Move everything to a local (translated) coordinate system with the new origin at the
-		# connection between the two commands.
+		# Move everything to a local (translated) coordinate system with the new origin at
+		# the connection between the two commands.
 		
 		# Define a line using the connection between the 2 commands and whichever attribute we
 		# care about on the other end. Use vector projection to transform the input.
@@ -112,8 +108,6 @@ class LineConstraint:
 				opposite = [0.0, other.get("y")]
 			"V" when mode == Mode.NEXT:
 				opposite = [other.start_x, other.get("y")]
-		if other.relative:
-			opposite = [opposite[0] + other.start_x, opposite[1] + other.start_y]
 		
 		# Translate opposite point to local.
 		opposite = [opposite[0] - offset[0], opposite[1] - offset[1]]

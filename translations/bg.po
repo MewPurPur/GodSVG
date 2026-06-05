@@ -92,6 +92,10 @@ msgid "Insert After"
 msgstr "Вмъкни отпред"
 
 #: src/autoload/State.gd
+msgid "Insert Multiple After"
+msgstr "Вмъкни няколко отпред"
+
+#: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
 msgstr "Този раздел е свързан с пътеката {file_path}. Искаш ли да го възстановиш SVG-то от тази пътека?"
 
@@ -296,10 +300,6 @@ msgstr "Измерения"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Размерът на визуализацията е ограничен до {dimensions}"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Size"
-msgstr "Размер"
-
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Конфигурация на експорта"
@@ -311,6 +311,10 @@ msgstr "Формат"
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Копирай"
+
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
+msgid "Size"
+msgstr "Размер"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
@@ -380,6 +384,10 @@ msgstr "Отвори"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
 msgstr "Копирай пътеката"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Open in File Manager"
+msgstr "Отвори във файловия мениджър"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
@@ -617,6 +625,19 @@ msgstr "Обратно към цветното колело"
 msgid "Search color"
 msgstr "Търсене на цвят"
 
+#: src/ui_widgets/export_scale_config.gd
+msgid "Scale"
+msgstr "Мащаб"
+
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Width"
+msgstr "Широчина"
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Height"
+msgstr "Височина"
+
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
 msgstr "Няма пътека към файл"
@@ -636,6 +657,11 @@ msgstr "Нова фигура"
 #: src/ui_widgets/id_field.gd
 msgid "No ID"
 msgstr "Няма ID"
+
+#. Refers to a number of points.
+#: src/ui_widgets/insert_multiple_points_popup.gd
+msgid "Points to insert"
+msgstr "Точки за вмъкване"
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -685,9 +711,25 @@ msgstr "Копирай като XML"
 msgid "Save as XML"
 msgstr "Запиши като XML"
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Exact conversions"
+msgstr "Точни превръщания"
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Lossy conversions"
+msgstr "Неточни превръщания"
+
+#: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Относително"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "Keep open"
+msgstr "Задръж отворен"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
+msgstr "Ако е изключено, трябва да задържиш {keys} когато избираш команда, за да оставиш менюто отворено."
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -961,11 +1003,6 @@ msgstr "Правоъгълник за селекцията"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr "Скорост"
-
-#: src/ui_widgets/settings_content_generic.gd
-#: src/utils/ImageExportDataRaster.gd
-msgid "Width"
-msgstr "Широчина"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1259,22 +1296,14 @@ msgstr "Ако искаш да премахнеш промените си и д�
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Искаш ли да запишеш промените върху {file_name}?"
 
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "Качество"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
-#: src/utils/ImageExportDataWEBP.gd
+#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
+#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
 msgid "Background"
 msgstr "Заден фон"
 
-#: src/utils/ImageExportDataRaster.gd
-msgid "Scale"
-msgstr "Мащаб"
-
-#: src/utils/ImageExportDataRaster.gd
-msgid "Height"
-msgstr "Височина"
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Качество"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1404,6 +1433,19 @@ msgstr "Премести надолу"
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
 msgstr "Премести селекцията надолу"
+
+#. Refers to, for example, changing which point in a polygon counts as "first".
+#: src/utils/TranslationUtils.gd
+msgid "Set as initial"
+msgstr "Задай като начална"
+
+#: src/utils/TranslationUtils.gd
+msgid "Set point as initial"
+msgstr "Задай точката като начална"
+
+#: src/utils/TranslationUtils.gd
+msgid "Reverse order"
+msgstr "Обърни подредбата"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"

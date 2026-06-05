@@ -410,7 +410,7 @@ func open_dir_context(dir: String) -> void:
 	var btn_arr: Array[ContextButton] = [
 		ContextButton.create_from_action("ui_accept").add_custom_text(Translator.translate("Open")).add_custom_icon(preload("res://assets/icons/OpenFolder.svg")),
 		ContextButton.create_custom(Translator.translate("Copy path"), DisplayServer.clipboard_set.bind(dir), preload("res://assets/icons/Copy.svg")),
-		ContextButton.create_from_action("open_in_folder"),
+		ContextButton.create_from_action("open_in_folder", false, Translator.translate("Open in File Manager")),
 	]
 	var vp := get_viewport()
 	HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)

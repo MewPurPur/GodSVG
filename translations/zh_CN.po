@@ -92,6 +92,11 @@ msgid "Insert After"
 msgstr "在后方插入"
 
 #: src/autoload/State.gd
+#, fuzzy
+msgid "Insert Multiple After"
+msgstr "在后方插入"
+
+#: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
 msgstr "此分页已被设置到 {file_path}。 你确定要从这个路径恢复SVG吗？"
 
@@ -296,10 +301,6 @@ msgstr "大小"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "预览图像大小被限制到 {dimensions}"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Size"
-msgstr "大小"
-
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "导出设置"
@@ -311,6 +312,10 @@ msgstr "格式"
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "复制"
+
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
+msgid "Size"
+msgstr "大小"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
@@ -380,6 +385,11 @@ msgstr "打开"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
 msgstr "复制路径"
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Open in File Manager"
+msgstr "在文件管理器中显示"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
@@ -617,6 +627,19 @@ msgstr "返回至取色器"
 msgid "Search color"
 msgstr "搜索颜色"
 
+#: src/ui_widgets/export_scale_config.gd
+msgid "Scale"
+msgstr "缩放"
+
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Width"
+msgstr "宽度"
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Height"
+msgstr "高度"
+
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
 msgstr "无文件路经"
@@ -636,6 +659,11 @@ msgstr "新形状"
 #: src/ui_widgets/id_field.gd
 msgid "No ID"
 msgstr "无 ID"
+
+#. Refers to a number of points.
+#: src/ui_widgets/insert_multiple_points_popup.gd
+msgid "Points to insert"
+msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -685,9 +713,26 @@ msgstr "复制为 XML"
 msgid "Save as XML"
 msgstr "保存为 XML"
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Exact conversions"
+msgstr ""
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Lossy conversions"
+msgstr ""
+
+#: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "相对"
+
+#: src/ui_widgets/path_insert_popup.gd
+#, fuzzy
+msgid "Keep open"
+msgstr "保留注释"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
+msgstr ""
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -961,11 +1006,6 @@ msgstr "选择矩形"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr "速度"
-
-#: src/ui_widgets/settings_content_generic.gd
-#: src/utils/ImageExportDataRaster.gd
-msgid "Width"
-msgstr "宽度"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1259,22 +1299,14 @@ msgstr "如果你要放弃编辑且重置 SVG，请使用 {reset_svg}。"
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "你要保存 {file_name} 的更改吗?"
 
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "质量"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
-#: src/utils/ImageExportDataWEBP.gd
+#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
+#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
 msgid "Background"
 msgstr "背景颜色"
 
-#: src/utils/ImageExportDataRaster.gd
-msgid "Scale"
-msgstr "缩放"
-
-#: src/utils/ImageExportDataRaster.gd
-msgid "Height"
-msgstr "高度"
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "质量"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1404,6 +1436,19 @@ msgstr "下移"
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
 msgstr "将选中的元素下移"
+
+#. Refers to, for example, changing which point in a polygon counts as "first".
+#: src/utils/TranslationUtils.gd
+msgid "Set as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Set point as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Reverse order"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1613,9 +1658,6 @@ msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标�
 
 #~ msgid "Use pretty formatting"
 #~ msgstr "使用美化格式"
-
-#~ msgid "Keep comments"
-#~ msgstr "保留注释"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "前往父文件夹"
