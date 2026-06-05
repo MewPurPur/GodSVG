@@ -109,9 +109,9 @@ jobs:
           install -Dm644 godsvg/no_export/distribution/com.godsvg.GodSVG.metainfo.xml -t AppDir/usr/share/metainfo/
           install -Dm644 godsvg/assets/logos/icon.svg AppDir/usr/share/icons/hicolor/scalable/apps/godsvg.svg
 
-      - name: Download AppImageTool
+      - name: Download linuxdeploy
         run: |
-          wget https://github.com/linuxdeploy/linuxdeploy/releases/latest/download/linuxdeploy-x86_64.AppImage
+          wget -q https://github.com/linuxdeploy/linuxdeploy/releases/latest/download/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-x86_64.AppImage
 
       - name: Build AppImage
