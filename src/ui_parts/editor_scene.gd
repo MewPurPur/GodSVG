@@ -50,14 +50,72 @@ func _ready() -> void:
 	update_layout()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
+	Configs.ui_scale_changed.connect(apply_cutout_margin)
+	await get_tree().process_frame
+	apply_cutout_margin()
+	
 	if NativeMenu.has_feature(NativeMenu.FEATURE_GLOBAL_MENU):
 		add_child(MacMenuScene.instantiate())
+
+func apply_cutout_margin() -> void:
+	var stylebox := panel_container.get_theme_stylebox("panel")
+	
+	var radii := _get_rounded_corner_radius()
+	var margin_left = max(radii[0], radii[3]) / 3
+	var margin_right = max(radii[1], radii[2]) / 3
+	var margin_top = max(radii[0], radii[1]) / 3
+	var margin_bottom = max(radii[2], radii[3]) / 3
+	
+	var safe_area := DisplayServer.get_display_safe_area()
+	var s_right_padding = (DisplayServer.screen_get_size().x - safe_area.size.x) - safe_area.position.x
+	margin_left = max(margin_left, safe_area.position.x)
+	margin_right = max(margin_right, s_right_padding)
+	
+	var ui_scale = get_window().content_scale_factor
+	stylebox.content_margin_left = margin_left / ui_scale
+	stylebox.content_margin_right = margin_right / ui_scale
+	stylebox.content_margin_top = margin_top / ui_scale
+	stylebox.content_margin_bottom = margin_bottom / ui_scale
+	panel_container.add_theme_stylebox_override("panel", stylebox)
+
+## Returns an array of rounded corner radii in the following order: [topLeft, topRight, bottomRight, bottomLeft].
+## Available only on Android 12 and later.
+func _get_rounded_corner_radius() -> Array[int]:
+	var result: Array[int] = [0, 0, 0, 0]
+	var android_runtime = Engine.get_singleton("AndroidRuntime")
+	if not android_runtime:
+		return result
+	var version = JavaClassWrapper.wrap("android.os.Build$VERSION")
+	if version.SDK_INT < 31:
+		return result
+
+	var insets = android_runtime.getActivity().getWindow().getDecorView().getRootWindowInsets()
+	var RoundedCorner = JavaClassWrapper.wrap("android.view.RoundedCorner")
+	
+	var topLeft = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)
+	if topLeft != null:
+		result[0] = topLeft.getRadius()
+	
+	var topRight = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_RIGHT)
+	if topRight != null:
+		result[1] = topRight.getRadius()
+	
+	var bottomRight = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_RIGHT)
+	if bottomRight != null:
+		result[2] = bottomRight.getRadius()
+	
+	var bottomLeft = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_LEFT)
+	if bottomLeft != null:
+		result[3] = bottomLeft.getRadius()
+	
+	return result
 
 func sync_theming() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.bg_color = ThemeUtils.overlay_panel_inner_color
 	stylebox.set_content_margin_all(0)
 	panel_container.add_theme_stylebox_override("panel", stylebox)
+	apply_cutout_margin()
 
 
 func update_layout() -> void:
