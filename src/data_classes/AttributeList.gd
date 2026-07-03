@@ -42,8 +42,17 @@ func delete_elements(indices: PackedInt64Array) -> void:
 		_list.remove_at(idx)
 	_sync_after_list_change()
 
-func insert_element(idx: int, value: float) -> void:
-	_list.insert(idx, value)
+func insert_zeros(idx: int, zeros_count: int) -> void:
+	for i in zeros_count:
+		_list.insert(idx, 0.0)
+	_sync_after_list_change()
+
+func rotate_start(start_idx: int) -> void:
+	if _list.is_empty() or start_idx == 0:
+		return
+	var size := _list.size()
+	start_idx = posmod(start_idx, size)
+	_list = _list.slice(start_idx) + _list.slice(0, start_idx)
 	_sync_after_list_change()
 
 

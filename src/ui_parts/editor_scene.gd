@@ -19,9 +19,11 @@ func _ready() -> void:
 	shortcuts.add_shortcut("ui_redo", func() -> void: Configs.savedata.get_active_tab().redo())
 	shortcuts.add_shortcut("ui_cancel", State.clear_all_selections)
 	shortcuts.add_shortcut("delete", State.delete_selected)
+	shortcuts.add_shortcut("duplicate", State.duplicate_selected)
 	shortcuts.add_shortcut("move_up", State.move_up_selected)
 	shortcuts.add_shortcut("move_down", State.move_down_selected)
-	shortcuts.add_shortcut("duplicate", State.duplicate_selected)
+	shortcuts.add_shortcut("set_as_origin", State.set_selected_as_origin)
+	shortcuts.add_shortcut("reverse_order", State.reverse_order_selected)
 	shortcuts.add_shortcut("select_all", State.select_all)
 	
 	shortcuts.add_shortcut("move_absolute", State.respond_to_key_input.bind("M"))
@@ -207,7 +209,7 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 				btn.toggled.connect(func(_toggled_on: bool) -> void:
 						layout_nodes[node_part].visible = (node_part == part))
 			if part == Utils.LayoutPart.INSPECTOR:
-				State.requested_scroll_to_selection.connect(btn.set_pressed.bind(true).unbind(2))
+				State.requested_scroll_to_selection.connect(btn.set_pressed.bind(true).unbind(3))
 			buttons_hbox.add_child(btn)
 			if i == 0:
 				btn.button_pressed = true

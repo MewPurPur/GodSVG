@@ -1,6 +1,8 @@
 # A native class that represents a path command and its parameters.
 @abstract class_name PathCommand
 
+# For this class, all coordinates are absolute. Relative commands are converted only when user-facing.
+
 const translation_dict: Dictionary[String, GDScript] = {
 	"M": MoveCommand,
 	"L": LineCommand,
@@ -19,45 +21,13 @@ const arg_count_dict: Dictionary[String, int] = { "M": 2, "L": 2, "H": 1, "V": 1
 var command_char := ""
 var relative := false
 
-# This must be floats, because 64-bit precision is needed for intermediate operations.
+# These must be floats, because 64-bit precision is needed for intermediate operations.
 var start_x := 0.0
 var start_y := 0.0
 
-func get_start_coords() -> Vector2:
-	return Vector2(start_x, start_y)
-
-
 func toggle_relative() -> void:
-	if relative:
-		relative = false
-		command_char = command_char.to_upper()
-		if "x" in self:
-			self.x += start_x
-		if "x1" in self:
-			self.x1 += start_x
-		if "x2" in self:
-			self.x2 += start_x
-		if "y" in self:
-			self.y += start_y
-		if "y1" in self:
-			self.y1 += start_y
-		if "y2" in self:
-			self.y2 += start_y
-	else:
-		relative = true
-		command_char = command_char.to_lower()
-		if "x" in self:
-			self.x -= start_x
-		if "x1" in self:
-			self.x1 -= start_x
-		if "x2" in self:
-			self.x2 -= start_x
-		if "y" in self:
-			self.y -= start_y
-		if "y1" in self:
-			self.y1 -= start_y
-		if "y2" in self:
-			self.y2 -= start_y
+	command_char = command_char.to_upper() if relative else command_char.to_lower()
+	relative = not relative
 
 
 class MoveCommand extends PathCommand:
@@ -91,6 +61,11 @@ class VerticalLineCommand extends PathCommand:
 		relative = p_rel
 		command_char = "v" if p_rel else "V"
 		y = new_y
+
+class CloseCommand extends PathCommand:
+	func _init(p_rel := false) -> void:
+		relative = p_rel
+		command_char = "z" if p_rel else "Z"
 
 class EllipticalArcCommand extends PathCommand:
 	var rx: float
@@ -162,8 +137,3 @@ class ShorthandCubicBezierCommand extends PathCommand:
 		y2 = new_y2
 		x = new_x
 		y = new_y
-
-class CloseCommand extends PathCommand:
-	func _init(p_rel := false) -> void:
-		relative = p_rel
-		command_char = "z" if p_rel else "Z"

@@ -92,6 +92,11 @@ msgid "Insert After"
 msgstr "Erna Invoegen"
 
 #: src/autoload/State.gd
+#, fuzzy
+msgid "Insert Multiple After"
+msgstr "Erna Invoegen"
+
+#: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
 msgstr "Het tablad is gebonden aan het bestandspad {file_path}. Wil je de SVG herstellen vanuit dit pad?"
 
@@ -297,10 +302,6 @@ msgstr "Afmetingen"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Voorbeeldafbeelding maat is beperkt tot {dimensions}"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Size"
-msgstr "Maat"
-
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Export Configuratie"
@@ -312,6 +313,10 @@ msgstr "Formaat"
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Kopiëren"
+
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
+msgid "Size"
+msgstr "Maat"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
@@ -382,6 +387,11 @@ msgstr "Openen"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
 msgstr "Pad kopiëren"
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Open in File Manager"
+msgstr "Laat zien in Bestandsenverkenner"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
@@ -627,6 +637,19 @@ msgstr "Kleurenplukker"
 msgid "Search color"
 msgstr "Zoekkleur"
 
+#: src/ui_widgets/export_scale_config.gd
+msgid "Scale"
+msgstr "Schaal"
+
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Width"
+msgstr "Breedte"
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Height"
+msgstr "Hoogte"
+
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
 msgstr ""
@@ -645,6 +668,11 @@ msgstr "Nieuwe vorm"
 
 #: src/ui_widgets/id_field.gd
 msgid "No ID"
+msgstr ""
+
+#. Refers to a number of points.
+#: src/ui_widgets/insert_multiple_points_popup.gd
+msgid "Points to insert"
 msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
@@ -696,9 +724,26 @@ msgstr "Als XML kopiëren"
 msgid "Save as XML"
 msgstr "Als XML opslaan"
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Exact conversions"
+msgstr ""
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Lossy conversions"
+msgstr ""
+
+#: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Relatief"
+
+#: src/ui_widgets/path_insert_popup.gd
+#, fuzzy
+msgid "Keep open"
+msgstr "Houdt commentaar bij"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
+msgstr ""
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -979,11 +1024,6 @@ msgstr "Selectie-vierkant"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr "Snelheid"
-
-#: src/ui_widgets/settings_content_generic.gd
-#: src/utils/ImageExportDataRaster.gd
-msgid "Width"
-msgstr "Breedte"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1282,23 +1322,15 @@ msgstr "Als u uw aanpassingen van de vorige opslag wilt ongedaanmaken, gebruik {
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Wilt u de aanpassingen opslaan als {file_name}?"
 
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "Kwaliteit"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
-#: src/utils/ImageExportDataWEBP.gd
+#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
+#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
 #, fuzzy
 msgid "Background"
 msgstr "Achtergrondskleur"
 
-#: src/utils/ImageExportDataRaster.gd
-msgid "Scale"
-msgstr "Schaal"
-
-#: src/utils/ImageExportDataRaster.gd
-msgid "Height"
-msgstr "Hoogte"
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Kwaliteit"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1428,6 +1460,19 @@ msgstr "Omlaag verschuiven"
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
 msgstr "Beweeg de selectie omlaag"
+
+#. Refers to, for example, changing which point in a polygon counts as "first".
+#: src/utils/TranslationUtils.gd
+msgid "Set as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Set point as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Reverse order"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1639,9 +1684,6 @@ msgstr ""
 
 #~ msgid "Use pretty formatting"
 #~ msgstr "Gebruik mooie formattering"
-
-#~ msgid "Keep comments"
-#~ msgstr "Houdt commentaar bij"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "Ga naar bovenliggende map"

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://c4aiw2ikiyugy"]
+
+[ext_resource type="Script" uid="uid://bwwge27kbrgp7" path="res://src/ui_widgets/path_command_conversion_button.gd" id="1_f2bc4"]
+
+[node name="PathCommandButton" type="Button" unique_id=679128148]
+custom_minimum_size = Vector2(0, 24)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+script = ExtResource("1_f2bc4")

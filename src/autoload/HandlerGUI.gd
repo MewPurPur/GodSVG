@@ -110,10 +110,16 @@ func register_focus_sequence(focus_master: Control, sequence: Array[Control], fo
 		)
 	
 	if focus_first_control:
-		for control in sequence:
-			if control.visible:
-				control.grab_focus(true)
-				return
+		focus_first_control_in_sequence(sequence)
+
+func focus_first_control_in_sequence(sequence: Array[Control]) -> void:
+	for control in sequence:
+		if control.visible and control.focus_mode != Control.FocusMode.FOCUS_NONE:
+			control.grab_focus(true)
+			return
+		elif control in focus_sequences:
+			focus_first_control_in_sequence(focus_sequences[control])
+			return
 
 ## Removes all shortcuts registered to a node.
 func forget_focus_sequence(focus_master: Control) -> void:
@@ -396,51 +402,11 @@ func _input(event: InputEvent) -> void:
 			if not focus_owner.has_focus(true):
 				get_viewport().set_input_as_handled()
 
-# Get the previous or the next focus to the given control.
-func gather_focus(control: Control, is_next: bool) -> Control:
-	var new_focus := _gather_focus_internal(control, is_next)
-	while not (is_instance_valid(new_focus) and new_focus.is_visible_in_tree() and new_focus.focus_mode == Control.FOCUS_ALL):
-		var new_focus_candidate := _gather_focus_internal(new_focus, is_next)
-		if not is_instance_valid(new_focus_candidate):
-			return control
-		new_focus = new_focus_candidate
-	return new_focus
-
-func _gather_focus_internal(control: Control, is_next: bool) -> Control:
-	if is_next and control in focus_sequences:
-		var children: Array[Control] = focus_sequences[control]
-		if not children.is_empty():
-			return children[0]
-	var current := control
-	while true:
-		var parent: Control
-		for p in focus_sequences:
-			if current in focus_sequences[p]:
-				parent = p
-				break
-		if parent == null:
-			return null
-		
-		var siblings: Array[Control] = focus_sequences[parent]
-		var next_idx := siblings.find(current) + (1 if is_next else -1)
-		if next_idx >= 0 and next_idx < siblings.size():
-			var descendant := siblings[next_idx]
-			while descendant in focus_sequences:
-				var children: Array[Control] = focus_sequences[descendant]
-				if children.is_empty():
-					break
-				descendant = children[0 if is_next else -1]
-			return descendant
-		if not is_next:
-			return parent
-		current = parent
-	return current
-
-
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventAction or event is InputEventKey):
 		return
 	_react_to_action(event)
+
 
 func _react_to_action(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "ui_cancel"):
@@ -493,6 +459,47 @@ func _react_to_action(event: InputEvent) -> void:
 							remove_all_popups()
 						get_viewport().set_input_as_handled()
 						return
+
+
+# Get the previous or the next focus to the given control.
+func gather_focus(control: Control, is_next: bool) -> Control:
+	var new_focus := _gather_focus_internal(control, is_next)
+	while not (is_instance_valid(new_focus) and new_focus.is_visible_in_tree() and new_focus.focus_mode == Control.FOCUS_ALL):
+		var new_focus_candidate := _gather_focus_internal(new_focus, is_next)
+		if not is_instance_valid(new_focus_candidate):
+			return control
+		new_focus = new_focus_candidate
+	return new_focus
+
+func _gather_focus_internal(control: Control, is_next: bool) -> Control:
+	if is_next and control in focus_sequences:
+		var children: Array[Control] = focus_sequences[control]
+		if not children.is_empty():
+			return children[0]
+	var current := control
+	while true:
+		var parent: Control
+		for p in focus_sequences:
+			if current in focus_sequences[p]:
+				parent = p
+				break
+		if parent == null:
+			return null
+		
+		var siblings: Array[Control] = focus_sequences[parent]
+		var next_idx := siblings.find(current) + (1 if is_next else -1)
+		if next_idx >= 0 and next_idx < siblings.size():
+			var descendant := siblings[next_idx]
+			while descendant in focus_sequences:
+				var children: Array[Control] = focus_sequences[descendant]
+				if children.is_empty():
+					break
+				descendant = children[0 if is_next else -1]
+			return descendant
+		if not is_next:
+			return parent
+		current = parent
+	return current
 
 
 func is_node_on_top_menu(node: Node) -> bool:

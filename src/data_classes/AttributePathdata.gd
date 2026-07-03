@@ -1,12 +1,30 @@
 ## The "d" attribute of ElementPath.
 class_name AttributePathdata extends Attribute
 
+# Every conversion method should be supported by every path command.
+enum Conversion {
+	ANY_TO_MOVEMENT,
+	ANY_TO_LINE,
+	ANY_TO_HORIZONTAL_LINE,
+	ANY_TO_VERTICAL_LINE,
+	ANY_TO_CLOSURE,
+	ANY_TO_ELLIPTICAL_ARC,
+	ANY_TO_QUADRATIC_BEZIER_CURVE,
+	ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE,
+	ANY_TO_CUBIC_BEZIER_CURVE,
+	ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE,
+}
+
 var _commands: Array[PathCommand]
 var subpath_start_indices: PackedInt32Array
 
 func _sync() -> void:
 	_commands = parse_pathdata(get_value())
-	parse_properties()
+	# Sync all related data.
+	subpath_start_indices.clear()
+	for idx in _commands.size():
+		if _commands[idx] is PathCommand.MoveCommand:
+			subpath_start_indices.append(idx)
 
 func format(text: String, formatter: Formatter) -> String:
 	return path_commands_to_text(parse_pathdata(text), formatter)
@@ -15,47 +33,10 @@ func format(text: String, formatter: Formatter) -> String:
 func get_commands() -> Array[PathCommand]:
 	return _commands
 
-func set_commands(new_commands: Array[PathCommand]) -> void:
-	_commands = new_commands
-	sync_after_commands_change()
-
-func sync_after_commands_change() -> void:
+func sync_after_commands_change(apply_start_positions_sync := true) -> void:
+	if apply_start_positions_sync:
+		sync_start_positions()
 	set_value(path_commands_to_text(_commands))
-
-
-func parse_properties() -> void:
-	# Start points are absolute. Individual floats, since 64-bit precision is needed here.
-	var last_end_point_x := 0.0
-	var last_end_point_y := 0.0
-	var curr_subpath_start_x := 0.0
-	var curr_subpath_start_y := 0.0
-	for idx in _commands.size():
-		var command := _commands[idx]
-		command.start_x = last_end_point_x
-		command.start_y = last_end_point_y
-		
-		if command is PathCommand.MoveCommand:
-			subpath_start_indices.append(idx)
-			curr_subpath_start_x = command.start_x + command.x if command.relative else command.x
-			curr_subpath_start_y = command.start_y + command.y if command.relative else command.y
-		elif idx > 0 and _commands[idx - 1] is PathCommand.CloseCommand:
-			subpath_start_indices.append(idx)
-		elif command is PathCommand.CloseCommand:
-			last_end_point_x = curr_subpath_start_x
-			last_end_point_y = curr_subpath_start_y
-			continue
-		
-		# Prepare for the next iteration.
-		if command.relative:
-			if "x" in command:
-				last_end_point_x += command.x
-			if "y" in command:
-				last_end_point_y += command.y
-		else:
-			if "x" in command:
-				last_end_point_x = command.x
-			if "y" in command:
-				last_end_point_y = command.y
 
 
 func get_command_count() -> int:
@@ -78,144 +59,431 @@ func get_subpath(idx: int) -> Vector2i:
 	return output
 
 
-func get_implied_S_control(cmd_idx: int) -> Vector2:
+func get_implied_S_control(cmd_idx: int) -> PackedFloat64Array:
 	var cmd := get_command(cmd_idx)
 	var prev_cmd := get_command(cmd_idx - 1)
-	var v := Vector2.ZERO if cmd.relative else cmd.get_start_coords()
-	if prev_cmd.command_char in "CcSs":
-		var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
-		v = (cmd.get_start_coords() if cmd.relative else cmd.get_start_coords() * 2) - prev_control_pt
-		if prev_cmd.relative:
-			v -= prev_cmd.get_start_coords()
-	return v
+	if not prev_cmd.command_char in "CcSs":
+		return PackedFloat64Array([cmd.start_x, cmd.start_y])
+	return PackedFloat64Array([cmd.start_x * 2 - prev_cmd.x2, cmd.start_y * 2 - prev_cmd.y2])
 
-func get_implied_T_control(idx: int) -> Vector2:
+func get_implied_T_control(idx: int) -> PackedFloat64Array:
 	var prevQ_idx := idx - 1
 	var prevQ_cmd := get_command(prevQ_idx)
 	while prevQ_idx >= 0:
 		if not prevQ_cmd.command_char in "Tt":
 			break
-		else:
-			prevQ_idx -= 1
+		prevQ_idx -= 1
+		if prevQ_idx >= 0:
 			prevQ_cmd = get_command(prevQ_idx)
+	
 	if prevQ_idx == -1:
-		return Vector2(NAN, NAN)
+		return PackedFloat64Array([NAN, NAN])
 	
-	var prevQ_x: float = prevQ_cmd.x if "x" in prevQ_cmd else prevQ_cmd.start_x
-	var prevQ_y: float = prevQ_cmd.y if "y" in prevQ_cmd else prevQ_cmd.start_y
-	var prevQ_v := Vector2(prevQ_x, prevQ_y)
-	var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if prevQ_cmd.command_char in "Qq" else prevQ_v
-	var prevQ_end := prevQ_cmd.get_start_coords() + prevQ_v if prevQ_cmd.relative else prevQ_v
-	var prevQ_control_pt := prevQ_cmd.get_start_coords() + prevQ_v1 if prevQ_cmd.relative else prevQ_v1
+	var control: Vector2
+	match prevQ_cmd.command_char.to_upper():
+		"Q": control = Vector2(prevQ_cmd.x, prevQ_cmd.y) * 2.0 - Vector2(prevQ_cmd.x1, prevQ_cmd.y1)
+		"H": control = Vector2(prevQ_cmd.x, prevQ_cmd.start_y)
+		"V": control = Vector2(prevQ_cmd.start_x, prevQ_cmd.y)
+		"Z": control = Vector2(get_command(idx).start_x, get_command(idx).start_y)
+		_: control = Vector2(prevQ_cmd.x, prevQ_cmd.y)
 	
-	var v := prevQ_end * 2 - prevQ_control_pt
 	for T_idx in range(prevQ_idx + 1, idx):
 		var T_cmd := get_command(T_idx)
-		var T_v := Vector2(T_cmd.x, T_cmd.y)
-		var T_end := T_cmd.get_start_coords() + T_v if T_cmd.relative else T_v
-		v = T_end * 2 - v
+		control = Vector2(T_cmd.x, T_cmd.y) * 2.0 - control
 	
-	var cmd := get_command(idx)
-	if cmd.relative:
-		v -= cmd.get_start_coords()
-	return v
+	return PackedFloat64Array([control.x, control.y])
 
-
+# Takes in absolute coordinates.
 func set_command_property(idx: int, property: String, new_value: float) -> void:
 	var cmd := get_command(idx)
 	if cmd.get(property) != new_value:
 		cmd.set(property, new_value)
-		sync_after_commands_change()
+		sync_after_commands_change(false)
 
 func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_char.to_upper()].new()
-	var relative := Utils.is_string_lower(cmd_char)
-	if relative:
+	if Utils.is_string_lower(cmd_char):
 		new_cmd.toggle_relative()
 	_commands.insert(idx, new_cmd)
-	parse_properties()
 	if not cmd_char in "Zz":
 		if not cmd_char in "Vv":
 			new_cmd.x = vec.x
 		if not cmd_char in "Hh":
 			new_cmd.y = vec.y
 		if cmd_char in "Qq":
-			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 0.5)
-			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 0.5)
+			new_cmd.x1 = lerpf(new_cmd.start_x, vec.x, 0.5)
+			new_cmd.y1 = lerpf(new_cmd.start_y, vec.y, 0.5)
 		elif cmd_char in "Ss":
-			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 2/3.0)
-			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 2/3.0)
+			new_cmd.x2 = lerpf(new_cmd.start_x, vec.x, 2/3.0)
+			new_cmd.y2 = lerpf(new_cmd.start_y, vec.y, 2/3.0)
 		elif cmd_char in "Cc":
-			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 1/3.0)
-			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 1/3.0)
-			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 2/3.0)
-			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 2/3.0)
+			new_cmd.x1 = lerpf(new_cmd.start_x, vec.x, 1/3.0)
+			new_cmd.y1 = lerpf(new_cmd.start_y, vec.y, 1/3.0)
+			new_cmd.x2 = lerpf(new_cmd.start_x, vec.x, 2/3.0)
+			new_cmd.y2 = lerpf(new_cmd.start_y, vec.y, 2/3.0)
 	sync_after_commands_change()
 
 
-func _convert_command(idx: int, cmd_char: String) -> bool:
-	var old_cmd := get_command(idx)
-	if old_cmd.command_char == cmd_char:
-		return false
+func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subsequent_commands := false) -> bool:
+	var cmd := _commands[index]
 	
-	var cmd_absolute_char := cmd_char.to_upper()
-	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_absolute_char].new()
+	if cmd is PathCommand.MoveCommand:
+		return conversion_method == Conversion.ANY_TO_MOVEMENT
+	elif cmd is PathCommand.LineCommand:
+		match conversion_method:
+			Conversion.ANY_TO_LINE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
+			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == 0.0
+			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == 0.0
+			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return false  # TODO
+			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: return false  # TODO
+			_: return false
+	elif cmd is PathCommand.HorizontalLineCommand:
+		match conversion_method:
+			Conversion.ANY_TO_LINE, Conversion.ANY_TO_HORIZONTAL_LINE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
+			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == 0.0
+			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return false  # TODO
+			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: return false  # TODO
+			_: return false
+	elif cmd is PathCommand.VerticalLineCommand:
+		match conversion_method:
+			Conversion.ANY_TO_LINE, Conversion.ANY_TO_VERTICAL_LINE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
+			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == 0.0
+			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return false  # TODO
+			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: return false  # TODO
+			_: return false
+	elif cmd is PathCommand.CloseCommand:
+		return conversion_method == Conversion.ANY_TO_CLOSURE
+	elif cmd is PathCommand.EllipticalArcCommand:
+		return conversion_method == Conversion.ANY_TO_ELLIPTICAL_ARC
+	elif cmd is PathCommand.QuadraticBezierCommand:
+		match conversion_method:
+			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
+			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+				var implied := get_implied_T_control(index)
+				return (is_equal_approx(implied[0], cmd.x1) and is_equal_approx(implied[1], cmd.y1))
+			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+				var implied := get_implied_S_control(index)
+				var required_c1_x: float = cmd.start_x / 3 + cmd.x1 * 2/3.0
+				var required_c1_y: float = cmd.start_y / 3 + cmd.y1 * 2/3.0
+				if not (is_equal_approx(implied[0], required_c1_x) and is_equal_approx(implied[1], required_c1_y)):
+					return false
+				if ignore_subsequent_commands:
+					return true
+				if index + 1 < _commands.size():
+					var next := _commands[index + 1]
+					if next.command_char in "SsTt":
+						return false
+				return true
+			_: return false
+	elif cmd is PathCommand.ShorthandQuadraticBezierCommand:
+		match conversion_method:
+			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: return true
+			Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+				if ignore_subsequent_commands:
+					return true
+				if index + 1 < _commands.size():
+					var next := _commands[index + 1]
+					if next.command_char in "SsTt":
+						return false
+				return true
+			_: return false
+	elif cmd is PathCommand.CubicBezierCommand:
+		match conversion_method:
+			Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
+			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+				var implied_control := get_implied_S_control(index)
+				return is_equal_approx(implied_control[0], cmd.x1) and is_equal_approx(implied_control[1], cmd.y1)
+			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+				if not (is_equal_approx(3 * cmd.x1 - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * cmd.y1 - cmd.start_y, 3 * cmd.y2 - cmd.y)):
+					return false
+				if ignore_subsequent_commands:
+					return true
+				if index + 1 < _commands.size():
+					var next := _commands[index + 1]
+					if next.command_char in "SsTt":
+						return false
+				return true
+			_: return false
+	elif cmd is PathCommand.ShorthandCubicBezierCommand:
+		match conversion_method:
+			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
+			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+				var implied := get_implied_S_control(index)
+				if not (is_equal_approx(3 * implied[0] - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * implied[1] - cmd.start_y, 3 * cmd.y2 - cmd.y)):
+					return false
+				if ignore_subsequent_commands:
+					return true
+				if index + 1 < _commands.size():
+					var next := _commands[index + 1]
+					if next.command_char in "SsTt":
+						return false
+				return true
+			_: return false
 	
-	const CONST_ARR: PackedStringArray = ["x", "y", "x1", "y1", "x2", "y2"]
-	for property in CONST_ARR:
-		if property in old_cmd and property in new_cmd:
-			new_cmd[property] = old_cmd[property]
-	
-	var relative := Utils.is_string_lower(cmd_char)
-	
-	if "x" in new_cmd and not "x" in old_cmd:
-		new_cmd.x = 0.0 if relative else old_cmd.start_x
-	if "y" in new_cmd and not "y" in old_cmd:
-		new_cmd.y = 0.0 if relative else old_cmd.start_y
-	
-	match cmd_absolute_char:
-		"C":
-			if old_cmd.command_char in "Ss":
-				var v := get_implied_S_control(idx)
-				new_cmd.x1 = v.x
-				new_cmd.y1 = v.y
-			else:
-				new_cmd.x1 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 1/3.0)
-				new_cmd.y1 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 1/3.0)
-				new_cmd.x2 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 2/3.0)
-				new_cmd.y2 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 2/3.0)
-		"S":
-			if not old_cmd.command_char in "Cc":
-				new_cmd.x2 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 2/3.0)
-				new_cmd.y2 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 2/3.0)
-		"Q":
-			if old_cmd.command_char in "Tt":
-				var v := get_implied_T_control(idx)
-				new_cmd.x1 = v.x
-				new_cmd.y1 = v.y
-			else:
-				new_cmd.x1 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 0.5)
-				new_cmd.y1 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 0.5)
-	
-	_commands.remove_at(idx)
-	_commands.insert(idx, new_cmd)
-	if relative:
-		_commands[idx].toggle_relative()
-	return true
+	return false
 
-func convert_command(idx: int, cmd_char: String) -> void:
-	var conversion_made := _convert_command(idx, cmd_char)
-	if conversion_made:
-		sync_after_commands_change()
-
-func convert_many_commands(indices: PackedInt32Array, cmd_chars: PackedStringArray) -> void:
-	var conversions_made := false
+func _convert_commands(indices: PackedInt32Array, conversion_methods: Array[Conversion]) -> void:
 	for i in indices.size():
-		var conversion_made := _convert_command(indices[i], cmd_chars[i])
-		if conversion_made:
-			conversions_made = true
-	if conversions_made:
-		sync_after_commands_change()
+		var cmd_index := indices[i]
+		var conversion_method := conversion_methods[i]
+		var cmd := _commands[cmd_index]
+		var new_cmd: PathCommand
+		
+		if conversion_method == Conversion.ANY_TO_CLOSURE:
+			new_cmd = PathCommand.CloseCommand.new(cmd.relative)
+		elif cmd is PathCommand.MoveCommand:
+			match conversion_method:
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.QuadraticBezierCommand.new(lerpf(cmd.start_x, cmd.x, 0.5), lerpf(cmd.start_y, cmd.y, 0.5), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.CubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 1/3.0), lerpf(cmd.start_y, cmd.y, 1/3.0),
+							lerpf(cmd.start_x, cmd.x, 2/3.0), lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandCubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 2/3.0),
+							lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.LineCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.QuadraticBezierCommand.new(lerpf(cmd.start_x, cmd.x, 0.5), lerpf(cmd.start_y, cmd.y, 0.5), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.CubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 1/3.0), lerpf(cmd.start_y, cmd.y, 1/3.0),
+							lerpf(cmd.start_x, cmd.x, 2/3.0), lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandCubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 2/3.0),
+							lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.HorizontalLineCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.x, cmd.start_y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.x, cmd.start_y, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.start_y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.x, cmd.start_y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.QuadraticBezierCommand.new(lerpf(cmd.start_x, cmd.x, 0.5), cmd.start_y, cmd.x, cmd.start_y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.x, cmd.start_y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.CubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 1/3.0), cmd.start_y,
+							lerpf(cmd.start_x, cmd.x, 2/3.0), cmd.start_y, cmd.x, cmd.start_y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandCubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 2/3.0),
+							cmd.start_y, cmd.x, cmd.start_y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.VerticalLineCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.start_x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.start_x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.start_x, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.start_x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.QuadraticBezierCommand.new(cmd.start_x, lerpf(cmd.start_y, cmd.y, 0.5), cmd.start_x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.start_x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.CubicBezierCommand.new(cmd.start_x, lerpf(cmd.start_y, cmd.y, 1/3.0),
+							cmd.start_x, lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.start_x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandCubicBezierCommand.new(cmd.start_x,
+							lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.start_x, cmd.y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.CloseCommand:
+			var close_target_x := 0.0
+			var close_target_y := 0.0
+			for prev_idx in range(cmd_index - 1, -1, -1):
+				var prev_cmd := _commands[prev_idx]
+				if prev_cmd is PathCommand.MoveCommand:
+					close_target_x = prev_cmd.x
+					close_target_y = prev_cmd.y
+					break
+			
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(close_target_x, close_target_y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(close_target_x, close_target_y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(close_target_x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(close_target_y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, close_target_x, close_target_y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.QuadraticBezierCommand.new(lerpf(cmd.start_x, close_target_x, 0.5),
+							lerpf(cmd.start_y, close_target_y, 0.5), close_target_x, close_target_y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(close_target_x, close_target_y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.CubicBezierCommand.new(lerpf(cmd.start_x, close_target_x, 1/3.0), lerpf(cmd.start_y, close_target_y, 1/3.0),
+							lerpf(cmd.start_x, close_target_x, 2/3.0), lerpf(cmd.start_y, close_target_y, 2/3.0), close_target_x, close_target_y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandCubicBezierCommand.new(lerpf(cmd.start_x, close_target_x, 2/3.0),
+							lerpf(cmd.start_y, close_target_y, 2/3.0), close_target_x, close_target_y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.EllipticalArcCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.QuadraticBezierCommand.new(lerpf(cmd.start_x, cmd.x, 0.5), lerpf(cmd.start_y, cmd.y, 0.5), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.CubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 1/3.0), lerpf(cmd.start_y, cmd.y, 1/3.0),
+							lerpf(cmd.start_x, cmd.x, 2/3.0), lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandCubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 2/3.0),
+							lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.QuadraticBezierCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.CubicBezierCommand.new(cmd.start_x / 3 + cmd.x1 * 2/3.0, cmd.start_y / 3 + cmd.y1 * 2/3.0,
+							cmd.x / 3 + cmd.x1 * 2/3.0, cmd.y / 3 + cmd.y1 * 2/3.0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					if is_conversion_exact(cmd_index, conversion_method, true):
+						new_cmd = PathCommand.ShorthandCubicBezierCommand.new(cmd.x / 3 + cmd.x1 * 2/3.0, cmd.y / 3 + cmd.y1 * 2/3.0,
+								cmd.x, cmd.y, cmd.relative)
+					else:
+						new_cmd = PathCommand.ShorthandCubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 2/3.0),
+								lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.ShorthandQuadraticBezierCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					var implied_control := get_implied_T_control(cmd_index)
+					new_cmd = PathCommand.QuadraticBezierCommand.new(implied_control[0], implied_control[1], cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					var implied_control := get_implied_T_control(cmd_index)
+					new_cmd = PathCommand.CubicBezierCommand.new(cmd.start_x / 3 + implied_control[0] * 2/3.0, cmd.start_y / 3 + implied_control[1] * 2/3.0,
+							cmd.x / 3 + implied_control[0] * 2/3.0, cmd.y / 3 + implied_control[1] * 2/3.0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					var implied_q := get_implied_T_control(cmd_index)
+					if is_conversion_exact(cmd_index, conversion_method):
+						new_cmd = PathCommand.ShorthandCubicBezierCommand.new(cmd.x / 3 + implied_q[0] * 2/3.0,
+								cmd.y / 3 + implied_q[1] * 2/3.0, cmd.x, cmd.y, cmd.relative)
+					else:
+						new_cmd = PathCommand.ShorthandCubicBezierCommand.new(lerpf(cmd.start_x, cmd.x, 2/3.0),
+								lerpf(cmd.start_y, cmd.y, 2/3.0), cmd.x, cmd.y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.CubicBezierCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					if is_conversion_exact(cmd_index, conversion_method):
+						new_cmd = PathCommand.QuadraticBezierCommand.new((3 * cmd.x1 - cmd.start_x) / 2, (3 * cmd.y1 - cmd.start_y) / 2, cmd.x, cmd.y, cmd.relative)
+					else:
+						new_cmd = PathCommand.QuadraticBezierCommand.new(lerpf(cmd.start_x, cmd.x, 0.5), lerpf(cmd.start_y, cmd.y, 0.5), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandCubicBezierCommand.new(cmd.x2, cmd.y2, cmd.x, cmd.y, cmd.relative)
+				_: continue
+		elif cmd is PathCommand.ShorthandCubicBezierCommand:
+			match conversion_method:
+				Conversion.ANY_TO_MOVEMENT:
+					new_cmd = PathCommand.MoveCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_LINE:
+					new_cmd = PathCommand.LineCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_HORIZONTAL_LINE:
+					new_cmd = PathCommand.HorizontalLineCommand.new(cmd.x, cmd.relative)
+				Conversion.ANY_TO_VERTICAL_LINE:
+					new_cmd = PathCommand.VerticalLineCommand.new(cmd.y, cmd.relative)
+				Conversion.ANY_TO_ELLIPTICAL_ARC:
+					new_cmd = PathCommand.EllipticalArcCommand.new(1.0, 1.0, 0.0, 0, 0, cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
+					var implied_control := get_implied_S_control(cmd_index)
+					if is_equal_approx(3 * implied_control[0] - cmd.start_x, 3 * cmd.x2 - cmd.x) and\
+					is_equal_approx(3 * implied_control[1] - cmd.start_y, 3 * cmd.y2 - cmd.y):
+						new_cmd = PathCommand.QuadraticBezierCommand.new((-cmd.start_x + 3 * implied_control[0]) / 2,
+								(-cmd.start_y + 3 * implied_control[1]) / 2, cmd.x, cmd.y, cmd.relative)
+					else:
+						new_cmd = PathCommand.QuadraticBezierCommand.new(lerpf(cmd.start_x, cmd.x, 0.5), lerpf(cmd.start_y, cmd.y, 0.5), cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+					new_cmd = PathCommand.ShorthandQuadraticBezierCommand.new(cmd.x, cmd.y, cmd.relative)
+				Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
+					var implied_control := get_implied_S_control(cmd_index)
+					new_cmd = PathCommand.CubicBezierCommand.new(implied_control[0], implied_control[1], cmd.x2, cmd.y2, cmd.x, cmd.y, cmd.relative)
+				_: continue
+		
+		_commands.remove_at(cmd_index)
+		_commands.insert(cmd_index, new_cmd)
+
+func convert_commands_single_method(indices: PackedInt32Array, conversion_method: Conversion) -> void:
+	var conversion_methods: Array[Conversion] = []
+	conversion_methods.resize(indices.size())
+	conversion_methods.fill(conversion_method)
+	_convert_commands(indices, conversion_methods)
+	sync_after_commands_change()
+
+func convert_commands_multi_method(indices: PackedInt32Array, conversion_methods: Array[Conversion]) -> void:
+	_convert_commands(indices, conversion_methods)
+	sync_after_commands_change()
 
 
 func delete_commands(indices: Array[int]) -> void:
@@ -234,6 +502,78 @@ func toggle_relative_command(idx: int) -> void:
 	sync_after_commands_change()
 
 
+func get_subpath_move_permutation(selected_command_indices: PackedInt32Array, down: bool) -> PackedInt32Array:
+	if selected_command_indices.is_empty():
+		return PackedInt32Array()
+	
+	var lengths := PackedInt32Array()
+	var selected := PackedInt32Array()
+	for i in subpath_start_indices.size():
+		var start := subpath_start_indices[i]
+		lengths.append((_commands.size() if i == subpath_start_indices.size() - 1 else subpath_start_indices[i + 1]) - start)
+		if start in selected_command_indices:
+			selected.append(i)
+	
+	var order := range(subpath_start_indices.size())
+	if down:
+		for i in range(selected.size() - 1, -1, -1):
+			var subpath := selected[i]
+			var pos := order.find(subpath)
+			if pos < order.size() - 1 and !selected.has(order[pos + 1]):
+				var tmp = order[pos]
+				order[pos] = order[pos + 1]
+				order[pos + 1] = tmp
+	else:
+		for subpath in selected:
+			var pos := order.find(subpath)
+			if pos > 0 and !selected.has(order[pos - 1]):
+				var tmp = order[pos]
+				order[pos] = order[pos - 1]
+				order[pos - 1] = tmp
+	
+	var permutation := PackedInt32Array()
+	for subpath in order:
+		var start := subpath_start_indices[subpath]
+		var end := start + lengths[subpath]
+		for command in range(start, end):
+			permutation.append(command)
+	return permutation
+
+func reorder_commands(indices: PackedInt32Array) -> void:
+	var new_commands: Array[PathCommand] = []
+	new_commands.resize(_commands.size())
+	for i in indices.size():
+		new_commands[i] = _commands[indices[i]]
+	_commands = new_commands
+	sync_after_commands_change()
+
+
+func sync_start_positions() -> void:
+	var current_x := 0.0
+	var current_y := 0.0
+	var subpath_start_x := 0.0
+	var subpath_start_y := 0.0
+	
+	for cmd in _commands:
+		cmd.start_x = current_x
+		cmd.start_y = current_y
+		match cmd.command_char.to_upper():
+			"M":
+				current_x = cmd.x
+				current_y = cmd.y
+				subpath_start_x = current_x
+				subpath_start_y = current_y
+			"Z":
+				current_x = subpath_start_x
+				current_y = subpath_start_y
+			"H":
+				current_x = cmd.x
+			"V":
+				current_y = cmd.y
+			"L", "Q", "T", "C", "S", "A":
+				current_x = cmd.x
+				current_y = cmd.y
+
 static func parse_pathdata(text: String) -> Array[PathCommand]:
 	text = text.strip_edges()
 	var text_length := text.length()
@@ -241,6 +581,11 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 	var commands: Array[PathCommand] = []
 	var idx := 0
 	var prev_command := ""
+	var current_x := 0.0
+	var current_y := 0.0
+	var subpath_start_x := 0.0
+	var subpath_start_y := 0.0
+	
 	while idx < text_length:
 		while idx < text_length and text[idx] in " \t\n\r":
 			idx += 1
@@ -313,9 +658,40 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 			idx = result[1]
 			nums.append_array(arr)
 		
-		var cmd_type := PathCommand.translation_dict[key]
 		var relative := Utils.is_string_lower(current_command)
+		if relative:
+			match key:
+				"M", "L", "T":
+					nums[0] += current_x
+					nums[1] += current_y
+				"H":
+					nums[0] += current_x
+				"V":
+					nums[0] += current_y
+				"Q":
+					nums[0] += current_x
+					nums[1] += current_y
+					nums[2] += current_x
+					nums[3] += current_y
+				"S":
+					nums[0] += current_x
+					nums[1] += current_y
+					nums[2] += current_x
+					nums[3] += current_y
+				"C":
+					nums[0] += current_x
+					nums[1] += current_y
+					nums[2] += current_x
+					nums[3] += current_y
+					nums[4] += current_x
+					nums[5] += current_y
+				"A":
+					nums[5] += current_x
+					nums[6] += current_y
+		
+		var cmd_type := PathCommand.translation_dict[key]
 		var new_cmd: PathCommand
+		
 		match arg_count:
 			0: new_cmd = cmd_type.new(relative)
 			1: new_cmd = cmd_type.new(nums[0], relative)
@@ -323,10 +699,38 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 			4: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], relative)
 			6: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5], relative)
 			7: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5], nums[6], relative)
-			8: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5], nums[6], nums[7], relative)
 			_: continue
 		
+		new_cmd.start_x = current_x
+		new_cmd.start_y = current_y
 		commands.append(new_cmd)
+		
+		match key:
+			"M":
+				current_x = nums[0]
+				current_y = nums[1]
+				subpath_start_x = current_x
+				subpath_start_y = current_y
+			"L", "T":
+				current_x = nums[0]
+				current_y = nums[1]
+			"H":
+				current_x = nums[0]
+			"V":
+				current_y = nums[0]
+			"Q", "S":
+				current_x = nums[2]
+				current_y = nums[3]
+			"C":
+				current_x = nums[4]
+				current_y = nums[5]
+			"A":
+				current_x = nums[5]
+				current_y = nums[6]
+			"Z":
+				current_x = subpath_start_x
+				current_y = subpath_start_y
+		
 		prev_command = current_command
 		
 		var comma_passed := false
@@ -344,8 +748,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 	return commands
 
 
-func path_commands_to_text(commands_arr: Array[PathCommand],
-formatter := Configs.savedata.editor_formatter) -> String:
+func path_commands_to_text(commands_arr: Array[PathCommand], formatter := Configs.savedata.editor_formatter) -> String:
 	var output := ""
 	var num_parser := NumstringParser.new()
 	num_parser.compress_numbers = formatter.pathdata_compress_numbers
@@ -363,25 +766,26 @@ formatter := Configs.savedata.editor_formatter) -> String:
 		elif i > 0 and formatter.pathdata_minimize_spacing:
 			var current_char := ""
 			var prev_numstr := ""
+			var prev_cmd := commands_arr[i - 1]
 			match cmd_char_capitalized:
 				"A":
 					current_char = num_parser.num_to_text(cmd.rx)[0]
-					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
 				"C", "Q":
-					current_char = num_parser.num_to_text(cmd.x1)[0]
-					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
 				"S":
-					current_char = num_parser.num_to_text(cmd.x2)[0]
-					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
 				"L", "M", "T":
-					current_char = num_parser.num_to_text(cmd.x)[0]
-					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
 				"H":
-					current_char = num_parser.num_to_text(cmd.x)[0]
-					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].x)
+					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.x - prev_cmd.start_x if cmd.relative else prev_cmd.x)
 				"V":
-					current_char = num_parser.num_to_text(cmd.y)[0]
-					prev_numstr = num_parser.num_to_text(+commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.y - cmd.start_x if cmd.relative else cmd.y)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
 			if not formatter.pathdata_minimize_spacing or not (("." in prev_numstr and current_char == ".") or current_char in "-+"):
 				output += " "
 		
@@ -397,22 +801,33 @@ formatter := Configs.savedata.editor_formatter) -> String:
 						output += "0" if cmd.sweep_flag == 0 else "1"
 					else:
 						output += "0 " if cmd.sweep_flag == 0 else "1 "
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
 			"C":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1), num_parser.num_to_text(cmd.y1),
-						num_parser.num_to_text(cmd.x2), num_parser.num_to_text(cmd.y2), num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
+					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
 			"Q":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1), num_parser.num_to_text(cmd.y1),
-						num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
 			"S":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x2), num_parser.num_to_text(cmd.y2),
-						num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
 			"L", "M", "T":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
 			"H":
-				output += num_parser.num_to_text(cmd.x)
+				output += num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)
 			"V":
-				output += num_parser.num_to_text(cmd.y)
+				output += num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
 			_: continue
 		if not formatter.pathdata_minimize_spacing:
 			output += " "

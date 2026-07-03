@@ -2,10 +2,12 @@
 extends Node
 
 const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
-const PathCommandPopupScene = preload("res://src/ui_widgets/path_popup.tscn")
+const PathInsertPopupScene = preload("res://src/ui_widgets/path_insert_popup.tscn")
+const PathConvertPopupScene = preload("res://src/ui_widgets/path_convert_popup.tscn")
+const InsertMultiplePointsPopupScene = preload("res://src/ui_widgets/insert_multiple_points_popup.tscn")
 
 signal any_attribute_changed(xid: PackedInt32Array)
-signal xnode_layout_changed  # Emitted together with any of the above 4.
+signal xnode_layout_changed
 signal basic_xnode_text_changed
 signal basic_xnode_rendered_text_changed
 signal svg_unknown_change
@@ -137,7 +139,8 @@ func get_export_text() -> String:
 signal hover_changed
 signal selection_changed
 
-signal requested_scroll_to_selection(xid: PackedInt32Array, inner_idx: int)
+# Locked scroll puts the object at a specific place on the screen, otherwise it's clamped.
+signal requested_scroll_to_selection(xid: PackedInt32Array, inner_idx: int, locked: bool)
 
 # The viewport listens for this signal to put you in handle-placing mode.
 signal handle_added
@@ -184,7 +187,7 @@ func clear_proposed_drop_xid() -> void:
 
 # Override the selected elements with a single new selected element.
 # If inner_idx is given, this will be an inner selection.
-func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
+func normal_select(xid: PackedInt32Array, inner_idx := -1, scroll := false) -> void:
 	if xid.is_empty():
 		return
 	
@@ -214,6 +217,8 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 			return
 	
 	selection_changed.emit()
+	if scroll:
+		requested_scroll_to_selection.emit(xid, inner_idx, false)
 
 # If the element was selected, unselect it. If it was unselected, select it.
 # If inner_idx is given, this will be an inner selection.
@@ -228,9 +233,9 @@ func ctrl_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 			selection_pivot_xid = xid.duplicate()
 			selected_xids.append(xid.duplicate())
 		else:
-			selected_xids.remove_at(xid_idx)
-			if selected_xids.is_empty():
+			if selection_pivot_xid == selected_xids[xid_idx]:
 				selection_pivot_xid = PackedInt32Array()
+			selected_xids.remove_at(xid_idx)
 	else:
 		if semi_selected_xid != xid:
 			normal_select(xid, inner_idx)
@@ -259,7 +264,10 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 			return
 		
 		if selection_pivot_xid.is_empty():
-			normal_select(xid, inner_idx)
+			if xid in selected_xids:
+				selection_pivot_xid = xid
+			else:
+				ctrl_select(xid, inner_idx)
 			return
 		
 		var old_selected_xids := selected_xids.duplicate()
@@ -428,24 +436,32 @@ func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> 
 	return semi_selected_xid == xid and inner_idx in inner_selections
 
 # Returns whether the selection matches a subpath.
-func is_selection_subpath() -> bool:
+func is_selection_subpaths_only() -> bool:
 	if semi_selected_xid.is_empty() or inner_selections.is_empty():
 		return false
-
+	
 	var element_ref := root_element.get_xnode(semi_selected_xid)
 	if not element_ref is ElementPath:
 		return false
-
-	var subpath: Vector2i = element_ref.get_attribute("d").get_subpath(inner_selections[0])
-	for i in range(subpath.x, subpath.y):
-		if not i in inner_selections:
-			return false
+	
+	var path_attrib: AttributePathdata = element_ref.get_attribute("d")
+	var selection := inner_selections.duplicate()
+	selection.sort()
+	
+	var selection_idx := 0
+	while selection_idx < selection.size():
+		var subpath := path_attrib.get_subpath(selection[selection_idx])
+		for i in range(subpath.x, subpath.y + 1):
+			if selection_idx >= selection.size() or selection[selection_idx] != i:
+				return false
+			selection_idx += 1
 	return true
 
 
 func _on_xnodes_added(xids: Array[PackedInt32Array]) -> void:
 	selected_xids = xids.duplicate()
 	selection_pivot_xid = xids[-1]
+	requested_scroll_to_selection.emit(selection_pivot_xid, -1, false)
 	selection_changed.emit()
 
 # If selected elements were deleted, remove them from the list of selected elements.
@@ -470,7 +486,7 @@ func _on_xnodes_moved_in_parent(parent_xid: PackedInt32Array, indices: Array[int
 		if index_idx == indices[index_idx]:
 			continue
 		
-		# For the elements that have moved, get their old.
+		# For the elements that have moved, get their old XID.
 		var old_moved_xid := parent_xid.duplicate()
 		old_moved_xid.append(indices[index_idx])
 		
@@ -481,11 +497,15 @@ func _on_xnodes_moved_in_parent(parent_xid: PackedInt32Array, indices: Array[int
 				new_selected_xid[parent_xid.size()] = index_idx
 				xids_to_unselect.append(xid)
 				xids_to_select.append(new_selected_xid)
+				if xid == selection_pivot_xid:
+					selection_pivot_xid = new_selected_xid
+	
 	for xid in xids_to_unselect:
 		selected_xids.erase(xid)
 	selected_xids += xids_to_select
 	
 	if not XIDUtils.are_xid_lists_same(old_selected_xids, selected_xids):
+		requested_scroll_to_selection.emit(selection_pivot_xid, -1, false)
 		selection_changed.emit()
 
 # If selected elements were moved to a location, change the XIDs and their children.
@@ -501,6 +521,8 @@ func _on_xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Arr
 				for ii in range(moved_xid.size(), xid.size()):
 					new_location.append(xid[ii])
 				new_selected_xids.append(new_location)
+				if xid == selection_pivot_xid:
+					selection_pivot_xid = new_location
 	if not XIDUtils.are_xid_lists_same(selected_xids, new_selected_xids):
 		selected_xids = new_selected_xids
 		selection_changed.emit()
@@ -520,7 +542,7 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 				path_attrib.get_command(path_cmd_count - 1) is PathCommand.CloseCommand):
 					return
 				path_attrib.insert_command(path_cmd_count, path_cmd_char, Vector2.ZERO)
-				normal_select(selected_xids[0], path_cmd_count)
+				normal_select(selected_xids[0], path_cmd_count, true)
 				handle_added.emit()
 	else:
 		# If path commands are selected, insert after the last one.
@@ -533,7 +555,7 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 			(path_attrib.get_command_count() > last_selection + 1 and path_attrib.get_command(last_selection + 1) is PathCommand.CloseCommand)):
 				return
 			path_attrib.insert_command(last_selection + 1, path_cmd_char, Vector2.ZERO)
-			normal_select(semi_selected_xid, last_selection + 1)
+			normal_select(semi_selected_xid, last_selection + 1, true)
 			handle_added.emit()
 
 
@@ -572,36 +594,95 @@ func _move_selected(down: bool) -> void:
 		var xnode := root_element.get_xnode(semi_selected_xid)
 		if not xnode is ElementPath:
 			return
-		# TODO
-		#xnode.get_attribute("d").move_subpath(inner_selections[0], down)
+		if is_selection_subpaths_only():
+			# Move subpaths and modify selections.
+			var pathdata: AttributePathdata = xnode.get_attribute("d")
+			var new_indices := pathdata.get_subpath_move_permutation(inner_selections, down)
+			if not new_indices.is_empty():
+				pathdata.reorder_commands(new_indices)
+				var old_to_new := PackedInt32Array()
+				old_to_new.resize(new_indices.size())
+				for new_idx in new_indices.size():
+					old_to_new[new_indices[new_idx]] = new_idx
+				var new_selections: Array[int] = []
+				new_selections.resize(inner_selections.size())
+				for i in inner_selections.size():
+					new_selections[i] = old_to_new[inner_selections[i]]
+				if inner_selections != new_selections:
+					inner_selection_pivot = old_to_new[inner_selection_pivot]
+					inner_selections = new_selections
+					selection_changed.emit()
 	save_svg()
+
+
+func set_selected_as_origin() -> void:
+	if semi_selected_xid.is_empty():
+		return
+	var xnode := root_element.get_xnode(semi_selected_xid)
+	
+	if xnode is ElementPolygon:
+		xnode.get_attribute("points").rotate_start(inner_selections[0] * 2)
+		inner_selections[0] = 0
+	
+	save_svg()
+
+func reverse_order_selected() -> void:
+	if semi_selected_xid.is_empty() or inner_selections.size() < 2:
+		return
+	
+	inner_selections.sort()
+	for i in range(1, inner_selections.size()):
+		if inner_selections[i] != inner_selections[i - 1] + 1:
+			return
+	
+	var xnode := root_element.get_xnode(semi_selected_xid)
+	if xnode is ElementPolygon or xnode is ElementPolyline:
+		var points: AttributeList = xnode.get_attribute("points")
+		var data: PackedFloat64Array = points.get_list()
+		
+		var start := inner_selections[0]
+		var count := inner_selections.size()
+		
+		for i in range(count / 2):
+			var a := start + i
+			var b := start + count - 1 - i
+			var ax := data[a * 2]
+			var ay := data[a * 2 + 1]
+			data[a * 2] = data[b * 2]
+			data[a * 2 + 1] = data[b * 2 + 1]
+			data[b * 2] = ax
+			data[b * 2 + 1] = ay
+		
+		points.set_list(data)
+	
+	save_svg()
+
 
 func view_in_inspector(xid: PackedInt32Array, inner_index := -1) -> void:
 	if xid.is_empty():
 		return
-	requested_scroll_to_selection.emit(xid, inner_index)
+	requested_scroll_to_selection.emit(xid, inner_index, true)
 
 func duplicate_selected() -> void:
 	root_element.duplicate_xnodes(selected_xids)
 	save_svg()
 
 func insert_path_command_after_selection(new_command: String) -> void:
-	var path_attrib: AttributePathdata = root_element.get_xnode(
-			semi_selected_xid).get_attribute("d")
-	var last_selection: int = inner_selections.max()
+	var path_attrib: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
+	var last_selection_index: int = inner_selections.max()
 	# Z after a Z is syntactically invalid.
-	if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and new_command in "Zz":
+	if path_attrib.get_command(last_selection_index) is PathCommand.CloseCommand and new_command in "Zz":
 		return
-	path_attrib.insert_command(last_selection + 1, new_command)
-	normal_select(semi_selected_xid, last_selection + 1)
+	var new_selection_index := last_selection_index + 1
+	path_attrib.insert_command(new_selection_index, new_command)
+	normal_select(semi_selected_xid, new_selection_index, true)
 	save_svg()
 
-func insert_point_after_selection() -> void:
+func insert_points_after_selection(count: int) -> void:
 	var element_ref: Element = root_element.get_xnode(semi_selected_xid)
-	var last_selection_next: int = inner_selections.max() + 1
-	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
-	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
-	normal_select(semi_selected_xid, last_selection_next)
+	var last_selection: int = inner_selections.max()
+	element_ref.get_attribute("points").insert_zeros(last_selection * 2 + 2, count * 2)
+	normal_select(semi_selected_xid, last_selection + count, true)
 	save_svg()
 
 
@@ -609,6 +690,67 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 	var btn_arr: Array[ContextButton] = []
 	
 	if not selected_xids.is_empty():
+		if context == Utils.LayoutPart.VIEWPORT:
+			btn_arr.append(ContextButton.create_custom(Translator.translate("View in Inspector"),
+					view_in_inspector.bind(selected_xids[0]), preload("res://assets/icons/Inspector.svg")))
+		
+		btn_arr.append(ContextButton.create_from_action("duplicate"))
+		
+		# Convert To
+		var first_xnode := root_element.get_xnode(selected_xids[0])
+		var are_elements := first_xnode.is_element()
+		if are_elements:
+			var common_conversions: PackedStringArray = first_xnode.possible_conversions.duplicate()
+			common_conversions.append(first_xnode.name)
+			
+			for idx in range(1, selected_xids.size()):
+				var xnode := root_element.get_xnode(selected_xids[idx])
+				if not xnode.is_element():
+					common_conversions.clear()
+					break
+				
+				for i in range(common_conversions.size() - 1, -1, -1):
+					if not (common_conversions[i] == xnode.name or common_conversions[i] in xnode.possible_conversions):
+						common_conversions.remove_at(i)
+				
+				if common_conversions.is_empty():
+					break
+			
+			var has_conversions := false
+			for conversion in common_conversions:
+				if conversion != first_xnode.name:
+					has_conversions = true
+					break
+			if has_conversions:
+				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+						popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
+		else:
+			var common_conversions: Array[BasicXNode.NodeType] = first_xnode.get_possible_conversions()
+			common_conversions.append(first_xnode.get_type())
+			
+			for idx in range(1, selected_xids.size()):
+				var xnode := root_element.get_xnode(selected_xids[idx])
+				if xnode.is_element():
+					common_conversions.clear()
+					break
+				
+				for i in range(common_conversions.size() - 1, -1, -1):
+					if not (common_conversions[i] == xnode.get_type() or common_conversions[i] in xnode.get_possible_conversions()):
+						common_conversions.remove_at(i)
+				
+				if common_conversions.is_empty():
+					break
+			
+			var has_conversions := false
+			for conversion in common_conversions:
+				if conversion != first_xnode.get_type():
+					has_conversions = true
+					break
+			if has_conversions:
+				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+						popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
+		
+		# Move Up/Down
 		var filtered_xids := XIDUtils.filter_descendants(selected_xids)
 		var can_move_down := true
 		var can_move_up := true
@@ -629,16 +771,6 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					can_move_up = true
 				if not can_move_down and base_xid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
-		if context == Utils.LayoutPart.VIEWPORT:
-			btn_arr.append(ContextButton.create_custom(Translator.translate("View in Inspector"),
-					view_in_inspector.bind(selected_xids[0]), preload("res://assets/icons/Inspector.svg")))
-		
-		btn_arr.append(ContextButton.create_from_action("duplicate"))
-		
-		var xnode := root_element.get_xnode(selected_xids[0])
-		if selected_xids.size() == 1 and (not xnode.is_element() or (xnode.is_element() and not xnode.possible_conversions.is_empty())):
-			btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
-					popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
 		
 		if can_move_up:
 			btn_arr.append(ContextButton.create_from_action("move_up"))
@@ -662,23 +794,45 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
 							popup_insert_command_after_context.bind(popup_method), preload("res://assets/icons/Plus.svg")))
-					if inner_selections[0] != 0 or element_ref.get_attribute("d").get_command(0).command_char != "M":
-						btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
-								popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
-				if is_selection_subpath():
-					# TODO
+				
+				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+						popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
+				
+				if is_selection_subpaths_only():
 					var can_move_up := false
+					var max_idx: int = inner_selections.max()
+					for i in range(max_idx + 1):
+						if not inner_selections.has(i):
+							can_move_up = true
+							break
 					var can_move_down := false
+					var min_idx: int = inner_selections.min()
+					for i in range(min_idx, element_ref.get_attribute("d").get_command_count()):
+						if not inner_selections.has(i):
+							can_move_down = true
+							break
+					
 					if can_move_up:
 						btn_arr.append(ContextButton.create_from_action("move_up"))
-						# , "Move Subpath Up"
 					if can_move_down:
 						btn_arr.append(ContextButton.create_from_action("move_down"))
-						# , "Move Subpath Down"
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
-							insert_point_after_selection, preload("res://assets/icons/Plus.svg")))
+							insert_points_after_selection.bind(1), preload("res://assets/icons/Plus.svg")))
+					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert Multiple After"),
+							popup_insert_multiple_points_context.bind(popup_method), preload("res://assets/icons/Pluses.svg")))
+					if element_ref.name == "polygon":
+						btn_arr.append(ContextButton.create_from_action("set_as_origin", inner_selections[0] == 0))
+				else:
+					var is_selection_sequence := true
+					inner_selections.sort()
+					for i in range(1, inner_selections.size()):
+						if inner_selections[i] != inner_selections[i - 1] + 1:
+							is_selection_sequence = false
+							break
+					if is_selection_sequence:
+						btn_arr.append(ContextButton.create_from_action("reverse_order"))
 		
 		btn_arr.append(ContextButton.create_from_action("delete"))
 	
@@ -688,89 +842,76 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 	# The "Convert To" context popup.
 	if not selected_xids.is_empty():
 		var btn_arr: Array[ContextButton] = []
-		var xnode := root_element.get_xnode(selected_xids[0])
-		if not xnode.is_element():
-			for xnode_type in xnode.get_possible_conversions():
+		
+		var xnodes: Array[XNode] = []
+		for idx in selected_xids.size():
+			xnodes.append(root_element.get_xnode(selected_xids[idx]))
+		
+		# We can assume that we either have only XML nodes or only elements.
+		if not xnodes[0].is_element():
+			var common_conversions = xnodes[0].get_possible_conversions()
+			common_conversions.append(xnodes[0].get_type())
+			for i in range(1, xnodes.size()):
+				for ii in range(common_conversions.size() - 1, -1, -1):
+					if not (common_conversions[ii] == xnodes[i].get_type() or common_conversions[ii] in xnodes[i].get_possible_conversions()):
+						common_conversions.remove_at(ii)
+			
+			for xnode_type in common_conversions:
 				var btn := ContextButton.create_custom(BasicXNode.get_type_string(xnode_type),
-						convert_selected_xnode_to.bind(xnode_type), DB.get_xnode_icon(xnode_type))
+						convert_selected_xnodes_to.bind(xnode_type), DB.get_xnode_icon(xnode_type))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_arr.append(btn)
 		else:
-			for element_name in xnode.possible_conversions:
-				var btn := ContextButton.create_custom(element_name, convert_selected_element_to.bind(element_name),
-						DB.get_element_icon(element_name), not xnode.can_replace(element_name))
+			# An element conversion might not be possible for each available one.
+			var common_conversions = xnodes[0].possible_conversions.duplicate()
+			common_conversions.append(xnodes[0].name)
+			for i in range(1, xnodes.size()):
+				for ii in range(common_conversions.size() - 1, -1, -1):
+					if not (common_conversions[ii] == xnodes[i].name or common_conversions[ii] in xnodes[i].possible_conversions):
+						common_conversions.remove_at(ii)
+			
+			for element_name in common_conversions:
+				var can_replace := true
+				for xnode in xnodes:
+					if xnode.name != element_name and not xnode.can_replace(element_name):
+						can_replace = false
+						break
+				var btn := ContextButton.create_custom(element_name, convert_selected_elements_to.bind(element_name),
+						DB.get_element_icon(element_name), not can_replace)
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_arr.append(btn)
 		popup_method.call(ContextPopup.create(btn_arr))
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
-		var path_attrib: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
-		var selection_idx: int = inner_selections.max()
-		var cmd_char := path_attrib.get_command(selection_idx).command_char
-		
-		var command_picker := PathCommandPopupScene.instantiate()
+		var command_picker := PathConvertPopupScene.instantiate()
+		command_picker.setup(root_element.get_xnode(semi_selected_xid).get_attribute("d"), inner_selections)
 		popup_method.call(command_picker)
-		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
-		
-		var cmd_char_upper := cmd_char.to_upper()
-		var disabled_commands := PackedStringArray([cmd_char_upper])
-		if selection_idx == 0:
-			var warned_commands := PackedStringArray(["L", "H", "V", "A", "Z", "Q", "T", "C", "S"])
-			warned_commands.erase(cmd_char_upper)
-			command_picker.mark_invalid(warned_commands, disabled_commands)
-		else:
-			var prev_cmd_char_upper := path_attrib.get_command(selection_idx - 1).command_char.to_upper()
-			
-			if cmd_char_upper != "Z" and (prev_cmd_char_upper == "Z" or\
-			(path_attrib.get_command_count() > selection_idx + 1 and\
-			path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z")):
-				disabled_commands.append("Z")
-			
-			var warned_commands := PackedStringArray()
-			match prev_cmd_char_upper.to_upper():
-				"M": warned_commands = PackedStringArray(["M", "Z", "S", "T"])
-				"L", "H", "V", "A": warned_commands = PackedStringArray(["S", "T"])
-				"C", "S": warned_commands = PackedStringArray(["T"])
-				"Q", "T": warned_commands = PackedStringArray(["S"])
-			for cmd in disabled_commands:
-				warned_commands.erase(cmd)
-			command_picker.mark_invalid(warned_commands, disabled_commands)
-		
-		command_picker.path_command_picked.connect(convert_selected_command_to)
+		command_picker.conversion_picked.connect(convert_selected_commands)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
-	var path_attrib: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
-	var selection_idx: int = inner_selections.max()
-	var cmd_char := path_attrib.get_command(selection_idx).command_char
-	
-	var command_picker := PathCommandPopupScene.instantiate()
+	var command_picker := PathInsertPopupScene.instantiate()
+	command_picker.setup(root_element.get_xnode(semi_selected_xid).get_attribute("d"))
 	popup_method.call(command_picker)
 	command_picker.path_command_picked.connect(insert_path_command_after_selection)
-	# Disable invalid commands. Z is syntactically invalid, so disallow it even harder.
-	var warned_commands := PackedStringArray()
-	var disabled_commands := PackedStringArray()
-	# S commands are deliberately warned against in most cases, even though there is some sense in using them without a C or S command before them.
-	# Same for T commands in most cases, even though there is a notion of letting them determine the next shorthand quadratic curve.
-	match cmd_char.to_upper():
-		"M": warned_commands = PackedStringArray(["M", "Z", "S", "T"])
-		"L", "H", "V", "A": warned_commands = PackedStringArray(["S", "T"])
-		"C", "S": warned_commands = PackedStringArray(["T"])
-		"Q", "T": warned_commands = PackedStringArray(["S"])
-	
-	if (cmd_char in "Zz") or (path_attrib.get_command_count() > selection_idx + 1 and path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z"):
-		disabled_commands = PackedStringArray(["Z"])
-	
-	command_picker.mark_invalid(warned_commands, disabled_commands)
 
-func convert_selected_element_to(element_name: String) -> void:
-	var xid := selected_xids[0]
-	root_element.replace_xnode(xid, root_element.get_xnode(xid).get_replacement(element_name))
+func popup_insert_multiple_points_context(popup_method: Callable) -> void:
+	var command_picker := InsertMultiplePointsPopupScene.instantiate()
+	popup_method.call(command_picker)
+	command_picker.point_count_chosen.connect(insert_points_after_selection)
+
+func convert_selected_elements_to(element_name: String) -> void:
+	var replacing_xnodes: Array[XNode] = []
+	for xid in selected_xids:
+		replacing_xnodes.append(root_element.get_xnode(xid).get_replacement(element_name))
+	root_element.replace_xnodes(selected_xids, replacing_xnodes)
 	save_svg()
 
-func convert_selected_xnode_to(xnode_type: BasicXNode.NodeType) -> void:
-	var xid := selected_xids[0]
-	root_element.replace_xnode(xid, root_element.get_xnode(xid).get_replacement(xnode_type))
+func convert_selected_xnodes_to(xnode_type: BasicXNode.NodeType) -> void:
+	var replacing_xnodes: Array[XNode] = []
+	for xid in selected_xids:
+		replacing_xnodes.append(root_element.get_xnode(xid).get_replacement(xnode_type))
+	root_element.replace_xnodes(selected_xids, replacing_xnodes)
 	save_svg()
 
-func convert_selected_command_to(cmd_type: String) -> void:
-	root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_command(inner_selections[0], cmd_type)
+func convert_selected_commands(conversion_method: AttributePathdata.Conversion) -> void:
+	root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_commands_single_method(inner_selections, conversion_method)
 	save_svg()

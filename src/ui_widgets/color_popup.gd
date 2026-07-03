@@ -99,7 +99,6 @@ func set_swatch_mode_button_text_and_icon(new_text: String, new_icon: DPITexture
 	while font.get_string_size(new_text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size).x > 180:
 		font_size -= 1
 	switch_mode_button.add_theme_font_size_override("font_size", font_size)
-	
 	switch_mode_button.text = new_text
 	switch_mode_button.icon = new_icon
 

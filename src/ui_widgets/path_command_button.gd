@@ -5,7 +5,7 @@ var warned := false
 
 signal pressed_custom(cmd_char: String)
 
-@export var command_char := ""
+var command_char := ""
 
 func _ready() -> void:
 	text = ""
@@ -15,12 +15,13 @@ func _ready() -> void:
 			pressed_custom.emit(command_char)
 	)
 
-func set_invalid(new_state := true) -> void:
-	disabled = new_state
-	mouse_default_cursor_shape = CURSOR_ARROW if new_state else CURSOR_POINTING_HAND
-
-func set_warning(new_state := true) -> void:
-	warned = new_state
+func setup(new_command_char: String, is_invalid: bool, is_warned: bool) -> void:
+	command_char = new_command_char
+	if is_invalid:
+		disabled = is_invalid
+		mouse_default_cursor_shape = CURSOR_ARROW if is_invalid else CURSOR_POINTING_HAND
+	else:
+		warned = is_warned
 
 # Couldn't think of any way to get RichTextLabel to autoresize its font on one line.
 func _draw() -> void:
@@ -51,4 +52,4 @@ func _draw() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and event.keycode == OS.find_keycode_from_string(command_char):
-		pressed.emit()
+		grab_focus()

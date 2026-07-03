@@ -92,6 +92,11 @@ msgid "Insert After"
 msgstr "Вставити після"
 
 #: src/autoload/State.gd
+#, fuzzy
+msgid "Insert Multiple After"
+msgstr "Вставити після"
+
+#: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
 msgstr "Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з цього шляху?"
 
@@ -297,10 +302,6 @@ msgstr "Розміри"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Розмір попереднього перегляду зображення обмежено до {dimensions}"
 
-#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
-msgid "Size"
-msgstr "Розмір"
-
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Налаштування експорту"
@@ -312,6 +313,10 @@ msgstr "Формат"
 #: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Скопіювати"
+
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
+msgid "Size"
+msgstr "Розмір"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
@@ -382,6 +387,11 @@ msgstr "Відкрити"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
 msgstr "Скопіювати шлях"
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Open in File Manager"
+msgstr "Показати у файловому менеджері"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
@@ -627,6 +637,19 @@ msgstr "Кольорова піпетка"
 msgid "Search color"
 msgstr "Шукати колір"
 
+#: src/ui_widgets/export_scale_config.gd
+msgid "Scale"
+msgstr "Масштаб"
+
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Width"
+msgstr "Ширина"
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Height"
+msgstr "Висота"
+
 #: src/ui_widgets/file_path_field.gd
 msgid "No file path"
 msgstr ""
@@ -645,6 +668,11 @@ msgstr "Нова форма"
 
 #: src/ui_widgets/id_field.gd
 msgid "No ID"
+msgstr ""
+
+#. Refers to a number of points.
+#: src/ui_widgets/insert_multiple_points_popup.gd
+msgid "Points to insert"
 msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
@@ -696,9 +724,26 @@ msgstr "Скопіювати як XML"
 msgid "Save as XML"
 msgstr "Зберегти як XML"
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Exact conversions"
+msgstr ""
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Lossy conversions"
+msgstr ""
+
+#: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Відносно"
+
+#: src/ui_widgets/path_insert_popup.gd
+#, fuzzy
+msgid "Keep open"
+msgstr "Зберігати коментарі"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
+msgstr ""
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -983,11 +1028,6 @@ msgstr "Прямокутник вибору"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Speed"
 msgstr "Швидкість"
-
-#: src/ui_widgets/settings_content_generic.gd
-#: src/utils/ImageExportDataRaster.gd
-msgid "Width"
-msgstr "Ширина"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1285,23 +1325,15 @@ msgstr "Якщо ви бажаєте повернути свої зміни з �
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Чи бажаєте зберегти зміни в {file_name}?"
 
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "Якість"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataPNG.gd
-#: src/utils/ImageExportDataWEBP.gd
+#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
+#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
 #, fuzzy
 msgid "Background"
 msgstr "Колір фону"
 
-#: src/utils/ImageExportDataRaster.gd
-msgid "Scale"
-msgstr "Масштаб"
-
-#: src/utils/ImageExportDataRaster.gd
-msgid "Height"
-msgstr "Висота"
+#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
+msgid "Quality"
+msgstr "Якість"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
@@ -1431,6 +1463,19 @@ msgstr "Пересунути вниз"
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
 msgstr "Пересунути обране вниз"
+
+#. Refers to, for example, changing which point in a polygon counts as "first".
+#: src/utils/TranslationUtils.gd
+msgid "Set as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Set point as initial"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Reverse order"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1644,9 +1689,6 @@ msgstr "свг;вектор;графіка;малювання;дизайн;іл�
 
 #~ msgid "Use pretty formatting"
 #~ msgstr "Використовувати гарне форматування"
-
-#~ msgid "Keep comments"
-#~ msgstr "Зберігати коментарі"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "Перейти до батьківської теки"

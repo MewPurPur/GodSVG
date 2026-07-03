@@ -61,13 +61,14 @@ static func create_custom(new_custom_text: String, new_custom_callback: Callable
 	context_button.custom_icon = new_custom_icon
 	return context_button
 
-static func create_from_action(new_action: String, new_disabled := false) -> ContextButton:
+static func create_from_action(new_action: String, new_disabled := false, new_custom_text := "") -> ContextButton:
 	if not InputMap.has_action(new_action):
 		push_error("Non-existent action was passed.")
 		return
 	
 	var context_button := _create(new_disabled)
 	context_button.action = new_action
+	context_button.custom_text = new_custom_text
 	return context_button
 
 static func create_checkbox_from_action(new_action: String, start_toggled_on: bool, new_disabled := false) -> ContextButton:

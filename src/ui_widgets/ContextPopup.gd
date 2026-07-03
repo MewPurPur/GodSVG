@@ -213,8 +213,9 @@ func _input(event: InputEvent) -> void:
 		if not button.action.is_empty() and not button.disabled:
 			if ShortcutUtils.is_action_pressed(event, button.action):
 				if button.type == ContextButton.Type.NORMAL:
-					queue_free()
+					get_viewport().set_input_as_handled()
 					tree_exited.connect(HandlerGUI.throw_action_event.bind(button.action))
+					queue_free()
 				elif button.type == ContextButton.Type.CHECKBOX:
 					button.toggled_on = not button.toggled_on
 					queue_redraw()

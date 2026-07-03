@@ -119,7 +119,7 @@ func _draw() -> void:
 			for pt in initial_pts:
 				points.append(pt + Vector2(h_offset, 0))
 				colors.append(Color.WHITE)
-				uvs.append(pt / Vector2(button_width - 1, size.y - 1))
+				uvs.append(pt / Vector2(button_width - 1, size.y))
 			RenderingServer.canvas_item_add_polygon(ci, points, colors, uvs, gradient_texture)
 			drawn = true
 	

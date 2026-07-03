@@ -39,7 +39,7 @@ var focused_strip: Control
 var current_selections: Array[int] = []
 var current_hovered := -1
 @onready var ci := points_container.get_canvas_item()
-var add_move_button: Control
+var add_first_point_button: Control
 
 
 func set_value(new_value: String, save := false) -> void:
@@ -112,18 +112,18 @@ func sync() -> void:
 	
 	# A plus button for adding a first point if empty.
 	var points_count: int = element.get_attribute(attribute_name).get_list_size() / 2
-	if points_count == 0 and not is_instance_valid(add_move_button):
-		add_move_button = Button.new()
-		add_move_button.icon = plus_icon
-		add_move_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		add_move_button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-		add_move_button.focus_mode = Control.FOCUS_NONE
-		add_move_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		add_move_button.theme_type_variation = "FlatButton"
-		add_child(add_move_button)
-		add_move_button.pressed.connect(_on_add_move_button_pressed)
-	elif points_count != 0 and is_instance_valid(add_move_button):
-		add_move_button.queue_free()
+	if points_count == 0 and not is_instance_valid(add_first_point_button):
+		add_first_point_button = Button.new()
+		add_first_point_button.icon = plus_icon
+		add_first_point_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		add_first_point_button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		add_first_point_button.focus_mode = Control.FOCUS_NONE
+		add_first_point_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		add_first_point_button.theme_type_variation = "FlatButton"
+		add_child(add_first_point_button)
+		add_first_point_button.pressed.connect(_on_add_first_point_button_pressed)
+	elif points_count != 0 and is_instance_valid(add_first_point_button):
+		add_first_point_button.queue_free()
 	# Rebuild the points.
 	points_container.custom_minimum_size.y = points_count * STRIP_HEIGHT
 	if get_rect().has_point(get_local_mouse_position()):
@@ -146,8 +146,9 @@ func update_point_y_coordinate(new_value: float, idx: int) -> void:
 	element.get_attribute(attribute_name).set_list(list)
 	State.save_svg()
 
-func _on_add_move_button_pressed() -> void:
+func _on_add_first_point_button_pressed() -> void:
 	element.get_attribute(attribute_name).set_list(PackedFloat64Array([0.0, 0.0]))
+	State.normal_select(element.xid, 0)
 	State.save_svg()
 
 
@@ -205,8 +206,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 			if event.is_pressed():
 				if event.double_click:
 					State.normal_select(element.xid, 0)
-					State.shift_select(element.xid,
-							element.get_attribute(attribute_name).get_list_size() / 2 - 1)
+					State.shift_select(element.xid, element.get_attribute(attribute_name).get_list_size() / 2 - 1)
 				elif event.is_command_or_control_pressed():
 					State.ctrl_select(element.xid, cmd_idx)
 				elif event.shift_pressed:
@@ -222,8 +222,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(State.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+			HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
 					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 
 
@@ -362,6 +361,5 @@ func _on_action_button_pressed(action_button_ref: Button) -> void:
 	State.normal_select(element.xid, hovered_idx)
 	var viewport := get_viewport()
 	var action_button_rect := action_button_ref.get_global_rect()
-	HandlerGUI.popup_under_rect_center(State.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport),
+	HandlerGUI.popup_under_rect_center(State.get_selection_context(HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport),
 			Utils.LayoutPart.INSPECTOR), action_button_rect, viewport)
