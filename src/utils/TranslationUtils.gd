@@ -125,7 +125,7 @@ static func get_path_command_description(command_char: String, omit_relativity :
 ## Returns the translated name for a layout part.
 static func get_layout_part_name(layout_part: Utils.LayoutPart) -> String:
 	match layout_part:
-		Utils.LayoutPart.CODE_EDITOR: return Translator.translate("Code editor")
+		Utils.LayoutPart.CODE_EDITOR: return Translator.translate("Code Editor")
 		Utils.LayoutPart.INSPECTOR: return Translator.translate("Inspector")
 		Utils.LayoutPart.VIEWPORT: return Translator.translate("Viewport")
 		Utils.LayoutPart.PREVIEWS: return Translator.translate("Previews")

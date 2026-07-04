@@ -696,7 +696,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 		
 		btn_arr.append(ContextButton.create_from_action("duplicate"))
 		
-		# Convert To
+		# Conversions
 		var first_xnode := root_element.get_xnode(selected_xids[0])
 		var are_elements := first_xnode.is_element()
 		if are_elements:
@@ -722,7 +722,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					has_conversions = true
 					break
 			if has_conversions:
-				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert to"),
 						popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
 		else:
 			var common_conversions: Array[BasicXNode.NodeType] = first_xnode.get_possible_conversions()
@@ -747,7 +747,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					has_conversions = true
 					break
 			if has_conversions:
-				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert to"),
 						popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
 		
 		# Move Up/Down
@@ -792,10 +792,10 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 		match element_ref.name:
 			"path":
 				if inner_selections.size() == 1:
-					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
+					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
 							popup_insert_command_after_context.bind(popup_method), preload("res://assets/icons/Plus.svg")))
 				
-				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert To"),
+				btn_arr.append(ContextButton.create_custom(Translator.translate("Convert to"),
 						popup_convert_to_context.bind(popup_method), preload("res://assets/icons/Reload.svg")))
 				
 				if is_selection_subpaths_only():
@@ -818,9 +818,9 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 						btn_arr.append(ContextButton.create_from_action("move_down"))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
-					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
+					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
 							insert_points_after_selection.bind(1), preload("res://assets/icons/Plus.svg")))
-					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert Multiple After"),
+					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert multiple after"),
 							popup_insert_multiple_points_context.bind(popup_method), preload("res://assets/icons/Pluses.svg")))
 					if element_ref.name == "polygon":
 						btn_arr.append(ContextButton.create_from_action("set_as_origin", inner_selections[0] == 0))
@@ -839,7 +839,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 	return ContextPopup.create(btn_arr)
 
 func popup_convert_to_context(popup_method: Callable) -> void:
-	# The "Convert To" context popup.
+	# The "Convert to" context popup.
 	if not selected_xids.is_empty():
 		var btn_arr: Array[ContextButton] = []
 		
@@ -850,7 +850,15 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		# We can assume that we either have only XML nodes or only elements.
 		if not xnodes[0].is_element():
 			var common_conversions = xnodes[0].get_possible_conversions()
-			common_conversions.append(xnodes[0].get_type())
+			
+			var has_different := false
+			for i in range(1, xnodes.size()):
+				if xnodes[i].get_type() != xnodes[0].get_type():
+					has_different = true
+					break
+			if has_different:
+				common_conversions.append(xnodes[0].get_type())
+			
 			for i in range(1, xnodes.size()):
 				for ii in range(common_conversions.size() - 1, -1, -1):
 					if not (common_conversions[ii] == xnodes[i].get_type() or common_conversions[ii] in xnodes[i].get_possible_conversions()):
@@ -864,7 +872,15 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		else:
 			# An element conversion might not be possible for each available one.
 			var common_conversions = xnodes[0].possible_conversions.duplicate()
-			common_conversions.append(xnodes[0].name)
+			
+			var has_different := false
+			for i in range(1, xnodes.size()):
+				if xnodes[i].name != xnodes[0].name:
+					has_different = true
+					break
+			if has_different:
+				common_conversions.append(xnodes[0].name)
+			
 			for i in range(1, xnodes.size()):
 				for ii in range(common_conversions.size() - 1, -1, -1):
 					if not (common_conversions[ii] == xnodes[i].name or common_conversions[ii] in xnodes[i].possible_conversions):
@@ -880,7 +896,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 						DB.get_element_icon(element_name), not can_replace)
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_arr.append(btn)
-		popup_method.call(ContextPopup.create(btn_arr))
+		popup_method.call(ContextPopup.create_with_title(btn_arr, Translator.translate("Convert to")))
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var command_picker := PathConvertPopupScene.instantiate()
 		command_picker.setup(root_element.get_xnode(semi_selected_xid).get_attribute("d"), inner_selections)

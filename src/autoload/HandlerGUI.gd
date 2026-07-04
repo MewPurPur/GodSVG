@@ -10,6 +10,21 @@ const UpdateMenuScene = preload("res://src/ui_parts/update_menu.tscn")
 const ExportMenuScene = preload("res://src/ui_parts/export_menu.tscn")
 const ShortcutPanelScene = preload("res://src/ui_parts/shortcut_panel.tscn")
 
+# The mobile display geometry is static, but gets modified based on UI scale.
+
+var _mobile_display_cutout_margins := PackedInt32Array([0, 0, 0, 0])
+var _mobile_display_corner_radii := PackedInt32Array([0, 0, 0, 0])
+signal mobile_display_geometry_changed
+
+## Use GlobalScope.Side to get them individually from this array.
+func get_mobile_cutout_margins() -> PackedInt32Array:
+	return _mobile_display_cutout_margins
+
+## Use GlobalScope.Corner to get them individually from this array.
+func get_mobile_corner_radii() -> PackedInt32Array:
+	return _mobile_display_corner_radii
+
+
 signal popups_cleared
 
 ## A stack of the current menus, dialogs in the foreground, center of the screen, that also darken the background for more focus.
@@ -589,6 +604,45 @@ func update_ui_scale() -> void:
 					mini(int(window.size.y * resize_factor), usable_screen_size.y))
 		window.min_size = window_default_size * final_scale
 	window.content_scale_factor = final_scale
+	
+	# Deal with screen-obscuring nonsense on mobile.
+	if OS.get_name() == "Android":
+		var corner_radii := PackedInt32Array([0, 0, 0, 0])
+		var cutout_margins := PackedInt32Array([0, 0, 0, 0])
+		
+		# Corner radii are available only on Android 12 and later.
+		var android_runtime := Engine.get_singleton("AndroidRuntime")
+		if is_instance_valid(android_runtime):
+			var version := JavaClassWrapper.wrap("android.os.Build$VERSION")
+			if version.SDK_INT >= 31:
+				var insets: Variant = android_runtime.getActivity().getWindow().getDecorView().getRootWindowInsets()
+				var RoundedCorner := JavaClassWrapper.wrap("android.view.RoundedCorner")
+				var top_left = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)
+				var top_right = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_RIGHT)
+				var bottom_right = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_RIGHT)
+				var bottom_left = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_LEFT)
+				if is_instance_valid(top_left):
+					corner_radii[Corner.CORNER_TOP_LEFT] = ceili(top_left.getRadius() / final_scale)
+				if is_instance_valid(top_right):
+					corner_radii[Corner.CORNER_TOP_RIGHT] = ceili(top_right.getRadius() / final_scale)
+				if is_instance_valid(bottom_right):
+					corner_radii[Corner.CORNER_BOTTOM_RIGHT] = ceili(bottom_right.getRadius() / final_scale)
+				if is_instance_valid(bottom_left):
+					corner_radii[Corner.CORNER_BOTTOM_LEFT] = ceili(bottom_left.getRadius() / final_scale)
+		
+		# Cutout margins logic, available in plain Godot.
+		var safe_area := DisplayServer.get_display_safe_area()
+		var screen_size := DisplayServer.screen_get_size()
+		cutout_margins[Side.SIDE_LEFT] = ceili(safe_area.position.x / final_scale)
+		cutout_margins[Side.SIDE_TOP] = ceili(safe_area.position.y / final_scale)
+		cutout_margins[Side.SIDE_RIGHT] = ceili((screen_size.x - safe_area.end.x) / final_scale)
+		cutout_margins[Side.SIDE_BOTTOM] = ceili((screen_size.y - safe_area.end.y) / final_scale)
+		
+		# Set the mobile display geometry, emitting the signal for everything else to update.
+		if _mobile_display_cutout_margins != cutout_margins or _mobile_display_corner_radii != corner_radii:
+			_mobile_display_cutout_margins = cutout_margins
+			_mobile_display_corner_radii = corner_radii
+			mobile_display_geometry_changed.emit()
 
 
 func prompt_quit() -> void:
