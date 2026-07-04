@@ -84,16 +84,18 @@ msgid "View in Inspector"
 msgstr "在检视器中查看"
 
 #: src/autoload/State.gd
-msgid "Convert To"
+#, fuzzy
+msgid "Convert to"
 msgstr "转换为"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
-msgid "Insert After"
+#, fuzzy
+msgid "Insert after"
 msgstr "在后方插入"
 
 #: src/autoload/State.gd
 #, fuzzy
-msgid "Insert Multiple After"
+msgid "Insert multiple after"
 msgstr "在后方插入"
 
 #: src/autoload/State.gd
@@ -1224,7 +1226,8 @@ msgid "Apply the matrix"
 msgstr "应用矩阵"
 
 #: src/ui_widgets/transform_popup.gd
-msgid "Insert Before"
+#, fuzzy
+msgid "Insert before"
 msgstr "在前方插入"
 
 #: src/ui_widgets/transform_popup.gd
@@ -1599,7 +1602,8 @@ msgid "Absolute"
 msgstr "绝对"
 
 #: src/utils/TranslationUtils.gd
-msgid "Code editor"
+#, fuzzy
+msgid "Code Editor"
 msgstr "代码编辑器"
 
 #: src/utils/TranslationUtils.gd
@@ -1648,7 +1652,7 @@ msgstr "矢量图形编辑器"
 msgid "A vector graphics application for structured SVG editing"
 msgstr "结构化SVG编辑应用"
 
-#. A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has multiple meaningful translations, you can include them all.
+#. A list of keywords that should remain semicolon-separated. Doesn't need to be exactly translated. There can be more keywords or less, but they must remain similar to the English ones.
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标志;编辑器;路径;形狀;二维;代码;蓝色;狐狸"

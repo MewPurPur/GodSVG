@@ -84,16 +84,18 @@ msgid "View in Inspector"
 msgstr "Bekijk in Inspecteur"
 
 #: src/autoload/State.gd
-msgid "Convert To"
+#, fuzzy
+msgid "Convert to"
 msgstr "Omzetten Naar"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
-msgid "Insert After"
+#, fuzzy
+msgid "Insert after"
 msgstr "Erna Invoegen"
 
 #: src/autoload/State.gd
 #, fuzzy
-msgid "Insert Multiple After"
+msgid "Insert multiple after"
 msgstr "Erna Invoegen"
 
 #: src/autoload/State.gd
@@ -1246,7 +1248,8 @@ msgid "Apply the matrix"
 msgstr "Matrix toepassen"
 
 #: src/ui_widgets/transform_popup.gd
-msgid "Insert Before"
+#, fuzzy
+msgid "Insert before"
 msgstr "Ervoor Bijvoegen"
 
 #: src/ui_widgets/transform_popup.gd
@@ -1624,7 +1627,8 @@ msgid "Absolute"
 msgstr "Absoluut"
 
 #: src/utils/TranslationUtils.gd
-msgid "Code editor"
+#, fuzzy
+msgid "Code Editor"
 msgstr "Code editor"
 
 #: src/utils/TranslationUtils.gd
@@ -1674,7 +1678,7 @@ msgstr ""
 msgid "A vector graphics application for structured SVG editing"
 msgstr ""
 
-#. A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has multiple meaningful translations, you can include them all.
+#. A list of keywords that should remain semicolon-separated. Doesn't need to be exactly translated. There can be more keywords or less, but they must remain similar to the English ones.
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr ""

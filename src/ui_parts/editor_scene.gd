@@ -52,72 +52,17 @@ func _ready() -> void:
 	update_layout()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
-	Configs.ui_scale_changed.connect(apply_cutout_margin)
-	await get_tree().process_frame
-	apply_cutout_margin()
 	
+	await get_tree().process_frame
 	if NativeMenu.has_feature(NativeMenu.FEATURE_GLOBAL_MENU):
 		add_child(MacMenuScene.instantiate())
 
-func apply_cutout_margin() -> void:
-	var stylebox := panel_container.get_theme_stylebox("panel")
-	
-	var radii := _get_rounded_corner_radius()
-	var margin_left = max(radii[0], radii[3]) / 3
-	var margin_right = max(radii[1], radii[2]) / 3
-	var margin_top = max(radii[0], radii[1]) / 3
-	var margin_bottom = max(radii[2], radii[3]) / 3
-	
-	var safe_area := DisplayServer.get_display_safe_area()
-	var s_right_padding = (DisplayServer.screen_get_size().x - safe_area.size.x) - safe_area.position.x
-	margin_left = max(margin_left, safe_area.position.x)
-	margin_right = max(margin_right, s_right_padding)
-	
-	var ui_scale = get_window().content_scale_factor
-	stylebox.content_margin_left = margin_left / ui_scale
-	stylebox.content_margin_right = margin_right / ui_scale
-	stylebox.content_margin_top = margin_top / ui_scale
-	stylebox.content_margin_bottom = margin_bottom / ui_scale
-	panel_container.add_theme_stylebox_override("panel", stylebox)
-
-## Returns an array of rounded corner radii in the following order: [topLeft, topRight, bottomRight, bottomLeft].
-## Available only on Android 12 and later.
-func _get_rounded_corner_radius() -> Array[int]:
-	var result: Array[int] = [0, 0, 0, 0]
-	var android_runtime = Engine.get_singleton("AndroidRuntime")
-	if not android_runtime:
-		return result
-	var version = JavaClassWrapper.wrap("android.os.Build$VERSION")
-	if version.SDK_INT < 31:
-		return result
-
-	var insets = android_runtime.getActivity().getWindow().getDecorView().getRootWindowInsets()
-	var RoundedCorner = JavaClassWrapper.wrap("android.view.RoundedCorner")
-	
-	var topLeft = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)
-	if topLeft != null:
-		result[0] = topLeft.getRadius()
-	
-	var topRight = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_RIGHT)
-	if topRight != null:
-		result[1] = topRight.getRadius()
-	
-	var bottomRight = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_RIGHT)
-	if bottomRight != null:
-		result[2] = bottomRight.getRadius()
-	
-	var bottomLeft = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_LEFT)
-	if bottomLeft != null:
-		result[3] = bottomLeft.getRadius()
-	
-	return result
 
 func sync_theming() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.bg_color = ThemeUtils.overlay_panel_inner_color
 	stylebox.set_content_margin_all(0)
 	panel_container.add_theme_stylebox_override("panel", stylebox)
-	apply_cutout_margin()
 
 
 func update_layout() -> void:
@@ -138,14 +83,33 @@ func update_layout() -> void:
 	var left_margin_container := MarginContainer.new()
 	left_margin_container.custom_minimum_size.x = 408
 	left_margin_container.begin_bulk_theme_override()
-	left_margin_container.add_theme_constant_override("margin_top", 6)
-	left_margin_container.add_theme_constant_override("margin_bottom", 6)
-	left_margin_container.add_theme_constant_override("margin_left", 6)
+	if OS.get_name() == "Android":
+		var set_mobile_margins :=\
+			func() -> void:
+				var cutouts := HandlerGUI.get_mobile_cutout_margins()
+				left_margin_container.add_theme_constant_override("margin_top", maxi(6, cutouts[Side.SIDE_TOP] + 2))
+				left_margin_container.add_theme_constant_override("margin_bottom", maxi(6, cutouts[Side.SIDE_BOTTOM] + 2))
+				left_margin_container.add_theme_constant_override("margin_left", maxi(6, cutouts[Side.SIDE_LEFT] + 2))
+		HandlerGUI.mobile_display_geometry_changed.connect(set_mobile_margins)
+		left_margin_container.tree_exiting.connect(HandlerGUI.mobile_display_geometry_changed.disconnect.bind(set_mobile_margins))
+		set_mobile_margins.call()
+	else:
+		left_margin_container.add_theme_constant_override("margin_top", 6)
+		left_margin_container.add_theme_constant_override("margin_bottom", 6)
+		left_margin_container.add_theme_constant_override("margin_left", 6)
 	left_margin_container.end_bulk_theme_override()
 	horizontal_splitter.add_child(left_margin_container)
 	
 	var right_margin_container := MarginContainer.new()
-	right_margin_container.add_theme_constant_override("margin_top", 6)
+	if OS.get_name() == "Android":
+		var set_mobile_margins :=\
+			func() -> void:
+				right_margin_container.add_theme_constant_override("margin_top", maxi(6, HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_TOP] + 2))
+		HandlerGUI.mobile_display_geometry_changed.connect(set_mobile_margins)
+		right_margin_container.tree_exiting.connect(HandlerGUI.mobile_display_geometry_changed.disconnect.bind(set_mobile_margins))
+		set_mobile_margins.call()
+	else:
+		right_margin_container.add_theme_constant_override("margin_top", 6)
 	right_margin_container.add_child(create_layout_node(Utils.LayoutPart.VIEWPORT))
 	horizontal_splitter.add_child(right_margin_container)
 	
@@ -154,7 +118,26 @@ func update_layout() -> void:
 	left_margin_container.add_child(left_vbox)
 	
 	var global_actions := GlobalActionsScene.instantiate()
-	left_vbox.add_child(global_actions)
+	if OS.get_name() == "Android":
+		var global_actions_margin_container := MarginContainer.new()
+		
+		var update_global_actions_margin := func() -> void:
+			var top_left_corner_radius := HandlerGUI.get_mobile_corner_radii()[Corner.CORNER_TOP_LEFT]
+			var top_spacing := maxi(6, HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_TOP] + 2)
+			var margin := HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_LEFT]
+			if top_spacing < top_left_corner_radius:
+				margin = maxi(margin, ceili(top_left_corner_radius - sqrt(top_left_corner_radius ** 2 - top_spacing ** 2)))
+			global_actions_margin_container.add_theme_constant_override("margin_left", margin)
+		
+		HandlerGUI.mobile_display_geometry_changed.connect(update_global_actions_margin)
+		global_actions_margin_container.tree_exiting.connect(HandlerGUI.mobile_display_geometry_changed.disconnect.bind(update_global_actions_margin))
+		update_global_actions_margin.call()
+		
+		global_actions_margin_container.add_child(global_actions)
+		left_vbox.add_child(global_actions_margin_container)
+	else:
+		left_vbox.add_child(global_actions)
+	
 	var left_vertical_split_container := VSplitContainer.new()
 	left_vertical_split_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left_vertical_split_container.add_theme_constant_override("separation", 10)

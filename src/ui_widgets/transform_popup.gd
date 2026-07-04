@@ -156,9 +156,9 @@ func update_final_transform() -> void:
 
 func popup_transform_actions(idx: int, control: Control) -> void:
 	var btn_arr: Array[ContextButton] = []
-	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert After"),
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
 			popup_new_transform_context.bind(idx + 1, control), preload("res://assets/icons/InsertAfter.svg")))
-	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert Before"),
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert before"),
 			popup_new_transform_context.bind(idx, control), preload("res://assets/icons/InsertBefore.svg")))
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"),
 			delete_transform.bind(idx), preload("res://assets/icons/Delete.svg")))

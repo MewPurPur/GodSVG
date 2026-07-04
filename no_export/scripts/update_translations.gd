@@ -3,7 +3,7 @@
 extends EditorScript
 
 const COMMENTS_DICT: Dictionary[String, String] = {
-	"svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox": "A list of keywords that should remain semicolon-separated regardless of the language. If a keyword has multiple meaningful translations, you can include them all.",
+	"svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox": "A list of keywords that should remain semicolon-separated. Doesn't need to be exactly translated. There can be more keywords or less, but they must remain similar to the English ones.",
 	"Viewport": "The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.",
 	"CDATA color": "CDATA shouldn't be translated. It's a type of XML section.",
 	"XML entity color": "XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.",
