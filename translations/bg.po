@@ -1412,7 +1412,7 @@ msgstr "Дублирай"
 
 #: src/utils/TranslationUtils.gd
 msgid "Duplicate the selection"
-msgstr "Изтрий селекцията"
+msgstr "Дублирай селекцията"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
