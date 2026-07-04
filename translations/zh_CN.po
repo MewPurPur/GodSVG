@@ -96,7 +96,7 @@ msgstr "在后方插入"
 #: src/autoload/State.gd
 #, fuzzy
 msgid "Insert multiple after"
-msgstr "在后方插入"
+msgstr "在后方插入多个"
 
 #: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -389,7 +389,6 @@ msgid "Copy path"
 msgstr "复制路径"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Open in File Manager"
 msgstr "在文件管理器中显示"
 
@@ -665,7 +664,7 @@ msgstr "无 ID"
 #. Refers to a number of points.
 #: src/ui_widgets/insert_multiple_points_popup.gd
 msgid "Points to insert"
-msgstr ""
+msgstr "点数"
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -717,24 +716,23 @@ msgstr "保存为 XML"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Exact conversions"
-msgstr ""
+msgstr "精确转换"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Lossy conversions"
-msgstr ""
+msgstr "有损转换"
 
 #: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "相对"
 
 #: src/ui_widgets/path_insert_popup.gd
-#, fuzzy
 msgid "Keep open"
-msgstr "保留注释"
+msgstr "保持开启"
 
 #: src/ui_widgets/path_insert_popup.gd
 msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
-msgstr ""
+msgstr "关闭后，选取路径命令时需按下 {keys} 以保持弹窗开启。"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -1443,15 +1441,15 @@ msgstr "将选中的元素下移"
 #. Refers to, for example, changing which point in a polygon counts as "first".
 #: src/utils/TranslationUtils.gd
 msgid "Set as initial"
-msgstr ""
+msgstr "设为起始点"
 
 #: src/utils/TranslationUtils.gd
 msgid "Set point as initial"
-msgstr ""
+msgstr "设点为起始点"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reverse order"
-msgstr ""
+msgstr "倒序"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
