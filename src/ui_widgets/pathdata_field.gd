@@ -317,11 +317,12 @@ func _commands_draw() -> void:
 		subpath_polyline_positions += PackedVector2Array([Vector2(0, subpath_start * STRIP_HEIGHT + 8), Vector2(-6, subpath_start * STRIP_HEIGHT + 8),
 				Vector2(-6, subpath_end_shifted * STRIP_HEIGHT - 8), Vector2(0, subpath_end_shifted * STRIP_HEIGHT - 8)])
 		
-		var fully_selected := true
-		for i in range(subpath_start, subpath_end_shifted):
-			if not State.is_selected(element.xid, i):
-				fully_selected = false
-				break
+		var fully_selected := (subpath_end_shifted > subpath_start + 1)
+		if fully_selected:
+			for i in range(subpath_start, subpath_end_shifted):
+				if not State.is_selected(element.xid, i):
+					fully_selected = false
+					break
 		var color := Color(ThemeUtils.max_contrast_color, 0.24 if fully_selected else 0.1)
 		RenderingServer.canvas_item_add_polyline(ci, subpath_polyline_positions, PackedColorArray([color, color, color, color]), 2.0 if fully_selected else 1.0)
 
