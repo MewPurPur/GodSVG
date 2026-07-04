@@ -49,29 +49,35 @@ func _ready() -> void:
 		move_child(tab_bar_margin_container, 0)
 		tab_bar.reparent(tab_bar_margin_container)
 		
-		var update_tab_bar_margin := func() -> void:
-			var top_right_corner_radius := HandlerGUI.get_mobile_corner_radii()[Corner.CORNER_TOP_RIGHT]
-			var margin := HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_RIGHT]
-			if tab_bar.global_position.y < top_right_corner_radius:
-				margin = maxi(margin, ceili(top_right_corner_radius - sqrt(top_right_corner_radius ** 2 - tab_bar.global_position.y ** 2)))
-			tab_bar_margin_container.add_theme_constant_override("margin_right", margin)
+		var update_tab_bar_margin :=\
+			func() -> void:
+				var top_right_corner_radius := HandlerGUI.get_mobile_corner_radii()[Corner.CORNER_TOP_RIGHT]
+				var margin := HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_RIGHT]
+				if tab_bar.global_position.y < top_right_corner_radius:
+					margin = maxi(margin, ceili(top_right_corner_radius -\
+							sqrt(top_right_corner_radius ** 2 - (tab_bar.global_position.y - top_right_corner_radius) ** 2) - 2))
+				tab_bar_margin_container.add_theme_constant_override("margin_right", margin)
 		
 		HandlerGUI.mobile_display_geometry_changed.connect(update_tab_bar_margin)
 		tab_bar.tree_exiting.connect(HandlerGUI.mobile_display_geometry_changed.disconnect.bind(update_tab_bar_margin))
 		update_tab_bar_margin.call_deferred()
 		
-		var update_toolbar_margin := func() -> void:
-			var top_right_corner_radius := HandlerGUI.get_mobile_corner_radii()[Corner.CORNER_TOP_RIGHT]
-			var margin := HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_RIGHT]
-			if toolbar.global_position.y < top_right_corner_radius:
-				margin = maxi(margin, ceili(top_right_corner_radius - sqrt(top_right_corner_radius ** 2 - toolbar.global_position.y ** 2)))
-			var stylebox := toolbar.get_theme_stylebox("panel").duplicate()
-			stylebox.content_margin_right = maxi(stylebox.content_margin_right, margin)
-			toolbar.add_theme_stylebox_override("panel", stylebox)
+		var original_stylebox := toolbar.get_theme_stylebox("panel")
+		var update_toolbar_margin :=\
+			func() -> void:
+				var top_right_corner_radius := HandlerGUI.get_mobile_corner_radii()[Corner.CORNER_TOP_RIGHT]
+				var margin := HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_RIGHT]
+				if toolbar.global_position.y < top_right_corner_radius:
+					margin = maxi(margin, ceili(top_right_corner_radius -\
+							sqrt(top_right_corner_radius ** 2 - (toolbar.global_position.y - top_right_corner_radius) ** 2) - 2))
+				var stylebox := original_stylebox.duplicate()
+				stylebox.content_margin_right = maxf(original_stylebox.content_margin_right, margin)
+				toolbar.add_theme_stylebox_override("panel", stylebox)
 		
 		HandlerGUI.mobile_display_geometry_changed.connect(update_toolbar_margin)
 		toolbar.tree_exiting.connect(HandlerGUI.mobile_display_geometry_changed.disconnect.bind(update_toolbar_margin))
 		update_toolbar_margin.call_deferred()
+	
 	HandlerGUI.register_focus_sequence(self, [visuals_button, reference_button, snap_button, snapper, zoom_widget])
 
 
