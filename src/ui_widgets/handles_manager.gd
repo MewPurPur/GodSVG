@@ -194,10 +194,12 @@ func generate_path_handles(element: Element) -> Array[Handle]:
 
 func generate_polyhandles(element: Element) -> Array[Handle]:
 	var polyhandles: Array[Handle] = []
-	var first_handle := PolyHandle.new(element, 0)
-	first_handle.display_mode = Handle.Display.SQUARE
-	polyhandles.append(first_handle)
-	for idx: int in range(1, element.get_attribute("points").get_list_size() / 2):
+	var points_count: int = element.get_attribute("points").get_list_size() / 2
+	if points_count != 0:
+		var first_handle := PolyHandle.new(element, 0)
+		first_handle.display_mode = Handle.Display.SQUARE
+		polyhandles.append(first_handle)
+	for idx: int in range(1, points_count):
 		polyhandles.append(PolyHandle.new(element, idx))
 	return polyhandles
 
