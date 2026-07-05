@@ -203,6 +203,19 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 					if next.command_char in "SsTt":
 						return false
 				return true
+			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
+				if not (is_equal_approx(3 * cmd.x1 - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * cmd.y1 - cmd.start_y, 3 * cmd.y2 - cmd.y)):
+					return false
+				var implied := get_implied_T_control(index)
+				if not (is_equal_approx(implied[0], (3.0 * cmd.x1 - cmd.start_x) / 2.0) and is_equal_approx(implied[1], (3.0 * cmd.y1 - cmd.start_y) / 2.0)):
+					return false
+				if ignore_subsequent_commands:
+					return true
+				if index + 1 < _commands.size():
+					var next := _commands[index + 1]
+					if next.command_char in "SsTt":
+						return false
+				return true
 			_: return false
 	elif cmd is PathCommand.ShorthandCubicBezierCommand:
 		match conversion_method:

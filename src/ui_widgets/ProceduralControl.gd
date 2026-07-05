@@ -86,46 +86,26 @@ func _draw() -> void:
 			var font_color: Color
 			var icon_color: Color
 			if button.disabled:
-				if "icon_disabled_color" in button.theme_color_overrides:
-					icon_color = button.theme_color_overrides["icon_disabled_color"]
-				else:
-					icon_color = get_theme_color("icon_disabled_color", button.theme_variation)
-				
-				if "font_disabled_color" in button.theme_color_overrides:
-					font_color = button.theme_color_overrides["font_disabled_color"]
-				else:
-					font_color = get_theme_color("font_disabled_color", button.theme_variation)
+				icon_color = button.theme_color_overrides["icon_disabled_color"] if "icon_disabled_color" in button.theme_color_overrides else\
+						get_theme_color("icon_disabled_color", button.theme_variation)
+				font_color = button.theme_color_overrides["font_disabled_color"] if "font_disabled_color" in button.theme_color_overrides else\
+						get_theme_color("font_disabled_color", button.theme_variation)
 			else:
 				if button == pressed_button and button == hovered_button:
-					if "icon_pressed_color" in button.theme_color_overrides:
-						icon_color = button.theme_color_overrides["icon_pressed_color"]
-					else:
-						icon_color = get_theme_color("icon_pressed_color", button.theme_variation)
-					
-					if "font_pressed_color" in button.theme_color_overrides:
-						font_color = button.theme_color_overrides["font_pressed_color"]
-					else:
-						font_color = get_theme_color("font_pressed_color", button.theme_variation)
+					icon_color = button.theme_color_overrides["icon_pressed_color"] if "icon_pressed_color" in button.theme_color_overrides else\
+							get_theme_color("icon_pressed_color", button.theme_variation)
+					font_color = button.theme_color_overrides["font_pressed_color"] if "font_pressed_color" in button.theme_color_overrides else\
+							get_theme_color("font_pressed_color", button.theme_variation)
 				elif button == hovered_button:
-					if "icon_hover_color" in button.theme_color_overrides:
-						icon_color = button.theme_color_overrides["icon_hover_color"]
-					else:
-						icon_color = get_theme_color("icon_hover_color", button.theme_variation)
-					
-					if "font_hover_color" in button.theme_color_overrides:
-						font_color = button.theme_color_overrides["font_hover_color"]
-					else:
-						font_color = get_theme_color("font_hover_color", button.theme_variation)
+					icon_color = button.theme_color_overrides["icon_hover_color"] if "icon_hover_color" in button.theme_color_overrides else\
+							get_theme_color("icon_hover_color", button.theme_variation)
+					font_color = button.theme_color_overrides["font_hover_color"] if "font_hover_color" in button.theme_color_overrides else\
+							get_theme_color("font_hover_color", button.theme_variation)
 				else:
-					if "icon_normal_color" in button.theme_color_overrides:
-						icon_color = button.theme_color_overrides["icon_normal_color"]
-					else:
-						icon_color = get_theme_color("icon_normal_color", button.theme_variation)
-					
-					if "font_color" in button.theme_color_overrides:
-						font_color = button.theme_color_overrides["font_color"]
-					else:
-						font_color = get_theme_color("font_color", button.theme_variation)
+					icon_color = button.theme_color_overrides["icon_normal_color"] if "icon_normal_color" in button.theme_color_overrides else\
+							get_theme_color("icon_normal_color", button.theme_variation)
+					font_color = button.theme_color_overrides["font_color"] if "font_color" in button.theme_color_overrides else\
+							get_theme_color("font_color", button.theme_variation)
 			
 			var text_size := button.text_line.get_size()
 			var icon_size := button.icon.get_size()
@@ -136,26 +116,18 @@ func _draw() -> void:
 		elif has_text:
 			var font_color: Color
 			if button.disabled:
-				if "font_disabled_color" in button.theme_color_overrides:
-					font_color = button.theme_color_overrides["font_disabled_color"]
-				else:
-					font_color = get_theme_color("font_disabled_color", button.theme_variation)
+				font_color = button.theme_color_overrides["font_disabled_color"] if "font_disabled_color" in button.theme_color_overrides else\
+						get_theme_color("font_disabled_color", button.theme_variation)
 			else:
 				if button == pressed_button and button == hovered_button:
-					if "font_pressed_color" in button.theme_color_overrides:
-						font_color = button.theme_color_overrides["font_pressed_color"]
-					else:
-						font_color = get_theme_color("font_pressed_color", button.theme_variation)
+					font_color = button.theme_color_overrides["font_pressed_color"] if "font_pressed_color" in button.theme_color_overrides else\
+							get_theme_color("font_pressed_color", button.theme_variation)
 				elif button == hovered_button:
-					if "font_hover_color" in button.theme_color_overrides:
-						font_color = button.theme_color_overrides["font_hover_color"]
-					else:
-						font_color = get_theme_color("font_hover_color", button.theme_variation)
+					font_color = button.theme_color_overrides["font_hover_color"] if "font_hover_color" in button.theme_color_overrides else\
+							get_theme_color("font_hover_color", button.theme_variation)
 				else:
-					if "font_color" in button.theme_color_overrides:
-						font_color = button.theme_color_overrides["font_color"]
-					else:
-						font_color = get_theme_color("font_color", button.theme_variation)
+					font_color = button.theme_color_overrides["font_color"] if "font_color" in button.theme_color_overrides else\
+							get_theme_color("font_color", button.theme_variation)
 			
 			button.text_line.draw(ci, button.rect.position + (button.rect.size - button.text_line.get_size()) / 2.0, font_color)
 		elif has_icon:
@@ -167,74 +139,45 @@ func _draw() -> void:
 					icon_color = get_theme_color("icon_disabled_color", button.theme_variation)
 			else:
 				if button == pressed_button and button == hovered_button:
-					if "icon_pressed_color" in button.theme_color_overrides:
-						icon_color = button.theme_color_overrides["icon_pressed_color"]
-					else:
-						icon_color = get_theme_color("icon_pressed_color", button.theme_variation)
+					icon_color = button.theme_color_overrides["icon_pressed_color"] if "icon_pressed_color" in button.theme_color_overrides else\
+							get_theme_color("icon_pressed_color", button.theme_variation)
 				elif button == hovered_button:
-					if "icon_hover_color" in button.theme_color_overrides:
-						icon_color = button.theme_color_overrides["icon_hover_color"]
-					else:
-						icon_color = get_theme_color("icon_hover_color", button.theme_variation)
+					icon_color = button.theme_color_overrides["icon_hover_color"] if "icon_hover_color" in button.theme_color_overrides else\
+							get_theme_color("icon_hover_color", button.theme_variation)
 				else:
-					if "icon_normal_color" in button.theme_color_overrides:
-						icon_color = button.theme_color_overrides["icon_normal_color"]
-					else:
-						icon_color = get_theme_color("icon_normal_color", button.theme_variation)
+					icon_color = button.theme_color_overrides["icon_normal_color"] if "icon_normal_color" in button.theme_color_overrides else\
+							get_theme_color("icon_normal_color", button.theme_variation)
 			
 			button.icon.draw(ci, button.rect.position + (button.rect.size - button.icon.get_size()) / 2.0, icon_color)
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouse:
-		var mouse_event: InputEventMouse = event
-		var event_pos := mouse_event.position
-		var should_update_hover := (event is InputEventMouse)
-		
-		if event is InputEventMouseButton:
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				if event.is_pressed():
-					pressed_button = hovered_button
-					queue_redraw()
-				elif event.is_released():
-					if is_instance_valid(pressed_button) and pressed_button == hovered_button and not pressed_button.disabled:
-						pressed_button.callable.call()
-					pressed_button = null
-					should_update_hover = true
-		
-		if should_update_hover:
-			if event.button_mask == 0 and not (event is InputEventMouseButton and event.is_released() and event.button_index != MOUSE_BUTTON_NONE):
-				var found_hovered := false
-				for button in buttons:
-					if button.disabled:
-						continue
-					if button.rect.has_point(event_pos):
-						if hovered_button != button:
-							hovered_button = button
-							if not button.use_arrow_cursor:
-								mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-							queue_redraw()
-						found_hovered = true
-						break
-				
-				if not found_hovered and hovered_button != null:
-					hovered_button = null
-					mouse_default_cursor_shape = Control.CURSOR_ARROW
-					queue_redraw()
-			else:
-				var found_hovered := false
-				for button in buttons:
-					if button.disabled:
-						continue
-					if button.rect.has_point(event_pos):
-						if hovered_button != button and button == pressed_button:
-							hovered_button = button
-							if not button.use_arrow_cursor:
-								mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-							queue_redraw()
-						found_hovered = true
-						break
-				
-				if not found_hovered and hovered_button != null:
-					hovered_button = null
-					mouse_default_cursor_shape = Control.CURSOR_ARROW
-					queue_redraw()
+	if not event is InputEventMouse:
+		return
+	
+	_update_hover(event.position)
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.is_pressed():
+				pressed_button = hovered_button
+				queue_redraw()
+			elif event.is_released():
+				if is_instance_valid(pressed_button) and pressed_button == hovered_button and not pressed_button.disabled:
+					pressed_button.callable.call()
+				pressed_button = null
+				queue_redraw()
+
+func _update_hover(mouse_pos: Vector2) -> void:
+	var new_hover: ButtonData = null
+	for button in buttons:
+		if button.disabled:
+			continue
+		if button.rect.has_point(mouse_pos):
+			new_hover = button
+			break
+	if hovered_button != new_hover:
+		hovered_button = new_hover
+		queue_redraw()
+	_update_cursor()
+
+func _update_cursor() -> void:
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if (hovered_button != null and not hovered_button.use_arrow_cursor) else Control.CURSOR_ARROW

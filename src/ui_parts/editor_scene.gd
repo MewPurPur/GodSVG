@@ -81,7 +81,6 @@ func update_layout() -> void:
 	panel_container.add_child(horizontal_splitter)
 	
 	var left_margin_container := MarginContainer.new()
-	left_margin_container.custom_minimum_size.x = 408
 	left_margin_container.begin_bulk_theme_override()
 	if OS.get_name() == "Android":
 		var set_mobile_margins :=\
@@ -90,6 +89,7 @@ func update_layout() -> void:
 				left_margin_container.add_theme_constant_override("margin_top", maxi(6, cutouts[Side.SIDE_TOP] + 2))
 				left_margin_container.add_theme_constant_override("margin_bottom", maxi(6, cutouts[Side.SIDE_BOTTOM] + 2))
 				left_margin_container.add_theme_constant_override("margin_left", maxi(6, cutouts[Side.SIDE_LEFT] + 2))
+				left_margin_container.custom_minimum_size.x = 402 + left_margin_container.get_theme_constant("margin_left")
 		HandlerGUI.mobile_display_geometry_changed.connect(set_mobile_margins)
 		left_margin_container.tree_exiting.connect(HandlerGUI.mobile_display_geometry_changed.disconnect.bind(set_mobile_margins))
 		set_mobile_margins.call()
@@ -97,6 +97,7 @@ func update_layout() -> void:
 		left_margin_container.add_theme_constant_override("margin_top", 6)
 		left_margin_container.add_theme_constant_override("margin_bottom", 6)
 		left_margin_container.add_theme_constant_override("margin_left", 6)
+		left_margin_container.custom_minimum_size.x = 408
 	left_margin_container.end_bulk_theme_override()
 	horizontal_splitter.add_child(left_margin_container)
 	
@@ -121,13 +122,16 @@ func update_layout() -> void:
 	if OS.get_name() == "Android":
 		var global_actions_margin_container := MarginContainer.new()
 		
-		var update_global_actions_margin := func() -> void:
-			var top_left_corner_radius := HandlerGUI.get_mobile_corner_radii()[Corner.CORNER_TOP_LEFT]
-			var top_spacing := maxi(6, HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_TOP] + 2)
-			var margin := HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_LEFT]
-			if top_spacing < top_left_corner_radius:
-				margin = maxi(margin, ceili(top_left_corner_radius - sqrt(top_left_corner_radius ** 2 - top_spacing ** 2)))
-			global_actions_margin_container.add_theme_constant_override("margin_left", margin)
+		var update_global_actions_margin :=\
+			func() -> void:
+				var top_left_corner_radius := HandlerGUI.get_mobile_corner_radii()[Corner.CORNER_TOP_LEFT]
+				var top_spacing := maxi(6, HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_TOP] + 2)
+				if top_spacing < top_left_corner_radius:
+					var left_spacing := maxi(6, HandlerGUI.get_mobile_cutout_margins()[Side.SIDE_LEFT] + 2)
+					var margin := ceili(top_left_corner_radius - sqrt(top_left_corner_radius ** 2 -\
+							(top_spacing - top_left_corner_radius) ** 2) - left_spacing - 2)
+					if margin > 0:
+						global_actions_margin_container.add_theme_constant_override("margin_left", margin)
 		
 		HandlerGUI.mobile_display_geometry_changed.connect(update_global_actions_margin)
 		global_actions_margin_container.tree_exiting.connect(HandlerGUI.mobile_display_geometry_changed.disconnect.bind(update_global_actions_margin))
