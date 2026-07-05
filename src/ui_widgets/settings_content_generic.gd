@@ -461,8 +461,7 @@ func setup_optimizer_content() -> void:
 	simplify_path_params_rect.set_attribute("d", "M 2 2 L 8 2 L 8 5 A 3 3 -90 0 0 12 10")
 	simplify_path_params_root_element.insert_child(0, simplify_path_params_rect)
 	simplify_path_params_checkbox.set_optimizer_info(simplify_path_params_root_element, Optimizer.new(), Translator.translate(
-			"Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible.") +\
-			"\nTemporary note: Currently, the only simplifications are converting lines into horizontal or vertical ones, and clearing rotation from circular arcs.")
+			"Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."))
 
 func setup_theming_content() -> void:
 	var current_setup_resource := Configs.savedata

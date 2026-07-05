@@ -132,29 +132,35 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 	elif cmd is PathCommand.LineCommand:
 		match conversion_method:
 			Conversion.ANY_TO_LINE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
-			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == 0.0
-			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == 0.0
+			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == cmd.start_y
+			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == cmd.start_x
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return false  # TODO
 			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: return false  # TODO
 			_: return false
 	elif cmd is PathCommand.HorizontalLineCommand:
 		match conversion_method:
 			Conversion.ANY_TO_LINE, Conversion.ANY_TO_HORIZONTAL_LINE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
-			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == 0.0
+			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == cmd.start_x
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return false  # TODO
 			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: return false  # TODO
 			_: return false
 	elif cmd is PathCommand.VerticalLineCommand:
 		match conversion_method:
 			Conversion.ANY_TO_LINE, Conversion.ANY_TO_VERTICAL_LINE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
-			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == 0.0
+			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == cmd.start_y
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return false  # TODO
 			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: return false  # TODO
 			_: return false
 	elif cmd is PathCommand.CloseCommand:
 		return conversion_method == Conversion.ANY_TO_CLOSURE
 	elif cmd is PathCommand.EllipticalArcCommand:
-		return conversion_method == Conversion.ANY_TO_ELLIPTICAL_ARC
+		match conversion_method:
+			Conversion.ANY_TO_ELLIPTICAL_ARC: return true
+			Conversion.ANY_TO_HORIZONTAL_LINE: return (cmd.rx <= 0.0 or cmd.ry <= 0.0) and cmd.y == cmd.start_y
+			Conversion.ANY_TO_VERTICAL_LINE: return (cmd.rx <= 0.0 or cmd.ry <= 0.0) and cmd.x == cmd.start_x
+			# TODO as usual, check if adjacent things would be disrupted.
+			Conversion.ANY_TO_LINE, Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return cmd.rx <= 0.0 or cmd.ry <= 0.0
+			_: return false
 	elif cmd is PathCommand.QuadraticBezierCommand:
 		match conversion_method:
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
