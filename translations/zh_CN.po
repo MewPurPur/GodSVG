@@ -84,17 +84,14 @@ msgid "View in Inspector"
 msgstr "在检视器中查看"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Convert to"
 msgstr "转换为"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert after"
 msgstr "在后方插入"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Insert multiple after"
 msgstr "在后方插入多个"
 
@@ -1224,7 +1221,6 @@ msgid "Apply the matrix"
 msgstr "应用矩阵"
 
 #: src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert before"
 msgstr "在前方插入"
 
@@ -1600,7 +1596,6 @@ msgid "Absolute"
 msgstr "绝对"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Code Editor"
 msgstr "代码编辑器"
 
