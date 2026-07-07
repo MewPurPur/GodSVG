@@ -181,15 +181,11 @@ func get_inner_rect(idx: int) -> Rect2:
 		
 		if element is ElementPath:
 			var inner_rect: Rect2 = attributes_container.path_field.get_inner_rect(idx)
-			inner_rect.position += main_container.position
-			inner_rect.position += attributes_container.position
-			inner_rect.position += attributes_container.path_field.position
+			inner_rect.position += main_container.position + attributes_container.position + attributes_container.path_field.position
 			return inner_rect
 		elif element is ElementPolygon or element is ElementPolyline:
-			var inner_rect: Rect2 = main_container.get_child(0).points_field.get_inner_rect(idx)
-			inner_rect.position += main_container.position
-			inner_rect.position += main_container.get_child(0).position
-			inner_rect.position += main_container.get_child(0).points_field.position
+			var inner_rect: Rect2 = attributes_container.points_field.get_inner_rect(idx)
+			inner_rect.position += main_container.position + attributes_container.position + attributes_container.points_field.position
 			return inner_rect
 	return Rect2()
 

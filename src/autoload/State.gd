@@ -640,19 +640,15 @@ func reverse_order_selected() -> void:
 		var points: AttributeList = xnode.get_attribute("points")
 		var data: PackedFloat64Array = points.get_list()
 		
-		var start := inner_selections[0]
-		var count := inner_selections.size()
-		
+		var count := data.size() / 2
 		for i in range(count / 2):
-			var a := start + i
-			var b := start + count - 1 - i
-			var ax := data[a * 2]
-			var ay := data[a * 2 + 1]
-			data[a * 2] = data[b * 2]
-			data[a * 2 + 1] = data[b * 2 + 1]
-			data[b * 2] = ax
-			data[b * 2 + 1] = ay
-		
+			var opposite_i := count - 1 - i
+			var temp_x := data[i * 2]
+			var temp_y := data[i * 2 + 1]
+			data[i * 2] = data[opposite_i * 2]
+			data[i * 2 + 1] = data[opposite_i * 2 + 1]
+			data[opposite_i * 2] = temp_x
+			data[opposite_i * 2 + 1] = temp_y
 		points.set_list(data)
 	
 	save_svg()
@@ -825,13 +821,12 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					if element_ref.name == "polygon":
 						btn_arr.append(ContextButton.create_from_action("set_as_origin", inner_selections[0] == 0))
 				else:
-					var is_selection_sequence := true
-					inner_selections.sort()
-					for i in range(1, inner_selections.size()):
-						if inner_selections[i] != inner_selections[i - 1] + 1:
-							is_selection_sequence = false
+					var is_everything_selected := true
+					for i in inner_selections.size():
+						if not i in inner_selections:
+							is_everything_selected = false
 							break
-					if is_selection_sequence:
+					if is_everything_selected:
 						btn_arr.append(ContextButton.create_from_action("reverse_order"))
 		
 		btn_arr.append(ContextButton.create_from_action("delete"))
