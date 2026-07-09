@@ -756,13 +756,23 @@ func _unhandled_input(event: InputEvent) -> void:
 					inner_idx = dragged_handle.point_index
 				
 				if event.double_click and inner_idx != -1:
-					# Unselect the element, so then it's selected again in the subpath.
 					if dragged_handle is PathHandle:
 						var subpath_range: Vector2i = dragged_handle.element.get_attribute("d").get_subpath(inner_idx)
-						State.normal_select(dragged_xid, subpath_range.x)
+						if event.is_command_or_control_pressed():
+							State.ctrl_select(dragged_xid, subpath_range.x)
+							# ctrl_select() can deselect the first command, so ensure it's selected.
+							if not State.is_selected(dragged_xid, subpath_range.x):
+								State.ctrl_select(dragged_xid, subpath_range.x)
+						else:
+							State.normal_select(dragged_xid, subpath_range.x)
 						State.shift_select(dragged_xid, subpath_range.y)
 					elif dragged_handle is PolyHandle:
-						State.normal_select(dragged_xid, 0)
+						if event.is_command_or_control_pressed():
+							State.ctrl_select(dragged_xid, 0)
+							if not State.is_selected(dragged_xid, 0):
+								State.ctrl_select(dragged_xid, 0)
+						else:
+							State.normal_select(dragged_xid, 0)
 						State.shift_select(dragged_xid, dragged_handle.element.get_attribute("points").get_list_size() / 2 - 1)
 				elif event.is_command_or_control_pressed():
 					State.ctrl_select(dragged_xid, inner_idx)
