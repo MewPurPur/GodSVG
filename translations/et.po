@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
 #. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
@@ -84,19 +84,16 @@ msgid "View in Inspector"
 msgstr "Näita inspektoris"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Convert to"
 msgstr "Teisenda"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert after"
-msgstr "Sisesta pärast"
+msgstr "Lisa peale"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Insert multiple after"
-msgstr "Sisesta pärast"
+msgstr "Lisa mitu peale"
 
 #: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -124,7 +121,7 @@ msgstr "Mitte kunagi"
 
 #: src/config_classes/Formatter.gd
 msgid "Spacious"
-msgstr ""
+msgstr "Avar"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -321,7 +318,7 @@ msgstr "Suurus"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
-msgstr ""
+msgstr "Hinnanguline suurus"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -389,7 +386,6 @@ msgid "Copy path"
 msgstr "Kopeeri asukoht"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Open in File Manager"
 msgstr "Kuva failihalduris"
 
@@ -665,7 +661,7 @@ msgstr "ID puudub"
 #. Refers to a number of points.
 #: src/ui_widgets/insert_multiple_points_popup.gd
 msgid "Points to insert"
-msgstr ""
+msgstr "Lisa punkte"
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -717,24 +713,23 @@ msgstr "Salvesta kui XML"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Exact conversions"
-msgstr ""
+msgstr "Täpsed teisendused"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Lossy conversions"
-msgstr ""
+msgstr "Kaduga teisendused"
 
 #: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Suhteline"
 
 #: src/ui_widgets/path_insert_popup.gd
-#, fuzzy
 msgid "Keep open"
-msgstr "Hoia kommentaarid alles"
+msgstr "Hoia avatuna"
 
 #: src/ui_widgets/path_insert_popup.gd
 msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
-msgstr ""
+msgstr "Kui see on välja lülitatud, peate path commandi valides hoidma {keys}, et hüpikaken püsiks avatuna."
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -811,9 +806,8 @@ msgid "Space out the slash of shorthand tags"
 msgstr "Lisa tühikuid tag-i lühisüntaksi kaldkriipsu juurde"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Formatting style"
-msgstr "Vorming"
+msgstr "Vormingu stiil"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use spaces instead of tabs"
@@ -1184,7 +1178,7 @@ msgstr "Määrab, kui palju vaade liigub kerimispõhiste liikumissisendite puhul
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Sisselülitamisel liigutab kerimine vaadet selle suurendamise asemel. Suurendamiseks hoia CTRL klahvi kerimise ajal."
+msgstr "Sisselülitamisel liigutab kerimine vaadet selle suurendamise asemel. Suurendamiseks hoidke CTRL klahvi kerimise ajal."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
@@ -1227,9 +1221,8 @@ msgid "Apply the matrix"
 msgstr "Rakenda maatriks"
 
 #: src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert before"
-msgstr "Sisesta enne"
+msgstr "Lisa enne"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "New transform"
@@ -1305,9 +1298,8 @@ msgstr "Kas soovite salvestada {file_name} kallal tehtud muudatused?"
 
 #: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
 #: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
-#, fuzzy
 msgid "Background"
-msgstr "Tausta värv"
+msgstr "Taust"
 
 #: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
 msgid "Quality"
@@ -1445,15 +1437,15 @@ msgstr "Liiguta valik alla"
 #. Refers to, for example, changing which point in a polygon counts as "first".
 #: src/utils/TranslationUtils.gd
 msgid "Set as initial"
-msgstr ""
+msgstr "Määra esimeseks"
 
 #: src/utils/TranslationUtils.gd
 msgid "Set point as initial"
-msgstr ""
+msgstr "Määra punkt esimeseks"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reverse order"
-msgstr ""
+msgstr "Pööra järjekord ümber"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1604,7 +1596,6 @@ msgid "Absolute"
 msgstr "Absoluutne"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Code Editor"
 msgstr "Koodiredaktor"
 
