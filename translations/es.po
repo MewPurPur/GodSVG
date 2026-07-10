@@ -39,7 +39,7 @@ msgstr "Esto se conectará a github.com para comparar los números de versión. 
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
-msgstr "OK"
+msgstr "Aceptar"
 
 #: src/autoload/HandlerGUI.gd
 msgid "The graphic can be exported only as SVG because its proportions are too extreme."
@@ -84,19 +84,16 @@ msgid "View in Inspector"
 msgstr "Ver en el Inspector"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Convert to"
 msgstr "Convertir a"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert after"
 msgstr "Insertar después"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Insert multiple after"
-msgstr "Insertar después"
+msgstr "Insertar múltiples después"
 
 #: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -124,7 +121,7 @@ msgstr "Nunca"
 
 #: src/config_classes/Formatter.gd
 msgid "Spacious"
-msgstr ""
+msgstr "Espacioso"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -160,7 +157,7 @@ msgstr "Negro (OLED)"
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Gray"
-msgstr ""
+msgstr "Gris"
 
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
@@ -321,7 +318,7 @@ msgstr "Tamaño"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
-msgstr ""
+msgstr "Tamaño estimado"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -389,9 +386,8 @@ msgid "Copy path"
 msgstr "Copiar ruta"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Open in File Manager"
-msgstr "Mostrar en Explorador de Archivos"
+msgstr "Abrir en Explorador de Archivos"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
@@ -411,7 +407,7 @@ msgstr "Atributo no reconocido"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
-msgstr "Problemas de la importación"
+msgstr "Problemas de importación"
 
 #: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
 msgid "Import"
@@ -450,7 +446,7 @@ msgstr "Ver"
 
 #: src/ui_parts/mac_menu.gd
 msgid "Window"
-msgstr ""
+msgstr "Ventana"
 
 #: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
 msgid "Help"
@@ -525,12 +521,11 @@ msgstr "Horizontal con dos filas"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
-msgstr "Configurar el panel de accesos directos"
+msgstr "Configurar el panel de atajos"
 
 #: src/ui_parts/tab_bar.gd
-#, fuzzy
 msgid "Close multiple"
-msgstr "Cerrar pestaña"
+msgstr "Cerrar múltiple"
 
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
@@ -567,7 +562,7 @@ msgstr "Recuperando la información..."
 #. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
-msgstr "Error en la verificación de actualizaciones"
+msgstr "Error al comprobar actualizaciones"
 
 #: src/ui_parts/update_menu.gd
 msgid "View all releases"
@@ -603,32 +598,28 @@ msgstr "Sin nombre"
 
 #. Ways to represent colors, like RGB, HSV, HSL.
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Color models"
-msgstr "Palabras clave de colores"
+msgstr "Modelos de colores"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move left"
-msgstr "Mover a"
+msgstr "Mover a la izquierda"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
-#, fuzzy
 msgid "Move right"
-msgstr "Mover a"
+msgstr "Mover a la derecha"
 
 #: src/ui_widgets/color_picker_layout_popup.gd
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Color utilities"
-msgstr ""
+msgstr "Utilidades de colores"
 
 #: src/ui_widgets/color_popup.gd
-#, fuzzy
 msgid "Back to color picker"
-msgstr "Cuentagotas"
+msgstr "Volver a cuentagotas"
 
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
@@ -670,7 +661,7 @@ msgstr "Sin ID"
 #. Refers to a number of points.
 #: src/ui_widgets/insert_multiple_points_popup.gd
 msgid "Points to insert"
-msgstr ""
+msgstr "Puntos para insertar"
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -694,7 +685,7 @@ msgstr "Varias paletas no pueden tener el mismo nombre."
 
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
-msgstr "Esta paleta tiene colores definidos idénticamente."
+msgstr "Esta paleta tiene colores idénticos definidos."
 
 #: src/ui_widgets/palette_config.gd
 msgid "Rename"
@@ -722,24 +713,23 @@ msgstr "Guardar como XML"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Exact conversions"
-msgstr ""
+msgstr "Conversiones exactas"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Lossy conversions"
-msgstr ""
+msgstr "Conversiones con perdida"
 
 #: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Relativo"
 
 #: src/ui_widgets/path_insert_popup.gd
-#, fuzzy
 msgid "Keep open"
-msgstr "Mantener comentarios"
+msgstr "Mantener abierto"
 
 #: src/ui_widgets/path_insert_popup.gd
 msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
-msgstr ""
+msgstr "Si se desactiva, debes mantener pulsadas {keys} al seleccionar un comando de ruta para mantener abierta la ventana emergente."
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -762,9 +752,8 @@ msgid "Apply all of this preset's defaults"
 msgstr "Aplicar todos los valores predeterminados de este preajuste"
 
 #: src/ui_widgets/setting_frame.gd
-#, fuzzy
 msgid "Clear"
-msgstr "Seleccionar todo"
+msgstr "Borrar"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
@@ -817,9 +806,8 @@ msgid "Space out the slash of shorthand tags"
 msgstr "Espaciar la barra diagonal de las etiquetas abreviadas"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Formatting style"
-msgstr "Formato"
+msgstr "Estilo de formato"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use spaces instead of tabs"
@@ -851,7 +839,7 @@ msgstr "Usar colores con nombre"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Primary syntax"
-msgstr "Sintaxis primaria"
+msgstr "Sintaxis principal"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Capitalize hexadecimal letters"
@@ -971,9 +959,8 @@ msgstr "Color de texto"
 
 #. XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "XML entity color"
-msgstr "Color de acento"
+msgstr "Color de entidad XML"
 
 #. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_widgets/settings_content_generic.gd
@@ -1027,9 +1014,8 @@ msgid "Color {index}"
 msgstr "Color {index}"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Canvas"
-msgstr "Color del lienzo"
+msgstr "Lienzo"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Canvas color"
@@ -1042,12 +1028,12 @@ msgstr "Color de la cuadrícula"
 #. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Grid tick interval"
-msgstr ""
+msgstr "Intervalo de marcas de cuadrícula"
 
 #. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "No ticks"
-msgstr ""
+msgstr "Sin marcas"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Basic colors"
@@ -1132,7 +1118,7 @@ msgstr "Sincronizar título de ventana con nombre del archivo"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting has no effect in the current configuration."
-msgstr "Esta configuración no tiene efecto en la configuración actual."
+msgstr "Este ajuste no tiene efecto en la configuración actual."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
@@ -1192,7 +1178,7 @@ msgstr "Determina cuánto se mueve la vista para las entradas de barrido basadas
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Si se activa, la función de desplazamiento mueve la vista en lugar de acercarla. Para hacer zoom, mantén presionada la tecla Ctrl mientras desplazas la vista."
+msgstr "Si se activa, la función de desplazamiento mueve la vista en lugar de acercarla. Para acercarse o alejarse, mantén presionada la tecla Ctrl mientras desplazas la vista."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
@@ -1235,7 +1221,6 @@ msgid "Apply the matrix"
 msgstr "Aplicar la matriz"
 
 #: src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert before"
 msgstr "Insertar antes"
 
@@ -1269,7 +1254,7 @@ msgstr "{file_name} no pudo ser abierto."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
-msgstr "Compruebe si el archivo todavía existe en la ruta de archivo seleccionada."
+msgstr "Comprueba si el archivo todavía existe en la ruta de archivo seleccionada."
 
 #: src/utils/FileUtils.gd
 msgid "Proceed with importing the rest of the files?"
@@ -1304,9 +1289,8 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "{file_path} ya se está editando dentro de GodSVG."
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
-msgstr "Si deseas revertir las ediciones realizadas desde la última vez que se guardó, utiliza \"{reset_svg}\"."
+msgstr "Si deseas descartar tus ediciones y sincronizar con el contenido actual del archivo, utiliza \"{reset_svg}\"."
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1314,9 +1298,8 @@ msgstr "¿Quieres guardar los cambios realizados en {file_name}?"
 
 #: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
 #: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
-#, fuzzy
 msgid "Background"
-msgstr "Color del fondo"
+msgstr "Fondo"
 
 #: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
 msgid "Quality"
@@ -1376,7 +1359,7 @@ msgstr "Copiar todo el texto"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy the SVG text"
-msgstr "Copiar todo el texto SVG"
+msgstr "Copiar el texto del SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -1454,15 +1437,15 @@ msgstr "Mover la selección hacia abajo"
 #. Refers to, for example, changing which point in a polygon counts as "first".
 #: src/utils/TranslationUtils.gd
 msgid "Set as initial"
-msgstr ""
+msgstr "Establecer como inicial"
 
 #: src/utils/TranslationUtils.gd
 msgid "Set point as initial"
-msgstr ""
+msgstr "Establecer punto como inicial"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reverse order"
-msgstr ""
+msgstr "Orden inverso"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1613,7 +1596,6 @@ msgid "Absolute"
 msgstr "Absoluto"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Code Editor"
 msgstr "Editor de código"
 
@@ -1657,16 +1639,16 @@ msgstr "Guardar el archivo {format}"
 
 #: no_export/scripts/update_desktop_file.gd
 msgid "Vector graphics editor"
-msgstr ""
+msgstr "Editor de gráficos vectoriales"
 
 #: no_export/scripts/update_desktop_file.gd
 msgid "A vector graphics application for structured SVG editing"
-msgstr ""
+msgstr "Una aplicación de gráficos vectoriales para edición SVG estructurada"
 
 #. A list of keywords that should remain semicolon-separated. Doesn't need to be exactly translated. There can be more keywords or less, but they must remain similar to the English ones.
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
-msgstr ""
+msgstr "svg;vector;gráficos;dibujo;diseño;ilustración;imagen;arte;diagrama;icono;logo;editor;ruta;forma;2D;código;azul;zorro"
 
 #~ msgid "Add new color"
 #~ msgstr "Añadir nuevo color"
