@@ -22,8 +22,10 @@ func _sync() -> void:
 	_commands = parse_pathdata(get_value())
 	# Sync all related data.
 	subpath_start_indices.clear()
-	for idx in _commands.size():
-		if _commands[idx] is PathCommand.MoveCommand:
+	if _commands[0] is PathCommand.MoveCommand:
+		subpath_start_indices.append(0)
+	for idx in range(1, _commands.size()):
+		if _commands[idx] is PathCommand.MoveCommand or _commands[idx - 1] is PathCommand.CloseCommand:
 			subpath_start_indices.append(idx)
 
 func format(text: String, formatter: Formatter) -> String:
@@ -94,6 +96,10 @@ func get_implied_T_control(index: int) -> PackedFloat64Array:
 	
 	return PackedFloat64Array([control.x, control.y])
 
+
+func set_commands(new_commands: Array[PathCommand]) -> void:
+	_commands = new_commands
+	sync_after_commands_change()
 
 # Takes in absolute coordinates.
 func set_command_property(index: int, property: String, new_value: float) -> void:
@@ -582,9 +588,10 @@ func toggle_relative_command(idx: int) -> void:
 	_commands[idx].toggle_relative()
 	sync_after_commands_change()
 
-
-func get_subpath_move_permutation(selected_command_indices: PackedInt32Array, down: bool) -> PackedInt32Array:
-	if selected_command_indices.is_empty():
+# Returns the permutation indices of the commands within a pathdata attribute that would emerge
+# after a chunk of the commands, corresponding precisely to subpaths, are moved up or down.
+func get_subpath_move_permutation(commands_to_move_indices: PackedInt32Array, down: bool) -> PackedInt32Array:
+	if commands_to_move_indices.is_empty():
 		return PackedInt32Array()
 	
 	var lengths := PackedInt32Array()
@@ -592,7 +599,7 @@ func get_subpath_move_permutation(selected_command_indices: PackedInt32Array, do
 	for i in subpath_start_indices.size():
 		var start := subpath_start_indices[i]
 		lengths.append((_commands.size() if i == subpath_start_indices.size() - 1 else subpath_start_indices[i + 1]) - start)
-		if start in selected_command_indices:
+		if start in commands_to_move_indices:
 			selected.append(i)
 	
 	var order := range(subpath_start_indices.size())
@@ -620,6 +627,7 @@ func get_subpath_move_permutation(selected_command_indices: PackedInt32Array, do
 			permutation.append(command)
 	return permutation
 
+# Reorders path commands based on a permutation of indices.
 func reorder_commands(indices: PackedInt32Array) -> void:
 	var new_commands: Array[PathCommand] = []
 	new_commands.resize(_commands.size())
@@ -632,8 +640,8 @@ func reorder_commands(indices: PackedInt32Array) -> void:
 func sync_start_positions() -> void:
 	var current_x := 0.0
 	var current_y := 0.0
-	var subpath_start_x := 0.0
-	var subpath_start_y := 0.0
+	var last_move_command_start_x := 0.0
+	var last_move_command_start_y := 0.0
 	
 	for cmd in _commands:
 		cmd.start_x = current_x
@@ -642,11 +650,11 @@ func sync_start_positions() -> void:
 			"M":
 				current_x = cmd.x
 				current_y = cmd.y
-				subpath_start_x = current_x
-				subpath_start_y = current_y
+				last_move_command_start_x = current_x
+				last_move_command_start_y = current_y
 			"Z":
-				current_x = subpath_start_x
-				current_y = subpath_start_y
+				current_x = last_move_command_start_x
+				current_y = last_move_command_start_y
 			"H":
 				current_x = cmd.x
 			"V":
@@ -664,8 +672,8 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 	var prev_command := ""
 	var current_x := 0.0
 	var current_y := 0.0
-	var subpath_start_x := 0.0
-	var subpath_start_y := 0.0
+	var last_move_command_start_x := 0.0
+	var last_move_command_start_y := 0.0
 	
 	while idx < text_length:
 		while idx < text_length and text[idx] in " \t\n\r":
@@ -790,8 +798,8 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 			"M":
 				current_x = nums[0]
 				current_y = nums[1]
-				subpath_start_x = current_x
-				subpath_start_y = current_y
+				last_move_command_start_x = current_x
+				last_move_command_start_y = current_y
 			"L", "T":
 				current_x = nums[0]
 				current_y = nums[1]
@@ -809,8 +817,8 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 				current_x = nums[5]
 				current_y = nums[6]
 			"Z":
-				current_x = subpath_start_x
-				current_y = subpath_start_y
+				current_x = last_move_command_start_x
+				current_y = last_move_command_start_y
 		
 		prev_command = current_command
 		

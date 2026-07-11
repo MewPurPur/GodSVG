@@ -313,6 +313,10 @@ func _commands_draw() -> void:
 		var subpath_polyline_positions := PackedVector2Array()
 		var current_subpath := path_attribute.get_subpath(start_idx)
 		var subpath_start := current_subpath.x
+		
+		if subpath_start == current_subpath.y and path_attribute.get_command(subpath_start) is PathCommand.MoveCommand:
+			continue
+		
 		var subpath_end_shifted := current_subpath.y + 1
 		subpath_polyline_positions += PackedVector2Array([Vector2(0, subpath_start * STRIP_HEIGHT + 8), Vector2(-6, subpath_start * STRIP_HEIGHT + 8),
 				Vector2(-6, subpath_end_shifted * STRIP_HEIGHT - 8), Vector2(0, subpath_end_shifted * STRIP_HEIGHT - 8)])

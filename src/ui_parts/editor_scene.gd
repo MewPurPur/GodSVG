@@ -22,7 +22,7 @@ func _ready() -> void:
 	shortcuts.add_shortcut("duplicate", State.duplicate_selected)
 	shortcuts.add_shortcut("move_up", State.move_up_selected)
 	shortcuts.add_shortcut("move_down", State.move_down_selected)
-	shortcuts.add_shortcut("set_as_origin", State.set_selected_as_origin)
+	shortcuts.add_shortcut("set_as_origin", State.set_as_origin_selected)
 	shortcuts.add_shortcut("reverse_order", State.reverse_order_selected)
 	shortcuts.add_shortcut("select_all", State.select_all)
 	
