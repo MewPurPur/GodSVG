@@ -559,6 +559,10 @@ func _on_xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Arr
 
 # Path commands using keys.
 func respond_to_key_input(path_cmd_char: String) -> void:
+	path_cmd_char = path_cmd_char.to_upper() if Input.is_key_pressed(KEY_SHIFT) else path_cmd_char.to_lower()
+	add_path_command(path_cmd_char)
+
+func add_path_command(path_cmd_char: String) -> void:
 	if inner_selections.is_empty():
 		# If a single path element is selected, add the new command at the end.
 		if selected_xids.size() == 1:
