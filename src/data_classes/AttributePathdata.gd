@@ -581,54 +581,6 @@ func toggle_relative_command(idx: int) -> void:
 	_commands[idx].toggle_relative()
 	sync_after_commands_change()
 
-# Returns the permutation indices of the commands within a pathdata attribute that would emerge
-# after a chunk of the commands, corresponding precisely to subpaths, are moved up or down.
-func get_subpath_move_permutation(commands_to_move_indices: PackedInt32Array, down: bool) -> PackedInt32Array:
-	if commands_to_move_indices.is_empty():
-		return PackedInt32Array()
-	
-	var lengths := PackedInt32Array()
-	var selected := PackedInt32Array()
-	for i in subpath_start_indices.size():
-		var start := subpath_start_indices[i]
-		lengths.append((_commands.size() if i == subpath_start_indices.size() - 1 else subpath_start_indices[i + 1]) - start)
-		if start in commands_to_move_indices:
-			selected.append(i)
-	
-	var order := range(subpath_start_indices.size())
-	if down:
-		for i in range(selected.size() - 1, -1, -1):
-			var subpath := selected[i]
-			var pos := order.find(subpath)
-			if pos < order.size() - 1 and !selected.has(order[pos + 1]):
-				var tmp = order[pos]
-				order[pos] = order[pos + 1]
-				order[pos + 1] = tmp
-	else:
-		for subpath in selected:
-			var pos := order.find(subpath)
-			if pos > 0 and !selected.has(order[pos - 1]):
-				var tmp = order[pos]
-				order[pos] = order[pos - 1]
-				order[pos - 1] = tmp
-	
-	var permutation := PackedInt32Array()
-	for subpath in order:
-		var start := subpath_start_indices[subpath]
-		var end := start + lengths[subpath]
-		for command in range(start, end):
-			permutation.append(command)
-	return permutation
-
-# Reorders path commands based on a permutation of indices.
-func reorder_commands(indices: PackedInt32Array) -> void:
-	var new_commands: Array[PathCommand] = []
-	new_commands.resize(_commands.size())
-	for i in indices.size():
-		new_commands[i] = _commands[indices[i]]
-	_commands = new_commands
-	sync_after_commands_change()
-
 
 func sync_start_positions() -> void:
 	var current_x := 0.0
