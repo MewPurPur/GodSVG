@@ -1076,21 +1076,23 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					if is_movable_selected:
 						btn_arr.append(ContextButton.create_from_action("set_as_origin", not is_point_that_would_move_selected))
 			"polygon", "polyline":
+				var points: AttributeList = element_ref.get_attribute("points")
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
 							insert_points_after_selection.bind(1), preload("res://assets/icons/Plus.svg")))
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert multiple after"),
 							popup_insert_multiple_points_context.bind(popup_method), preload("res://assets/icons/Pluses.svg")))
+				if points.get_list_size() >= 4:
 					if element_ref.name == "polygon":
 						btn_arr.append(ContextButton.create_from_action("set_as_origin", inner_selections[0] == 0))
-				else:
-					var is_everything_selected := true
-					for i in element_ref.get_attribute("points").get_list_size() / 2:
-						if not i in inner_selections:
-							is_everything_selected = false
-							break
-					if is_everything_selected:
-						btn_arr.append(ContextButton.create_from_action("reverse_order"))
+					else:
+						var is_everything_selected := true
+						for i in element_ref.get_attribute("points").get_list_size() / 2:
+							if not i in inner_selections:
+								is_everything_selected = false
+								break
+						if is_everything_selected:
+							btn_arr.append(ContextButton.create_from_action("reverse_order"))
 		
 		btn_arr.append(ContextButton.create_from_action("delete"))
 	
