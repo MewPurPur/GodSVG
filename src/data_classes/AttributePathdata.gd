@@ -49,16 +49,10 @@ func get_command(idx: int) -> PathCommand:
 
 # Return the start and end indices of the subpath.
 func get_subpath(idx: int) -> Vector2i:
-	var output := Vector2i(idx, idx)
 	for i in range(subpath_start_indices.size() - 1, -1, -1):
 		if subpath_start_indices[i] <= idx:
-			output.x = subpath_start_indices[i]
-			if i < subpath_start_indices.size() - 1:
-				output.y = subpath_start_indices[i + 1] - 1
-			else:
-				output.y = get_command_count() - 1
-			break
-	return output
+			return Vector2i(subpath_start_indices[i], (subpath_start_indices[i + 1] if i < subpath_start_indices.size() - 1 else get_command_count()) - 1)
+	return Vector2i(-1, -1)
 
 # Gets the implied shorthand cubic bezier curve control. Not dependent on the current path command (even if it's not a curve).
 func get_implied_S_control(index: int) -> PackedFloat64Array:

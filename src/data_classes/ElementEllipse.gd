@@ -35,10 +35,12 @@ func get_replacement(new_element: String) -> Element:
 			element.set_attribute("height", get_attribute_num("ry") * 2)
 		"path":
 			dropped_attributes = PackedStringArray(["cx", "cy", "rx", "ry", "d"])
+			var rx := get_rx()
+			var ry := get_ry()
 			var commands: Array[PathCommand] = []
-			commands.append(PathCommand.MoveCommand.new(get_attribute_num("cx"), get_attribute_num("cy") - get_ry(), true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_rx(), get_ry(), 0, 0, 0, 0, get_ry() * 2, true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_rx(), get_ry(), 0, 0, 0, 0, -get_ry() * 2, true))
+			commands.append(PathCommand.MoveCommand.new(get_attribute_num("cx"), get_attribute_num("cy") - ry, true))
+			commands.append(PathCommand.EllipticalArcCommand.new(rx, ry, 0, 0, 0, get_attribute_num("cx"), get_attribute_num("cy") + ry, true))
+			commands.append(PathCommand.EllipticalArcCommand.new(rx, ry, 0, 0, 0, get_attribute_num("cx"), get_attribute_num("cy") - ry, true))
 			commands.append(PathCommand.CloseCommand.new(true))
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
