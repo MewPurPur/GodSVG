@@ -150,6 +150,7 @@ func update_parameter(new_value: float, property: String, idx: int) -> void:
 
 func _on_relative_button_pressed() -> void:
 	element.get_attribute(attribute_name).toggle_relative_command(hovered_idx)
+	setup_path_command_controls(hovered_idx)
 	State.save_svg()
 
 func _on_add_move_button_pressed() -> void:
@@ -270,8 +271,7 @@ func _commands_draw() -> void:
 		# Draw the action button.
 		more_icon.draw(ci, Vector2(commands_container.size.x - 19, 4 + v_offset), ThemeUtils.context_icon_normal_color)
 		# Draw the relative/absolute button.
-		var relative_stylebox := get_theme_stylebox("normal", "PathCommandAbsoluteButton") if Utils.is_string_upper(cmd_char)\
-				else get_theme_stylebox("normal", "PathCommandRelativeButton")
+		var relative_stylebox := get_theme_stylebox("normal", "PathCommandAbsoluteButton" if Utils.is_string_upper(cmd_char) else "PathCommandRelativeButton")
 		relative_stylebox.draw(ci, Rect2(Vector2(3, 2 + v_offset), Vector2(18, STRIP_HEIGHT - 4)))
 		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + STRIP_HEIGHT - 6), cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13, ThemeUtils.text_color)
 		# Draw the fields.
@@ -395,7 +395,6 @@ func setup_path_command_controls(idx: int) -> Control:
 	
 	var cmd: PathCommand = element.get_attribute(attribute_name).get_command(idx)
 	var cmd_char := cmd.command_char
-	var is_absolute := Utils.is_string_upper(cmd_char)
 	
 	var container := Control.new()
 	container.position.y = idx * STRIP_HEIGHT
@@ -407,7 +406,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
-	relative_button.theme_type_variation = "PathCommandAbsoluteButton" if is_absolute else "PathCommandRelativeButton"
+	relative_button.theme_type_variation = "PathCommandAbsoluteButton" if Utils.is_string_upper(cmd_char) else "PathCommandRelativeButton"
 	relative_button.text = cmd_char
 	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char)
 	container.add_child(relative_button)

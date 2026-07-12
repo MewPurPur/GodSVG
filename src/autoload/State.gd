@@ -311,13 +311,15 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 	
 	selection_changed.emit()
 
-func set_inner_selection(inner_indices: Array[int]) -> void:
-	if inner_indices.is_empty():
+func set_inner_selection(new_inner_indices: Array[int], new_inner_pivot_index := -1) -> void:
+	if new_inner_indices.is_empty():
 		clear_inner_selection()
 	
-	if inner_selections != inner_indices:
-		inner_selections = inner_indices
-		inner_selection_pivot = inner_indices[0]
+	if inner_selections == new_inner_indices and inner_selection_pivot != new_inner_pivot_index and new_inner_pivot_index in new_inner_indices:
+		inner_selection_pivot = new_inner_pivot_index
+	if inner_selections != new_inner_indices:
+		inner_selections = new_inner_indices
+		inner_selection_pivot = new_inner_pivot_index if new_inner_pivot_index in new_inner_indices else new_inner_indices[0]
 		selection_changed.emit()
 
 # Select all elements.
@@ -454,17 +456,34 @@ func is_selection_subpaths_only() -> bool:
 	if not element_ref is ElementPath:
 		return false
 	
-	var path_attrib: AttributePathdata = element_ref.get_attribute("d")
+	var pathdata: AttributePathdata = element_ref.get_attribute("d")
 	var selection := inner_selections.duplicate()
 	selection.sort()
 	
 	var selection_idx := 0
 	while selection_idx < selection.size():
-		var subpath := path_attrib.get_subpath(selection[selection_idx])
+		var subpath := pathdata.get_subpath(selection[selection_idx])
 		for i in range(subpath.x, subpath.y + 1):
 			if selection_idx >= selection.size() or selection[selection_idx] != i:
 				return false
 			selection_idx += 1
+	return true
+
+func are_selections_from_different_closed_subpaths() -> bool:
+	if semi_selected_xid.is_empty() or inner_selections.is_empty():
+		return false
+	
+	var element_ref := root_element.get_xnode(semi_selected_xid)
+	if not element_ref is ElementPath:
+		return false
+	var pathdata: AttributePathdata = element_ref.get_attribute("d")
+	
+	var inner_selection_passed_subpath_starts := PackedInt32Array()
+	for i in inner_selections:
+		var subpath := pathdata.get_subpath(i)
+		if subpath.x in inner_selection_passed_subpath_starts or not pathdata.get_command(subpath.y) is PathCommand.CloseCommand:
+			return false
+		inner_selection_passed_subpath_starts.append(subpath.x)
 	return true
 
 
@@ -633,49 +652,79 @@ func set_as_origin_selected() -> void:
 	if xnode is ElementPolygon:
 		xnode.get_attribute("points").rotate_start(inner_selections[0] * 2)
 		normal_select(semi_selected_xid, 0)
-	elif xnode is ElementPath:
+	elif are_selections_from_different_closed_subpaths():
 		var pathdata: AttributePathdata = xnode.get_attribute("d")
 		var commands := pathdata.get_commands()
-		var selected_index := inner_selections[0]
-		var subpath := pathdata.get_subpath(inner_selections[0])
-		var selected_command: PathCommand = commands[inner_selections[0]]
 		
 		var new_commands: Array[PathCommand] = []
-		new_commands.assign(commands.slice(0, subpath.x))
-		new_commands.append(PathCommand.MoveCommand.new(selected_command.x, selected_command.y))
+		var new_inner_selections: Array[int] = []
+		var new_inner_selection_pivot := -1
 		
-		var first_cmd := commands[selected_index + 1]
-		if first_cmd is PathCommand.ShorthandCubicBezierCommand:
-			var implied := pathdata.get_implied_S_control(selected_index + 1)
-			new_commands.append(PathCommand.CubicBezierCommand.new(
-					implied[0], implied[1], first_cmd.x2, first_cmd.y2, first_cmd.x, first_cmd.y, first_cmd.relative))
-		elif first_cmd is PathCommand.ShorthandQuadraticBezierCommand:
-			var implied := pathdata.get_implied_T_control(selected_index + 1)
-			new_commands.append(PathCommand.QuadraticBezierCommand.new(
-					implied[0], implied[1], first_cmd.x, first_cmd.y, first_cmd.relative))
-		elif selected_index + 1 != subpath.y:
-			new_commands.append(first_cmd)
+		for start_index in pathdata.subpath_start_indices.size():
+			var start := pathdata.subpath_start_indices[start_index]
+			var end := pathdata.get_subpath(start).y
+			
+			var selected_index := -1
+			for i in inner_selections.size():
+				var selection := inner_selections[i]
+				if selection >= start and selection <= end:
+					selected_index = selection
+					break
+			
+			var start_cmd := commands[start]
+			if selected_index == -1 or (selected_index == start and start_cmd is PathCommand.MoveCommand):
+				new_commands += commands.slice(start, end + 1)
+				continue
+			
+			var output_start := new_commands.size()
+			new_inner_selections.append(output_start)
+			if selected_index == inner_selection_pivot:
+				new_inner_selection_pivot = output_start
+			
+			if selected_index == end:
+				new_commands += commands.slice(start, end + 1)
+				continue
+			
+			var selected_command: PathCommand = commands[selected_index]
+			var selected_command_x: float = selected_command.start_x if selected_command is PathCommand.VerticalLineCommand else selected_command.x
+			var selected_command_y: float = selected_command.start_y if selected_command is PathCommand.HorizontalLineCommand else selected_command.y
+			
+			new_commands.append(PathCommand.MoveCommand.new(selected_command_x, selected_command_y, selected_command.relative))
+			
+			var first_cmd_idx := selected_index + 1
+			var first_cmd := commands[selected_index + 1]
+			if first_cmd is PathCommand.ShorthandCubicBezierCommand:
+				var implied := pathdata.get_implied_S_control(first_cmd_idx)
+				new_commands.append(PathCommand.CubicBezierCommand.new(
+						implied[0], implied[1], first_cmd.x2, first_cmd.y2, first_cmd.x, first_cmd.y, first_cmd.relative))
+			elif first_cmd is PathCommand.ShorthandQuadraticBezierCommand:
+				var implied := pathdata.get_implied_T_control(first_cmd_idx)
+				new_commands.append(PathCommand.QuadraticBezierCommand.new(
+						implied[0], implied[1], first_cmd.x, first_cmd.y, first_cmd.relative))
+			elif first_cmd_idx != end:
+				new_commands.append(first_cmd)
+			
+			var start_cmd_x: float = start_cmd.x if start_cmd is PathCommand.MoveCommand else start_cmd.start_x
+			var start_cmd_y: float = start_cmd.y if start_cmd is PathCommand.MoveCommand else start_cmd.start_y
+			var close_cmd: PathCommand.CloseCommand = commands[end]
+			
+			if selected_index + 2 < end:
+				new_commands += commands.slice(selected_index + 2, end)
+			if start_cmd_x != close_cmd.start_x or start_cmd_y != close_cmd.start_y:
+				new_commands.append(PathCommand.LineCommand.new(start_cmd_x, start_cmd_y, start_cmd.relative))
+			new_commands += commands.slice(start + 1 if start_cmd is PathCommand.MoveCommand else start, selected_index)
+			
+			if selected_command is PathCommand.LineCommand or selected_command is PathCommand.HorizontalLineCommand\
+			or selected_command is PathCommand.VerticalLineCommand or (selected_command is PathCommand.EllipticalArcCommand and\
+			(selected_command.rx <= 0 or selected_command.ry <= 0)):
+				new_commands.append(PathCommand.CloseCommand.new(true))
+			else:
+				new_commands.append(selected_command)
+				new_commands.append(PathCommand.CloseCommand.new(true))
 		
-		var move_cmd: PathCommand = commands[subpath.x]
-		var close_cmd: PathCommand = commands[subpath.y]
-		
-		if selected_index + 2 < subpath.y:
-			new_commands += commands.slice(selected_index + 2, subpath.y)
-		if move_cmd.x != close_cmd.start_x or move_cmd.y != close_cmd.start_y:
-			new_commands.append(PathCommand.LineCommand.new(move_cmd.x, move_cmd.y))
-		new_commands += commands.slice(subpath.x + 1, selected_index)
-		
-		if selected_command is PathCommand.LineCommand or selected_command is PathCommand.HorizontalLineCommand\
-		or selected_command is PathCommand.VerticalLineCommand or (selected_command is PathCommand.EllipticalArcCommand and\
-		(selected_command.rx <= 0 or selected_command.ry <= 0)):
-			new_commands.append(PathCommand.CloseCommand.new(true))
-		else:
-			new_commands.append(selected_command)
-			new_commands.append(PathCommand.CloseCommand.new(true))
-		
-		new_commands += commands.slice(subpath.y + 1)
 		pathdata.set_commands(new_commands)
-		normal_select(semi_selected_xid, subpath.x)
+		set_inner_selection(new_inner_selections, new_inner_selection_pivot)
+	
 	save_svg()
 
 func reverse_order_selected() -> void:
@@ -734,8 +783,8 @@ func reverse_order_selected() -> void:
 					if start_cmd is PathCommand.MoveCommand:
 						subpath_commands.append(start_cmd)
 					
-					var start_cmd_x: float = start_cmd.start_x if start_cmd is PathCommand.VerticalLineCommand else start_cmd.x
-					var start_cmd_y: float = start_cmd.start_y if start_cmd is PathCommand.HorizontalLineCommand else start_cmd.y
+					var start_cmd_x: float = start_cmd.x if start_cmd is PathCommand.MoveCommand else start_cmd.start_x
+					var start_cmd_y: float = start_cmd.y if start_cmd is PathCommand.MoveCommand else start_cmd.start_y
 					if last_cmd_x != start_cmd_x or last_cmd_y != start_cmd_y:
 						subpath_commands.append(PathCommand.LineCommand.new(last_cmd_x, last_cmd_y, commands[subpath.y].relative))
 				else:
@@ -959,23 +1008,25 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 						btn_arr.append(ContextButton.create_from_action("move_down"))
 					btn_arr.append(ContextButton.create_from_action("reverse_order", not is_selection_subpaths_only()))
 				
-				if inner_selections.size() == 1:
-					var subpath := pathdata.get_subpath(inner_selections[0])
-					if inner_selections[0] != subpath.x and inner_selections[0] != subpath.y:
-						var is_closed_subpath_point := pathdata.get_command(subpath.y) is PathCommand.CloseCommand
-						if is_closed_subpath_point:
-							for i in range(subpath.x, subpath.y):
-								if pathdata.get_command(i) is PathCommand.CloseCommand:
-									is_closed_subpath_point = false
-									break
-						
-						if is_closed_subpath_point:
+				if are_selections_from_different_closed_subpaths():
+					var is_movable_selected := false
+					var is_point_that_would_move_selected := false
+					for i in inner_selections:
+						var subpath := pathdata.get_subpath(i)
+						if i != subpath.y and (i != subpath.x or not pathdata.get_command(i) is PathCommand.MoveCommand):
+							is_movable_selected = true
+						if i == subpath.y - 1:
 							var close_cmd: PathCommand.CloseCommand = pathdata.get_command(subpath.y)
 							var initial_cmd: PathCommand = pathdata.get_command(subpath.x)
 							var initial_cmd_x: float = initial_cmd.start_x if initial_cmd is PathCommand.VerticalLineCommand else initial_cmd.x
 							var initial_cmd_y: float = initial_cmd.start_y if initial_cmd is PathCommand.HorizontalLineCommand else initial_cmd.y
-							btn_arr.append(ContextButton.create_from_action("set_as_origin",
-									inner_selections[0] == subpath.y - 1 and close_cmd.start_x == initial_cmd_x and close_cmd.start_y == initial_cmd_y))
+							if close_cmd.start_x != initial_cmd_x or close_cmd.start_y != initial_cmd_y:
+								is_point_that_would_move_selected = true
+								is_movable_selected = true
+								break
+					
+					if is_movable_selected:
+						btn_arr.append(ContextButton.create_from_action("set_as_origin", is_point_that_would_move_selected))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),

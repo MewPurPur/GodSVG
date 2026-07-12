@@ -54,6 +54,7 @@ func reset() -> void:
 	add_path_command_button("T", false, not prev_command_char in "QqTt")
 	add_path_command_button("C")
 	add_path_command_button("S", false, not prev_command_char in "CcSs")
+	sync_to_path_command_insert_relative()
 	
 	var focus_sequence: Array[Control] = [relative_toggle]
 	focus_sequence.append_array(command_container.get_children())

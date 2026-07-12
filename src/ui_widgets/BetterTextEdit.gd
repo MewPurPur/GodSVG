@@ -19,7 +19,6 @@ func _init() -> void:
 	wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	scroll_smooth = true
 	scroll_v_scroll_speed = 30.0
-	caret_multiple = false
 	highlight_all_occurrences = true
 	clip_contents = true
 	set_tab_size(2)

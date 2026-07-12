@@ -26,8 +26,8 @@ var start_x := 0.0
 var start_y := 0.0
 
 func toggle_relative() -> void:
-	command_char = command_char.to_upper() if relative else command_char.to_lower()
 	relative = not relative
+	command_char = command_char.to_lower() if relative else command_char.to_upper()
 
 
 class MoveCommand extends PathCommand:
