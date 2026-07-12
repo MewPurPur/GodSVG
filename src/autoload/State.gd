@@ -660,9 +660,14 @@ func set_as_origin_selected() -> void:
 		var new_inner_selections: Array[int] = []
 		var new_inner_selection_pivot := -1
 		
+		var start_indices_operated_on := PackedInt32Array()
 		for start_index in pathdata.subpath_start_indices.size():
 			var start := pathdata.subpath_start_indices[start_index]
+			var start_cmd := commands[start]
 			var end := pathdata.get_subpath(start).y
+			
+			if (start_index - 1) in start_indices_operated_on and not start_cmd is PathCommand.MoveCommand:
+				new_commands.append(PathCommand.MoveCommand.new(start_cmd.start_x, start_cmd.start_y))
 			
 			var selected_index := -1
 			for i in inner_selections.size():
@@ -671,7 +676,6 @@ func set_as_origin_selected() -> void:
 					selected_index = selection
 					break
 			
-			var start_cmd := commands[start]
 			if selected_index == -1 or (selected_index == start and start_cmd is PathCommand.MoveCommand):
 				new_commands += commands.slice(start, end + 1)
 				continue
@@ -684,6 +688,8 @@ func set_as_origin_selected() -> void:
 			if selected_index == end:
 				new_commands += commands.slice(start, end + 1)
 				continue
+			
+			start_indices_operated_on.append(start_index)
 			
 			var selected_command: PathCommand = commands[selected_index]
 			var selected_command_x: float = selected_command.start_x if selected_command is PathCommand.VerticalLineCommand else selected_command.x
@@ -714,13 +720,11 @@ func set_as_origin_selected() -> void:
 				new_commands.append(PathCommand.LineCommand.new(start_cmd_x, start_cmd_y, start_cmd.relative))
 			new_commands += commands.slice(start + 1 if start_cmd is PathCommand.MoveCommand else start, selected_index)
 			
-			if selected_command is PathCommand.LineCommand or selected_command is PathCommand.HorizontalLineCommand\
+			if not (selected_command is PathCommand.LineCommand or selected_command is PathCommand.HorizontalLineCommand\
 			or selected_command is PathCommand.VerticalLineCommand or (selected_command is PathCommand.EllipticalArcCommand and\
-			(selected_command.rx <= 0 or selected_command.ry <= 0)):
-				new_commands.append(PathCommand.CloseCommand.new(true))
-			else:
+			(selected_command.rx <= 0 or selected_command.ry <= 0))):
 				new_commands.append(selected_command)
-				new_commands.append(PathCommand.CloseCommand.new(true))
+			new_commands.append(PathCommand.CloseCommand.new(true))
 		
 		pathdata.set_commands(new_commands)
 		set_inner_selection(new_inner_selections, new_inner_selection_pivot)
@@ -1024,9 +1028,12 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 								is_point_that_would_move_selected = true
 								is_movable_selected = true
 								break
-					
+						elif i > subpath.x and i < subpath.y - 1:
+							is_point_that_would_move_selected = true
+							is_movable_selected = true
+							break
 					if is_movable_selected:
-						btn_arr.append(ContextButton.create_from_action("set_as_origin", is_point_that_would_move_selected))
+						btn_arr.append(ContextButton.create_from_action("set_as_origin", not is_point_that_would_move_selected))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
