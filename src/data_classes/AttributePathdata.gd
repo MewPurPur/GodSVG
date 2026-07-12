@@ -22,8 +22,7 @@ func _sync() -> void:
 	_commands = parse_pathdata(get_value())
 	# Sync all related data.
 	subpath_start_indices.clear()
-	if _commands[0] is PathCommand.MoveCommand:
-		subpath_start_indices.append(0)
+	subpath_start_indices.append(0)
 	for idx in range(1, _commands.size()):
 		if _commands[idx] is PathCommand.MoveCommand or _commands[idx - 1] is PathCommand.CloseCommand:
 			subpath_start_indices.append(idx)
