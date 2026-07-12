@@ -619,28 +619,68 @@ func move_down_selected() -> void:
 func _move_selected(down: bool) -> void:
 	if not selected_xids.is_empty():
 		root_element.move_xnodes_in_parent(selected_xids, down)
-	elif not semi_selected_xid.is_empty():
-		var xnode := root_element.get_xnode(semi_selected_xid)
-		if not xnode is ElementPath:
-			return
-		if is_selection_subpaths_only():
-			# Move subpaths and modify selections.
-			var pathdata: AttributePathdata = xnode.get_attribute("d")
-			var new_indices := pathdata.get_subpath_move_permutation(inner_selections, down)
-			if not new_indices.is_empty():
-				pathdata.reorder_commands(new_indices)
-				var old_to_new := PackedInt32Array()
-				old_to_new.resize(new_indices.size())
-				for new_idx in new_indices.size():
-					old_to_new[new_indices[new_idx]] = new_idx
-				var new_selections: Array[int] = []
-				new_selections.resize(inner_selections.size())
-				for i in inner_selections.size():
-					new_selections[i] = old_to_new[inner_selections[i]]
-				if inner_selections != new_selections:
-					inner_selection_pivot = old_to_new[inner_selection_pivot]
-					inner_selections = new_selections
-					selection_changed.emit()
+	elif not semi_selected_xid.is_empty() and is_selection_subpaths_only():
+		# Move subpaths and modify selections.
+		var pathdata: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
+		var commands := pathdata.get_commands()
+			
+		var lengths := PackedInt32Array()
+		var selected := PackedInt32Array()
+		for i in pathdata.subpath_start_indices.size():
+			var start := pathdata.subpath_start_indices[i]
+			lengths.append((commands.size() if i == pathdata.subpath_start_indices.size() - 1 else pathdata.subpath_start_indices[i + 1]) - start)
+			if start in inner_selections:
+				selected.append(i)
+		
+		var order := range(pathdata.subpath_start_indices.size())
+		if down:
+			for i in range(selected.size() - 1, -1, -1):
+				var subpath := selected[i]
+				var pos := order.find(subpath)
+				if pos < order.size() - 1 and not selected.has(order[pos + 1]):
+					var tmp = order[pos]
+					order[pos] = order[pos + 1]
+					order[pos + 1] = tmp
+		else:
+			for subpath in selected:
+				var pos := order.find(subpath)
+				if pos > 0 and not selected.has(order[pos - 1]):
+					var tmp = order[pos]
+					order[pos] = order[pos - 1]
+					order[pos - 1] = tmp
+		
+		var new_commands: Array[PathCommand] = []
+		var new_selections: Array[int] = []
+		var new_pivot := -1
+		
+		var previous_original := -1
+		for subpath in order:
+			var start := pathdata.subpath_start_indices[subpath]
+			var end := start + lengths[subpath] - 1
+			var first_cmd: PathCommand = commands[start]
+			
+			var added_commands: Array[PathCommand] = []
+			
+			if first_cmd is PathCommand.MoveCommand:
+				added_commands.append(first_cmd)
+			elif previous_original != subpath - 1:
+				added_commands.append(PathCommand.MoveCommand.new(first_cmd.start_x, first_cmd.start_y, first_cmd.relative))
+			
+			added_commands += commands.slice((start + 1) if first_cmd is PathCommand.MoveCommand else start, end + 1)
+			
+			var output_start := new_commands.size()
+			if start in inner_selections:
+				for i in range(output_start, output_start + added_commands.size()):
+					new_selections.append(i)
+				if start == inner_selection_pivot:
+					new_pivot = output_start
+			
+			new_commands += added_commands
+			previous_original = subpath
+		
+		if commands != new_commands:
+			pathdata.set_commands(new_commands)
+			set_inner_selection(new_selections, new_pivot)
 	save_svg()
 
 
@@ -728,7 +768,6 @@ func set_as_origin_selected() -> void:
 		
 		pathdata.set_commands(new_commands)
 		set_inner_selection(new_inner_selections, new_inner_selection_pivot)
-	
 	save_svg()
 
 func reverse_order_selected() -> void:
@@ -994,14 +1033,12 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 				
 				if is_selection_subpaths_only():
 					var can_move_up := false
-					var max_idx: int = inner_selections.max()
-					for i in range(max_idx + 1):
+					for i in range(inner_selections.max() + 1):
 						if not inner_selections.has(i):
 							can_move_up = true
 							break
 					var can_move_down := false
-					var min_idx: int = inner_selections.min()
-					for i in range(min_idx, pathdata.get_command_count()):
+					for i in range(inner_selections.min(), pathdata.get_command_count()):
 						if not inner_selections.has(i):
 							can_move_down = true
 							break
