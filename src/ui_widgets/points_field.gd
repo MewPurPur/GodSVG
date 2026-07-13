@@ -323,6 +323,8 @@ func setup_point_controls(idx: int) -> Control:
 	container.add_child(action_button)
 	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
 	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
+	action_button.focus_entered.connect(activate_focused.bind(idx))
+	action_button.focus_exited.connect(check_focused, CONNECT_DEFERRED)
 	action_button.position = Vector2(points_container.size.x - 21, 2)
 	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the fields.
