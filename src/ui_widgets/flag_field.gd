@@ -22,6 +22,7 @@ func _on_toggled(is_state_pressed: bool) -> void:
 	set_value(1 if is_state_pressed else 0)
 
 func _ready() -> void:
+	get_theme_stylebox("focus").border_color = ThemeUtils.weak_focus_color
 	toggled.connect(_on_toggled)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
