@@ -14,26 +14,25 @@ theme_override_constants/separation = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1436314202]
 layout_mode = 2
-theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=650959890]
-layout_mode = 2
-
-[node name="KeepOpenToggle" type="CheckButton" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=2024283949]
+[node name="TogglesContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=650959890]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 10
+
+[node name="KeepOpenToggle" type="CheckButton" parent="VBoxContainer/MarginContainer/TogglesContainer" unique_id=2024283949]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
 action_mode = 0
 flat = true
 alignment = 2
 
-[node name="RelativeToggle" type="CheckButton" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1964920824]
-unique_name_in_owner = true
+[node name="RelativeToggle" type="CheckButton" parent="VBoxContainer/MarginContainer/TogglesContainer" unique_id=1964920824]
+visible = false
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
 action_mode = 0
 flat = true

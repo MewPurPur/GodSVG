@@ -846,10 +846,44 @@ func reverse_order_selected() -> void:
 					(first_cmd.rx <= 0 or first_cmd.ry <= 0)):
 						reverse_start += 1
 				
-				for i in range(last_cmd_index, reverse_start - 1, -1):
-					var cmd: PathCommand = commands[i]
+				# Runs of full curves, followed by shorthands, should get flipped around.
+				var shorthand_run_end_by_index: Dictionary[int, int] = {}
+				var scan_i := first_cmd_index
+				while scan_i <= last_cmd_index:
+					var scan_cmd := commands[scan_i]
+					var is_scanning_curve_sequence := false
+					var scan_end := scan_i
+					
+					match scan_cmd.command_char.to_upper():
+						"Q":
+							is_scanning_curve_sequence = true
+							while scan_end + 1 <= last_cmd_index and commands[scan_end + 1].command_char in "Tt":
+								scan_end += 1
+						"C":
+							is_scanning_curve_sequence = true
+							while scan_end + 1 <= last_cmd_index and commands[scan_end + 1].command_char in "Ss":
+								scan_end += 1
+					
+					if is_scanning_curve_sequence:
+						for run_i in range(scan_i, scan_end + 1):
+							shorthand_run_end_by_index[run_i] = scan_end
+						scan_i = scan_end + 1
+					else:
+						scan_i += 1
+				
+				# When a reversed command belongs to a detected shorthand run,
+				# the commands after the reversed run's first command become shorthand.
+				var reversed_command_index := last_cmd_index
+				while reversed_command_index >= reverse_start:
+					var use_shorthand := false
+					if reversed_command_index in shorthand_run_end_by_index:
+						var run_end_index := shorthand_run_end_by_index[reversed_command_index]
+						if reversed_command_index != run_end_index:
+							use_shorthand = true
+					
+					var cmd := commands[reversed_command_index]
 					match cmd.command_char.to_upper():
-						"L", "Q":
+						"L":
 							cmd.x = cmd.start_x
 							cmd.y = cmd.start_y
 							subpath_commands.append(cmd)
@@ -864,22 +898,44 @@ func reverse_order_selected() -> void:
 							cmd.y = cmd.start_y
 							cmd.sweep_flag = 0 if cmd.sweep_flag == 1 else 1
 							subpath_commands.append(cmd)
-						"C":
-							cmd.x = cmd.start_x
-							cmd.y = cmd.start_y
-							var temp_x: float = cmd.x1
-							var temp_y: float = cmd.y1
-							cmd.x1 = cmd.x2
-							cmd.y1 = cmd.y2
-							cmd.x2 = temp_x
-							cmd.y2 = temp_y
-							subpath_commands.append(cmd)
+						"Q":
+							if use_shorthand:
+								subpath_commands.append(PathCommand.ShorthandQuadraticBezierCommand.new(cmd.start_x, cmd.start_y, cmd.relative))
+							else:
+								cmd.x = cmd.start_x
+								cmd.y = cmd.start_y
+								subpath_commands.append(cmd)
 						"T":
-							var implied := pathdata.get_implied_T_control(i)
-							subpath_commands.append(PathCommand.QuadraticBezierCommand.new(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.relative))
+							if use_shorthand:
+								cmd.x = cmd.start_x
+								cmd.y = cmd.start_y
+								subpath_commands.append(cmd)
+							else:
+								var implied := pathdata.get_implied_T_control(reversed_command_index)
+								subpath_commands.append(PathCommand.QuadraticBezierCommand.new(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.relative))
+						"C":
+							if use_shorthand:
+								subpath_commands.append(PathCommand.ShorthandCubicBezierCommand.new(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.relative))
+							else:
+								cmd.x = cmd.start_x
+								cmd.y = cmd.start_y
+								var temp_x: float = cmd.x1
+								var temp_y: float = cmd.y1
+								cmd.x1 = cmd.x2
+								cmd.y1 = cmd.y2
+								cmd.x2 = temp_x
+								cmd.y2 = temp_y
+								subpath_commands.append(cmd)
 						"S":
-							var implied := pathdata.get_implied_S_control(i)
-							subpath_commands.append(PathCommand.CubicBezierCommand.new(cmd.x2, cmd.y2, implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.relative))
+							if use_shorthand:
+								cmd.x = cmd.start_x
+								cmd.y = cmd.start_y
+								subpath_commands.append(cmd)
+							else:
+								var implied := pathdata.get_implied_S_control(reversed_command_index)
+								subpath_commands.append(PathCommand.CubicBezierCommand.new(
+										cmd.x2, cmd.y2, implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.relative))
+					reversed_command_index -= 1
 				
 				if is_closed:
 					subpath_commands.append(PathCommand.CloseCommand.new(first_cmd.relative))
