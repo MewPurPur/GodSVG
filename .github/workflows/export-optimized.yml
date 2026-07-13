@@ -9,7 +9,7 @@ on:
 
 env:
   PROJECT_NAME: GodSVG
-  VERSION_NAME: 1.0-alpha15
+  VERSION_NAME: 1.0-alpha16
   # Which Godot version to use for exporting (e.g., 4.4.1, 4.5)
   GODOT_VERSION: 4.6
   # Which Godot release to use for exporting (e.g., stable, dev5, rc2)
