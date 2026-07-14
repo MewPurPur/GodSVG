@@ -735,19 +735,21 @@ func set_as_origin_selected() -> void:
 			
 			start_indices_operated_on.append(start_index)
 			
-			var selected_command: PathCommand = commands[selected_index]
-			var selected_command_x: float = selected_command.start_x if selected_command is PathCommand.VerticalLineCommand else selected_command.x
-			var selected_command_y: float = selected_command.start_y if selected_command is PathCommand.HorizontalLineCommand else selected_command.y
+			var selected_cmd: PathCommand = commands[selected_index]
+			var selected_cmd_x: float = selected_cmd.start_x if selected_cmd is PathCommand.VerticalLineCommand else selected_cmd.x
+			var selected_cmd_y: float = selected_cmd.start_y if selected_cmd is PathCommand.HorizontalLineCommand else selected_cmd.y
 			
-			new_commands.append(PathCommand.MoveCommand.new(selected_command_x, selected_command_y, selected_command.relative))
+			new_commands.append(PathCommand.MoveCommand.new(selected_cmd_x, selected_cmd_y, selected_cmd.relative))
 			
 			var first_cmd_idx := selected_index + 1
 			var first_cmd := commands[selected_index + 1]
-			if first_cmd is PathCommand.ShorthandCubicBezierCommand:
+			if first_cmd is PathCommand.ShorthandCubicBezierCommand and (selected_cmd is PathCommand.CubicBezierCommand or\
+			selected_cmd is PathCommand.ShorthandCubicBezierCommand):
 				var implied := pathdata.get_implied_S_control(first_cmd_idx)
 				new_commands.append(PathCommand.CubicBezierCommand.new(
 						implied[0], implied[1], first_cmd.x2, first_cmd.y2, first_cmd.x, first_cmd.y, first_cmd.relative))
-			elif first_cmd is PathCommand.ShorthandQuadraticBezierCommand:
+			elif first_cmd is PathCommand.ShorthandQuadraticBezierCommand and (selected_cmd is PathCommand.QuadraticBezierCommand or\
+			selected_cmd is PathCommand.ShorthandQuadraticBezierCommand):
 				var implied := pathdata.get_implied_T_control(first_cmd_idx)
 				new_commands.append(PathCommand.QuadraticBezierCommand.new(
 						implied[0], implied[1], first_cmd.x, first_cmd.y, first_cmd.relative))
@@ -764,10 +766,10 @@ func set_as_origin_selected() -> void:
 				new_commands.append(PathCommand.LineCommand.new(start_cmd_x, start_cmd_y, start_cmd.relative))
 			new_commands += commands.slice(start + 1 if start_cmd is PathCommand.MoveCommand else start, selected_index)
 			
-			if not (selected_command is PathCommand.LineCommand or selected_command is PathCommand.HorizontalLineCommand\
-			or selected_command is PathCommand.VerticalLineCommand or (selected_command is PathCommand.EllipticalArcCommand and\
-			(selected_command.rx <= 0 or selected_command.ry <= 0))):
-				new_commands.append(selected_command)
+			if not (selected_cmd is PathCommand.LineCommand or selected_cmd is PathCommand.HorizontalLineCommand\
+			or selected_cmd is PathCommand.VerticalLineCommand or (selected_cmd is PathCommand.EllipticalArcCommand and\
+			(selected_cmd.rx <= 0 or selected_cmd.ry <= 0))):
+				new_commands.append(selected_cmd)
 			new_commands.append(PathCommand.CloseCommand.new(true))
 		
 		pathdata.set_commands(new_commands)
