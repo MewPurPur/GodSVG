@@ -16,6 +16,8 @@ env:
   GODOT_RELEASE_TYPE: stable
   # Commit hash (found in Github releases)
   GODOT_COMMIT_HASH: 89cea143987d564363e15d207438530651d943ac
+  # Emscripten version. Should normally be "latest", but if this causes problems, see what Godot itself is using.
+  EMSDK_VERSION: 4.0.11
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # d3d12=no, vulkan=no, use_volk=no since we use Compatibility Renderer. TODO disable rendering_device too (Godot issue #103100).
   # disable_3d=yes since we don't use 3D features. This automatically disables 3D physics, 3D navigation, and XR.
@@ -119,13 +121,13 @@ jobs:
         env:
           # `latest-all` includes pre-releases. Once GodSVG leaves alpha, change it to `latest`.
           LDAI_UPDATE_INFORMATION: gh-releases-zsync|MewPurPur|GodSVG|latest-all|${{ env.PROJECT_NAME }}_v*-x86_64.AppImage.zsync
-          LDAI_OUTPUT: ${{ env.FULL_NAME }}-x86_64.AppImage
+          LDAI_OUTPUT: ${{ env.FULL_NAME }}.AppImage
 
       - name: Upload AppImage
         uses: actions/upload-artifact@v7
         with:
           name: ${{ env.FULL_NAME }}.Linux.AppImage
-          path: ${{ env.FULL_NAME }}*.AppImage*
+          path: ${{ env.FULL_NAME }}.AppImage
           if-no-files-found: error
           retention-days: 28
 
@@ -310,16 +312,6 @@ jobs:
         run: sudo apt-get install -y scons python3
 
       - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
-        name: Install Emscripten
-        run: |
-          git clone https://github.com/emscripten-core/emsdk.git
-          cd emsdk
-          ./emsdk install latest
-          ./emsdk activate latest
-          source ./emsdk_env.sh
-        shell: bash
-
-      - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
@@ -330,11 +322,15 @@ jobs:
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
+      - name: Set up Emscripten
+        uses: emscripten-core/setup-emsdk@v16
+        with:
+          version: ${{ env.EMSDK_VERSION }}
+
       - if: ${{ steps.setup.outputs.cache_hit != 'true' }}
         name: Build Godot template for Web
         run: |
           cd godot
-          source ../emsdk/emsdk_env.sh
           scons p=web arch=wasm32 ${BUILD_OPTIONS} threads=no
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE_TYPE}/
           mv ./bin/godot.web.template_release.wasm32.nothreads.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE_TYPE}/web_nothreads_release.zip
