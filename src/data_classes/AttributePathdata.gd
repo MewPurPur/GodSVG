@@ -75,19 +75,32 @@ func get_implied_T_control(index: int) -> PackedFloat64Array:
 	if prevQ_idx == -1:
 		return PackedFloat64Array([NAN, NAN])
 	
-	var control: Vector2
+	var control_x: float
+	var control_y: float
 	match prevQ_cmd.command_char.to_upper():
-		"Q": control = Vector2(prevQ_cmd.x, prevQ_cmd.y) * 2.0 - Vector2(prevQ_cmd.x1, prevQ_cmd.y1)
-		"H": control = Vector2(prevQ_cmd.x, prevQ_cmd.start_y)
-		"V": control = Vector2(prevQ_cmd.start_x, prevQ_cmd.y)
-		"Z": control = Vector2(get_command(index).start_x, get_command(index).start_y)
-		_: control = Vector2(prevQ_cmd.x, prevQ_cmd.y)
+		"Q":
+			control_x = prevQ_cmd.x * 2 - prevQ_cmd.x1
+			control_y = prevQ_cmd.y * 2 - prevQ_cmd.y1
+		"H":
+			control_x = prevQ_cmd.x
+			control_y = prevQ_cmd.start_y
+		"V":
+			control_x = prevQ_cmd.start_x
+			control_y = prevQ_cmd.y
+		"Z":
+			var Z_cmd := get_command(index)
+			control_x = Z_cmd.start_x
+			control_y = Z_cmd.start_y
+		_:
+			control_x = prevQ_cmd.x
+			control_y = prevQ_cmd.y
 	
 	for T_idx in range(prevQ_idx + 1, index):
 		var T_cmd := get_command(T_idx)
-		control = Vector2(T_cmd.x, T_cmd.y) * 2.0 - control
+		control_x = T_cmd.x * 2 - control_x
+		control_y = T_cmd.y * 2 - control_y
 	
-	return PackedFloat64Array([control.x, control.y])
+	return PackedFloat64Array([control_x, control_y])
 
 
 func set_commands(new_commands: Array[PathCommand]) -> void:
