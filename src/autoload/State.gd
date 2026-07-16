@@ -762,7 +762,7 @@ func set_as_origin_selected() -> void:
 			
 			if selected_index + 2 < end:
 				new_commands += commands.slice(selected_index + 2, end)
-			if start_cmd_x != close_cmd.start_x or start_cmd_y != close_cmd.start_y:
+			if not is_equal_approx(start_cmd_x, close_cmd.start_x) or not is_equal_approx(start_cmd_y, close_cmd.start_y):
 				new_commands.append(PathCommand.LineCommand.new(start_cmd_x, start_cmd_y, start_cmd.relative))
 			new_commands += commands.slice(start + 1 if start_cmd is PathCommand.MoveCommand else start, selected_index)
 			
@@ -834,19 +834,18 @@ func reverse_order_selected() -> void:
 					
 					var start_cmd_x: float = start_cmd.x if start_cmd is PathCommand.MoveCommand else start_cmd.start_x
 					var start_cmd_y: float = start_cmd.y if start_cmd is PathCommand.MoveCommand else start_cmd.start_y
-					if last_cmd_x != start_cmd_x or last_cmd_y != start_cmd_y:
-						subpath_commands.append(PathCommand.LineCommand.new(last_cmd_x, last_cmd_y, commands[subpath.y].relative))
+					if not is_equal_approx(start_cmd_x, last_cmd_x) or not is_equal_approx(start_cmd_y, last_cmd_y):
+						subpath_commands.append(PathCommand.LineCommand.new(last_cmd_x, last_cmd_y, last_cmd.relative))
 				else:
 					subpath_commands.append(PathCommand.MoveCommand.new(last_cmd_x, last_cmd_y, last_cmd.relative))
 				
 				var reverse_start := first_cmd_index
 				
 				# A closed subpath beginning with a line-like command can omit it in favor of the closing Z performing the same segment.
-				if is_closed:
-					if first_cmd is PathCommand.LineCommand or first_cmd is PathCommand.HorizontalLineCommand or\
-					first_cmd is PathCommand.VerticalLineCommand or (first_cmd is PathCommand.EllipticalArcCommand and\
-					(first_cmd.rx <= 0 or first_cmd.ry <= 0)):
-						reverse_start += 1
+				if is_closed and (first_cmd is PathCommand.LineCommand or first_cmd is PathCommand.HorizontalLineCommand or\
+				first_cmd is PathCommand.VerticalLineCommand or (first_cmd is PathCommand.EllipticalArcCommand and\
+				(first_cmd.rx <= 0 or first_cmd.ry <= 0))):
+					reverse_start += 1
 				
 				# Runs of full curves, followed by shorthands, should get flipped around.
 				var shorthand_run_end_by_index: Dictionary[int, int] = {}
@@ -884,6 +883,8 @@ func reverse_order_selected() -> void:
 							use_shorthand = true
 					
 					var cmd := commands[reversed_command_index]
+					if commands[maxi(reversed_command_index - 1, start)].relative != cmd.relative:
+						cmd.toggle_relative()
 					match cmd.command_char.to_upper():
 						"L":
 							cmd.x = cmd.start_x
@@ -930,8 +931,11 @@ func reverse_order_selected() -> void:
 								subpath_commands.append(cmd)
 						"S":
 							if use_shorthand:
+								var implied := pathdata.get_implied_S_control(reversed_command_index)
 								cmd.x = cmd.start_x
 								cmd.y = cmd.start_y
+								cmd.x2 = implied[0]
+								cmd.y2 = implied[1]
 								subpath_commands.append(cmd)
 							else:
 								var implied := pathdata.get_implied_S_control(reversed_command_index)
@@ -940,7 +944,7 @@ func reverse_order_selected() -> void:
 					reversed_command_index -= 1
 				
 				if is_closed:
-					subpath_commands.append(PathCommand.CloseCommand.new(first_cmd.relative))
+					subpath_commands.append(PathCommand.CloseCommand.new(commands[subpath.y].relative))
 				
 				var output_start := new_commands.size()
 				for i in subpath_commands.size():
