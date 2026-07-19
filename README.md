@@ -23,7 +23,7 @@
 
 ## Downloads and links
 
-Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). Android versions are currently experimental.
+Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases).
 
 <details><summary>Removing GodSVG from quarantine on MacOS</summary>
 
