@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: freeducks-debug <applesause454@gmail.com>\n"
+"Last-Translator: anon <anon>\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
 #. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
@@ -85,19 +85,16 @@ msgid "View in Inspector"
 msgstr "Просмотреть в инспекторе"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Convert to"
 msgstr "Конвертировать в"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert after"
 msgstr "Вставить после"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "Insert multiple after"
-msgstr "Вставить после"
+msgstr "Вставить несколько после"
 
 #: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -125,7 +122,7 @@ msgstr "Никогда"
 
 #: src/config_classes/Formatter.gd
 msgid "Spacious"
-msgstr ""
+msgstr "Широко"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -322,7 +319,7 @@ msgstr "Размер"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
-msgstr ""
+msgstr "Примерный размер"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
@@ -390,9 +387,8 @@ msgid "Copy path"
 msgstr "Скопировать путь"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Open in File Manager"
-msgstr "Показать в файловом менеджере"
+msgstr "Открыть в файловом менеджере"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
@@ -666,7 +662,7 @@ msgstr "Отсутствует ID"
 #. Refers to a number of points.
 #: src/ui_widgets/insert_multiple_points_popup.gd
 msgid "Points to insert"
-msgstr ""
+msgstr "Точек для вставки"
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -718,24 +714,23 @@ msgstr "Сохранить как XML"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Exact conversions"
-msgstr ""
+msgstr "Точная конвертация"
 
 #: src/ui_widgets/path_convert_popup.gd
 msgid "Lossy conversions"
-msgstr ""
+msgstr "Конвертация без потерь"
 
 #: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Относительно"
 
 #: src/ui_widgets/path_insert_popup.gd
-#, fuzzy
 msgid "Keep open"
-msgstr "Сохранять коментарии"
+msgstr "Держать открытым"
 
 #: src/ui_widgets/path_insert_popup.gd
 msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
-msgstr ""
+msgstr "Если выключено, вам надо удерживать {keys} при выборе команды пути, чтобы удерживать всплывающее окно открытым."
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -812,9 +807,8 @@ msgid "Space out the slash of shorthand tags"
 msgstr "Ставить пробел после тега"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Formatting style"
-msgstr "Форматирование"
+msgstr "Стиль форматирования"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use spaces instead of tabs"
@@ -1228,9 +1222,8 @@ msgid "Apply the matrix"
 msgstr "Применить матрицу"
 
 #: src/ui_widgets/transform_popup.gd
-#, fuzzy
 msgid "Insert before"
-msgstr "Вставить до"
+msgstr "Вставить перед"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "New transform"
@@ -1306,9 +1299,8 @@ msgstr "Сохранить изменения в {file_name}?"
 
 #: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
 #: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
-#, fuzzy
 msgid "Background"
-msgstr "Цвет фона"
+msgstr "Задний фон"
 
 #: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
 msgid "Quality"
@@ -1446,15 +1438,15 @@ msgstr "Подвинуть выбранное вниз"
 #. Refers to, for example, changing which point in a polygon counts as "first".
 #: src/utils/TranslationUtils.gd
 msgid "Set as initial"
-msgstr ""
+msgstr "Установить как начальную"
 
 #: src/utils/TranslationUtils.gd
 msgid "Set point as initial"
-msgstr ""
+msgstr "Установить точку как начальную"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reverse order"
-msgstr ""
+msgstr "Обратный порядк"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1605,7 +1597,6 @@ msgid "Absolute"
 msgstr "Абсолютно"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Code Editor"
 msgstr "Редактор кода"
 

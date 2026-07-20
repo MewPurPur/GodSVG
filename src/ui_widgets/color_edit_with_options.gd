@@ -5,19 +5,18 @@ const PalettePreview = preload("res://src/ui_widgets/palette_preview.gd")
 
 signal color_picked(new_color: String, is_final: bool, old_final_value: String)
 
-var color_options: PackedStringArray
+@export var color_options: PackedStringArray
 
 @onready var color_edit: ColorEdit = $ColorEdit
 @onready var palette_preview: PalettePreview = $PalettePreview
 
-func setup(alpha_enabled: bool, new_color_options: PackedStringArray, initial_color: Color) -> void:
+func setup(alpha_enabled: bool, initial_color: Color) -> void:
 	if not is_node_ready():
 		await ready
 	color_edit.alpha_enabled = alpha_enabled
 	if alpha_enabled:
 		color_edit.custom_minimum_size.x = 82
-	color_options = new_color_options
-	color_edit.set_initial_value(initial_color.to_html(color_edit.alpha_enabled))
+	color_edit.set_initial_value(initial_color.to_html(color_edit.alpha_enabled and initial_color.a != 1.0))
 	
 	var color_names := PackedStringArray()
 	color_names.resize(color_options.size())

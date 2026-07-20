@@ -3,6 +3,7 @@ extends VTitledPanel
 const ColorEditWithOptions = preload("res://src/ui_widgets/color_edit_with_options.gd")
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
+const PreviewPresentationPopupScene = preload("res://src/ui_widgets/preview_presentation_popup.tscn")
 const NumberEditScene = preload("res://src/ui_widgets/number_edit.tscn")
 
 const TILE_MARGIN = 2.0
@@ -15,15 +16,15 @@ const MORE_ICON_SIZE = 16.0
 const MAX_ICON_PREVIEW_SIZE = 128
 
 @onready var icon_preview_tiles: ProceduralControl = %IconPreviewTiles
-@onready var add_new_preview_button: Button = %AddNewPreviewButton
 @onready var texture_rect: TextureRect = %TextureRect
 @onready var scaled_preview_panel: PanelContainer = %ScaledPreviewPanel
 @onready var size_label: Label = %SizeLabel
 @onready var split_container: SplitContainer = %SplitContainer
 @onready var preview_top_panel: PanelContainer = $SplitContainer/PreviewTopPanel
-@onready var more_button: Button = $ActionContainer/MoreButton
 @onready var size_label_margins: MarginContainer = %SizeLabelMargins
-@onready var color_edit_with_options: ColorEditWithOptions = $ActionContainer/ColorEditWithOptions
+@onready var add_new_preview_button: Button = $ActionContainer/AddNewPreviewButton
+@onready var presentation_config_button: Button = $ActionContainer/PresentationConfigButton
+@onready var more_button: Button = $ActionContainer/MoreButton
 
 class IconPreviewTileData extends RefCounted:
 	var index := -1
@@ -38,7 +39,7 @@ class IconPreviewTileData extends RefCounted:
 	
 	func _init(new_index: int) -> void:
 		index = new_index
-		bigger_dimension = Configs.savedata.preview_sizes[index]
+		bigger_dimension = Configs.savedata.preview_presentation_sizes[index]
 		var svg_size := State.root_element.get_size()
 		var multiplier := bigger_dimension / maxf(svg_size.x, svg_size.y)
 		svg_size *= multiplier
@@ -76,14 +77,19 @@ func _ready() -> void:
 	icon_preview_tiles.mouse_exited.connect(_on_tiles_mouse_exited)
 	more_button.pressed.connect(_on_more_button_pressed)
 	
-	color_edit_with_options.setup(true, PackedStringArray(["#ffffff00", "#ffffff", "#000000"]), Configs.savedata.previews_background.to_html())
-	color_edit_with_options.color_picked.connect(_update_preview_background.unbind(2))
-	
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	
-	add_new_preview_button.tooltip_text = Translator.translate("Add new preview")
+	add_new_preview_button.text = Translator.translate("Add preview")
 	add_new_preview_button.pressed.connect(_add_new_tile)
+	
+	var presentation_config_button_ci := RenderingServer.canvas_item_create()
+	RenderingServer.canvas_item_set_parent(presentation_config_button_ci, presentation_config_button.get_canvas_item())
+	presentation_config_button.pressed.connect(_on_presentation_config_button_pressed)
+	presentation_config_button.draw.connect(
+		func() -> void:
+			Configs.savedata.preview_presentation.draw_on_button(presentation_config_button, presentation_config_button_ci)
+	)
 	
 	State.svg_changed.connect(sync_tiles)
 	visibility_changed.connect(
@@ -99,7 +105,8 @@ func _ready() -> void:
 	)
 	icon_preview_tiles.resized.connect(sync_tile_positions)
 	sync_tiles()
-	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, color_edit_with_options, more_button])
+	_sync_preview_background()
+	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, more_button])
 
 
 func sync_theming() -> void:
@@ -120,9 +127,10 @@ func sync_preview_top_panel_expand_margins() -> void:
 	preview_top_panel.add_theme_stylebox_override("panel", stylebox)
 	size_label_margins.add_theme_constant_override("margin_top", -3 if split_container.vertical else 1)
 
+
 func sync_tiles() -> void:
 	tiles.clear()
-	for i in Configs.savedata.preview_sizes.size():
+	for i in Configs.savedata.preview_presentation_sizes.size():
 		tiles.append(IconPreviewTileData.new(i))
 	icon_preview_tiles.queue_redraw()
 	sync_tile_positions()
@@ -241,7 +249,9 @@ func _select_tile(tile_index: int) -> void:
 
 func _sync_texture() -> void:
 	if selected_tile_index >= 0:
-		texture_rect.texture = tiles[selected_tile_index].preview_texture
+		var svg_size := State.root_element.get_size()
+		var multiplier := Configs.savedata.preview_presentation_sizes[selected_tile_index] / maxf(svg_size.x, svg_size.y)
+		texture_rect.texture = Configs.savedata.preview_presentation.generate_texture(multiplier)
 
 
 func _generate_tile_popup(tile: IconPreviewTileData) -> ContextPopup:
@@ -278,9 +288,9 @@ func _edit_tile_size(tile: IconPreviewTileData) -> void:
 	edit_field.select_all()
 
 func _on_edit_field_value_changed(new_value: float) -> void:
-	var sizes := Configs.savedata.preview_sizes.duplicate()
+	var sizes := Configs.savedata.preview_presentation_sizes.duplicate()
 	sizes[edited_tile_index] = roundi(new_value)
-	Configs.savedata.preview_sizes = sizes
+	Configs.savedata.preview_presentation_sizes = sizes
 	sync_tiles()
 	if edited_tile_index == selected_tile_index:
 		_select_tile(edited_tile_index)
@@ -290,59 +300,65 @@ func _on_edit_field_editing_toggled(toggled_on: bool) -> void:
 		edit_field.queue_free()
 
 func _delete_tile(tile: IconPreviewTileData) -> void:
-	var sizes := Configs.savedata.preview_sizes.duplicate()
-	if tile.index >= 0 and tile.index <= Configs.savedata.preview_sizes.size() - 1:
+	var sizes := Configs.savedata.preview_presentation_sizes.duplicate()
+	if tile.index >= 0 and tile.index <= Configs.savedata.preview_presentation_sizes.size() - 1:
 		sizes.remove_at(tile.index)
-		Configs.savedata.preview_sizes = sizes
+		Configs.savedata.preview_presentation_sizes = sizes
 		_select_tile(-1)
 		sync_tiles()
 
 func are_tiles_default() -> bool:
-	return Configs.savedata.preview_sizes == SaveData.DEFAULT_PREVIEW_SIZES
+	return Configs.savedata.preview_presentation_sizes == SaveData.DEFAULT_PREVIEW_SIZES
 
 func are_tiles_sorted() -> bool:
-	var sorted_array := Configs.savedata.preview_sizes.duplicate()
+	var sorted_array := Configs.savedata.preview_presentation_sizes.duplicate()
 	sorted_array.sort()
-	return Configs.savedata.preview_sizes == sorted_array
+	return Configs.savedata.preview_presentation_sizes == sorted_array
 
 func sort_tiles() -> void:
 	_select_tile(-1)
-	Configs.savedata.preview_sizes.sort()
+	Configs.savedata.preview_presentation_sizes.sort()
 	sync_tiles()
 
 func reset_tiles() -> void:
 	_select_tile(-1)
-	Configs.savedata.preview_sizes = SaveData.DEFAULT_PREVIEW_SIZES.duplicate()
+	Configs.savedata.preview_presentation_sizes = SaveData.DEFAULT_PREVIEW_SIZES.duplicate()
 	sync_tiles()
 
 func clear_all_tiles() -> void:
 	_select_tile(-1)
-	Configs.savedata.preview_sizes = PackedInt32Array()
+	Configs.savedata.preview_presentation_sizes = PackedInt32Array()
 	sync_tiles()
 
 func _add_new_tile() -> void:
-	var old_icon_sizes := Configs.savedata.preview_sizes.duplicate()
+	var old_icon_sizes := Configs.savedata.preview_presentation_sizes.duplicate()
 	old_icon_sizes.append(16)
-	Configs.savedata.preview_sizes = old_icon_sizes
+	Configs.savedata.preview_presentation_sizes = old_icon_sizes
 	sync_tiles()
 
-func _update_preview_background(new_value: String) -> void:
-	Configs.savedata.previews_background = ColorParser.text_to_color(new_value, Color.BLACK, true)
+func _sync_preview_background() -> void:
 	sync_tiles()
-	if Configs.savedata.previews_background == Color.TRANSPARENT:
+	if Configs.savedata.preview_presentation.background_color.a == 0.0:
 		scaled_preview_panel.remove_theme_stylebox_override("panel")
 	else:
 		var colored_sb := StyleBoxFlat.new()
-		colored_sb.bg_color = Configs.savedata.previews_background
+		colored_sb.bg_color = Configs.savedata.preview_presentation.background_color
 		scaled_preview_panel.add_theme_stylebox_override("panel", colored_sb)
 
+
+func _on_presentation_config_button_pressed() -> void:
+	var preview_presentation_popup := PreviewPresentationPopupScene.instantiate()
+	preview_presentation_popup.presentation_changed.connect(_sync_texture)
+	preview_presentation_popup.presentation_changed.connect(_sync_preview_background)
+	preview_presentation_popup.presentation_changed.connect(presentation_config_button.queue_redraw)
+	HandlerGUI.popup_under_rect_center(preview_presentation_popup, presentation_config_button.get_global_rect(), get_viewport())
 
 func _on_more_button_pressed() -> void:
 	var btn_array: Array[ContextButton] = [
 		ContextButton.create_custom(Translator.translate("Reset to default"), reset_tiles,
 				preload("res://assets/icons/Reload.svg"), are_tiles_default()),
 		ContextButton.create_custom(Translator.translate("Clear all"), clear_all_tiles,
-				preload("res://assets/icons/Clear.svg"), Configs.savedata.preview_sizes.is_empty()),
+				preload("res://assets/icons/Clear.svg"), Configs.savedata.preview_presentation_sizes.is_empty()),
 		ContextButton.create_custom(Translator.translate("Sort"), sort_tiles,
 				preload("res://assets/icons/Sort.svg"), are_tiles_sorted()),
 	]

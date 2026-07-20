@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://byfpf7c5x1y5t"]
+
+[ext_resource type="Script" uid="uid://cduc2s12yew2g" path="res://src/ui_widgets/export_properties_webp.gd" id="1_geu1m"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="2_r766b"]
+[ext_resource type="PackedScene" uid="uid://ekji4yw0jqoo" path="res://src/ui_widgets/color_edit_with_options.tscn" id="3_f10kj"]
+[ext_resource type="PackedScene" uid="uid://d1or2vdui25ww" path="res://src/ui_widgets/export_scale_config.tscn" id="4_4aiuk"]
+
+[node name="ExportPropertiesWEBP" type="VBoxContainer" unique_id=339482187]
+offset_right = 145.0
+offset_bottom = 128.0
+theme_override_constants/separation = 6
+script = ExtResource("1_geu1m")
+
+[node name="QualityRelatedHBox" type="HBoxContainer" parent="." unique_id=1623043449]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LosslessCheckBox" type="CheckBox" parent="QualityRelatedHBox" unique_id=1745445794]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+
+[node name="QualityHBox" type="HBoxContainer" parent="QualityRelatedHBox" unique_id=1683395088]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QualityLabel" type="Label" parent="QualityRelatedHBox/QualityHBox" unique_id=936783553]
+layout_mode = 2
+
+[node name="QualityEdit" parent="QualityRelatedHBox/QualityHBox" unique_id=2109030887 instance=ExtResource("2_r766b")]
+custom_minimum_size = Vector2(40, 22)
+layout_mode = 2
+min_value = 1.0
+max_value = 100.0
+is_float = false
+
+[node name="BackgroundHBox" type="HBoxContainer" parent="." unique_id=1341664515]
+layout_mode = 2
+
+[node name="BackgroundLabel" type="Label" parent="BackgroundHBox" unique_id=1182514734]
+layout_mode = 2
+
+[node name="BackgroundEdit" parent="BackgroundHBox" unique_id=503957909 instance=ExtResource("3_f10kj")]
+layout_mode = 2
+color_options = PackedStringArray("#ffffff00", "#ffffff", "#000000")
+
+[node name="ExportScaleConfig" parent="." unique_id=435197886 instance=ExtResource("4_4aiuk")]
+layout_mode = 2

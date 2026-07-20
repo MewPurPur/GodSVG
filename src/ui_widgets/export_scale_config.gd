@@ -5,7 +5,8 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 signal scale_changed(new_scale: float)
 
 var original_dimensions: Vector2
-var max_dimension: int
+
+@export var max_dimension := 16383
 
 @onready var scale_label: Label = %ScaleLabel
 @onready var scale_edit: NumberEdit = %ScaleEdit
@@ -20,11 +21,10 @@ func _ready() -> void:
 	height_label.text = Translator.translate("Height") + ":"
 	HandlerGUI.register_focus_sequence(self, [scale_edit, width_edit, height_edit])
 
-func setup(new_original_dimensions: Vector2, initial_scale: float, new_max_dimension: int) -> void:
+func setup(new_original_dimensions: Vector2, initial_scale: float) -> void:
 	if not is_node_ready():
 		await ready
 	original_dimensions = new_original_dimensions
-	max_dimension = new_max_dimension
 	scale_edit.min_value = 1 / minf(original_dimensions.x, original_dimensions.y)
 	scale_edit.max_value = max_dimension / maxf(original_dimensions.x, original_dimensions.y)
 	width_edit.max_value = max_dimension

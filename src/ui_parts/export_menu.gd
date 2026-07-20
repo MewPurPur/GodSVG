@@ -1,10 +1,11 @@
 extends PanelContainer
 
-const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
-const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
 const BasicDropdown = preload("res://src/ui_widgets/dropdown_basic.gd")
 const PreviewRect = preload("res://src/ui_widgets/preview_rect.gd")
 
+const ExportPropertiesRasterLossless = preload("res://src/ui_widgets/export_properties_raster_lossless.tscn")
+const ExportPropertiesJPG = preload("res://src/ui_widgets/export_properties_jpg.tscn")
+const ExportPropertiesWEBP = preload("res://src/ui_widgets/export_properties_webp.tscn")
 const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
 
 var undo_redo := UndoRedoRef.new()
@@ -28,7 +29,7 @@ var dimensions := Vector2.ZERO
 @onready var file_title: Label = %FileTitle
 @onready var info_tooltip: MarginContainer = %InfoTooltip
 @onready var titled_panel: HTitledPanel = %TitledPanel
-@onready var content_container: VBoxContainer = %ContentContainer
+@onready var content_container: MarginContainer = %ContentContainer
 
 func get_edited_export_data() -> ImageExportData:
 	return export_data_resources[current_format]
@@ -101,16 +102,26 @@ func set_current_format(new_format: String) -> void:
 		return
 	if not current_format.is_empty():
 		export_data_resources[current_format].changed.disconnect(_on_edited_export_data_changed)
-		export_data_resources[current_format].borrowed_undo_redo = null
 	current_format = new_format
 	format_dropdown.set_value(current_format, false)
 	get_edited_export_data().changed.connect(_on_edited_export_data_changed)
 	_on_edited_export_data_changed()
-	export_data_resources[current_format].borrowed_undo_redo = undo_redo
 	
 	for child in content_container.get_children():
 		child.queue_free()
-	get_edited_export_data().inject_ui_to_control(content_container, dimensions)
+	
+	var new_properties_scene_root: Control
+	if get_edited_export_data() is ImageExportDataPNG or get_edited_export_data() is ImageExportDataDDS:
+		new_properties_scene_root = ExportPropertiesRasterLossless.instantiate()
+	elif get_edited_export_data() is ImageExportDataJPG:
+		new_properties_scene_root = ExportPropertiesJPG.instantiate()
+	elif get_edited_export_data() is ImageExportDataWEBP:
+		new_properties_scene_root = ExportPropertiesWEBP.instantiate()
+	
+	if is_instance_valid(new_properties_scene_root):
+		content_container.add_child(new_properties_scene_root)
+		new_properties_scene_root.setup(get_edited_export_data(), dimensions)
+		new_properties_scene_root.undo_redo = undo_redo
 	
 	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 	if not file_name.is_empty():
