@@ -1,3 +1,4 @@
+# We're not serializing this class at the moment, but its duplicate() method and changed signal are used.
 @abstract class_name ImageExportData extends Resource
 
 static func get_extension_mime_type(extension: String) -> String:
@@ -9,13 +10,9 @@ static func get_extension_mime_type(extension: String) -> String:
 		"dds": return "image/vnd-ms.dds"
 	return ""
 
-var borrowed_undo_redo: UndoRedoRef
-
 @abstract func get_format() -> String
 
 @abstract func image_to_buffer(image: Image) -> PackedByteArray
-
-@abstract func inject_ui_to_control(main_container: VBoxContainer, dimensions: Vector2) -> void
 
 func inject_in_export_svg(_export_svg: ElementRoot) -> void:
 	return

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b213f47qs3jkx"]
+
+[ext_resource type="Script" uid="uid://bybvyqh2p1ivb" path="res://src/ui_widgets/export_properties_raster_lossless.gd" id="1_ndwc8"]
+[ext_resource type="PackedScene" uid="uid://ekji4yw0jqoo" path="res://src/ui_widgets/color_edit_with_options.tscn" id="3_54r0d"]
+[ext_resource type="PackedScene" uid="uid://d1or2vdui25ww" path="res://src/ui_widgets/export_scale_config.tscn" id="4_4ttmj"]
+
+[node name="ExportPropertiesRasterLossless" type="VBoxContainer" unique_id=339482187]
+offset_right = 145.0
+offset_bottom = 93.0
+theme_override_constants/separation = 6
+script = ExtResource("1_ndwc8")
+
+[node name="BackgroundHBox" type="HBoxContainer" parent="." unique_id=1341664515]
+layout_mode = 2
+
+[node name="BackgroundLabel" type="Label" parent="BackgroundHBox" unique_id=1182514734]
+layout_mode = 2
+
+[node name="BackgroundEdit" parent="BackgroundHBox" unique_id=503957909 instance=ExtResource("3_54r0d")]
+layout_mode = 2
+color_options = PackedStringArray("#ffffff00", "#ffffff", "#000000")
+
+[node name="ExportScaleConfig" parent="." unique_id=435197886 instance=ExtResource("4_4ttmj")]
+layout_mode = 2

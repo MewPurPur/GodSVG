@@ -204,6 +204,13 @@ static func get_highlighter_preset_value_text_map() -> Dictionary:
 	}
 
 
+func _init() -> void:
+	super()
+	reset_to_default()
+	language = "en"
+	_shortcut_panel_slots = { 0: "ui_undo", 1: "ui_redo" }
+	_palettes = [Palette.new("Pure", Palette.Preset.PURE)]
+
 func validate() -> void:
 	if not is_instance_valid(editor_formatter):
 		editor_formatter = Formatter.new(Formatter.Preset.PRETTY)
@@ -211,6 +218,9 @@ func validate() -> void:
 		export_formatter = Formatter.new(Formatter.Preset.COMPACT)
 	if not is_instance_valid(default_optimizer):
 		default_optimizer = Optimizer.new()
+	if not is_instance_valid(preview_presentation):
+		preview_presentation = PreviewPresentationLossless.new()
+	
 	if _active_tab_index >= _tabs.size() or _active_tab_index < 0:
 		_active_tab_index = _active_tab_index  # Run the setter.
 	if not color_picker_current_model in color_picker_active_models:
@@ -769,10 +779,8 @@ func action_get_shortcuts(action: String) -> Array[InputEvent]:
 		return Configs.default_shortcuts[action]
 
 func action_modify_shortcuts(action: String, new_events: Array[InputEvent]) -> void:
-	var are_new_events_default := true
-	if new_events.size() != Configs.default_shortcuts[action].size():
-		are_new_events_default = false
-	else:
+	var are_new_events_default := (new_events.size() == Configs.default_shortcuts[action].size())
+	if are_new_events_default:
 		for i in new_events.size():
 			if not new_events[i].is_match(Configs.default_shortcuts[action][i]):
 				are_new_events_default = false
@@ -826,6 +834,10 @@ func get_actions_with_shortcut(shortcut: InputEventKey) -> PackedStringArray:
 @export var _palettes: Array[Palette] = []:
 	set(new_value):
 		if _palettes != new_value:
+			# Validation
+			for palette_idx in range(new_value.size() - 1, -1, -1):
+				if not is_instance_valid(new_value[palette_idx]):
+					new_value.remove_at(palette_idx)
 			_palettes = new_value
 			_update_palette_validities()
 			emit_changed()
@@ -842,9 +854,7 @@ func _update_palette_validities() -> void:
 func is_palette_valid(checked_palette: Palette) -> bool:
 	if checked_palette.title.is_empty():
 		return false
-	if not checked_palette.title in _palette_validities:
-		return true
-	return _palette_validities[checked_palette.title]
+	return _palette_validities.get(checked_palette.title, true)
 
 func is_palette_title_unused(checked_title: String) -> bool:
 	for palette in _palettes:
@@ -899,25 +909,24 @@ func get_palette_count() -> int:
 func get_palette(idx: int) -> Palette:
 	return _palettes[idx]
 
-func set_palettes(new_palettes: Array[Palette]) -> void:
-	_palettes = new_palettes
-	emit_changed()
-
 
 @export var editor_formatter: Formatter = null:
 	set(new_value):
 		if editor_formatter != new_value and is_instance_valid(new_value):
 			editor_formatter = new_value
 			emit_changed()
-			editor_formatter.changed.connect(emit_changed)
-			editor_formatter.changed_deferred.connect(State.sync_stable_editor_markup)
+			if not editor_formatter.changed.is_connected(emit_changed):
+				editor_formatter.changed.connect(emit_changed)
+			if not editor_formatter.changed_deferred.is_connected(State.sync_stable_editor_markup):
+				editor_formatter.changed_deferred.connect(State.sync_stable_editor_markup)
 
 @export var export_formatter: Formatter = null:
 	set(new_value):
 		if export_formatter != new_value and is_instance_valid(new_value):
 			export_formatter = new_value
 			emit_changed()
-			export_formatter.changed.connect(emit_changed)
+			if not export_formatter.changed.is_connected(emit_changed):
+				export_formatter.changed.connect(emit_changed)
 
 
 @export var default_optimizer: Optimizer = null:
@@ -925,7 +934,27 @@ func set_palettes(new_palettes: Array[Palette]) -> void:
 		if default_optimizer != new_value and is_instance_valid(new_value):
 			default_optimizer = new_value
 			emit_changed()
-			default_optimizer.changed.connect(emit_changed)
+			if not default_optimizer.changed.is_connected(emit_changed):
+				default_optimizer.changed.connect(emit_changed)
+
+
+@export var preview_presentation: PreviewPresentation = null:
+	set(new_value):
+		if preview_presentation != new_value and is_instance_valid(new_value):
+			preview_presentation = new_value
+			emit_changed()
+			if not preview_presentation.changed.is_connected(emit_changed):
+				preview_presentation.changed.connect(emit_changed)
+
+const DEFAULT_PREVIEW_SIZES: PackedInt32Array = [16, 24, 32, 48, 64]
+@export var preview_presentation_sizes := DEFAULT_PREVIEW_SIZES:
+	set(new_value):
+		if preview_presentation_sizes != new_value:
+			var real_sizes: PackedInt32Array
+			for size in new_value:
+				real_sizes.append(maxi(size, 1))
+			preview_presentation_sizes = real_sizes
+			emit_changed()
 
 
 @export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:
@@ -961,11 +990,6 @@ func set_shortcut_panel_slot(slot: int, shortcut: String) -> void:
 	if _shortcut_panel_slots.has(slot) and _shortcut_panel_slots[slot] == shortcut:
 		return
 	_shortcut_panel_slots[slot] = shortcut
-	emit_changed()
-	Configs.shortcut_panel_changed.emit()
-
-func set_shortcut_panel_slots(slots: Dictionary[int, String]) -> void:
-	_shortcut_panel_slots = slots
 	emit_changed()
 	Configs.shortcut_panel_changed.emit()
 
@@ -1191,8 +1215,7 @@ enum LayoutLocation {NONE, EXCLUDED, TOP_LEFT, BOTTOM_LEFT}
 			_layout = new_value
 			emit_changed()
 
-func set_layout_parts(location: LayoutLocation, parts: Array[Utils.LayoutPart],
-notify_layout_changed := true) -> void:
+func set_layout_parts(location: LayoutLocation, parts: Array[Utils.LayoutPart], notify_layout_changed := true) -> void:
 	if (_layout.has(location) and parts == _layout[location]) or (not _layout.has(location) and parts.is_empty()):
 		return
 	
@@ -1243,22 +1266,6 @@ func get_layout_part_index(part: Utils.LayoutPart) -> int:
 		# Main part
 		if left_vertical_splitter_offset != new_value:
 			left_vertical_splitter_offset = new_value
-			emit_changed()
-
-const DEFAULT_PREVIEW_SIZES: PackedInt32Array = [16, 24, 32, 48, 64]
-@export var preview_sizes := DEFAULT_PREVIEW_SIZES:
-	set(new_value):
-		if preview_sizes != new_value:
-			var real_sizes: PackedInt32Array
-			for size in new_value:
-				real_sizes.append(maxi(size, 1))
-			preview_sizes = real_sizes
-			emit_changed()
-
-@export var previews_background := Color.TRANSPARENT:
-	set(new_value):
-		if previews_background != new_value:
-			previews_background = new_value
 			emit_changed()
 
 

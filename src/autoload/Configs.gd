@@ -43,8 +43,8 @@ func _enter_tree() -> void:
 		if InputMap.has_action(action):
 			default_shortcuts[action] = InputMap.action_get_events(action)
 	
-	var savedata_reset_needed := true
 	# Load savedata.
+	var savedata_reset_needed := true
 	if FileAccess.file_exists(_SAVEDATA_PATH):
 		savedata = ResourceLoader.load(_SAVEDATA_PATH)
 		if is_instance_valid(savedata):
@@ -53,10 +53,6 @@ func _enter_tree() -> void:
 	# Build everything from scratch if the savedata didn't exist or was invalid. Reset settings to their defaults.
 	if savedata_reset_needed:
 		savedata = SaveData.new()
-		savedata.reset_to_default()
-		savedata.language = "en"
-		savedata.set_shortcut_panel_slots({ 0: "ui_undo", 1: "ui_redo" })
-		savedata.set_palettes([Palette.new("Pure", Palette.Preset.PURE)])
 		save()
 	
 	# Syncs various settings with their savedata value.

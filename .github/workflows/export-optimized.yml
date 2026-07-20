@@ -117,17 +117,32 @@ jobs:
           chmod +x linuxdeploy-x86_64.AppImage
 
       - name: Build AppImage
-        run: ./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
+        run: |
+          mkdir -p godsvg/build
+          ./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
         env:
-          # `latest-all` includes pre-releases. Once GodSVG leaves alpha, change it to `latest`.
           LDAI_UPDATE_INFORMATION: gh-releases-zsync|MewPurPur|GodSVG|latest-all|${{ env.PROJECT_NAME }}_v*-x86_64.AppImage.zsync
-          LDAI_OUTPUT: ${{ env.FULL_NAME }}.AppImage
+          LDAI_OUTPUT: godsvg/build/${{ env.FULL_NAME }}.AppImage
 
-      - name: Upload AppImage
+      - name: Package AppImage download
+        run: |
+          mkdir -p godsvg/dist
+          mkdir -p package
+
+          cp godsvg/build/${{ env.FULL_NAME }}.AppImage package/
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            cp godsvg/build/${{ env.FULL_NAME }}.AppImage.zsync package/
+          fi
+
+          cd package
+          zip -q -9 -r ../godsvg/dist/${{ env.FULL_NAME }}.Linux.AppImage.zip .
+
+      - name: Upload AppImage bundle
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.FULL_NAME }}.Linux.AppImage
-          path: ${{ env.FULL_NAME }}.AppImage
+          name: ${{ env.FULL_NAME }}.Linux.AppImage.zip
+          path: godsvg/dist/${{ env.FULL_NAME }}.Linux.AppImage.zip
           if-no-files-found: error
           retention-days: 28
 

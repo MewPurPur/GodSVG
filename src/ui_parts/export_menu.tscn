@@ -13,10 +13,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -2.0
-offset_top = -2.0
-offset_right = 2.0
-offset_bottom = 2.0
+offset_left = -12.0
+offset_top = -23.5
+offset_right = 12.0
+offset_bottom = 23.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
@@ -148,11 +148,10 @@ aliases = Dictionary[String, Variant]({
 })
 editing_enabled = true
 
-[node name="ContentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/ContentMarginContainer/VBoxContainer" unique_id=749427353]
+[node name="ContentContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/ContentMarginContainer/VBoxContainer" unique_id=190699791]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-theme_override_constants/separation = 6
 
 [node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer" unique_id=819439799]
 unique_name_in_owner = true
