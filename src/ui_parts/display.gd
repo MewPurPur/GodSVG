@@ -139,7 +139,7 @@ func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[ContextButton] = [
 		ContextButton.create_checkbox_from_action("view_show_grid", canvas.show_grid),
 		ContextButton.create_checkbox_from_action("view_show_handles", canvas.show_handles),
-		ContextButton.create_checkbox_from_action("view_rasterized_svg", canvas.view_rasterized)
+		ContextButton.create_checkbox_from_action("view_rasterized_svg", canvas.view_rasterized),
 	]
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), visuals_button.get_global_rect(), get_viewport())
 
