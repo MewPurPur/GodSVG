@@ -106,7 +106,7 @@ func _ready() -> void:
 	icon_preview_tiles.resized.connect(sync_tile_positions)
 	sync_tiles()
 	_sync_preview_background()
-	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, more_button])
+	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, presentation_config_button, more_button])
 
 
 func sync_theming() -> void:
