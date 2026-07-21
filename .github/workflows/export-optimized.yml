@@ -125,23 +125,29 @@ jobs:
           LDAI_OUTPUT: godsvg/build/${{ env.FULL_NAME }}.AppImage
 
       - name: Package AppImage download
+        if: github.event_name == 'workflow_dispatch'
         run: |
           mkdir -p godsvg/dist
           mkdir -p package
-
           cp godsvg/build/${{ env.FULL_NAME }}.AppImage package/
-
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            cp godsvg/build/${{ env.FULL_NAME }}.AppImage.zsync package/
-          fi
-
+          cp godsvg/build/${{ env.FULL_NAME }}.AppImage.zsync package/
           cd package
           zip -q -9 -r ../godsvg/dist/${{ env.FULL_NAME }}.Linux.AppImage.zip .
 
-      - name: Upload AppImage bundle
+      - name: Upload AppImage artifact
+        if: github.event_name != 'workflow_dispatch'
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.FULL_NAME }}.Linux.AppImage.zip
+          name: ${{ env.FULL_NAME }}.Linux.AppImage
+          path: godsvg/build/${{ env.FULL_NAME }}.AppImage
+          if-no-files-found: error
+          retention-days: 28
+
+      - name: Upload AppImage bundle
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.FULL_NAME }}.Linux.AppImage
           path: godsvg/dist/${{ env.FULL_NAME }}.Linux.AppImage.zip
           if-no-files-found: error
           retention-days: 28
