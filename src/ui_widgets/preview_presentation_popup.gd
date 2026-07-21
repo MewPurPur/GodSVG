@@ -78,8 +78,8 @@ func _on_background_edit_color_picked(new_color: String, is_final: bool, old_fin
 	
 	var parsed_old_color := ColorParser.text_to_color(old_final_value, Color.BLACK, true)
 	undo_redo.create_action()
-	undo_redo.add_do_method(_set_background_color.bind(parsed_new_color, false))
-	undo_redo.add_undo_method(_set_background_color.bind(parsed_old_color, false))
+	undo_redo.add_do_method(_set_background_color.bind(parsed_new_color))
+	undo_redo.add_undo_method(_set_background_color.bind(parsed_old_color))
 	undo_redo.commit_action()
 
 
@@ -97,8 +97,8 @@ func _apply_presentation_type(new_value: PresentationType, create_action := true
 		if new_value == active_type:
 			return
 		undo_redo.create_action()
-		undo_redo.add_do_method(_apply_presentation_type.bind(new_value, false, true))
-		undo_redo.add_undo_method(_apply_presentation_type.bind(active_type, false, true))
+		undo_redo.add_do_method(_apply_presentation_type.bind(new_value, false))
+		undo_redo.add_undo_method(_apply_presentation_type.bind(active_type, false))
 		undo_redo.commit_action()
 		return
 	

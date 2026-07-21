@@ -129,6 +129,7 @@ func clear_reference_image() -> void:
 
 func set_main_viewport_reference_image(image: Image) -> void:
 	if is_instance_valid(image):
+		image.fix_alpha_edges()
 		canvas.reference_image = ImageTexture.create_from_image(image)
 	else:
 		canvas.reference_image = null
