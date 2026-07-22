@@ -482,39 +482,3 @@ jobs:
           if-no-files-found: ignore
           retention-days: 28
 
-  assemble-release:
-    name: Assemble release-ready files
-    if: github.event_name == 'workflow_dispatch'
-    needs: [build-linux, build-windows, build-macos, build-android]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: artifacts
-
-      - name: Prepare release files
-        run: |
-          set -e
-          mkdir -p release-ready-files appimage-src
-          cp artifacts/${{ env.FULL_NAME }}.Android/${{ env.FULL_NAME }}.Android.apk release-ready-files/${{ env.FULL_NAME }}.Android.apk
-          cp artifacts/${{ env.FULL_NAME }}.Linux.x86_64/${{ env.FULL_NAME }}.x86_64 .
-          zip -q -9 release-ready-files/${{ env.FULL_NAME }}.Linux.x86_64.zip ${{ env.FULL_NAME }}.x86_64
-          rm ${{ env.FULL_NAME }}.x86_64
-          cp artifacts/${{ env.FULL_NAME }}.MacOS/${{ env.FULL_NAME }}.zip release-ready-files/${{ env.FULL_NAME }}.MacOS.zip
-          cp artifacts/${{ env.FULL_NAME }}.Windows/${{ env.FULL_NAME }}.exe .
-          zip -q -9 release-ready-files/${{ env.FULL_NAME }}.Windows.zip ${{ env.FULL_NAME }}.exe
-          rm ${{ env.FULL_NAME }}.exe
-          unzip -q artifacts/${{ env.FULL_NAME }}.Linux.AppImage/${{ env.FULL_NAME }}.Linux.AppImage.zip -d appimage-src
-          cp appimage-src/${{ env.FULL_NAME }}.AppImage release-ready-files/
-          cp appimage-src/${{ env.FULL_NAME }}.AppImage.zsync release-ready-files/
-          (cd appimage-src && zip -q -9 ../release-ready-files/${{ env.FULL_NAME }}.Linux.AppImage.zip ${{ env.FULL_NAME }}.AppImage)
-          (cd release-ready-files && zip -q -9 -r ../${{ env.FULL_NAME }}.release-ready-files.zip .)
-
-      - name: Upload release-ready bundle
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{ env.FULL_NAME }}.release-ready-files
-          path: ${{ env.FULL_NAME }}.release-ready-files.zip
-          if-no-files-found: error
-          retention-days: 28
