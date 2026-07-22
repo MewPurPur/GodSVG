@@ -22,10 +22,12 @@ var overlay_reference := false:
 			sync_reference_image()
 
 
-var reference_texture_ci: RID
+var reference_image_ci: RID
 
 func _ready() -> void:
 	super()
+	checkerboard.resized.connect(sync_reference_image)
+	camera_zoom_changed.connect(sync_reference_image_filtering)
 	camera_center_changed.connect(sync_camera_center_in_tab)
 	camera_zoom_changed.connect(sync_camera_zoom_in_tab)
 	var shortcuts := ShortcutsRegistration.new()
@@ -99,25 +101,31 @@ func zoom_out() -> void:
 func sync_reference_image() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
 	if is_instance_valid(active_tab.reference_image):
-		if not reference_texture_ci.is_valid():
-			reference_texture_ci = RenderingServer.canvas_item_create()
-			RenderingServer.canvas_item_set_parent(reference_texture_ci, checkerboard.get_canvas_item())
-			if not checkerboard.resized.is_connected(sync_reference_image):
-				checkerboard.resized.connect(sync_reference_image)
+		if not reference_image_ci.is_valid():
+			reference_image_ci = RenderingServer.canvas_item_create()
+			RenderingServer.canvas_item_set_parent(reference_image_ci, checkerboard.get_canvas_item())
 		
 		var image_size := active_tab.reference_image.get_size()
-		var draw_size := image_size * minf(checkerboard.size.x / image_size.x, checkerboard.size.y / image_size.y)
+		var factor := minf(checkerboard.size.x / image_size.x, checkerboard.size.y / image_size.y)
+		var draw_size := image_size * factor
 		var rect := Rect2((checkerboard.size - draw_size) * 0.5, draw_size)
 		
-		RenderingServer.canvas_item_clear(reference_texture_ci)
-		RenderingServer.canvas_item_add_texture_rect(reference_texture_ci, rect, active_tab.reference_image)
-		RenderingServer.canvas_item_set_visible(reference_texture_ci, active_tab.show_reference)
-		RenderingServer.canvas_item_set_draw_behind_parent(reference_texture_ci, not active_tab.overlay_reference)
-	elif reference_texture_ci.is_valid():
-		RenderingServer.free_rid(reference_texture_ci)
-		reference_texture_ci = RID()
-		if checkerboard.resized.is_connected(sync_reference_image):
-			checkerboard.resized.disconnect(sync_reference_image)
+		RenderingServer.canvas_item_clear(reference_image_ci)
+		RenderingServer.canvas_item_add_texture_rect(reference_image_ci, rect, active_tab.reference_image)
+		RenderingServer.canvas_item_set_visible(reference_image_ci, active_tab.show_reference)
+		RenderingServer.canvas_item_set_draw_behind_parent(reference_image_ci, not active_tab.overlay_reference)
+	elif reference_image_ci.is_valid():
+		RenderingServer.canvas_item_clear(reference_image_ci)
+		RenderingServer.free_rid(reference_image_ci)
+		reference_image_ci = RID()
+
+func sync_reference_image_filtering() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	if is_instance_valid(active_tab.reference_image):
+		var image_size := active_tab.reference_image.get_size()
+		var factor := minf(checkerboard.size.x / image_size.x, checkerboard.size.y / image_size.y) * camera_zoom
+		RenderingServer.canvas_item_set_default_texture_filter(reference_image_ci,
+				RenderingServer.CANVAS_ITEM_TEXTURE_FILTER_NEAREST if factor >= 2 else RenderingServer.CANVAS_ITEM_TEXTURE_FILTER_LINEAR)
 
 func sync_camera() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
