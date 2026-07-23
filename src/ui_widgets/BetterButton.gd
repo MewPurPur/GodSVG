@@ -41,7 +41,7 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 	shortcut_label.text = "(%s)" % action_showcase_text
 	
 	var hbox := HBoxContainer.new()
-	hbox.add_theme_constant_override("separation", 10)
+	hbox.add_theme_constant_override("separation", 8)
 	hbox.add_child(main_label)
 	hbox.add_child(shortcut_label)
 	return hbox

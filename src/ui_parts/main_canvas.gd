@@ -114,6 +114,7 @@ func sync_reference_image() -> void:
 		RenderingServer.canvas_item_add_texture_rect(reference_image_ci, rect, active_tab.reference_image)
 		RenderingServer.canvas_item_set_visible(reference_image_ci, active_tab.show_reference)
 		RenderingServer.canvas_item_set_draw_behind_parent(reference_image_ci, not active_tab.overlay_reference)
+		sync_reference_image_filtering()
 	elif reference_image_ci.is_valid():
 		RenderingServer.canvas_item_clear(reference_image_ci)
 		RenderingServer.free_rid(reference_image_ci)
