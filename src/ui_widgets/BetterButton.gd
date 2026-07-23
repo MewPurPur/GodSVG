@@ -11,9 +11,10 @@ var timer: SceneTreeTimer
 @export var action := ""
 var shortcuts_bind: ShortcutsRegistration:
 	set(new_value):
-		shortcuts_bind = new_value
-		if is_instance_valid(shortcuts_bind):
-			shortcuts_bind.activated.connect(_on_shortcut_activated)
+		if shortcuts_bind != new_value:
+			shortcuts_bind = new_value
+			if is_instance_valid(shortcuts_bind):
+				shortcuts_bind.activated.connect(_on_shortcut_activated)
 
 
 func _ready() -> void:
@@ -28,16 +29,20 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 	var action_showcase_text := ShortcutUtils.get_action_showcase_text(action)
 	
 	var main_label := Label.new()
+	main_label.begin_bulk_theme_override()
 	main_label.add_theme_font_size_override("font_size", get_theme_font_size("font_size", "TooltipLabel"))
 	main_label.add_theme_color_override("font_color", get_theme_color("font_color", "TooltipLabel"))
+	main_label.end_bulk_theme_override()
 	main_label.text = TranslationUtils.get_action_description(action, true)
 	
 	if action_showcase_text.is_empty():
 		return main_label
 	
 	var shortcut_label := Label.new()
+	shortcut_label.begin_bulk_theme_override()
 	shortcut_label.add_theme_font_size_override("font_size", get_theme_font_size("font_size", "TooltipLabel"))
 	shortcut_label.add_theme_color_override("font_color", ThemeUtils.subtle_text_color)
+	shortcut_label.end_bulk_theme_override()
 	shortcut_label.text = "(%s)" % action_showcase_text
 	
 	var hbox := HBoxContainer.new()

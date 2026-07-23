@@ -155,7 +155,7 @@ msgstr "Без загуба на качество"
 
 #: src/config_classes/PreviewPresentationLossyWEBP.gd
 msgid "Lossy"
-msgstr "Без загуба на качество"
+msgstr "Със загуба на качество"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd

@@ -108,6 +108,8 @@ class PreciseColor:
 			r = v
 			g = v
 			b = v
+			if update_paint:
+				calibrate_paint()
 			return
 		
 		var h_adj := get_hue() * 6.0
@@ -136,6 +138,8 @@ class PreciseColor:
 			r = new_v
 			g = new_v
 			b = new_v
+			if update_paint:
+				calibrate_paint()
 			return
 		
 		var h_adj := get_hue() * 6.0
@@ -191,12 +195,12 @@ class PreciseColor:
 	func get_luminance_imprecise() -> float:
 		return Color(r, g, b).get_luminance()
 	
-	# Removing the saturation and hue clamping fixes paint conversion in edge cases.
-	# e.g., H = 0.0001, S = 0.0001, V = 0.5 --> Color(0.5, 0.4999, 0.4999) --> "807f7f".
+	# Fix paint conversion in edge cases, e.g., Color(0.5, 0.4999, 0.4999) --> "807f7f".
 	func calibrate_paint() -> void:
 		var color := duplicate()
-		color.set_saturation(snappedf(get_saturation(), 1/1600.0), false)
-		color.set_hue(snappedf(get_hue(), 1/5760.0), false)
+		color.r = snappedf(color.r, 1/510.0)
+		color.g = snappedf(color.g, 1/510.0)
+		color.b = snappedf(color.b, 1/510.0)
 		paint = color.to_color().to_html(a != 1.0)
 
 class ColorConfig:
@@ -380,7 +384,7 @@ static func get_primary_slider_offset(color: PreciseColor) -> float:
 			var n = Vector3(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0, z)
 			if z < 0 or absf(n.length() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
 				return 0.0
-			return Vector2(n.x, n.y).length()
+			return minf(Vector2(n.x, n.y).length(), 1.0)
 	return 0.0
 
 static func set_primary_slider_offset(color: PreciseColor, offset: float) -> void:

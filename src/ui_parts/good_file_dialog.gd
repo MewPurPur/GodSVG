@@ -62,8 +62,7 @@ class Actions:
 	var selection_callback: Callable
 	var right_click_callback: Callable
 	
-	func _init(on_activation := Callable(), on_selection := Callable(),
-	on_right_click := Callable()) -> void:
+	func _init(on_activation := Callable(), on_selection := Callable(), on_right_click := Callable()) -> void:
 		activation_callback = on_activation
 		selection_callback = on_selection
 		right_click_callback = on_right_click
