@@ -139,6 +139,25 @@ msgstr "3- või 6-kohaline hex"
 msgid "6-digit hex"
 msgstr "6-kohaline hex"
 
+#: src/config_classes/PreviewPresentationJPG.gd
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Quality"
+msgstr "Kvaliteet"
+
+#: src/config_classes/PreviewPresentationLossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Lossless"
+msgstr "Kadudeta"
+
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#, fuzzy
+msgid "Lossy"
+msgstr "Kadudeta"
+
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Dark"
@@ -453,6 +472,11 @@ msgid "Help"
 msgstr "Abi"
 
 #: src/ui_parts/previews.gd
+#, fuzzy
+msgid "Add preview"
+msgstr "Lisa uus eelvaade"
+
+#: src/ui_parts/previews.gd
 msgid "Add new preview"
 msgstr "Lisa uus eelvaade"
 
@@ -624,6 +648,13 @@ msgstr "Tagasi värvivalijasse"
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
 msgstr "Otsi värvi"
+
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_raster_lossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Background"
+msgstr "Taust"
 
 #: src/ui_widgets/export_scale_config.gd
 msgid "Scale"
@@ -877,16 +908,13 @@ msgstr "Eemalda ebavajalikud parameetrid"
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "Määrab vaikeoptimeerija sätted, mida kasutatakse kui käivitatakse \"{optimize}\" toiming."
 
-#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
-msgid "Lossless"
-msgstr "Kadudeta"
-
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"
 msgstr "Teisenda kujundeid"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Simplify path parameters"
+#, fuzzy
+msgid "Simplify paths"
 msgstr "Lihtsusta path parameetreid"
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1145,7 +1173,8 @@ msgid "Convert shapes into ones that can be defined identically, but have a shor
 msgstr "Teisenda kujundeid, kui neid saab identseks määratleda lühema koodiga."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
+#, fuzzy
+msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
 msgstr "Teisenda või lihtsusta path parameetreid, kui neid saab identseks määratleda lühema koodiga."
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1295,15 +1324,6 @@ msgstr "Kui te soovite eemaldada muudatused tehtud alates eelmise salvestamise h
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Kas soovite salvestada {file_name} kallal tehtud muudatused?"
-
-#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
-#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Background"
-msgstr "Taust"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "Kvaliteet"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"

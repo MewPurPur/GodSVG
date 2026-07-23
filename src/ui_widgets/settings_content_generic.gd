@@ -450,18 +450,18 @@ func setup_optimizer_content() -> void:
 			"Convert shapes into ones that can be defined identically, but have a shorter representation, if possible.") +\
 			"\nTemporary note: Currently, paths can't be simplified.")
 	
-	current_setup_setting = "simplify_path_parameters"
-	var simplify_path_params_checkbox := add_checkbox(Translator.translate("Simplify path parameters"), false)
-	var simplify_path_params_root_element := ElementRoot.new()
-	simplify_path_params_root_element.set_attribute("xmlns", "http://www.w3.org/2000/svg")
-	simplify_path_params_root_element.set_attribute("width", "16")
-	simplify_path_params_root_element.set_attribute("height", "16")
-	var simplify_path_params_rect := ElementPath.new()
-	simplify_path_params_rect.set_attribute("fill", "plum")
-	simplify_path_params_rect.set_attribute("d", "M 2 2 L 8 2 L 8 5 A 3 3 -90 0 0 12 10")
-	simplify_path_params_root_element.insert_child(0, simplify_path_params_rect)
-	simplify_path_params_checkbox.set_optimizer_info(simplify_path_params_root_element, Optimizer.new(), Translator.translate(
-			"Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."))
+	current_setup_setting = "simplify_paths"
+	var simplify_paths_checkbox := add_checkbox(Translator.translate("Simplify paths"), false)
+	var simplify_paths_root_element := ElementRoot.new()
+	simplify_paths_root_element.set_attribute("xmlns", "http://www.w3.org/2000/svg")
+	simplify_paths_root_element.set_attribute("width", "16")
+	simplify_paths_root_element.set_attribute("height", "16")
+	var simplify_paths_rect := ElementPath.new()
+	simplify_paths_rect.set_attribute("fill", "plum")
+	simplify_paths_rect.set_attribute("d", "M2 2 8 2 8 5A3 3-90 0 1 12 10C10 12 10 8 8 10 6 12 3 12 5 10Q3 10 3 8 3 6 2 6Z")
+	simplify_paths_root_element.insert_child(0, simplify_paths_rect)
+	simplify_paths_checkbox.set_optimizer_info(simplify_paths_root_element, Optimizer.new(), Translator.translate(
+			"Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."))
 
 func setup_theming_content() -> void:
 	var current_setup_resource := Configs.savedata

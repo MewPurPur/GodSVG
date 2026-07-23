@@ -139,6 +139,25 @@ msgstr "3 位或 6 位十六进制"
 msgid "6-digit hex"
 msgstr "6 位十六进制"
 
+#: src/config_classes/PreviewPresentationJPG.gd
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Quality"
+msgstr "质量"
+
+#: src/config_classes/PreviewPresentationLossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Lossless"
+msgstr "无损"
+
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#, fuzzy
+msgid "Lossy"
+msgstr "无损"
+
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Dark"
@@ -453,6 +472,11 @@ msgid "Help"
 msgstr "帮助"
 
 #: src/ui_parts/previews.gd
+#, fuzzy
+msgid "Add preview"
+msgstr "添加新预览"
+
+#: src/ui_parts/previews.gd
 msgid "Add new preview"
 msgstr "添加新预览"
 
@@ -624,6 +648,13 @@ msgstr "返回至取色器"
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
 msgstr "搜索颜色"
+
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_raster_lossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Background"
+msgstr "背景颜色"
 
 #: src/ui_widgets/export_scale_config.gd
 msgid "Scale"
@@ -877,16 +908,13 @@ msgstr "移除不必要的参数"
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "改变手动执行 “{optimize}” 时默认优化器的设置。"
 
-#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
-msgid "Lossless"
-msgstr "无损"
-
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"
 msgstr "转换形状"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Simplify path parameters"
+#, fuzzy
+msgid "Simplify paths"
 msgstr "简化 path 参数"
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1145,7 +1173,8 @@ msgid "Convert shapes into ones that can be defined identically, but have a shor
 msgstr "在可能的情况下，将形狀转换成表达方式相同但更简短的定义。"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
+#, fuzzy
+msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
 msgstr "在可能的情况下，将 path 参数转换或简化成表达方式相同但更简短的定义。"
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1295,15 +1324,6 @@ msgstr "如果你要放弃编辑且重置 SVG，请使用 {reset_svg}。"
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "你要保存 {file_name} 的更改吗?"
-
-#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
-#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Background"
-msgstr "背景颜色"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "质量"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
