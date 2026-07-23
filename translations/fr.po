@@ -142,6 +142,25 @@ msgstr "Héxadécimal de 3 ou 6 chiffres"
 msgid "6-digit hex"
 msgstr "Héxadécimal de 6 chiffres"
 
+#: src/config_classes/PreviewPresentationJPG.gd
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Quality"
+msgstr "Qualité"
+
+#: src/config_classes/PreviewPresentationLossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Lossless"
+msgstr "Sans perte"
+
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#, fuzzy
+msgid "Lossy"
+msgstr "Sans perte"
+
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Dark"
@@ -461,6 +480,11 @@ msgstr "Aide"
 
 #: src/ui_parts/previews.gd
 #, fuzzy
+msgid "Add preview"
+msgstr "Couleur de texte"
+
+#: src/ui_parts/previews.gd
+#, fuzzy
 msgid "Add new preview"
 msgstr "Couleur de texte"
 
@@ -640,6 +664,14 @@ msgstr "Pipette"
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
 msgstr "Rechercher la couleur"
+
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_raster_lossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+#, fuzzy
+msgid "Background"
+msgstr "Couleur d'arrière-plan"
 
 #: src/ui_widgets/export_scale_config.gd
 msgid "Scale"
@@ -900,18 +932,15 @@ msgstr "Retirer les paramètres inutiles"
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
 
-#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
-msgid "Lossless"
-msgstr "Sans perte"
-
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
 msgid "Convert shapes"
 msgstr "Convertir en"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Simplify path parameters"
-msgstr ""
+#, fuzzy
+msgid "Simplify paths"
+msgstr "Copier le chemin"
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -1182,7 +1211,7 @@ msgid "Convert shapes into ones that can be defined identically, but have a shor
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
+msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1339,16 +1368,6 @@ msgstr "Si vous voulez réinitialiser vos modifications au dernier enregistremen
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Voulez-vous enregistrer les modifications de {file_name} ?"
-
-#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
-#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
-#, fuzzy
-msgid "Background"
-msgstr "Couleur d'arrière-plan"
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
-msgstr "Qualité"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"

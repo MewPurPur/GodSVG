@@ -188,22 +188,23 @@ func replace_xnodes(xids: Array[PackedInt32Array], new_xnodes: Array[XNode]) -> 
 ## The return value is true if the SVG can be optimized, otherwise false.
 ## If apply_changes is false, you'll only get the return value.
 func optimize(optimizer: Optimizer, not_applied := false) -> bool:
+	# First clean up XML nodes.
+	var xids_to_remove: Array[PackedInt32Array] = []
 	for xnode in get_all_xnode_descendants():
 		if not xnode.is_element():
 			var basic_xnode: BasicXNode = xnode
-			var xids_to_remove: Array[PackedInt32Array] = []
 			if basic_xnode.get_type() == BasicXNode.NodeType.COMMENT and optimizer.remove_comments:
 				if not_applied:
 					return true
 				xids_to_remove.append(xnode.xid)
 			else:
 				continue  # The logic for removing these safely is more particular.
-			delete_xnodes(xids_to_remove)
-			continue
-		
-		var element: Element = xnode
-		var replacement_xids: Array[PackedInt32Array] = []
-		var replacement_xnodes: Array[XNode] = []
+	delete_xnodes(xids_to_remove)
+	
+	# XIDs are now finalized, so make conversions next.
+	var replacement_xids: Array[PackedInt32Array] = []
+	var replacement_xnodes: Array[XNode] = []
+	for element in get_all_element_descendants():
 		
 		if optimizer.convert_shapes:
 			match element.name:
@@ -234,89 +235,89 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 						return true
 					replacement_xids.append(element.xid)
 					replacement_xnodes.append(element.get_replacement("path"))
-		
-		if not replacement_xids.is_empty():
-			replace_xnodes(replacement_xids, replacement_xnodes)
-			continue
-		
-		if optimizer.simplify_path_parameters:
-			if element.name == "path":
-				var conversion_indices := PackedInt32Array()
-				var conversion_methods: Array[AttributePathdata.Conversion]
+	
+	if not replacement_xids.is_empty():
+		replace_xnodes(replacement_xids, replacement_xnodes)
+	
+	# Types are now finalized, so apply simplifications next.
+	for element in get_all_element_descendants():
+		if optimizer.simplify_paths and element.name == "path":
+			var conversion_indices := PackedInt32Array()
+			var conversion_methods: Array[AttributePathdata.Conversion] =[]
+			
+			var pathdata: AttributePathdata = element.get_attribute("d")
+			for cmd_idx in pathdata.get_command_count():
+				var command := pathdata.get_command(cmd_idx)
 				
-				var pathdata: AttributePathdata = element.get_attribute("d")
-				for cmd_idx in pathdata.get_command_count():
-					var command := pathdata.get_command(cmd_idx)
-					
-					if command is PathCommand.EllipticalArcCommand:
-						var converted := false
-						for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-						AttributePathdata.Conversion.ANY_TO_LINE]:
-							if pathdata.is_conversion_exact(cmd_idx, conversion_method):
-								if not_applied:
-									return true
-								conversion_indices.append(cmd_idx)
-								conversion_methods.append(conversion_method)
-								converted = true
-								break
-						
-						if not converted and command.rx == command.ry and command.rot != 0.0:
-							# Simplify arc rotation for circles.
+				if command is PathCommand.EllipticalArcCommand:
+					var converted := false
+					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributePathdata.Conversion.ANY_TO_LINE]:
+						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
 							if not_applied:
 								return true
-							pathdata.set_command_property(cmd_idx, "rot", 0.0)
-					elif command is PathCommand.LineCommand:
-						# Change LineTo to horizontal or vertical if possible.
-						for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE]:
-							if pathdata.is_conversion_exact(cmd_idx, conversion_method):
-								if not_applied:
-									return true
-								conversion_indices.append(cmd_idx)
-								conversion_methods.append(conversion_method)
-								break
-					elif command is PathCommand.QuadraticBezierCommand:
-						# Try flattening first, then try shorthand curve.
-						for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-						AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
-							if pathdata.is_conversion_exact(cmd_idx, conversion_method):
-								if not_applied:
-									return true
-								conversion_indices.append(cmd_idx)
-								conversion_methods.append(conversion_method)
-								break
-					elif command is PathCommand.ShorthandQuadraticBezierCommand:
-						# Try flattening.
-						for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-						AttributePathdata.Conversion.ANY_TO_LINE]:
-							if pathdata.is_conversion_exact(cmd_idx, conversion_method):
-								if not_applied:
-									return true
-								conversion_indices.append(cmd_idx)
-								conversion_methods.append(conversion_method)
-								break
-					elif command is PathCommand.CubicBezierCommand:
-						# Try flattening, then try shorthand curve, then try quadratic collapse.
-						for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-						AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE,
-						AttributePathdata.Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE, AttributePathdata.Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE]:
-							if pathdata.is_conversion_exact(cmd_idx, conversion_method):
-								if not_applied:
-									return true
-								conversion_indices.append(cmd_idx)
-								conversion_methods.append(conversion_method)
-								break
-					elif command is PathCommand.ShorthandCubicBezierCommand:
-						# Try flattening, then try shorthand quadratic collapse.
-						for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-						AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
-							if pathdata.is_conversion_exact(cmd_idx, conversion_method):
-								if not_applied:
-									return true
-								conversion_indices.append(cmd_idx)
-								conversion_methods.append(conversion_method)
-								break
-				
-				if not conversion_indices.is_empty():
-					pathdata.convert_commands_multi_method(conversion_indices, conversion_methods)
+							conversion_indices.append(cmd_idx)
+							conversion_methods.append(conversion_method)
+							converted = true
+							break
+					
+					if not converted and command.rx == command.ry and command.rot != 0.0:
+						# Simplify arc rotation for circles.
+						if not_applied:
+							return true
+						pathdata.set_command_property(cmd_idx, "rot", 0.0)
+				elif command is PathCommand.LineCommand:
+					# Change LineTo to horizontal or vertical if possible.
+					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE]:
+						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+							if not_applied:
+								return true
+							conversion_indices.append(cmd_idx)
+							conversion_methods.append(conversion_method)
+							break
+				elif command is PathCommand.QuadraticBezierCommand:
+					# Try flattening first, then try shorthand curve.
+					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
+						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+							if not_applied:
+								return true
+							conversion_indices.append(cmd_idx)
+							conversion_methods.append(conversion_method)
+							break
+				elif command is PathCommand.ShorthandQuadraticBezierCommand:
+					# Try flattening.
+					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributePathdata.Conversion.ANY_TO_LINE]:
+						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+							if not_applied:
+								return true
+							conversion_indices.append(cmd_idx)
+							conversion_methods.append(conversion_method)
+							break
+				elif command is PathCommand.CubicBezierCommand:
+					# Try flattening, then try shorthand curve, then try quadratic collapse.
+					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE,
+					AttributePathdata.Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE, AttributePathdata.Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE]:
+						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+							if not_applied:
+								return true
+							conversion_indices.append(cmd_idx)
+							conversion_methods.append(conversion_method)
+							break
+				elif command is PathCommand.ShorthandCubicBezierCommand:
+					# Try flattening, then try shorthand quadratic collapse.
+					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
+						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+							if not_applied:
+								return true
+							conversion_indices.append(cmd_idx)
+							conversion_methods.append(conversion_method)
+							break
+			
+			if not conversion_indices.is_empty():
+				pathdata.convert_commands_multi_method(conversion_indices, conversion_methods)
 	
 	return false

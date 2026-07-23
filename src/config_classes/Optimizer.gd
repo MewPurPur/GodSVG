@@ -5,7 +5,7 @@ func get_setting_default(setting: String) -> Variant:
 	match setting:
 		"remove_comments": return true
 		"convert_shapes": return true
-		"simplify_path_parameters": return true
+		"simplify_paths": return true
 	return null
 
 @export var remove_comments := true:
@@ -20,8 +20,8 @@ func get_setting_default(setting: String) -> Variant:
 			convert_shapes = new_value
 			emit_changed()
 
-@export var simplify_path_parameters := true:
+@export var simplify_paths := true:
 	set(new_value):
-		if simplify_path_parameters != new_value:
-			simplify_path_parameters = new_value
+		if simplify_paths != new_value:
+			simplify_paths = new_value
 			emit_changed()

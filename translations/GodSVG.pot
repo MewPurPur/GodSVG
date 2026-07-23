@@ -138,6 +138,24 @@ msgstr ""
 msgid "6-digit hex"
 msgstr ""
 
+#: src/config_classes/PreviewPresentationJPG.gd
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Quality"
+msgstr ""
+
+#: src/config_classes/PreviewPresentationLossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Lossless"
+msgstr ""
+
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+msgid "Lossy"
+msgstr ""
+
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Dark"
@@ -452,6 +470,10 @@ msgid "Help"
 msgstr ""
 
 #: src/ui_parts/previews.gd
+msgid "Add preview"
+msgstr ""
+
+#: src/ui_parts/previews.gd
 msgid "Add new preview"
 msgstr ""
 
@@ -622,6 +644,13 @@ msgstr ""
 
 #: src/ui_widgets/color_utilities_area.gd
 msgid "Search color"
+msgstr ""
+
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_raster_lossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Background"
 msgstr ""
 
 #: src/ui_widgets/export_scale_config.gd
@@ -876,16 +905,12 @@ msgstr ""
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
 
-#: src/ui_widgets/settings_content_generic.gd src/utils/ImageExportDataWEBP.gd
-msgid "Lossless"
-msgstr ""
-
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Simplify path parameters"
+msgid "Simplify paths"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1144,7 +1169,7 @@ msgid "Convert shapes into ones that can be defined identically, but have a shor
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
+msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1293,15 +1318,6 @@ msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
-msgstr ""
-
-#: src/utils/ImageExportDataDDS.gd src/utils/ImageExportDataJPEG.gd
-#: src/utils/ImageExportDataPNG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Background"
-msgstr ""
-
-#: src/utils/ImageExportDataJPEG.gd src/utils/ImageExportDataWEBP.gd
-msgid "Quality"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
