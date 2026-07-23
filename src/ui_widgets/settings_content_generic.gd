@@ -148,7 +148,7 @@ func setup_formatting_content() -> void:
 	xml_remove_comments_circle_element.set_attribute("cx", 6)
 	xml_remove_comments_circle_element.set_attribute("cy", 8)
 	xml_remove_comments_circle_element.set_attribute("r", 4)
-	xml_remove_comments_circle_element.set_attribute("fill", "gold")
+	xml_remove_comments_circle_element.set_attribute("fill", "plum")
 	xml_remove_comments_root_element.insert_child(1, xml_remove_comments_circle_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_remove_comments_root_element, true))
 	
@@ -162,7 +162,7 @@ func setup_formatting_content() -> void:
 	xml_add_trailing_newline_circle_element.set_attribute("cx", 6)
 	xml_add_trailing_newline_circle_element.set_attribute("cy", 8)
 	xml_add_trailing_newline_circle_element.set_attribute("r", 4)
-	xml_add_trailing_newline_circle_element.set_attribute("fill", "gold")
+	xml_add_trailing_newline_circle_element.set_attribute("fill", "plum")
 	xml_add_trailing_newline_root_element.insert_child(0, xml_add_trailing_newline_circle_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_add_trailing_newline_root_element))
 	
@@ -209,10 +209,10 @@ func setup_formatting_content() -> void:
 	xml_formatting_style_linear_gradient_element.set_attribute("x2", 8)
 	xml_formatting_style_linear_gradient_element.set_attribute("y2", 2)
 	var xml_formatting_style_stop_1 := ElementStop.new()
-	xml_formatting_style_stop_1.set_attribute("stop-color", "silver")
+	xml_formatting_style_stop_1.set_attribute("stop-color", "olive")
 	xml_formatting_style_stop_1.set_attribute("offset", "0")
 	var xml_formatting_style_stop_2 := ElementStop.new()
-	xml_formatting_style_stop_2.set_attribute("stop-color", "gold")
+	xml_formatting_style_stop_2.set_attribute("stop-color", "plum")
 	xml_formatting_style_stop_2.set_attribute("offset", "1")
 	xml_formatting_style_linear_gradient_element.insert_child(0, xml_formatting_style_stop_1)
 	xml_formatting_style_linear_gradient_element.insert_child(0, xml_formatting_style_stop_2)
@@ -236,18 +236,17 @@ func setup_formatting_content() -> void:
 	add_numeric_dropdown(Translator.translate("Number of indentation spaces"),
 			PackedFloat64Array([2, 3, 4, 6, 8]), true, Formatter.INDENTS_MIN, Formatter.INDENTS_MAX, NAN, {},
 			not (current_setup_resource.xml_formatting_style != Formatter.FormattingStyle.COMPACT and current_setup_resource.xml_indentation_use_spaces))
-	if current_setup_resource.xml_formatting_style == Formatter.FormattingStyle.COMPACT and current_setup_resource.xml_indentation_use_spaces:
+	if current_setup_resource.xml_formatting_style != Formatter.FormattingStyle.COMPACT and current_setup_resource.xml_indentation_use_spaces:
 		var xml_indentation_spaces_root_element := ElementRoot.new()
 		var xml_indentation_spaces_circle_element := ElementCircle.new()
 		xml_indentation_spaces_circle_element.set_attribute("cx", 6)
 		xml_indentation_spaces_circle_element.set_attribute("cy", 8)
 		xml_indentation_spaces_circle_element.set_attribute("r", 4)
-		xml_indentation_spaces_circle_element.set_attribute("fill", "gold")
+		xml_indentation_spaces_circle_element.set_attribute("fill", "plum")
 		xml_indentation_spaces_root_element.insert_child(0, xml_indentation_spaces_circle_element)
 		add_preview(SettingFormatterPreview.new(current_setup_resource, xml_indentation_spaces_root_element, false))
 	else:
-		add_preview(SettingTextPreview.new("",
-				SettingTextPreview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION))
+		add_preview(SettingTextPreview.new("", SettingTextPreview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION))
 	
 	add_section(Translator.translate("Numbers"))
 	current_setup_setting = "number_remove_leading_zero"
@@ -257,7 +256,7 @@ func setup_formatting_content() -> void:
 	number_remove_leading_zero_circle_element.set_attribute("cx", 0.36)
 	number_remove_leading_zero_circle_element.set_attribute("cy", -0.8)
 	number_remove_leading_zero_circle_element.set_attribute("r", 1.6)
-	number_remove_leading_zero_circle_element.set_attribute("fill", "gold")
+	number_remove_leading_zero_circle_element.set_attribute("fill", "plum")
 	number_remove_leading_zero_root_element.insert_child(0, number_remove_leading_zero_circle_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, number_remove_leading_zero_root_element, true))
 	
@@ -268,7 +267,7 @@ func setup_formatting_content() -> void:
 	number_use_exponent_if_shorter_circle_element.set_attribute("cx", 800)
 	number_use_exponent_if_shorter_circle_element.set_attribute("cy", -0.005)
 	number_use_exponent_if_shorter_circle_element.set_attribute("r", 2000)
-	number_use_exponent_if_shorter_circle_element.set_attribute("fill", "gold")
+	number_use_exponent_if_shorter_circle_element.set_attribute("fill", "plum")
 	number_use_exponent_if_shorter_root_element.insert_child(0, number_use_exponent_if_shorter_circle_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, number_use_exponent_if_shorter_root_element, true))
 	
@@ -282,7 +281,7 @@ func setup_formatting_content() -> void:
 	color_use_named_colors_circle_1.set_attribute("cx", 6)
 	color_use_named_colors_circle_1.set_attribute("cy", 8)
 	color_use_named_colors_circle_1.set_attribute("r", 4)
-	color_use_named_colors_circle_1.set_attribute("fill", "gold")
+	color_use_named_colors_circle_1.set_attribute("fill", "plum")
 	color_use_named_colors_circle_1.set_attribute("stroke", "crimson")
 	color_use_named_colors_root_element.insert_child(0, color_use_named_colors_circle_1)
 	var color_use_named_colors_circle_2 := ElementCircle.new()
@@ -328,7 +327,7 @@ func setup_formatting_content() -> void:
 	var pathdata_compress_numbers_root_element := ElementRoot.new()
 	var pathdata_compress_numbers_path_element := ElementPath.new()
 	pathdata_compress_numbers_path_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
-	pathdata_compress_numbers_path_element.set_attribute("fill", "gold")
+	pathdata_compress_numbers_path_element.set_attribute("fill", "plum")
 	pathdata_compress_numbers_root_element.insert_child(0, pathdata_compress_numbers_path_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_compress_numbers_root_element, true))
 	
@@ -337,7 +336,7 @@ func setup_formatting_content() -> void:
 	var pathdata_minimize_spacing_root_element := ElementRoot.new()
 	var pathdata_minimize_spacing_path_element := ElementPath.new()
 	pathdata_minimize_spacing_path_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
-	pathdata_minimize_spacing_path_element.set_attribute("fill", "gold")
+	pathdata_minimize_spacing_path_element.set_attribute("fill", "plum")
 	pathdata_minimize_spacing_root_element.insert_child(0, pathdata_minimize_spacing_path_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_minimize_spacing_root_element, true))
 	
@@ -346,7 +345,7 @@ func setup_formatting_content() -> void:
 	var pathdata_remove_spacing_after_flags_root_element := ElementRoot.new()
 	var pathdata_remove_spacing_after_flags_path_element := ElementPath.new()
 	pathdata_remove_spacing_after_flags_path_element.set_attribute("d", "m 1 3.5 a 2 3 0 1 0 4 2 z")
-	pathdata_remove_spacing_after_flags_path_element.set_attribute("fill", "gold")
+	pathdata_remove_spacing_after_flags_path_element.set_attribute("fill", "plum")
 	pathdata_remove_spacing_after_flags_root_element.insert_child(0, pathdata_remove_spacing_after_flags_path_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_remove_spacing_after_flags_root_element, true))
 	
@@ -355,7 +354,7 @@ func setup_formatting_content() -> void:
 	var pathdata_remove_consecutive_commands_root_element := ElementRoot.new()
 	var pathdata_remove_consecutive_commands_path_element := ElementPath.new()
 	pathdata_remove_consecutive_commands_path_element.set_attribute("d", "m 4 6.5 l -1 2 l 2.5 1 q 3.5 -1 2 -2 q -1.5 0.5 -1 -2 z")
-	pathdata_remove_consecutive_commands_path_element.set_attribute("fill", "gold")
+	pathdata_remove_consecutive_commands_path_element.set_attribute("fill", "plum")
 	pathdata_remove_consecutive_commands_root_element.insert_child(0, pathdata_remove_consecutive_commands_path_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_remove_consecutive_commands_root_element, true))
 	
@@ -365,7 +364,7 @@ func setup_formatting_content() -> void:
 	var transform_list_compress_numbers_root_element := ElementRoot.new()
 	var transform_list_compress_numbers_polygon_element := ElementPolygon.new()
 	transform_list_compress_numbers_polygon_element.set_attribute("points", "2 4 5 8 9 1")
-	transform_list_compress_numbers_polygon_element.set_attribute("fill", "gold")
+	transform_list_compress_numbers_polygon_element.set_attribute("fill", "plum")
 	transform_list_compress_numbers_polygon_element.set_attribute("transform", "rotate(7.5 -0.5 0.8)")
 	transform_list_compress_numbers_root_element.insert_child(0, transform_list_compress_numbers_polygon_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, transform_list_compress_numbers_root_element, true))
@@ -375,7 +374,7 @@ func setup_formatting_content() -> void:
 	var transform_list_minimize_spacing_root_element := ElementRoot.new()
 	var transform_list_minimize_spacing_polygon_element := ElementPolygon.new()
 	transform_list_minimize_spacing_polygon_element.set_attribute("points", "2 4 5 8 9 1")
-	transform_list_minimize_spacing_polygon_element.set_attribute("fill", "gold")
+	transform_list_minimize_spacing_polygon_element.set_attribute("fill", "plum")
 	transform_list_minimize_spacing_polygon_element.set_attribute("transform", "rotate(7.5 -0.5 0.8)")
 	transform_list_minimize_spacing_root_element.insert_child(0, transform_list_minimize_spacing_polygon_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, transform_list_minimize_spacing_root_element, true))
@@ -385,7 +384,7 @@ func setup_formatting_content() -> void:
 	var transform_list_remove_unnecessary_params_root_element := ElementRoot.new()
 	var transform_list_remove_unnecessary_params_polygon_element := ElementPolygon.new()
 	transform_list_remove_unnecessary_params_polygon_element.set_attribute("points", "2 4 5 8 9 1")
-	transform_list_remove_unnecessary_params_polygon_element.set_attribute("fill", "gold")
+	transform_list_remove_unnecessary_params_polygon_element.set_attribute("fill", "plum")
 	transform_list_remove_unnecessary_params_polygon_element.set_attribute("transform", "scale(2 2) translate(4 0) rotate(30 0 0)")
 	transform_list_remove_unnecessary_params_root_element.insert_child(0, transform_list_remove_unnecessary_params_polygon_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, transform_list_remove_unnecessary_params_root_element, true))
@@ -398,6 +397,8 @@ func setup_optimizer_content() -> void:
 	add_clarification_text(short_text + additional_text, short_text)
 	
 	add_section(Translator.translate("Lossless"))
+	
+	var default_optimizer := Optimizer.new()
 	
 	current_setup_setting = "remove_comments"
 	var remove_comments_checkbox := add_checkbox(Translator.translate("Remove comments"), false)
@@ -413,7 +414,7 @@ func setup_optimizer_content() -> void:
 	remove_comments_circle.set_attribute("r", "6")
 	remove_comments_root_element.insert_child(0, BasicXNode.new(BasicXNode.NodeType.COMMENT, " A comment "))
 	remove_comments_root_element.insert_child(1, remove_comments_circle)
-	remove_comments_checkbox.set_optimizer_info(remove_comments_root_element, Optimizer.new(), Translator.translate("Remove comments"))
+	remove_comments_checkbox.set_optimizer_info(remove_comments_root_element, default_optimizer, Translator.translate("Remove comments"))
 	
 	current_setup_setting = "convert_shapes"
 	var convert_shapes_checkbox := add_checkbox(Translator.translate("Convert shapes"), false)
@@ -422,31 +423,31 @@ func setup_optimizer_content() -> void:
 	convert_shapes_root_element.set_attribute("width", "16")
 	convert_shapes_root_element.set_attribute("height", "16")
 	var convert_shapes_rect := ElementRect.new()
-	convert_shapes_rect.set_attribute("x", "4")
-	convert_shapes_rect.set_attribute("y", "2")
-	convert_shapes_rect.set_attribute("width", "8")
-	convert_shapes_rect.set_attribute("height", "8")
+	convert_shapes_rect.set_attribute("x", "6")
+	convert_shapes_rect.set_attribute("y", "8")
+	convert_shapes_rect.set_attribute("width", "3")
+	convert_shapes_rect.set_attribute("height", "6")
 	convert_shapes_rect.set_attribute("fill", "plum")
 	convert_shapes_root_element.insert_child(0, convert_shapes_rect)
 	var convert_shapes_ellipse := ElementEllipse.new()
-	convert_shapes_ellipse.set_attribute("cx", "7")
-	convert_shapes_ellipse.set_attribute("cy", "5")
-	convert_shapes_ellipse.set_attribute("rx", "4")
-	convert_shapes_ellipse.set_attribute("ry", "4")
+	convert_shapes_ellipse.set_attribute("cx", "11")
+	convert_shapes_ellipse.set_attribute("cy", "4")
+	convert_shapes_ellipse.set_attribute("rx", "3")
+	convert_shapes_ellipse.set_attribute("ry", "3")
 	convert_shapes_ellipse.set_attribute("fill", "olive")
 	convert_shapes_root_element.insert_child(1, convert_shapes_ellipse)
 	var convert_shapes_line := ElementLine.new()
-	convert_shapes_line.set_attribute("x1", "12")
+	convert_shapes_line.set_attribute("x1", "11")
 	convert_shapes_line.set_attribute("y1", "8")
-	convert_shapes_line.set_attribute("x2", "9")
-	convert_shapes_line.set_attribute("y2", "14")
-	convert_shapes_line.set_attribute("stroke", "gold")
+	convert_shapes_line.set_attribute("x2", "14")
+	convert_shapes_line.set_attribute("y2", "13")
+	convert_shapes_line.set_attribute("stroke", "orange")
 	convert_shapes_root_element.insert_child(2, convert_shapes_line)
 	var convert_shapes_polygon := ElementPolygon.new()
-	convert_shapes_polygon.set_attribute("points", "2 2 9 14 5 12 5 2")
-	convert_shapes_polygon.set_attribute("stroke", "silver")
+	convert_shapes_polygon.set_attribute("points", "3 2 2 5 4 9 6 2")
+	convert_shapes_polygon.set_attribute("stroke", "tomato")
 	convert_shapes_root_element.insert_child(3, convert_shapes_polygon)
-	convert_shapes_checkbox.set_optimizer_info(convert_shapes_root_element, Optimizer.new(), Translator.translate(
+	convert_shapes_checkbox.set_optimizer_info(convert_shapes_root_element, default_optimizer, Translator.translate(
 			"Convert shapes into ones that can be defined identically, but have a shorter representation, if possible.") +\
 			"\nTemporary note: Currently, paths can't be simplified.")
 	
@@ -460,7 +461,7 @@ func setup_optimizer_content() -> void:
 	simplify_paths_rect.set_attribute("fill", "plum")
 	simplify_paths_rect.set_attribute("d", "M2 2 8 2 8 5A3 3-90 0 1 12 10C10 12 10 8 8 10 6 12 3 12 5 10Q3 10 3 8 3 6 2 6Z")
 	simplify_paths_root_element.insert_child(0, simplify_paths_rect)
-	simplify_paths_checkbox.set_optimizer_info(simplify_paths_root_element, Optimizer.new(), Translator.translate(
+	simplify_paths_checkbox.set_optimizer_info(simplify_paths_root_element, default_optimizer, Translator.translate(
 			"Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."))
 
 func setup_theming_content() -> void:
@@ -484,7 +485,7 @@ func setup_theming_content() -> void:
 	add_preview(SettingTextPreview.new(Translator.translate(
 			"Determines the accent color used for highlighted elements in GodSVG's interface.")))
 	
-	var basic_svg_text := """<circle cx="6" cy="8" r="4" fill="gold" />"""
+	var basic_svg_text := """<circle cx="6" cy="8" r="4" fill="plum" />"""
 	var basic_svg_text_with_syntax_error := """<circle cx="6" cy="8" ==syntax error"""
 	var fancy_svg_text := """<!-- Comment --> <text> &lt; Basic text &amp; <![CDATA[ < > & " ' ]]> </text>"""
 	

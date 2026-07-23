@@ -32,8 +32,8 @@ func get_replacement(new_element: String) -> Element:
 			element = ElementPath.new()
 			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "d"])
 			var commands: Array[PathCommand] = []
-			commands.append(PathCommand.MoveCommand.new(get_attribute_num("x1"), get_attribute_num("y1"), true))
-			commands.append(PathCommand.LineCommand.new(get_attribute_num("x2"), get_attribute_num("y2"), true))
+			commands.append(PathCommand.MoveCommand.new(get_attribute_num("x1"), get_attribute_num("y1")))
+			commands.append(PathCommand.LineCommand.new(get_attribute_num("x2"), get_attribute_num("y2")))
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
 	return element
