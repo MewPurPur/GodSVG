@@ -102,12 +102,14 @@ func setup(new_dir: String, new_file: String, new_mode: FileMode, new_extensions
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("find", func() -> void: search_button.button_pressed = not search_button.button_pressed)
-	shortcuts.add_shortcut("ui_accept", func() -> void:
+	shortcuts.add_shortcut("ui_accept",
+		func() -> void:
 			var selected_item_indices := file_list.get_selected_items()
 			if not selected_item_indices.is_empty():
 				call_activation_callback(file_list.get_item_metadata(selected_item_indices[0]))
 	)
-	shortcuts.add_shortcut("open_in_folder", func() -> void:
+	shortcuts.add_shortcut("open_in_folder",
+		func() -> void:
 			var selected_paths := get_selected_file_paths()
 			if selected_paths.is_empty():
 				OS.shell_open(current_dir)
@@ -257,6 +259,7 @@ func open_dir(dir: String, add_to_history := true, only_filtering_update := fals
 	for directory in directories:
 		if not search_text.is_empty() and not search_text.is_subsequence_ofn(directory):
 			continue
+		
 		var item_idx := file_list.add_item(directory, folder_icon)
 		file_list.set_item_icon_modulate(item_idx, ThemeUtils.folder_color)
 		var dir_path := current_dir.path_join(directory)

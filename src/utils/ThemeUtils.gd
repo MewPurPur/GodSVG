@@ -1380,14 +1380,14 @@ static func _setup_tooltip(theme: Theme) -> void:
 	stylebox.set_border_width_all(2)
 	stylebox.set_corner_radius_all(2)
 	stylebox.content_margin_left = 6.0
-	stylebox.content_margin_top = 1.0
+	stylebox.content_margin_top = 2.0
 	stylebox.content_margin_right = 6.0
 	stylebox.content_margin_bottom = 3.0
 	theme.set_stylebox("panel", "TooltipPanel", stylebox)
 	
 	theme.add_type("TooltipLabel")
 	theme.set_color("font_color", "TooltipLabel", text_color)
-	theme.set_font_size("font_size", "TooltipLabel", 14)
+	theme.set_constant("line_spacing", "TooltipLabel", 0)
 	theme.set_font("font", "TooltipLabel", main_font)
 
 static func _setup_splitcontainer(theme: Theme) -> void:

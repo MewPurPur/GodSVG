@@ -211,28 +211,28 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 					if element.can_replace("circle"):
 						if not_applied:
 							return true
-						replacement_xids.append([element.xid])
+						replacement_xids.append(element.xid)
 						replacement_xnodes.append(element.get_replacement("circle"))
 				"rect":
 					if element.can_replace("circle"):
 						if not_applied:
 							return true
-						replacement_xids.append([element.xid])
+						replacement_xids.append(element.xid)
 						replacement_xnodes.append(element.get_replacement("circle"))
 					elif element.can_replace("ellipse"):
 						if not_applied:
 							return true
-						replacement_xids.append([element.xid])
+						replacement_xids.append(element.xid)
 						replacement_xnodes.append(element.get_replacement("ellipse"))
 					elif element.get_rx() == 0:
 						if not_applied:
 							return true
-						replacement_xids.append([element.xid])
+						replacement_xids.append(element.xid)
 						replacement_xnodes.append(element.get_replacement("path"))
 				"polygon", "line", "polyline":
 					if not_applied:
 						return true
-					replacement_xids.append([element.xid])
+					replacement_xids.append(element.xid)
 					replacement_xnodes.append(element.get_replacement("path"))
 		
 		if not replacement_xids.is_empty():
