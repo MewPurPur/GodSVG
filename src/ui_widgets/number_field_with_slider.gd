@@ -122,11 +122,13 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		slider_hovered = true
+		accept_event()
 	if not slider_dragged:
 		if Utils.is_event_drag_start(event):
 			slider_dragged = true
 			initial_slider_value = element.get_attribute_value(attribute_name)
 			set_num(get_slider_value_at_y(event.position.y))
+		accept_event()
 	else:
 		if Utils.is_event_drag(event):
 			set_num(get_slider_value_at_y(event.position.y))
@@ -135,6 +137,7 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 			var final_slider_value := get_slider_value_at_y(event.position.y)
 			if initial_slider_value != element.get_attribute(attribute_name).num_to_text(final_slider_value):
 				set_num(final_slider_value, true)
+		accept_event()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if slider_dragged and Utils.is_event_drag_cancel(event):
