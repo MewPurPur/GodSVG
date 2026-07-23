@@ -444,8 +444,8 @@ func setup_optimizer_content() -> void:
 	convert_shapes_line.set_attribute("stroke", "orange")
 	convert_shapes_root_element.insert_child(2, convert_shapes_line)
 	var convert_shapes_polygon := ElementPolygon.new()
-	convert_shapes_polygon.set_attribute("points", "3 2 2 5 4 9 6 2")
-	convert_shapes_polygon.set_attribute("stroke", "tomato")
+	convert_shapes_polygon.set_attribute("points", "3 2 1 5 4 9 6 2")
+	convert_shapes_polygon.set_attribute("fill", "tomato")
 	convert_shapes_root_element.insert_child(3, convert_shapes_polygon)
 	convert_shapes_checkbox.set_optimizer_info(convert_shapes_root_element, default_optimizer, Translator.translate(
 			"Convert shapes into ones that can be defined identically, but have a shorter representation, if possible.") +\
