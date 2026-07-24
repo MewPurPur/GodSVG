@@ -71,11 +71,12 @@ class Actions:
 # Queueing is necessary for this one because in Godot, "Enter" is hard-coded to activate the selected items.
 var _activation_callback_pending := false
 func call_activation_callback(actions: Actions) -> void:
-	var actual_activation_callback := func() -> void:
-		if not _activation_callback_pending:
-			return
-		_activation_callback_pending = false
-		actions.activation_callback.call()
+	var actual_activation_callback :=\
+		func() -> void:
+			if not _activation_callback_pending:
+				return
+			_activation_callback_pending = false
+			actions.activation_callback.call()
 	
 	if is_instance_valid(actions) and actions.activation_callback.is_valid():
 		actual_activation_callback.call_deferred()

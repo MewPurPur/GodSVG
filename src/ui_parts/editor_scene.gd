@@ -171,7 +171,8 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 			var part := layout_parts[i]
 			var btn := Button.new()
 			# Make the text update when the language changes.
-			var set_btn_text_func := func() -> void:
+			var set_btn_text_func :=\
+				func() -> void:
 					btn.text = TranslationUtils.get_layout_part_name(part)
 			Configs.language_changed.connect(set_btn_text_func)
 			btn.tree_exited.connect(Configs.language_changed.disconnect.bind(set_btn_text_func))

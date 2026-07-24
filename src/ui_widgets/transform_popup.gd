@@ -112,7 +112,7 @@ func update_value(new_value: float, idx: int, property: String) -> void:
 	undo_redo.create_action()
 	undo_redo.add_do_method(attribute_ref.set_transform_property.bind(idx, property, new_value))
 	undo_redo.add_do_method(rebuild)
-	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(attribute_ref.get_transform_list()))
 	undo_redo.add_undo_method(rebuild)
 	undo_redo.commit_action()
 
@@ -120,7 +120,7 @@ func insert_transform(idx: int, transform_type: String) -> void:
 	undo_redo.create_action()
 	undo_redo.add_do_method(attribute_ref.insert_transform.bind(idx, transform_type))
 	undo_redo.add_do_method(rebuild)
-	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(attribute_ref.get_transform_list()))
 	undo_redo.add_undo_method(rebuild)
 	undo_redo.commit_action()
 
@@ -128,7 +128,7 @@ func delete_transform(idx: int) -> void:
 	undo_redo.create_action()
 	undo_redo.add_do_method(attribute_ref.delete_transform.bind(idx))
 	undo_redo.add_do_method(rebuild)
-	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(attribute_ref.get_transform_list()))
 	undo_redo.add_undo_method(rebuild)
 	undo_redo.commit_action()
 
@@ -140,7 +140,7 @@ func _on_apply_matrix_pressed() -> void:
 			final_transform[2], final_transform[3], final_transform[4],
 			final_transform[5])] as Array[Transform]))
 	undo_redo.add_do_method(rebuild)
-	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(attribute_ref.get_transform_list()))
 	undo_redo.add_undo_method(rebuild)
 	undo_redo.commit_action()
 
@@ -173,22 +173,3 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_arr.append(btn)
 	HandlerGUI.popup_under_rect_center(ContextPopup.create_with_title(btn_arr, Translator.translate("New transform")), control.get_global_rect(), get_viewport())
-
-
-# So I have to rebuild this in its entirety to keep the references safe or something...
-func get_transform_list() -> Array[Transform]:
-	var t_list: Array[Transform] = []
-	for t in attribute_ref.get_transform_list():
-		if t is Transform.TransformMatrix:
-			t_list.append(Transform.TransformMatrix.new(t.x1, t.x2, t.y1, t.y2, t.o1, t.o2))
-		elif t is Transform.TransformTranslate:
-			t_list.append(Transform.TransformTranslate.new(t.x, t.y))
-		elif t is Transform.TransformRotate:
-			t_list.append(Transform.TransformRotate.new(t.deg, t.x, t.y))
-		elif t is Transform.TransformScale:
-			t_list.append(Transform.TransformScale.new(t.x, t.y))
-		elif t is Transform.TransformSkewX:
-			t_list.append(Transform.TransformSkewX.new(t.x))
-		elif t is Transform.TransformSkewY:
-			t_list.append(Transform.TransformSkewY.new(t.y))
-	return t_list

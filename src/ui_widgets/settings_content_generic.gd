@@ -85,7 +85,8 @@ func _ready() -> void:
 			btn.button_group = button_group
 			btn.pressed.connect(_set_current_setup_resource_index.bind(idx))
 			btn.pressed.connect(setup_content)
-			var update_category_button_text := func() -> void:
+			var update_category_button_text :=\
+				func() -> void:
 					btn.text = Translator.translate("Editor formatter") if idx == 0 else Translator.translate("Export formatter")
 			Configs.language_changed.connect(update_category_button_text)
 			btn.tree_exited.connect(Configs.language_changed.disconnect.bind(update_category_button_text))
