@@ -154,9 +154,8 @@ msgid "Lossless"
 msgstr "无损"
 
 #: src/config_classes/PreviewPresentationLossyWEBP.gd
-#, fuzzy
 msgid "Lossy"
-msgstr "无损"
+msgstr "有损"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
@@ -472,9 +471,8 @@ msgid "Help"
 msgstr "帮助"
 
 #: src/ui_parts/previews.gd
-#, fuzzy
 msgid "Add preview"
-msgstr "添加新预览"
+msgstr "添加预览"
 
 #: src/ui_parts/previews.gd
 msgid "Add new preview"
@@ -913,9 +911,8 @@ msgid "Convert shapes"
 msgstr "转换形状"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Simplify paths"
-msgstr "简化 path 参数"
+msgstr "简化路径"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Theme preset"
@@ -1173,9 +1170,8 @@ msgid "Convert shapes into ones that can be defined identically, but have a shor
 msgstr "在可能的情况下，将形狀转换成表达方式相同但更简短的定义。"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
-msgstr "在可能的情况下，将 path 参数转换或简化成表达方式相同但更简短的定义。"
+msgstr "在可能的情况下，将 path 指令转换或简化成表达方式相同但更简短的定义。"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
