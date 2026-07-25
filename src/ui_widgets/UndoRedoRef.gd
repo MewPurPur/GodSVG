@@ -32,8 +32,8 @@ func add_do_reference(object: Object) -> void:
 func add_undo_reference(object: Object) -> void:
 	_undo_redo.add_undo_reference(object)
 
-func commit_action() -> void:
-	_undo_redo.commit_action()
+func commit_action(execute := true) -> void:
+	_undo_redo.commit_action(execute)
 
 func undo() -> bool:
 	return _undo_redo.undo()

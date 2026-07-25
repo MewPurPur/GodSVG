@@ -165,11 +165,12 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 	var cmd := _commands[index]
 	if cmd is PathCommand.MoveCommand:
 		return conversion_method == Conversion.ANY_TO_MOVEMENT
-	elif cmd is PathCommand.LineCommand or (cmd is PathCommand.EllipticalArcCommand and (cmd.rx <= 0.0 or cmd.ry <= 0.0)):
+	elif cmd is PathCommand.LineCommand or (cmd is PathCommand.EllipticalArcCommand and (cmd.rx == 0.0 or cmd.ry == 0.0)):
 		match conversion_method:
 			Conversion.ANY_TO_LINE: return true
 			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == cmd.start_y
 			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == cmd.start_x
+			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_x == cmd.x and cmd.start_y == cmd.y
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: return ignore_subsequent_commands or not _has_following_shorthand_quadratic(index)
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
 				return (ignore_subsequent_commands or not _has_following_shorthand_quadratic(index)) and\
@@ -183,6 +184,7 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 		match conversion_method:
 			Conversion.ANY_TO_LINE, Conversion.ANY_TO_HORIZONTAL_LINE: return true
 			Conversion.ANY_TO_VERTICAL_LINE: return cmd.x == cmd.start_x
+			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_x == cmd.x
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: return ignore_subsequent_commands or not _has_following_shorthand_quadratic(index)
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
 				return (ignore_subsequent_commands or not _has_following_shorthand_quadratic(index)) and\
@@ -196,6 +198,7 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 		match conversion_method:
 			Conversion.ANY_TO_LINE, Conversion.ANY_TO_VERTICAL_LINE: return true
 			Conversion.ANY_TO_HORIZONTAL_LINE: return cmd.y == cmd.start_y
+			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_y == cmd.y
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: return ignore_subsequent_commands or not _has_following_shorthand_quadratic(index)
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
 				return (ignore_subsequent_commands or not _has_following_shorthand_quadratic(index)) and\
@@ -208,7 +211,8 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 	elif cmd is PathCommand.CloseCommand:
 		return conversion_method == Conversion.ANY_TO_CLOSURE
 	elif cmd is PathCommand.EllipticalArcCommand:
-		return conversion_method == Conversion.ANY_TO_ELLIPTICAL_ARC
+		return conversion_method == Conversion.ANY_TO_ELLIPTICAL_ARC or (not conversion_method in [Conversion.ANY_TO_MOVEMENT, Conversion.ANY_TO_CLOSURE] and\
+		(cmd.x == cmd.start_x and cmd.y == cmd.start_y) or cmd.rx == 0.0 or cmd.ry == 0.0)
 	elif cmd is PathCommand.QuadraticBezierCommand:
 		match conversion_method:
 			Conversion.ANY_TO_LINE:
@@ -220,6 +224,7 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 			Conversion.ANY_TO_VERTICAL_LINE:
 				return cmd.x == cmd.start_x and is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
+			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == cmd.x1 and cmd.start_y == cmd.y1
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: return true
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
 				var implied := get_implied_T_control(index)
@@ -244,6 +249,9 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 			Conversion.ANY_TO_VERTICAL_LINE:
 				return cmd.x == cmd.start_x and is_implied_T_control_on_segment(index, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
+			Conversion.ANY_TO_ELLIPTICAL_ARC:
+				var implied := get_implied_T_control(index)
+				return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == implied[0] and cmd.start_y == implied[1]
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return true
 			Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
 				return ignore_subsequent_commands or not (_has_following_shorthand_cubic(index) or _has_following_shorthand_quadratic(index))
@@ -266,6 +274,7 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 				return cmd.x == cmd.start_x and is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
+			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == cmd.x2 and cmd.start_y == cmd.y2
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
 				return is_equal_approx(3 * cmd.x1 - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * cmd.y1 - cmd.start_y, 3 * cmd.y2 - cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
@@ -297,6 +306,10 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 				return cmd.x == cmd.start_x and is_point_on_segment(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
+			Conversion.ANY_TO_ELLIPTICAL_ARC:
+				var implied := get_implied_S_control(index)
+				return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == implied[0] and cmd.start_y == implied[1] and\
+						cmd.start_x == cmd.x2 and cmd.start_y == cmd.y2
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
 				var implied := get_implied_S_control(index)
 				return is_equal_approx(3 * implied[0] - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * implied[1] - cmd.start_y, 3 * cmd.y2 - cmd.y) and\

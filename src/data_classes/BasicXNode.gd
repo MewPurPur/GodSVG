@@ -33,9 +33,8 @@ static func get_type_string(node_type: NodeType) -> String:
 
 func get_possible_conversions() -> Array[NodeType]:
 	var conversions: Array[NodeType] = []
-	if (_type == NodeType.TEXT or _type == NodeType.CDATA) and not Configs.savedata.editor_formatter.xml_remove_comments:
+	if _type == NodeType.TEXT or _type == NodeType.CDATA:
 		conversions.append(NodeType.COMMENT)
-	
 	if _type == NodeType.COMMENT or _type == NodeType.CDATA:
 		conversions.append(NodeType.TEXT)
 	if _type == NodeType.COMMENT or _type == NodeType.TEXT:

@@ -105,7 +105,7 @@ func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 			activation_event.keycode = KEY_CTRL
 		elif is_meta_pressed:
 			activation_event.keycode = KEY_META
-
+		
 		set_shortcut_button_text(btn, activation_event.as_text_keycode())
 		pending_event = activation_event
 	else:
@@ -155,8 +155,7 @@ func _input(event: InputEvent) -> void:
 		set_shortcut_button_text(shortcut_button, event.as_text_keycode())
 		pending_event = event
 		if pending_event.keycode & KEY_MODIFIER_MASK != 0:
-			setup_shortcut_button_font_colors(shortcut_button,
-					Configs.savedata.basic_color_warning)
+			setup_shortcut_button_font_colors(shortcut_button, Configs.savedata.basic_color_warning)
 		else:
 			setup_shortcut_button_font_colors(shortcut_button, ThemeUtils.editable_text_color)
 		accept_event()
@@ -165,8 +164,7 @@ func _input(event: InputEvent) -> void:
 			# Makes sure the saved event is clean.
 			var saved_event := InputEventKey.new()
 			saved_event.device = -1
-			saved_event.command_or_control_autoremap = (pending_event.ctrl_pressed or\
-					pending_event.meta_pressed)
+			saved_event.command_or_control_autoremap = (pending_event.ctrl_pressed or pending_event.meta_pressed)
 			saved_event.keycode = pending_event.keycode
 			saved_event.unicode = pending_event.unicode
 			saved_event.alt_pressed = pending_event.alt_pressed
@@ -200,8 +198,7 @@ func set_shortcut_button_text(button: Button, new_text: String) -> void:
 	button.remove_theme_font_size_override("font_size")
 	while button.get_theme_font("font").get_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT,
 	-1, button.get_theme_font_size("font_size")).x > button.custom_minimum_size.x:
-		button.add_theme_font_size_override("font_size",
-				button.get_theme_font_size("font_size") - 1)
+		button.add_theme_font_size_override("font_size", button.get_theme_font_size("font_size") - 1)
 	button.text = new_text
 
 func check_shortcuts_validity() -> void:
@@ -210,8 +207,7 @@ func check_shortcuts_validity() -> void:
 		var event := events[i]
 		var shortcut_btn := shortcut_buttons[i]
 		if not Configs.savedata.is_shortcut_valid(event):
-			setup_shortcut_button_font_colors(shortcut_btn,
-					Configs.savedata.basic_color_error)
+			setup_shortcut_button_font_colors(shortcut_btn, Configs.savedata.basic_color_error)
 			var conflicts := Configs.savedata.get_actions_with_shortcut(event)
 			var action_pos := conflicts.find(action)
 			if action_pos != -1:
@@ -221,8 +217,7 @@ func check_shortcuts_validity() -> void:
 			if conflicts.size() > 8:
 				conflicts.resize(8)
 				conflicts.append("...")
-			shortcut_btn.tooltip_text = Translator.translate("Also used by") +\
-					":\n" + "\n".join(conflicts)
+			shortcut_btn.tooltip_text = Translator.translate("Also used by") + ":\n" + "\n".join(conflicts)
 		else:
 			var already_used := false
 			for ii in events.size():
@@ -231,8 +226,7 @@ func check_shortcuts_validity() -> void:
 					break
 			
 			if already_used:
-				setup_shortcut_button_font_colors(shortcut_btn,
-						Configs.savedata.basic_color_warning)
+				setup_shortcut_button_font_colors(shortcut_btn, Configs.savedata.basic_color_warning)
 			else:
 				shortcut_btn.begin_bulk_theme_override()
 				shortcut_btn.remove_theme_color_override("font_color")

@@ -768,7 +768,7 @@ func set_as_origin_selected() -> void:
 			
 			if not (selected_cmd is PathCommand.LineCommand or selected_cmd is PathCommand.HorizontalLineCommand\
 			or selected_cmd is PathCommand.VerticalLineCommand or (selected_cmd is PathCommand.EllipticalArcCommand and\
-			(selected_cmd.rx <= 0 or selected_cmd.ry <= 0))):
+			(selected_cmd.rx == 0.0 or selected_cmd.ry == 0.0))):
 				new_commands.append(selected_cmd)
 			new_commands.append(PathCommand.CloseCommand.new(true))
 		
@@ -844,7 +844,7 @@ func reverse_order_selected() -> void:
 				# A closed subpath beginning with a line-like command can omit it in favor of the closing Z performing the same segment.
 				if is_closed and (first_cmd is PathCommand.LineCommand or first_cmd is PathCommand.HorizontalLineCommand or\
 				first_cmd is PathCommand.VerticalLineCommand or (first_cmd is PathCommand.EllipticalArcCommand and\
-				(first_cmd.rx <= 0 or first_cmd.ry <= 0))):
+				(first_cmd.rx == 0.0 or first_cmd.ry == 0.0))):
 					reverse_start += 1
 				
 				# Runs of full curves, followed by shorthands, should get flipped around.

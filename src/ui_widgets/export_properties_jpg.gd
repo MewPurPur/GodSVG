@@ -18,28 +18,26 @@ func _ready() -> void:
 	background_label.text = Translator.translate("Background") + ":"
 	HandlerGUI.register_focus_sequence(self, [quality_edit, background_edit, export_scale_config])
 
-func setup(new_export_data_object: ImageExportDataJPG, dimensions: Vector2) -> void:
+func setup(new_export_data_object: ImageExportDataJPG, new_undo_redo: UndoRedoRef, dimensions: Vector2) -> void:
 	export_data_object = new_export_data_object
+	undo_redo = new_undo_redo
 	
 	quality_edit.initial_value = export_data_object.quality * 100
 	quality_edit.value_changed.connect(
 		func(new_value: float) -> void:
 			var new_quality := new_value / 100
 			quality_edit.text = String.num_uint64(roundi(new_quality * 100))
-			if is_instance_valid(undo_redo):
-				undo_redo.create_action()
-				undo_redo.add_do_property(export_data_object, "quality", new_quality)
-				undo_redo.add_undo_property(export_data_object, "quality", export_data_object.quality)
-				undo_redo.commit_action()
-			else:
-				export_data_object.undo_redo = new_quality
+			undo_redo.create_action()
+			undo_redo.add_do_property(export_data_object, "quality", new_quality)
+			undo_redo.add_undo_property(export_data_object, "quality", export_data_object.quality)
+			undo_redo.commit_action()
 	)
 	
 	background_edit.setup(true, export_data_object.background_color)
 	background_edit.color_picked.connect(
 		func(new_value: String, is_final: bool, old_final_value: String) -> void:
 			var new_background_color := ColorParser.text_to_color(new_value, Color.BLACK, true)
-			if is_instance_valid(undo_redo) and is_final:
+			if is_final:
 				undo_redo.create_action()
 				undo_redo.add_do_property(export_data_object, "background_color", new_background_color)
 				undo_redo.add_undo_property(export_data_object, "background_color", old_final_value)
@@ -51,13 +49,10 @@ func setup(new_export_data_object: ImageExportDataJPG, dimensions: Vector2) -> v
 	export_scale_config.setup(dimensions, export_data_object.upscale_amount)
 	export_scale_config.scale_changed.connect(
 		func(new_value: float) -> void:
-			if is_instance_valid(undo_redo):
-				undo_redo.create_action()
-				undo_redo.add_do_property(export_data_object, "upscale_amount", new_value)
-				undo_redo.add_undo_property(export_data_object, "upscale_amount", export_data_object.upscale_amount)
-				undo_redo.commit_action()
-			else:
-				export_data_object.upscale_amount = new_value
+			undo_redo.create_action()
+			undo_redo.add_do_property(export_data_object, "upscale_amount", new_value)
+			undo_redo.add_undo_property(export_data_object, "upscale_amount", export_data_object.upscale_amount)
+			undo_redo.commit_action()
 	)
 	
 	var _on_changed :=\

@@ -126,7 +126,7 @@ func sync_reference_image_filtering() -> void:
 		var image_size := active_tab.reference_image.get_size()
 		var factor := minf(checkerboard.size.x / image_size.x, checkerboard.size.y / image_size.y) * camera_zoom
 		RenderingServer.canvas_item_set_default_texture_filter(reference_image_ci,
-				RenderingServer.CANVAS_ITEM_TEXTURE_FILTER_NEAREST if factor >= 2 else RenderingServer.CANVAS_ITEM_TEXTURE_FILTER_LINEAR)
+				RenderingServer.CANVAS_ITEM_TEXTURE_FILTER_NEAREST if factor >= 4 else RenderingServer.CANVAS_ITEM_TEXTURE_FILTER_LINEAR)
 
 func sync_camera() -> void:
 	var active_tab := Configs.savedata.get_active_tab()

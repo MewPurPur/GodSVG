@@ -120,8 +120,7 @@ func set_current_format(new_format: String) -> void:
 	
 	if is_instance_valid(new_properties_scene_root):
 		content_container.add_child(new_properties_scene_root)
-		new_properties_scene_root.setup(get_edited_export_data(), dimensions)
-		new_properties_scene_root.undo_redo = undo_redo
+		new_properties_scene_root.setup(get_edited_export_data(), undo_redo, dimensions)
 	
 	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 	if not file_name.is_empty():

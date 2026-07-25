@@ -184,8 +184,10 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 			btn.button_group = btn_group
 			for node_part in layout_nodes:
-				btn.toggled.connect(func(_toggled_on: bool) -> void:
-						layout_nodes[node_part].visible = (node_part == part))
+				btn.toggled.connect(
+					func(_toggled_on: bool) -> void:
+						layout_nodes[node_part].visible = (node_part == part)
+				)
 			if part == Utils.LayoutPart.INSPECTOR:
 				State.requested_scroll_to_selection.connect(btn.set_pressed.bind(true).unbind(3))
 			buttons_hbox.add_child(btn)

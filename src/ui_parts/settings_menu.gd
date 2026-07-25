@@ -4,6 +4,8 @@ const SettingsContentGeneric = preload("res://src/ui_widgets/settings_content_ge
 const SettingsContentPalettes = preload("res://src/ui_widgets/settings_content_palettes.tscn")
 const SettingsContentShortcuts = preload("res://src/ui_widgets/settings_content_shortcuts.tscn")
 
+var undo_redo := UndoRedoRef.new()
+
 @onready var language_button: Button = %LanguageButton
 @onready var settings_tab_container: GoodTabContainer = %SettingsTabContainer
 @onready var preview_panel: PanelContainer = %PreviewPanel
@@ -26,6 +28,8 @@ func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("select_next_tab", select_next_tab)
 	shortcuts.add_shortcut("select_previous_tab", select_previous_tab)
+	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
+	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	close_button.pressed.connect(queue_free)
@@ -79,6 +83,8 @@ func get_content(index: TabIndex) -> Control:
 			current_content = SettingsContentPalettes.instantiate()
 		TabIndex.SHORTCUTS:
 			current_content = SettingsContentShortcuts.instantiate()
+			current_content.setup_undo_redo_utensils(undo_redo, settings_tab_container.scroll_vertical_to,
+					settings_tab_container.select_tab.bind(TabIndex.SHORTCUTS))
 		TabIndex.THEMING, TabIndex.TAB_BAR, TabIndex.OTHER:
 			current_content = SettingsContentGeneric.instantiate()
 			var callback := Callable()

@@ -60,7 +60,7 @@ func setup() -> void:
 	line_edit.tooltip_text = attribute_name
 	line_edit.text_submitted.connect(set_value.bind(true))
 	line_edit.text_changed.connect(setup_font)
-	line_edit.text_change_canceled.connect(func() -> void: setup_font(line_edit.text))
+	line_edit.text_change_canceled.connect(setup_font_with_current_text)
 	line_edit.text_change_canceled.connect(sync)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(_commands_draw)
@@ -95,6 +95,9 @@ func sync_theming() -> void:
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
+
+func setup_font_with_current_text() -> void:
+	setup_font(line_edit.text)
 
 func setup_font(new_text: String) -> void:
 	if new_text.is_empty():

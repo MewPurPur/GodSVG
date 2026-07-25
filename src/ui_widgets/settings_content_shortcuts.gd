@@ -7,9 +7,12 @@ const ShortcutShowcaseWidgetScene = preload("res://src/ui_widgets/presented_shor
 @onready var shortcuts_container: VBoxContainer = $ShortcutsContainer
 
 const shortcut_categories: PackedStringArray = ["file", "edit", "view", "tool", "help"]
-var category_buttons: Dictionary[String, Button]
+var category_buttons: Dictionary[String, Button] = {}
+var action_configs: Dictionary[String, Control] = {}
 
-var undo_redo := UndoRedoRef.new()
+var undo_redo: UndoRedoRef
+var scroll_to_callback: Callable
+var settings_tab_change_callable: Callable
 
 func get_translated_shortcut_tab(tab_idx: String) -> String:
 	match tab_idx:
@@ -21,14 +24,9 @@ func get_translated_shortcut_tab(tab_idx: String) -> String:
 	return ""
 
 func _ready() -> void:
-	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
-	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
-	HandlerGUI.register_shortcuts(self, shortcuts)
-	
-	category_buttons.clear()
 	var button_group := ButtonGroup.new()
-	for category in shortcut_categories:
+	for i in shortcut_categories.size():
+		var category := shortcut_categories[i]
 		var btn := Button.new()
 		btn.toggle_mode = true
 		btn.button_group = button_group
@@ -47,16 +45,28 @@ func _ready() -> void:
 		btn.focus_mode = Control.FOCUS_NONE
 		btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 		categories_container.add_child(btn)
-	categories_container.get_child(0).button_pressed = true
-	categories_container.get_child(0).pressed.emit()
+		if i == 0:
+			btn.button_pressed = true
+			btn.pressed.emit()
 
-func activate_category(category: String) -> void:
-	category_buttons[category].button_pressed = true
+func setup_undo_redo_utensils(new_undo_redo: UndoRedoRef, new_scroll_to_callback: Callable, new_settings_tab_change_callable: Callable) -> void:
+	undo_redo = new_undo_redo
+	scroll_to_callback = new_scroll_to_callback
+	settings_tab_change_callable = new_settings_tab_change_callable
+
+
+func highlight_action(category: String, action: String) -> void:
+	var category_button := category_buttons[category]
+	if not category_button.button_pressed:
+		category_button.button_pressed = true
+		await get_tree().process_frame
+	scroll_to_callback.call(action_configs[action].get_global_rect(), 0.16)
 
 
 func show_shortcuts_from_category(category: String) -> void:
 	for child in shortcuts_container.get_children():
 		child.queue_free()
+	action_configs.clear()
 	
 	for action in ShortcutUtils.get_actions(category):
 		var shortcut_config: Control
@@ -71,11 +81,16 @@ func show_shortcuts_from_category(category: String) -> void:
 		
 		shortcut_config.action = action
 		shortcuts_container.add_child(shortcut_config)
+		action_configs[action] = shortcut_config
 
 func _on_shortcuts_modified(action: String, new_shortcuts: Array[InputEvent], category: String) -> void:
 	undo_redo.create_action()
 	undo_redo.add_do_method(Configs.savedata.action_modify_shortcuts.bind(action, new_shortcuts))
-	undo_redo.add_do_method(activate_category.bind(category))
+	undo_redo.add_do_method(highlight_action.bind(category, action))
+	undo_redo.add_do_method(settings_tab_change_callable)
 	undo_redo.add_undo_method(Configs.savedata.action_modify_shortcuts.bind(action, Configs.savedata.action_get_shortcuts(action)))
-	undo_redo.add_undo_method(activate_category.bind(category))
-	undo_redo.commit_action()
+	undo_redo.add_undo_method(highlight_action.bind(category, action))
+	undo_redo.add_undo_method(settings_tab_change_callable)
+	undo_redo.commit_action(false)
+	# Only this method needs to run, so commit execution was disabled.
+	Configs.savedata.action_modify_shortcuts(action, new_shortcuts)

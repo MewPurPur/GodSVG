@@ -192,6 +192,13 @@ func clear_all_tabs() -> void:
 func get_tab_count() -> int:
 	return _tab_names.size()
 
+func scroll_vertical_to(global_rect: Rect2, margin_proportion: float) -> void:
+	global_rect.position.y += _scroll_container.scroll_vertical - _scroll_container.global_position.y
+	var buffer := roundi(_scroll_container.size.y * margin_proportion)
+	_scroll_container.scroll_vertical = clampi(_scroll_container.scroll_vertical,
+			maxi(0, roundi(global_rect.end.y) - roundi(_scroll_container.size.y) + buffer),
+			maxi(0, roundi(global_rect.position.y) - buffer))
+
 
 func _on_base_class_tab_selected(index: int) -> void:
 	for child in _content_container.get_children():
