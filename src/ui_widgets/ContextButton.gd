@@ -105,12 +105,13 @@ static func create_arrow(new_text: String, new_submenu_button_builders: Array[Ca
 			exit_timer.stop()
 			enter_timer.start()
 	)
-	enter_timer.timeout.connect(func() -> void:
-		if HandlerGUI.popup_submenu_source != context_button:
-			var options: Array[ContextButton] = []
-			for button_builder in context_button.submenu_button_builders:
-				options.append(button_builder.call())
-			HandlerGUI.popup_submenu_to_right_or_left_side(ContextPopup.create(options), context_button)
+	enter_timer.timeout.connect(
+		func() -> void:
+			if HandlerGUI.popup_submenu_source != context_button:
+				var options: Array[ContextButton] = []
+				for button_builder in context_button.submenu_button_builders:
+					options.append(button_builder.call())
+				HandlerGUI.popup_submenu_to_right_or_left_side(ContextPopup.create(options), context_button)
 	)
 	
 	context_button.ready.connect(
@@ -119,14 +120,15 @@ static func create_arrow(new_text: String, new_submenu_button_builders: Array[Ca
 			while is_instance_valid(popup) and not popup is ContextPopup:
 				popup = popup.get_parent()
 			
-			popup.gui_input.connect(func(event: InputEvent) -> void:
-				if not (enter_timer.is_stopped() or Rect2(Vector2.ZERO, context_button.size).has_point(context_button.get_local_mouse_position())):
-					enter_timer.stop()
-				
-				if HandlerGUI.popup_submenu_source == context_button and event is InputEventMouseMotion:
-					if not Rect2(Vector2.ZERO, context_button.size).has_point(context_button.get_local_mouse_position()):
-						if exit_timer.is_stopped() and Rect2(Vector2.ZERO, popup.size).grow(-2).has_point(event.position):
-							exit_timer.start()
+			popup.gui_input.connect(
+				func(event: InputEvent) -> void:
+					if not (enter_timer.is_stopped() or Rect2(Vector2.ZERO, context_button.size).has_point(context_button.get_local_mouse_position())):
+						enter_timer.stop()
+					
+					if HandlerGUI.popup_submenu_source == context_button and event is InputEventMouseMotion:
+						if not Rect2(Vector2.ZERO, context_button.size).has_point(context_button.get_local_mouse_position()):
+							if exit_timer.is_stopped() and Rect2(Vector2.ZERO, popup.size).grow(-2).has_point(event.position):
+								exit_timer.start()
 			)
 	)
 	

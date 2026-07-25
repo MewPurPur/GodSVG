@@ -30,7 +30,10 @@ func _ready() -> void:
 	zoom_widget.zoom_in_pressed.connect(canvas.zoom_in)
 	zoom_widget.zoom_out_pressed.connect(canvas.zoom_out)
 	zoom_widget.zoom_reset_pressed.connect(canvas.center_frame)
-	canvas.camera_zoom_changed.connect(func() -> void: zoom_widget.sync_to_value(canvas.camera_zoom))
+	canvas.camera_zoom_changed.connect(
+		func() -> void:
+			zoom_widget.sync_to_value(canvas.camera_zoom)
+	)
 	
 	reference_button.pressed.connect(_on_reference_button_pressed)
 	visuals_button.pressed.connect(_on_visuals_button_pressed)

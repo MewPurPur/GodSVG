@@ -47,10 +47,11 @@ func set_optimizer_info(example_root: ElementRoot, optimizer: Optimizer, main_te
 	info_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	info_button.focus_mode = Control.FOCUS_NONE
 	add_child(info_button)
-	info_button.pressed.connect(func() -> void:
-		var info := OptimizerSettingInfoScene.instantiate()
-		info.setup(example_root.duplicate(), optimizer, main_text)
-		HandlerGUI.popup_under_rect_center(info, info_button.get_global_rect(), get_viewport())
+	info_button.pressed.connect(
+		func() -> void:
+			var info := OptimizerSettingInfoScene.instantiate()
+			info.setup(example_root.duplicate(), optimizer, main_text)
+			HandlerGUI.popup_under_rect_center(info, info_button.get_global_rect(), get_viewport())
 	)
 	var margin_size := (size.y - info_button.size.y) / 2.0
 	info_button.position = Vector2(margin_size, margin_size)

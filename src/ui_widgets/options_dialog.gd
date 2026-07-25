@@ -41,11 +41,12 @@ action_when_checkbox_checked := Callable(), disabled_when_checkbox_pressed := fa
 	button.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
 	
 	if action_when_checkbox_checked.is_valid():
-		button.pressed.connect(func() -> void:
-			if checkbox.button_pressed:
-				action_when_checkbox_checked.call()
-			else:
-				action.call()
+		button.pressed.connect(
+			func() -> void:
+				if checkbox.button_pressed:
+					action_when_checkbox_checked.call()
+				else:
+					action.call()
 		)
 	else:
 		button.pressed.connect(action)

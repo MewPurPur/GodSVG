@@ -85,9 +85,6 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 		markup = formatter.get_indent_string().repeat(xnode.xid.size())
 	
 	if not xnode.is_element():
-		if (formatter.xml_remove_comments and xnode.get_type() == BasicXNode.NodeType.COMMENT):
-			return ""
-		
 		match xnode.get_type():
 			BasicXNode.NodeType.COMMENT: markup += "<!--%s-->" % xnode.get_text()
 			BasicXNode.NodeType.CDATA: markup += "<![CDATA[%s]]>" % xnode.get_text()
@@ -237,8 +234,7 @@ static func markup_to_root(markup: String) -> ParseResult:
 						break
 			
 			XMLParser.NODE_COMMENT:
-				if not Configs.savedata.editor_formatter.xml_remove_comments:
-					unclosed_element_stack.back().insert_child(-1, BasicXNode.new(BasicXNode.NodeType.COMMENT, parser.get_node_name()))
+				unclosed_element_stack.back().insert_child(-1, BasicXNode.new(BasicXNode.NodeType.COMMENT, parser.get_node_name()))
 			XMLParser.NODE_TEXT:
 				var node_offset := parser.get_node_offset()
 				# Trick to read XML text as is, without parsing stuff like "&lt;".

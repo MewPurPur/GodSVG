@@ -141,18 +141,6 @@ func setup_formatting_content() -> void:
 			"Determines the default values of the formatter configs.")))
 	
 	add_section("XML")
-	current_setup_setting = "xml_remove_comments"
-	add_checkbox(Translator.translate("Remove comments"))
-	var xml_remove_comments_root_element := ElementRoot.new()
-	xml_remove_comments_root_element.insert_child(0, BasicXNode.new(BasicXNode.NodeType.COMMENT, " Comment "))
-	var xml_remove_comments_circle_element := ElementCircle.new()
-	xml_remove_comments_circle_element.set_attribute("cx", 6)
-	xml_remove_comments_circle_element.set_attribute("cy", 8)
-	xml_remove_comments_circle_element.set_attribute("r", 4)
-	xml_remove_comments_circle_element.set_attribute("fill", "plum")
-	xml_remove_comments_root_element.insert_child(1, xml_remove_comments_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_remove_comments_root_element, true))
-	
 	current_setup_setting = "xml_add_trailing_newline"
 	add_checkbox(Translator.translate("Add trailing newline"))
 	var xml_add_trailing_newline_root_element := ElementRoot.new()
@@ -169,8 +157,7 @@ func setup_formatting_content() -> void:
 	
 	current_setup_setting = "xml_shorthand_tags"
 	add_dropdown(Translator.translate("Use shorthand tag syntax"),
-			range(Formatter.ShorthandTags.size()),
-			Formatter.get_shorthand_tags_value_text_map())
+			range(Formatter.ShorthandTags.size()), Formatter.get_shorthand_tags_value_text_map())
 	var xml_shorthand_tags_root_element := ElementRoot.new()
 	var xml_shorthand_tags_linear_gradient_element := ElementLinearGradient.new()
 	xml_shorthand_tags_linear_gradient_element.set_attribute("id", "a")
@@ -199,9 +186,7 @@ func setup_formatting_content() -> void:
 	
 	current_setup_setting = "xml_formatting_style"
 	add_dropdown(Translator.translate("Formatting style"),
-		range(Formatter.FormattingStyle.size()),
-		Formatter.get_formatting_style_value_text_map()
-	)
+			range(Formatter.FormattingStyle.size()), Formatter.get_formatting_style_value_text_map())
 	var xml_formatting_style_root_element := ElementRoot.new()
 	var xml_formatting_style_linear_gradient_element := ElementLinearGradient.new()
 	xml_formatting_style_linear_gradient_element.set_attribute("id", "a")
@@ -275,8 +260,7 @@ func setup_formatting_content() -> void:
 	add_section(Translator.translate("Colors"))
 	current_setup_setting = "color_use_named_colors"
 	add_dropdown(Translator.translate("Use named colors"),
-			range(Formatter.NamedColorUse.size()),
-			Formatter.get_named_color_use_value_text_map())
+			range(Formatter.NamedColorUse.size()), Formatter.get_named_color_use_value_text_map())
 	var color_use_named_colors_root_element := ElementRoot.new()
 	var color_use_named_colors_circle_1 := ElementCircle.new()
 	color_use_named_colors_circle_1.set_attribute("cx", 6)
@@ -295,8 +279,7 @@ func setup_formatting_content() -> void:
 	
 	current_setup_setting = "color_primary_syntax"
 	add_dropdown(Translator.translate("Primary syntax"),
-			range(Formatter.PrimaryColorSyntax.size()),
-			Formatter.get_primary_color_syntax_value_text_map())
+			range(Formatter.PrimaryColorSyntax.size()), Formatter.get_primary_color_syntax_value_text_map())
 	var color_primary_syntax_root_element := ElementRoot.new()
 	var color_primary_syntax_circle_element := ElementCircle.new()
 	color_primary_syntax_circle_element.set_attribute("cx", 6)

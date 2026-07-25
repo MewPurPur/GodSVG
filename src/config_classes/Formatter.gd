@@ -66,7 +66,6 @@ func get_setting_default(setting: String) -> Variant:
 		"color_primary_syntax": return PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX
 		"color_capital_hex": return false
 		
-		"xml_remove_comments": return preset == Preset.COMPACT
 		"xml_shorthand_tags": return ShorthandTags.ALWAYS if preset == Preset.COMPACT else ShorthandTags.ALL_EXCEPT_CONTAINERS
 		"xml_shorthand_tags_space_out_slash": return preset == Preset.PRETTY
 		"xml_formatting_style": return FormattingStyle.COMPACT if preset == Preset.COMPACT else FormattingStyle.PRETTY
@@ -113,12 +112,6 @@ func _init(new_preset := Preset.COMPACT) -> void:
 			emit_changed()
 
 
-@export var xml_remove_comments := true:
-	set(new_value):
-		if xml_remove_comments != new_value:
-			xml_remove_comments = new_value
-			emit_changed()
-
 @export var xml_add_trailing_newline := false:
 	set(new_value):
 		if xml_add_trailing_newline != new_value:
@@ -128,7 +121,7 @@ func _init(new_preset := Preset.COMPACT) -> void:
 @export var xml_shorthand_tags := ShorthandTags.ALWAYS:
 	set(new_value):
 		# Validation
-		if new_value < 0 || new_value >= ShorthandTags.size():
+		if new_value < 0 or new_value >= ShorthandTags.size():
 			new_value = get_setting_default("xml_shorthand_tags")
 		# Main part
 		if xml_shorthand_tags != new_value:
@@ -179,7 +172,7 @@ const INDENTS_MAX = 16
 @export var color_use_named_colors := NamedColorUse.WHEN_SHORTER:
 	set(new_value):
 		# Validation
-		if new_value < 0 || new_value >= NamedColorUse.size():
+		if new_value < 0 or new_value >= NamedColorUse.size():
 			new_value = get_setting_default("color_use_named_colors")
 		# Main part
 		if color_use_named_colors != new_value:
@@ -189,7 +182,7 @@ const INDENTS_MAX = 16
 @export var color_primary_syntax := PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
 	set(new_value):
 		# Validation
-		if new_value < 0 || new_value >= PrimaryColorSyntax.size():
+		if new_value < 0 or new_value >= PrimaryColorSyntax.size():
 			new_value = get_setting_default("color_primary_syntax")
 		# Main part
 		if color_primary_syntax != new_value:
