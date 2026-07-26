@@ -207,6 +207,7 @@ class ColorConfig:
 	var color: ColorPickerUtils.PreciseColor  # Current paint.
 	var initial_color: ColorPickerUtils.PreciseColor  # The paint when the color picker was opened.
 	var backup_color: ColorPickerUtils.PreciseColor  # The paint before starting a dragging operation.
+	var initial_literal_paint: String  # If the paint was empty, but has an inferred value.
 	signal color_changed
 	var undo_redo := UndoRedoRef.new()
 	

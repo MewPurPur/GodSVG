@@ -53,7 +53,7 @@ func sync() -> void:
 func _on_pressed() -> void:
 	var color_picker := ColorPopupScene.instantiate()
 	color_picker.alpha_enabled = alpha_enabled
-	color_picker.setup(ColorParser.add_hash_if_hex(_value), ColorParser.text_to_color(_value))
+	color_picker.setup(ColorParser.add_hash_if_hex(_value), _value)
 	HandlerGUI.popup_under_rect(color_picker, get_global_rect(), get_viewport())
 	color_picker.color_picked.connect(set_value)
 
