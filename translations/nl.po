@@ -799,6 +799,17 @@ msgstr "Toepassen"
 msgid "Apply all of this preset's defaults"
 msgstr "Pas alle standaardwaardes van deze voorinstelling toe"
 
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "On"
+msgstr "Openen"
+
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
 #: src/ui_widgets/setting_frame.gd
 #, fuzzy
 msgid "Clear"
@@ -839,11 +850,6 @@ msgstr "Bepaalt de maat-factor van de interface."
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Preset"
 msgstr "Voorinstelling"
-
-#: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
-msgid "Remove comments"
-msgstr "Houdt commentaar bij"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Add trailing newline"
@@ -929,6 +935,11 @@ msgstr "Verwijder onnodige parameters"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Remove comments"
+msgstr "Houdt commentaar bij"
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy

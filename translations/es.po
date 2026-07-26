@@ -782,6 +782,16 @@ msgstr "Aplicar"
 msgid "Apply all of this preset's defaults"
 msgstr "Aplicar todos los valores predeterminados de este preajuste"
 
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr "Activado"
+
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr "Desactivado"
+
 #: src/ui_widgets/setting_frame.gd
 msgid "Clear"
 msgstr "Borrar"
@@ -819,10 +829,6 @@ msgstr "Determina cómo se formatean los atributos y el contenido SVG al guardar
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Preset"
 msgstr "Preajuste"
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Remove comments"
-msgstr "Eliminar comentarios"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Add trailing newline"
@@ -907,6 +913,10 @@ msgstr "Eliminar parámetros innecesarios"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "Determina la configuración del optimizador predeterminado, que se utiliza al ejecutar manualmente la acción \"{optimize}\"."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove comments"
+msgstr "Eliminar comentarios"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"

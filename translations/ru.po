@@ -783,6 +783,17 @@ msgstr "Применить"
 msgid "Apply all of this preset's defaults"
 msgstr "Применить все стандартные значения этого пресета"
 
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "On"
+msgstr "Открыть"
+
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
 #: src/ui_widgets/setting_frame.gd
 msgid "Clear"
 msgstr "Очистить все"
@@ -820,10 +831,6 @@ msgstr "Устанавливает, как SVG  будет выглядеть п
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Preset"
 msgstr "Пресет"
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Remove comments"
-msgstr "Удалить коментарии"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Add trailing newline"
@@ -908,6 +915,10 @@ msgstr "Удалить ненужные параметры"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "Устанавливает настройки оптимизатора при запуске \"{optimize}\"."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove comments"
+msgstr "Удалить коментарии"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"

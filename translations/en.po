@@ -780,6 +780,16 @@ msgstr ""
 msgid "Apply all of this preset's defaults"
 msgstr ""
 
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr ""
+
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
 #: src/ui_widgets/setting_frame.gd
 msgid "Clear"
 msgstr ""
@@ -816,10 +826,6 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Preset"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Remove comments"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -904,6 +910,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove comments"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
