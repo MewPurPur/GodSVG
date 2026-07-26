@@ -148,11 +148,14 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 			XMLParser.NODE_TEXT:
 				color_map[offset] = {"color": text_color}
 				var found := svg_text.find("&", offset)
-				while found != -1:
+				var edge := offset + parser.get_node_data().length()
+				while found != -1 and found < edge:
 					for xml_entity in XML_ENTITY_LIST:
-						if svg_text.substr(found, xml_entity.length()) == xml_entity:
+						var xml_entity_len := xml_entity.length()
+						if svg_text.substr(found, xml_entity_len) == xml_entity:
 							color_map[found] = {"color": xml_entity_color}
-							color_map[found + xml_entity.length()] = {"color": text_color}
+							color_map[found + xml_entity_len] = {"color": text_color}
+							edge += xml_entity_len - 1
 					found = svg_text.find("&", found + 1)
 			XMLParser.NODE_CDATA:
 				color_map[offset] = {"color": cdata_color}
