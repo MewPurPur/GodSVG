@@ -780,6 +780,17 @@ msgstr "应用"
 msgid "Apply all of this preset's defaults"
 msgstr "应用此预设的默认值"
 
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "On"
+msgstr "打开"
+
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
 #: src/ui_widgets/setting_frame.gd
 msgid "Clear"
 msgstr "清空"
@@ -817,10 +828,6 @@ msgstr "改變保存文件时SVG属性和内容的格式化方式。"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Preset"
 msgstr "预设"
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Remove comments"
-msgstr "移除注释"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Add trailing newline"
@@ -905,6 +912,10 @@ msgstr "移除不必要的参数"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr "改变手动执行 “{optimize}” 时默认优化器的设置。"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove comments"
+msgstr "移除注释"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes"

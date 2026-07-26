@@ -1,20 +1,27 @@
 extends Control
 
-const reload_icon = preload("res://assets/icons/Reload.svg")
-const clear_icon = preload("res://assets/icons/Clear.svg")
-
-enum Type {NONE, CHECKBOX, COLOR, DROPDOWN, NUMERIC_DROPDOWN, FILE_PATH}
-var type := Type.NONE
-
-signal value_changed
-
-const info_icon = preload("res://assets/icons/Info.svg")
+# Checkbox sizing, which can change depending on language and font.
+var calculated_on_label_font_size := -1
+var calculated_on_label_separation := -1
+var calculated_off_label_font_size := -1
+var calculated_off_label_separation := -1
 
 const OptimizerSettingInfoScene = preload("res://src/ui_widgets/optimizer_setting_info.tscn")
 const ColorEditScene = preload("res://src/ui_widgets/color_edit.tscn")
 const BasicDropdownScene = preload("res://src/ui_widgets/dropdown_basic.tscn")
 const NumericDropdownScene = preload("res://src/ui_widgets/dropdown_numeric.tscn")
 const FilePathFieldScene = preload("res://src/ui_widgets/file_path_field.tscn")
+
+const reload_icon = preload("res://assets/icons/Reload.svg")
+const clear_icon = preload("res://assets/icons/Clear.svg")
+const info_icon = preload("res://assets/icons/Info.svg")
+
+enum Type {NONE, CHECKBOX, COLOR, DROPDOWN, NUMERIC_DROPDOWN, FILE_PATH}
+var type := Type.NONE
+
+const ATTEMPTED_MAX_CHECKBOX_TEXT_WIDTH = 60
+
+signal value_changed
 
 var getter: Callable
 var setter: Callable
@@ -59,7 +66,7 @@ func set_optimizer_info(example_root: ElementRoot, optimizer: Optimizer, main_te
 func permanent_disable_checkbox(checkbox_state: bool) -> void:
 	disabled = true
 	widget.set_pressed_no_signal(checkbox_state)
-	widget.text = "On" if checkbox_state else "Off"
+	widget.text = Translator.translate("On") if checkbox_state else Translator.translate("Off")
 
 func setup_checkbox() -> void:
 	widget = CheckBox.new()
@@ -71,7 +78,38 @@ func setup_checkbox() -> void:
 	widget.button_pressed = getter.call()
 	widget.toggled.connect(_checkbox_modification.unbind(1))
 	type = Type.CHECKBOX
-	panel_width = 74
+	# Calculate panel width based on language.
+	var on_text := Translator.translate("On")
+	var off_text := Translator.translate("Off")
+	var font := get_theme_font("font", "Label")
+	var font_size := get_theme_font_size("font_size", "Label")
+	var separation := get_theme_constant("h_separation", "CheckBox")
+	var max_text_width := 20
+	var text_line := TextLine.new()
+	for i in 2:
+		var checkbox_text: String = [on_text, off_text][i]
+		var final_font_size := font_size
+		var final_separation := separation
+		for ii in 3:
+			text_line.add_string(checkbox_text, font, final_font_size)
+			if text_line.get_line_width() <= ATTEMPTED_MAX_CHECKBOX_TEXT_WIDTH:
+				break
+			if ii < 2:
+				text_line.clear()
+				final_font_size -= 1
+				final_separation -= 1
+		
+		if text_line.get_line_width() > max_text_width:
+			max_text_width = ceili(text_line.get_line_width()) + final_separation
+		
+		if i == 0:
+			calculated_on_label_font_size = final_font_size
+			calculated_on_label_separation = final_separation
+		else:
+			calculated_off_label_font_size = final_font_size
+			calculated_off_label_separation = final_separation
+		text_line.clear()
+	panel_width = max_text_width + 51
 
 func setup_color(alpha_enabled: bool) -> void:
 	widget = ColorEditScene.instantiate()
@@ -171,7 +209,16 @@ func post_modification() -> void:
 func update_widgets() -> void:
 	match type:
 		Type.CHECKBOX:
-			widget.text = "On" if getter.call() else "Off"
+			widget.begin_bulk_theme_override()
+			if getter.call():
+				widget.text = Translator.translate("On")
+				widget.add_theme_font_size_override("font_size", calculated_on_label_font_size)
+				widget.add_theme_constant_override("h_separation", calculated_on_label_separation)
+			else:
+				widget.text = Translator.translate("Off")
+				widget.add_theme_font_size_override("font_size", calculated_off_label_font_size)
+				widget.add_theme_constant_override("h_separation", calculated_off_label_separation)
+			widget.end_bulk_theme_override()
 			reset_button.visible = (not disabled and getter.call() != default)
 			if disabled:
 				widget.mouse_default_cursor_shape = Control.CURSOR_ARROW

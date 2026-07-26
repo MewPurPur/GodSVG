@@ -27,6 +27,8 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"Grid tick interval": "Refers to the specially marked grid ticks, which are more distinct and have a coordinate.",
 	"No ticks": "Refers to the specially marked grid ticks, which are more distinct and have a coordinate.",
 	"Color models": "Ways to represent colors, like RGB, HSV, HSL.",
+	"On": "This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.",
+	"Off": "This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.",
 }
 
 const TRANSLATIONS_DIR = "translations"
