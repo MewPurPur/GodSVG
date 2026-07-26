@@ -198,9 +198,9 @@ class PreciseColor:
 	# Fix paint conversion in edge cases, e.g., Color(0.5, 0.4999, 0.4999) --> "807f7f".
 	func calibrate_paint() -> void:
 		var color := duplicate()
-		color.r = snappedf(color.r, 1/510.0)
-		color.g = snappedf(color.g, 1/510.0)
-		color.b = snappedf(color.b, 1/510.0)
+		color.r = snappedf(color.r, 1/4080.0)
+		color.g = snappedf(color.g, 1/4080.0)
+		color.b = snappedf(color.b, 1/4080.0)
 		paint = color.to_color().to_html(a != 1.0)
 
 class ColorConfig:

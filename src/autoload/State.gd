@@ -816,6 +816,10 @@ func reverse_order_selected() -> void:
 				if not start in inner_selections:
 					new_commands += commands.slice(start, subpath.y + 1)
 					continue
+				elif subpath.y == start:
+					new_commands += commands.slice(start, subpath.y + 1)
+					new_selection_indices.append(start)
+					continue
 				
 				var subpath_commands: Array[PathCommand] = []
 				var is_closed := commands[subpath.y] is PathCommand.CloseCommand
@@ -1109,11 +1113,20 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 							can_move_down = true
 							break
 					
+					var can_reverse_order := false
+					for start in pathdata.subpath_start_indices:
+						if not start in inner_selections:
+							continue
+						if pathdata.get_subpath(start).y > start:
+							can_reverse_order = true
+							break
+					
 					if can_move_up:
 						btn_arr.append(ContextButton.create_from_action("move_up"))
 					if can_move_down:
 						btn_arr.append(ContextButton.create_from_action("move_down"))
-					btn_arr.append(ContextButton.create_from_action("reverse_order", not is_selection_subpaths_only()))
+					if can_reverse_order:
+						btn_arr.append(ContextButton.create_from_action("reverse_order"))
 				
 				if are_selections_from_different_closed_subpaths():
 					var is_movable_selected := false

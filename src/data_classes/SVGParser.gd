@@ -17,12 +17,9 @@ static func markup_check_is_root_empty(markup: String) -> bool:
 	while parser.read() == OK:
 		if parser.get_node_type() != XMLParser.NODE_ELEMENT or parser.get_node_name() != "svg":
 			continue
-		
 		describes_svg = true
-		var node_offset := parser.get_node_offset()
-		var closure_pos := _find_closure_string_in_utf8_buffer(buffer, node_offset)
-		if closure_pos != -1 and closure_pos <= buffer.find(ord(">"), node_offset):
-			return true  # If the svg tag is immediately closed, i.e. <svg/>, then it's empty.
+		if parser.is_empty():
+			return true
 		break
 	
 	# If the SVG tag isn't immediately closed, then check if the next XML node is an </svg> element end.
@@ -195,10 +192,7 @@ static func markup_to_root(markup: String) -> ParseResult:
 		for i in parser.get_attribute_count():
 			root_element.set_attribute(parser.get_attribute_name(i), parser.get_attribute_value(i))
 		
-		var node_offset := parser.get_node_offset()
-		
-		var closure_pos := _find_closure_string_in_utf8_buffer(buffer, node_offset)
-		if closure_pos == -1 or closure_pos > buffer.find(ord(">"), node_offset):
+		if not parser.is_empty():
 			unclosed_element_stack.append(root_element)
 			break
 		else:
@@ -213,14 +207,11 @@ static func markup_to_root(markup: String) -> ParseResult:
 			XMLParser.NODE_ELEMENT:
 				var element := DB.element(parser.get_node_name())
 				# Check if we're entering or exiting the element.
-				var node_offset := parser.get_node_offset()
-				var closure_pos := _find_closure_string_in_utf8_buffer(buffer, node_offset)
-				
 				unclosed_element_stack.back().insert_child(-1, element)
 				for i in parser.get_attribute_count():
 					element.set_attribute(parser.get_attribute_name(i), parser.get_attribute_value(i))
 				
-				if closure_pos == -1 or closure_pos > buffer.find(ord(">"), node_offset):
+				if not parser.is_empty():
 					unclosed_element_stack.append(element)
 			
 			XMLParser.NODE_ELEMENT_END:
