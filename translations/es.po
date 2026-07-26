@@ -784,11 +784,11 @@ msgstr "Aplicar todos los valores predeterminados de este preajuste"
 
 #: src/ui_widgets/setting_frame.gd
 msgid "On"
-msgstr "Sí"
+msgstr "Act."
 
 #: src/ui_widgets/setting_frame.gd
 msgid "Off"
-msgstr "No"
+msgstr "Desact."
 
 #: src/ui_widgets/setting_frame.gd
 msgid "Clear"
