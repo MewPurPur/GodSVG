@@ -71,7 +71,7 @@ func _on_svg_modified() -> void:
 
 func _on_pressed() -> void:
 	var color_popup := ColorPopupScene.instantiate()
-	color_popup.setup(element.get_attribute_value(attribute_name), ColorParser.text_to_color(element.get_attribute_true_color(attribute_name)))
+	color_popup.setup(element.get_attribute_value(attribute_name), element.get_attribute_true_color(attribute_name))
 	color_popup.show_url = cached_allow_url
 	# If it's a color attribute, or there's no color attribute children of this element,
 	# mark the current color keyword as uninteresting (won't be shown in palettes).

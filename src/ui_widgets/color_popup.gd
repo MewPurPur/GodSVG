@@ -23,15 +23,17 @@ var current_color_availability := CurrentColorAvailability.UNAVAILABLE
 @onready var navigation_panel: PanelContainer = %NavigationPanel
 @onready var switch_mode_button: Button = %NavigationPanel/SwitchModeButton
 
-func setup(new_current_value: String, new_effective_color: Color) -> void:
+func setup(new_current_value: String, new_effective_value: String) -> void:
 	color_config = ColorPickerUtils.ColorConfig.new()
-	color_config.color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(new_current_value, new_effective_color, alpha_enabled))
+	color_config.color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(
+			new_current_value, ColorParser.text_to_color(new_effective_value), alpha_enabled))
 	color_config.color.shift_hsv()
 	if not alpha_enabled:
 		color_config.color.a = 1.0
 	color_config.color.paint = new_current_value
 	color_config.initial_color = color_config.color.duplicate()
 	color_config.backup_color = color_config.color.duplicate()
+	color_config.initial_literal_paint = new_effective_value
 	color_config.color_changed.connect(_on_color_changed)
 
 func _ready() -> void:

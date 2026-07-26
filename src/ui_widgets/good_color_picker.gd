@@ -457,7 +457,7 @@ func _on_keyword_button_pressed() -> void:
 	HandlerGUI.popup_under_rect(ContextPopup.create(btn_arr), keyword_button.get_global_rect(), get_viewport())
 
 func _on_reset_color_button_pressed() -> void:
-	color_config.color.copy_values_from(color_config.initial_color)
+	color_config.set_color_to_paint(color_config.initial_color.paint)
 	color_config.register_visual_change()
 
 
@@ -465,7 +465,7 @@ func _on_reset_color_button_pressed() -> void:
 func _on_start_color_rect_draw() -> void:
 	var rect_size := start_color_rect.size
 	var rect := Rect2(Vector2.ZERO, rect_size)
-	if ColorParser.is_valid_url(color_config.initial_color.paint):
+	if ColorParser.is_valid_url(color_config.initial_literal_paint):
 		var cross_color := Color(0.8, 0.8, 0.8)
 		start_color_rect.draw_rect(rect, Color(0.6, 0.6, 0.6))
 		start_color_rect.draw_line(Vector2.ZERO, rect_size, cross_color, 0.5, true)
