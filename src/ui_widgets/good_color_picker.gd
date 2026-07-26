@@ -457,7 +457,7 @@ func _on_keyword_button_pressed() -> void:
 	HandlerGUI.popup_under_rect(ContextPopup.create(btn_arr), keyword_button.get_global_rect(), get_viewport())
 
 func _on_reset_color_button_pressed() -> void:
-	color_config.set_color_to_paint(color_config.initial_color.paint)
+	color_config.color = color_config.initial_color.duplicate()
 	color_config.register_visual_change()
 
 
