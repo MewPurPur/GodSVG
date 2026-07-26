@@ -783,6 +783,14 @@ msgid "Apply all of this preset's defaults"
 msgstr "Aplicar todos los valores predeterminados de este preajuste"
 
 #: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr "Sí"
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr "No"
+
+#: src/ui_widgets/setting_frame.gd
 msgid "Clear"
 msgstr "Borrar"
 

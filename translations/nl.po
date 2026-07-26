@@ -800,6 +800,14 @@ msgid "Apply all of this preset's defaults"
 msgstr "Pas alle standaardwaardes van deze voorinstelling toe"
 
 #: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
 #, fuzzy
 msgid "Clear"
 msgstr "SVG ontruimen"

@@ -781,6 +781,14 @@ msgid "Apply all of this preset's defaults"
 msgstr "Приложи всички настройки по подразбиране на този шаблон"
 
 #: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
 msgid "Clear"
 msgstr "Изчисти"
 

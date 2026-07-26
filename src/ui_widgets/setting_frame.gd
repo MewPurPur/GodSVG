@@ -59,7 +59,7 @@ func set_optimizer_info(example_root: ElementRoot, optimizer: Optimizer, main_te
 func permanent_disable_checkbox(checkbox_state: bool) -> void:
 	disabled = true
 	widget.set_pressed_no_signal(checkbox_state)
-	widget.text = "On" if checkbox_state else "Off"
+	widget.text = Translator.translate("On") if checkbox_state else Translator.translate("Off")
 
 func setup_checkbox() -> void:
 	widget = CheckBox.new()
@@ -171,7 +171,7 @@ func post_modification() -> void:
 func update_widgets() -> void:
 	match type:
 		Type.CHECKBOX:
-			widget.text = "On" if getter.call() else "Off"
+			widget.text = Translator.translate("On") if getter.call() else Translator.translate("Off")
 			reset_button.visible = (not disabled and getter.call() != default)
 			if disabled:
 				widget.mouse_default_cursor_shape = Control.CURSOR_ARROW

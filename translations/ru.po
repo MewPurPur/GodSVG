@@ -784,6 +784,14 @@ msgid "Apply all of this preset's defaults"
 msgstr "Применить все стандартные значения этого пресета"
 
 #: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
 msgid "Clear"
 msgstr "Очистить все"
 

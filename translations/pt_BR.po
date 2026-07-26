@@ -795,6 +795,14 @@ msgid "Apply all of this preset's defaults"
 msgstr "Aplicar todos os padrões dessa pré-definição"
 
 #: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
 #, fuzzy
 msgid "Clear"
 msgstr "Limpar tudo"
