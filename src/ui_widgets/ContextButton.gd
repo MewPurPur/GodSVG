@@ -32,18 +32,16 @@ func _ready() -> void:
 	# Calculate min width.
 	var font := get_theme_font("font")
 	var font_size := get_theme_font_size("font_size")
-	var icon := get_icon()
 	var text := get_text()
 	var dim_text := get_dim_text()
 	
+	# The size increase from icon spacing is based on the widest icon, so it's determined in the ContextPopup.
 	var min_width := PADDING * 2
 	if not text.is_empty():
 		min_width += font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	if not dim_text.is_empty():
 		min_width += DIM_TEXT_SPACING + font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	if is_instance_valid(icon) or type != Type.NORMAL:
-		min_width += 16.0 + ICON_SPACING
-	custom_minimum_size.x = min_width
+	custom_minimum_size.x += min_width
 	# Set mouse cursor shape.
 	if disabled or type == Type.ARROW:
 		mouse_default_cursor_shape = Control.CURSOR_ARROW
