@@ -45,6 +45,10 @@ static func create(new_buttons: Array[ContextButton], new_align_left := true, mi
 			main_container.add_child(separator)
 		main_container.add_child(context_popup.buttons[idx])
 	
+	var space_for_icons := context_popup.calculate_space_for_icons()
+	for button in context_popup.buttons:
+		button.custom_minimum_size.x += space_for_icons
+	
 	if min_width > 0:
 		context_popup.custom_minimum_size.x = min_width
 	
@@ -97,6 +101,10 @@ min_width := -1.0, separator_indices := PackedInt32Array()) -> ContextPopup:
 			main_container.add_child(separator)
 		main_container.add_child(context_popup.buttons[idx])
 	
+	var space_for_icons := context_popup.calculate_space_for_icons()
+	for button in context_popup.buttons:
+		button.custom_minimum_size.x += space_for_icons
+	
 	if min_width > 0:
 		context_popup.custom_minimum_size.x = min_width
 	
@@ -136,16 +144,18 @@ static func _common_initial_setup() -> ScrollContainer:
 	return scroll_container
 
 
+func calculate_space_for_icons() -> float:
+	for button in buttons:
+		if (is_instance_valid(button.get_icon()) and align_left) or button.type == ContextButton.Type.CHECKBOX:
+			return 16.0 + ContextButton.ICON_SPACING
+	return 0.0
+
 func _draw() -> void:
 	var vbox := get_child(0).get_child(0)
 	var vbox_ci: RID = vbox.get_canvas_item()
 	RenderingServer.canvas_item_clear(vbox_ci)
 	
-	var text_offset := ContextButton.PADDING
-	for button in buttons:
-		if (is_instance_valid(button.get_icon()) and align_left) or button.type == ContextButton.Type.CHECKBOX:
-			text_offset += 16.0 + ContextButton.ICON_SPACING
-			break
+	var text_offset := ContextButton.PADDING + calculate_space_for_icons()
 	
 	for button_idx in buttons.size():
 		var button := buttons[button_idx]
