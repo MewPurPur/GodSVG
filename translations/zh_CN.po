@@ -782,14 +782,13 @@ msgstr "应用此预设的默认值"
 
 #. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
 #: src/ui_widgets/setting_frame.gd
-#, fuzzy
 msgid "On"
-msgstr "打开"
+msgstr "启用"
 
 #. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
 #: src/ui_widgets/setting_frame.gd
 msgid "Off"
-msgstr ""
+msgstr "禁用"
 
 #: src/ui_widgets/setting_frame.gd
 msgid "Clear"
