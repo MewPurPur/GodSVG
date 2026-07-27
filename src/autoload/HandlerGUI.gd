@@ -53,6 +53,9 @@ var shortcut_registrations: Dictionary[Node, ShortcutsRegistration] = {}
 ## A dictionary of focus masters and their focus sequences.
 var focus_sequences: Dictionary[Control, Array] = {}
 
+## A dictionary of overlays and the focus they displaced when showing up. When they are closed, the focus is restored.
+var suppressed_focused_controls: Dictionary[Control, Control] = {}
+
 
 func _enter_tree() -> void:
 	var shortcuts := ShortcutsRegistration.new()
@@ -140,6 +143,14 @@ func focus_first_control_in_sequence(sequence: Array[Control]) -> void:
 func forget_focus_sequence(focus_master: Control) -> void:
 	focus_sequences.erase(focus_master)
 
+func _restore_suppressed_focus(suppressor: Control) -> void:
+	var new_focus: Control = null
+	if suppressor in suppressed_focused_controls:
+		new_focus = suppressed_focused_controls[suppressor]
+	suppressed_focused_controls.erase(suppressor)
+	if is_instance_valid(new_focus):
+		new_focus.grab_focus(true)
+
 
 ## Adds a new menu to menu_stack which hides the previous one.
 func add_menu(new_menu: Control) -> void:
@@ -156,6 +167,10 @@ func add_dialog(new_dialog: Control) -> void:
 # Common logic for add_menu() and add_dialog().
 func _add_control(new_control: Control) -> void:
 	remove_all_popups()
+	var previous_focus := get_viewport().gui_get_focus_owner()
+	if is_instance_valid(previous_focus):
+		suppressed_focused_controls[new_control] = previous_focus
+		new_control.tree_exiting.connect(_restore_suppressed_focus.bind(new_control))
 	
 	var overlay_ref := ColorRect.new()
 	overlay_ref.color = Color(0, 0, 0, 0.4)
@@ -203,6 +218,11 @@ func remove_all_menus() -> void:
 # The passed popup control may be added to a shadow panel. The shadow panel is
 # returned by the method if that's the case. Otherwise, the original panel is returned.
 func add_popup(new_popup: Control, add_shadow := true) -> Control:
+	var previous_focus := get_viewport().gui_get_focus_owner()
+	if is_instance_valid(previous_focus):
+		suppressed_focused_controls[new_popup] = previous_focus
+		new_popup.tree_exiting.connect(_restore_suppressed_focus.bind(new_popup))
+	
 	var overlay_ref := Control.new()
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
