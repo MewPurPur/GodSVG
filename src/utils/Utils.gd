@@ -39,8 +39,9 @@ static func get_lowercase_extension(string: String) -> String:
 ## Method for showing the file path without stuff like "/home/mewpurpur/".
 static func simplify_file_path(file_path: String) -> String:
 	var home_dir := get_home_dir()
+	var prefix := "" if home_dir.is_empty() else "~/"
 	if file_path.begins_with(home_dir):
-		return "~/" + file_path.trim_prefix(home_dir).trim_prefix("/").trim_prefix("\\")
+		return prefix + file_path.trim_prefix(home_dir).trim_prefix("/").trim_prefix("\\")
 	return file_path
 
 ## Returns the directory considered home, such as "/home/mewpurpur/".
