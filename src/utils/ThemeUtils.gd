@@ -986,6 +986,7 @@ static func _setup_dropdown(theme: Theme) -> void:
 
 static func _setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LineEdit")
+	theme.set_constant("minimum_character_width", "LineEdit", 1)
 	theme.set_color("caret_color", "LineEdit", caret_color)
 	theme.set_color("font_color", "LineEdit", editable_text_color)
 	theme.set_color("font_uneditable_color", "LineEdit", dimmer_text_color)
