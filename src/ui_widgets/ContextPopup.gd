@@ -246,9 +246,12 @@ func try_to_call_focused_button() -> void:
 	if focus_index != -1:
 		var btn := buttons[focus_index]
 		if not btn.disabled:
-			btn.get_callback().call()
+			# If the context popup is cleared, ensure the callbacks run after GUI handling.
 			if btn.type == ContextButton.Type.NORMAL:
 				queue_free()
+				tree_exited.connect(btn.get_callback())
+			else:
+				btn.get_callback().call()
 
 func try_to_open_submenu() -> void:
 	if is_instance_valid(HandlerGUI.popup_submenu) and focus_index == -1:
