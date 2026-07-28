@@ -7,12 +7,8 @@ const PreviewPresentationPopupScene = preload("res://src/ui_widgets/preview_pres
 const NumberEditScene = preload("res://src/ui_widgets/number_edit.tscn")
 
 const TILE_MARGIN = 2.0
-const TILE_TOP_PADDING = 4.0
-const TILE_LEFT_PADDING = 4.0
-const TILE_RIGHT_PADDING = 4.0
-const TILE_BOTTOM_PADDING = 2.0
-const ICON_TEXT_SPACING = 4.0
-const MORE_ICON_SIZE = 16.0
+const TILE_PADDING = 4.0
+const ACTION_BUTTON_SIZE = 16.0
 const MAX_ICON_PREVIEW_SIZE = 128
 
 @onready var icon_preview_tiles: ProceduralControl = %IconPreviewTiles
@@ -31,10 +27,13 @@ class IconPreviewTileData extends RefCounted:
 	var position: Vector2
 	var size: Vector2
 	var preview_rect: Rect2
-	var label_rect: Rect2
-	var more_button_rect: Rect2
+	var dimensions_label_pos: Vector2
+	var additional_label_pos: Vector2
+	var dimensions_label_width: float
+	var action_button_rect: Rect2
 	var bigger_dimension: int
-	var label_text: String
+	var dimensions_text: String
+	var additional_text: String
 	var preview_texture: DPITexture
 	
 	func _init(new_index: int) -> void:
@@ -44,24 +43,27 @@ class IconPreviewTileData extends RefCounted:
 		var multiplier := bigger_dimension / maxf(svg_size.x, svg_size.y)
 		svg_size *= multiplier
 		
-		label_text = "%d×%d (%sx)" % [int(svg_size.x), int(svg_size.y), Utils.num_simple(multiplier, 1 if multiplier > 10 else 2)]
-		var label_size := ThemeUtils.main_font.get_string_size(label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+		dimensions_text = "%d×%d" % [int(svg_size.x), int(svg_size.y)]
+		additional_text = " (%sx)" % Utils.num_simple(multiplier, 1 if multiplier > 10 else 2)
+		dimensions_label_width = ThemeUtils.main_font.get_string_size(dimensions_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
+		var additional_text_width := ThemeUtils.main_font.get_string_size(additional_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
+		var full_text_width := dimensions_label_width + additional_text_width
 		var preview_size := svg_size if bigger_dimension <= MAX_ICON_PREVIEW_SIZE else svg_size * MAX_ICON_PREVIEW_SIZE / maxf(svg_size.x, svg_size.y)
-		var bottom_row_size := label_size.x + MORE_ICON_SIZE
+		var bottom_row_width := dimensions_label_width + maxf(additional_text_width, ACTION_BUTTON_SIZE)
 		
 		# The position needs to be set when all sizes are known, so only size is set here.
-		size = Vector2(maxf(preview_size.x, bottom_row_size) + TILE_LEFT_PADDING + TILE_RIGHT_PADDING,
-				preview_size.y + label_size.y + TILE_TOP_PADDING + TILE_BOTTOM_PADDING + ICON_TEXT_SPACING)
+		size = Vector2(maxf(preview_size.x, bottom_row_width) + TILE_PADDING * 2, preview_size.y + 18 + TILE_PADDING * 2)
 		
-		if preview_size.x >= bottom_row_size:
-			preview_rect = Rect2(Vector2(TILE_TOP_PADDING, TILE_LEFT_PADDING), preview_size)
-			var half_offset := roundf((preview_size.x - label_size.x - MORE_ICON_SIZE - 1) / 2.0)
-			label_rect = Rect2(Vector2(TILE_TOP_PADDING + half_offset, TILE_LEFT_PADDING + preview_size.y + ICON_TEXT_SPACING), label_size - Vector2(1, 0))
-			more_button_rect = Rect2(Vector2(TILE_TOP_PADDING + label_size.x + half_offset, label_rect.position.y + 2), Vector2(MORE_ICON_SIZE, MORE_ICON_SIZE))
+		if preview_size.x >= bottom_row_width:
+			preview_rect = Rect2(Vector2(TILE_PADDING, TILE_PADDING), preview_size)
+			dimensions_label_pos = Vector2(TILE_PADDING + roundf((preview_size.x - full_text_width) / 2.0) + 2,
+					TILE_PADDING + preview_size.y)
 		else:
-			preview_rect = Rect2(Vector2(TILE_TOP_PADDING, TILE_LEFT_PADDING) + Vector2(roundf((bottom_row_size - preview_size.x) / 2.0), 0), preview_size)
-			label_rect = Rect2(Vector2(TILE_TOP_PADDING + 1, TILE_LEFT_PADDING + preview_size.y + ICON_TEXT_SPACING), label_size - Vector2(1, 0))
-			more_button_rect = Rect2(Vector2(TILE_TOP_PADDING + label_size.x, label_rect.position.y + 2), Vector2(MORE_ICON_SIZE, MORE_ICON_SIZE))
+			preview_rect = Rect2(Vector2(TILE_PADDING, TILE_PADDING) + Vector2(roundf((bottom_row_width - preview_size.x) / 2.0), 0), preview_size)
+			dimensions_label_pos = Vector2(TILE_PADDING + 2, TILE_PADDING + preview_size.y)
+		additional_label_pos = dimensions_label_pos + Vector2(dimensions_label_width, 0)
+		action_button_rect = Rect2(Vector2(additional_label_pos.x + (additional_text_width - ACTION_BUTTON_SIZE) / 2, additional_label_pos.y + 2),
+				Vector2(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE))
 		
 		preview_texture = DPITexture.create_from_string(State.stable_export_markup, multiplier)
 
@@ -179,12 +181,6 @@ func sync_tile_positions() -> void:
 	
 	icon_preview_tiles.custom_minimum_size.y = current_y + row_height + TILE_MARGIN
 	icon_preview_tiles.queue_redraw()
-	
-	icon_preview_tiles.buttons.clear()
-	for tile in tiles:
-		icon_preview_tiles.buttons.append(ProceduralControl.ButtonData.create_from_icon(
-				Rect2(tile.position + tile.more_button_rect.position, tile.more_button_rect.size), _show_tile_popup_under_more_button.bind(tile),
-				preload("res://assets/icons/SmallMore.svg")))
 
 
 func _on_preview_tiles_draw() -> void:
@@ -194,19 +190,19 @@ func _on_preview_tiles_draw() -> void:
 	for tile in tiles:
 		var stylebox: StyleBox
 		if tile.index == selected_tile_index:
-			stylebox = get_theme_stylebox("pressed", "Button")
-		elif tile.index == hovered_tile_index:
-			stylebox = get_theme_stylebox("hover", "Button")
+			stylebox = get_theme_stylebox("hover_pressed" if tile.index == hovered_tile_index else "pressed", "Button")
 		else:
-			stylebox = get_theme_stylebox("normal", "Button")
-		
+			stylebox = get_theme_stylebox("hover" if tile.index == hovered_tile_index else "normal", "Button")
 		stylebox.draw(icon_preview_tiles.ci, Rect2(tile.position, tile.size))
 		
 		if tile.preview_texture:
 			tile.preview_texture.draw_rect(icon_preview_tiles.ci, Rect2(tile.position + tile.preview_rect.position, tile.preview_rect.size), false)
 		
-		font.draw_string(icon_preview_tiles.ci, tile.position + tile.label_rect.position + Vector2(0, 14),
-				tile.label_text, HORIZONTAL_ALIGNMENT_LEFT, tile.label_rect.size.x, font_size, ThemeUtils.text_color)
+		font.draw_string(icon_preview_tiles.ci, tile.position + tile.dimensions_label_pos + Vector2(0, 14),
+				tile.dimensions_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, ThemeUtils.text_color)
+		if tile.index != selected_tile_index:
+			font.draw_string(icon_preview_tiles.ci, tile.position + tile.additional_label_pos + Vector2(0, 14),
+					tile.additional_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, ThemeUtils.dimmer_text_color)
 
 
 func _on_tiles_gui_input(event: InputEvent) -> void:
@@ -245,10 +241,27 @@ func _on_tiles_mouse_exited() -> void:
 	icon_preview_tiles.queue_redraw()
 
 func _select_tile(tile_index: int) -> void:
+	if tile_index == selected_tile_index:
+		return
 	selected_tile_index = tile_index
-	size_label.text = tiles[tile_index].label_text if tile_index >= 0 else ""
-	preview_top_panel.visible = (tile_index >= 0)
+	
+	if tile_index < 0:
+		icon_preview_tiles.buttons.clear()
+		preview_top_panel.visible = false
+		return
+	preview_top_panel.visible = true
+	
+	var tile := tiles[tile_index]
+	size_label.text = tile.dimensions_text + tile.additional_text
 	_sync_texture()
+	_sync_buttons()
+
+func _sync_buttons() -> void:
+	var tile := tiles[selected_tile_index]
+	icon_preview_tiles.buttons.clear()
+	icon_preview_tiles.buttons.append.call_deferred(ProceduralControl.ButtonData.create_from_icon(
+			Rect2(tile.position + tile.action_button_rect.position, tile.action_button_rect.size), _show_tile_popup_under_more_button.bind(tile),
+			preload("res://assets/icons/SmallMore.svg")))
 	icon_preview_tiles.queue_redraw()
 
 func _sync_texture() -> void:
@@ -270,7 +283,7 @@ func _show_tile_popup_at_pos(tile: IconPreviewTileData, pos: Vector2) -> void:
 
 func _show_tile_popup_under_more_button(tile: IconPreviewTileData) -> void:
 	HandlerGUI.popup_under_rect_center(_generate_tile_popup(tile),
-			Rect2(icon_preview_tiles.global_position + tile.position + tile.more_button_rect.position, tile.more_button_rect.size), get_viewport())
+			Rect2(icon_preview_tiles.global_position + tile.position + tile.action_button_rect.position, tile.action_button_rect.size), get_viewport())
 
 
 func _edit_tile_size(tile: IconPreviewTileData) -> void:
@@ -283,8 +296,8 @@ func _edit_tile_size(tile: IconPreviewTileData) -> void:
 	edit_field.is_float = false
 	icon_preview_tiles.add_child(edit_field)
 	edit_field.text = String.num_uint64(tile.bigger_dimension)
-	edit_field.position = icon_preview_tiles.position + tile.position + tile.label_rect.position - Vector2(3, 4)
-	edit_field.size = tile.label_rect.size
+	edit_field.position = icon_preview_tiles.position + tile.position + tile.dimensions_label_pos - Vector2(5, 4)
+	edit_field.size = Vector2(tile.dimensions_label_width + 1, 0)
 	edit_field.add_theme_font_override("font", ThemeUtils.main_font)
 	edit_field.editing_toggled.connect(_on_edit_field_editing_toggled)
 	edit_field.value_changed.connect(_on_edit_field_value_changed)
@@ -298,6 +311,7 @@ func _on_edit_field_value_changed(new_value: float) -> void:
 	sync_tiles()
 	if edited_tile_index == selected_tile_index:
 		_select_tile(edited_tile_index)
+	_sync_buttons()
 
 func _on_edit_field_editing_toggled(toggled_on: bool) -> void:
 	if not toggled_on:

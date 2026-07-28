@@ -149,7 +149,7 @@ func _restore_suppressed_focus(suppressor: Control) -> void:
 		new_focus = suppressed_focused_controls[suppressor]
 	suppressed_focused_controls.erase(suppressor)
 	if is_instance_valid(new_focus):
-		new_focus.grab_focus(true)
+		new_focus.grab_focus(not new_focus.has_focus(true))
 
 
 ## Adds a new menu to menu_stack which hides the previous one.
