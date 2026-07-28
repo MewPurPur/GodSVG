@@ -82,7 +82,7 @@ func set_link(new_link: Link) -> void:
 		clarifications.clear()
 		clarifications.push_color(ThemeUtils.subtle_text_color)
 		clarifications.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		clarifications.add_text("\nHover a platform for details.")
+		clarifications.add_text("\n" + Translator.translate("Hover a platform for details."))
 		return
 	
 	var title: String
@@ -91,13 +91,16 @@ func set_link(new_link: Link) -> void:
 	match new_link:
 		Link.GITHUB:
 			title = "Github Sponsors"
-			pros = PackedStringArray(["Low extra fees", "Can donate arbitrary amounts"])
+			pros = PackedStringArray([Translator.translate("Low extra fees"),
+				Translator.translate("Can donate arbitrary amounts")])
 		Link.KO_FI:
 			title = "Ko-Fi"
-			pros = PackedStringArray(["Low extra fees", "Can donate arbitrary amounts"])
+			pros = PackedStringArray([Translator.translate("Low extra fees"),
+				Translator.translate("Can donate arbitrary amounts")])
 		Link.PATREON:
 			title = "Patreon"
-			cons = PackedStringArray(["Higher extra fees", "Can't donate arbitrary amounts"])
+			cons = PackedStringArray([Translator.translate("Higher extra fees"),
+				Translator.translate("Can't donate arbitrary amounts")])
 	
 	clarifications.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	clarifications.clear()

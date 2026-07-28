@@ -308,6 +308,26 @@ msgstr "Ссылки на платформы для пожертвований"
 msgid "Cancel"
 msgstr "Отменить"
 
+#: src/ui_parts/donate_menu.gd
+msgid "Hover a platform for details."
+msgstr ""
+
+#: src/ui_parts/donate_menu.gd
+msgid "Low extra fees"
+msgstr ""
+
+#: src/ui_parts/donate_menu.gd
+msgid "Can donate arbitrary amounts"
+msgstr ""
+
+#: src/ui_parts/donate_menu.gd
+msgid "Higher extra fees"
+msgstr ""
+
+#: src/ui_parts/donate_menu.gd
+msgid "Can't donate arbitrary amounts"
+msgstr ""
+
 #: src/ui_parts/element_container.gd
 msgid "New element"
 msgstr "Новый элемент"
