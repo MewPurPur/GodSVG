@@ -22,7 +22,7 @@ const MAX_ICON_PREVIEW_SIZE = 128
 @onready var split_container: SplitContainer = %SplitContainer
 @onready var preview_top_panel: PanelContainer = $SplitContainer/PreviewTopPanel
 @onready var size_label_margins: MarginContainer = %SizeLabelMargins
-@onready var add_new_preview_button: Button = $ActionContainer/AddNewPreviewButton
+@onready var add_button: Button = $ActionContainer/AddButton
 @onready var presentation_config_button: Button = $ActionContainer/PresentationConfigButton
 @onready var more_button: Button = $ActionContainer/MoreButton
 
@@ -79,9 +79,10 @@ func _ready() -> void:
 	
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
+	Configs.language_changed.connect(sync_localization)
+	sync_localization()
 	
-	add_new_preview_button.text = Translator.translate("Add preview")
-	add_new_preview_button.pressed.connect(_add_new_tile)
+	add_button.pressed.connect(_add_new_tile)
 	
 	var presentation_config_button_ci := RenderingServer.canvas_item_create()
 	RenderingServer.canvas_item_set_parent(presentation_config_button_ci, presentation_config_button.get_canvas_item())
@@ -106,7 +107,7 @@ func _ready() -> void:
 	icon_preview_tiles.resized.connect(sync_tile_positions)
 	sync_tiles()
 	_sync_preview_background()
-	HandlerGUI.register_focus_sequence(self, [add_new_preview_button, presentation_config_button, more_button])
+	HandlerGUI.register_focus_sequence(self, [add_button, presentation_config_button, more_button])
 
 
 func sync_theming() -> void:
@@ -115,6 +116,9 @@ func sync_theming() -> void:
 	color = Color.TRANSPARENT
 	border_color = ThemeUtils.subtle_panel_border_color
 	title_color = ThemeUtils.basic_panel_inner_color
+
+func sync_localization() -> void:
+	add_button.text = Translator.translate("Add preview")
 
 func sync_preview_top_panel_expand_margins() -> void:
 	var stylebox := preview_top_panel.get_theme_stylebox("panel").duplicate()
@@ -230,7 +234,7 @@ func _on_tiles_gui_input(event: InputEvent) -> void:
 							break
 				else:
 					var btn_array: Array[ContextButton] = [
-						ContextButton.create_custom(Translator.translate("Add new preview"), _add_new_tile, preload("res://assets/icons/Plus.svg"))
+						ContextButton.create_custom(Translator.translate("Add preview"), _add_new_tile, preload("res://assets/icons/Plus.svg"))
 					]
 					var vp := get_viewport()
 					HandlerGUI.popup_under_pos(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)

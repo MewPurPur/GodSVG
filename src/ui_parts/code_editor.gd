@@ -8,7 +8,7 @@ extends VBoxContainer
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("copy_svg_text", func() -> void: DisplayServer.clipboard_set(State.svg_text))
+	shortcuts.add_shortcut("copy_svg_text", func() -> void: DisplayServer.clipboard_set(State.get_editor_text()))
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	options_button.pressed.connect(_on_options_button_pressed)

@@ -135,6 +135,9 @@ func optimize() -> void:
 func get_export_text() -> String:
 	return unstable_markup if stable_export_markup.is_empty() else stable_export_markup
 
+func get_editor_text() -> String:
+	return unstable_markup if stable_editor_markup.is_empty() else stable_editor_markup
+
 
 signal hover_changed
 signal selection_changed
