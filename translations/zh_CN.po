@@ -306,6 +306,26 @@ msgstr "捐赠平台"
 msgid "Cancel"
 msgstr "取消"
 
+#: src/ui_parts/donate_menu.gd
+msgid "Hover a platform for details."
+msgstr "鼠标悬停查看详情。"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Low extra fees"
+msgstr "较低的额外费用"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Can donate arbitrary amounts"
+msgstr "支持自定义捐赠金额"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Higher extra fees"
+msgstr "较高的额外费用"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Can't donate arbitrary amounts"
+msgstr "不支持自定义捐赠金额"
+
 #: src/ui_parts/element_container.gd
 msgid "New element"
 msgstr "新元素"
