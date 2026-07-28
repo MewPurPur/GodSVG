@@ -308,23 +308,23 @@ msgstr "Отказ"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Hover a platform for details."
-msgstr ""
+msgstr "Задръж курсора върху платформа, за да видиш подробности."
 
 #: src/ui_parts/donate_menu.gd
 msgid "Low extra fees"
-msgstr ""
+msgstr "Ниски допълнителни такси"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Can donate arbitrary amounts"
-msgstr ""
+msgstr "Можеш да дариш суми по свой избор"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Higher extra fees"
-msgstr ""
+msgstr "По-високи допълнителни такси"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Can't donate arbitrary amounts"
-msgstr ""
+msgstr "Не можеш да дариш суми по свой избор"
 
 #: src/ui_parts/element_container.gd
 msgid "New element"
