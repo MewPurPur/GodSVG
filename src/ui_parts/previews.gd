@@ -180,6 +180,7 @@ func sync_tile_positions() -> void:
 			tiles[i].position.y = current_y + (row_height - tiles[i].size.y) / 2.0
 	
 	icon_preview_tiles.custom_minimum_size.y = current_y + row_height + TILE_MARGIN
+	_sync_buttons()
 	icon_preview_tiles.queue_redraw()
 
 
@@ -251,21 +252,24 @@ func _select_tile(tile_index: int) -> void:
 		return
 	preview_top_panel.visible = true
 	
-	var tile := tiles[tile_index]
-	size_label.text = tile.dimensions_text + tile.additional_text
 	_sync_texture()
 	_sync_buttons()
 
 func _sync_buttons() -> void:
+	if selected_tile_index < 0:
+		return
 	var tile := tiles[selected_tile_index]
 	icon_preview_tiles.buttons.clear()
 	icon_preview_tiles.buttons.append.call_deferred(ProceduralControl.ButtonData.create_from_icon(
 			Rect2(tile.position + tile.action_button_rect.position, tile.action_button_rect.size), _show_tile_popup_under_more_button.bind(tile),
 			preload("res://assets/icons/SmallMore.svg")))
-	icon_preview_tiles.queue_redraw()
+	icon_preview_tiles.queue_redraw.call_deferred()
 
 func _sync_texture() -> void:
 	if selected_tile_index >= 0:
+		var tile := tiles[selected_tile_index]
+		size_label.text = tile.dimensions_text + tile.additional_text
+		
 		var svg_size := State.root_element.get_size()
 		var multiplier := Configs.savedata.preview_presentation_sizes[selected_tile_index] / maxf(svg_size.x, svg_size.y)
 		texture_rect.texture = Configs.savedata.preview_presentation.generate_texture(multiplier)
@@ -311,7 +315,6 @@ func _on_edit_field_value_changed(new_value: float) -> void:
 	sync_tiles()
 	if edited_tile_index == selected_tile_index:
 		_select_tile(edited_tile_index)
-	_sync_buttons()
 
 func _on_edit_field_editing_toggled(toggled_on: bool) -> void:
 	if not toggled_on:
