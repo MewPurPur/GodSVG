@@ -189,5 +189,4 @@ func _gui_input(event: InputEvent) -> void:
 		# Wow, no way to find out the column of a given click? Okay...
 		# TODO Make it so LineEdit caret automatically moves to the clicked position to finish the right-click logic.
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		# TODO There's no focus mode for keeping focus visible when clicking an already focused control.
-		correct_edit()
+		grab_focus(not has_focus())
