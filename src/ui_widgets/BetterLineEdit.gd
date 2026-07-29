@@ -23,8 +23,8 @@ func correct_edit() -> void:
 		edit()
 		editing_toggled.emit(true)
 
-func correct_unedit() -> void:
-	if is_editing() or (not editable and has_focus(true)):
+func correct_unedit(was_previously_focus := false) -> void:
+	if is_editing() or (not editable and (was_previously_focus or has_focus(true))):
 		unedit()
 		editing_toggled.emit(false)
 
@@ -37,9 +37,9 @@ func _init() -> void:
 	context_menu_enabled = false
 	caret_blink = true
 	caret_blink_interval = 0.6
-	focus_exited.connect(correct_unedit)
-	text_submitted.connect(correct_unedit.unbind(1))
-	editing_toggled.connect(_on_editing_toggled)
+	focus_exited.connect(correct_unedit.bind(true))
+	text_submitted.connect(_on_base_class_text_submitted)
+	editing_toggled.connect(_on_base_class_editing_toggled)
 	mouse_exited.connect(queue_redraw)
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
@@ -53,7 +53,7 @@ func sync_theming() -> void:
 var first_click := false
 var text_before_edit := ""
 
-func _on_editing_toggled(toggled_on: bool) -> void:
+func _on_base_class_editing_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		# Hack to check if focus entered was from a mouse click.
 		if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
@@ -64,16 +64,20 @@ func _on_editing_toggled(toggled_on: bool) -> void:
 			select_all()
 	else:
 		first_click = false
-		if Input.is_action_pressed("ui_cancel"):
-			text = text_before_edit
-			text_change_canceled.emit()
-		elif not Input.is_action_pressed("ui_accept"):
-			# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
-			if text != text_before_edit:
-				text_submitted.emit(text)
+		if is_editing():
+			if Input.is_action_pressed("ui_cancel"):
+				text = text_before_edit
+				text_change_canceled.emit()
+			elif not Input.is_action_pressed("ui_accept"):
+				# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
+				if text != text_before_edit:
+					text_submitted.emit(text)
 		text_before_edit = ""
 		deselect()
-		grab_focus(true)
+
+func _on_base_class_text_submitted(_text: String) -> void:
+	correct_unedit()
+	grab_focus(true)
 
 
 func _draw() -> void:
@@ -183,8 +187,7 @@ func _gui_input(event: InputEvent) -> void:
 		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 		accept_event()
 		# Wow, no way to find out the column of a given click? Okay...
-		# TODO Make it so LineEdit caret automatically moves to the clicked position
-		# to finish the right-click logic.
+		# TODO Make it so LineEdit caret automatically moves to the clicked position to finish the right-click logic.
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		# TODO There's no focus mode for keeping focus visible when clicking an already focused control.
-		grab_focus()
+		correct_edit()
