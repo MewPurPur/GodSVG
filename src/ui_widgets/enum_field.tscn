@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bplpuld6fqv7q" path="res://src/ui_widgets/enum_field.gd" id="1_1jqoy"]
 
 [node name="EnumField" type="Control" unique_id=1774644178]
-custom_minimum_size = Vector2(81, 22)
+custom_minimum_size = Vector2(84, 22)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 75.0

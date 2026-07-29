@@ -266,13 +266,15 @@ func _sync_buttons() -> void:
 	icon_preview_tiles.queue_redraw.call_deferred()
 
 func _sync_texture() -> void:
-	if selected_tile_index >= 0:
-		var tile := tiles[selected_tile_index]
-		size_label.text = tile.dimensions_text + tile.additional_text
-		
-		var svg_size := State.root_element.get_size()
-		var multiplier := Configs.savedata.preview_presentation_sizes[selected_tile_index] / maxf(svg_size.x, svg_size.y)
-		texture_rect.texture = Configs.savedata.preview_presentation.generate_texture(multiplier)
+	if selected_tile_index < 0:
+		return
+	
+	var tile := tiles[selected_tile_index]
+	size_label.text = tile.dimensions_text + tile.additional_text
+	
+	var svg_size := State.root_element.get_size()
+	var multiplier := Configs.savedata.preview_presentation_sizes[selected_tile_index] / maxf(svg_size.x, svg_size.y)
+	texture_rect.texture = Configs.savedata.preview_presentation.generate_texture(multiplier)
 
 
 func _generate_tile_popup(tile: IconPreviewTileData) -> ContextPopup:
