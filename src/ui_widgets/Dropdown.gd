@@ -40,7 +40,7 @@ func _draw() -> void:
 	
 	var text_line := TextLine.new()
 	text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
-	text_line.width = size.x - spacing - arrow_icon.get_width() - normal_sb.content_margin_left + 2
+	text_line.width = size.x - half_spacing - arrow_icon.get_width() - normal_sb.content_margin_left
 	text_line.add_string(_text, font, font_size)
 	
 	var y_offset := normal_sb.get_offset().y + (size.y - normal_sb.get_minimum_size().y - text_line.get_size().y) / 2.0

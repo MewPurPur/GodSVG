@@ -1243,6 +1243,7 @@ static func _setup_separator(theme: Theme) -> void:
 static func _setup_label(theme: Theme) -> void:
 	theme.add_type("Label")
 	theme.set_color("font_color", "Label", text_color)
+	theme.set_constant("line_spacing", "Label", 0)
 	
 	theme.add_type("TitleLabel")
 	theme.set_type_variation("TitleLabel", "Label")
