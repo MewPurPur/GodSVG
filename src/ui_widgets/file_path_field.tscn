@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://n6ive1o6t4bp" path="res://assets/icons/FileBrowse.svg" id="3_qlle3"]
 
 [node name="FilePathField" type="HBoxContainer" unique_id=109570203]
-custom_minimum_size = Vector2(130, 22)
+custom_minimum_size = Vector2(132, 22)
 offset_right = 93.0
 offset_bottom = 31.0
 size_flags_horizontal = 0
@@ -20,7 +20,7 @@ theme_type_variation = &"RightConnectedLineEdit"
 script = ExtResource("2_vugfe")
 
 [node name="Button" type="Button" parent="." unique_id=713547953]
-custom_minimum_size = Vector2(24, 0)
+custom_minimum_size = Vector2(23, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1

@@ -128,7 +128,7 @@ func setup_file_path(extensions: PackedStringArray) -> void:
 	add_child(widget)
 	widget.value_changed.connect(_generic_modification)
 	type = Type.FILE_PATH
-	panel_width = 160
+	panel_width = 162
 
 # TODO Typed Dictionary wonkiness
 func setup_dropdown(values: Array[Variant], value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
