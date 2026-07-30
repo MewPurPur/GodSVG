@@ -42,7 +42,11 @@ func _ready() -> void:
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
+	Configs.language_changed.connect(sync_localization)
 
+func sync_localization() -> void:
+	set_label_text("")
+	display_warnings()
 
 func display_warnings() -> void:
 	var warnings := PackedStringArray()
