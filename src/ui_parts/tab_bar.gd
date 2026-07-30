@@ -203,14 +203,15 @@ func _gui_input(event: InputEvent) -> void:
 						scrolling_backwards = true
 						set_process(true)
 						return
-					elif hovered_idx == -1 and event.double_click:
-						Configs.savedata.add_empty_tab()
-						return
 					
 					var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
 					if scroll_forwards_area_rect.has_area() and scroll_forwards_area_rect.has_point(event.position) and not is_scroll_forwards_disabled():
 						scrolling_forwards = true
 						set_process(true)
+						return
+					
+					if hovered_idx == -1 and not get_close_button_rect().has_point(event.position) and event.double_click:
+						Configs.savedata.add_empty_tab()
 					return
 				
 				var btn_arr: Array[ContextButton] = []
