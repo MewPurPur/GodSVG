@@ -19,10 +19,8 @@ func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("load_reference", FileUtils.open_image_import_dialog.bind(set_main_viewport_reference_image),
 			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("view_show_reference", func() -> void: canvas.show_reference = not canvas.show_reference,
-			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_overlay_reference", func() -> void: canvas.overlay_reference = not canvas.overlay_reference,
-			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("view_show_reference", toggle_show_reference_image, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("view_overlay_reference", toggle_overlay_reference_image, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("toggle_snap", func() -> void: Configs.savedata.snap *= -1, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
@@ -130,12 +128,23 @@ func paste_reference_image() -> void:
 func clear_reference_image() -> void:
 	set_main_viewport_reference_image(null)
 
+func toggle_show_reference_image() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	active_tab.show_reference = not active_tab.show_reference
+	canvas.sync_reference_image()
+
+func toggle_overlay_reference_image() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	active_tab.overlay_reference = not active_tab.overlay_reference
+	canvas.sync_reference_image()
+
 func set_main_viewport_reference_image(image: Image) -> void:
 	if is_instance_valid(image):
 		image.fix_alpha_edges()
-		canvas.reference_image = ImageTexture.create_from_image(image)
+		Configs.savedata.get_active_tab().reference_image = ImageTexture.create_from_image(image)
 	else:
-		canvas.reference_image = null
+		Configs.savedata.get_active_tab().reference_image = null
+	canvas.sync_reference_image()
 
 
 func _on_visuals_button_pressed() -> void:

@@ -1,27 +1,5 @@
 extends Canvas
 
-var reference_image: Texture2D:
-	set(new_value):
-		if reference_image != new_value:
-			reference_image = new_value
-			Configs.savedata.get_active_tab().reference_image = new_value
-			sync_reference_image()
-
-var show_reference := true:
-	set(new_value):
-		if show_reference != new_value:
-			show_reference = new_value
-			Configs.savedata.get_active_tab().show_reference = new_value
-			sync_reference_image()
-
-var overlay_reference := false:
-	set(new_value):
-		if overlay_reference != new_value:
-			overlay_reference = new_value
-			Configs.savedata.get_active_tab().overlay_reference = new_value
-			sync_reference_image()
-
-
 var reference_image_ci: RID
 
 func _ready() -> void:
