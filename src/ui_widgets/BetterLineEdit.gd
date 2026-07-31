@@ -55,13 +55,16 @@ var text_before_edit := ""
 
 func _on_base_class_editing_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		# Hack to check if focus entered was from a mouse click.
-		if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			first_click = true
-		text_before_edit = text
-		grab_focus()
-		if not first_click:
-			select_all()
+		if not has_focus(true):
+			correct_unedit()
+		else:
+			# Hack to check if focus entered was from a mouse click.
+			if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				first_click = true
+			text_before_edit = text
+			grab_focus()
+			if not first_click:
+				select_all()
 	else:
 		first_click = false
 		if Input.is_action_pressed("ui_cancel"):
@@ -89,8 +92,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 		label.add_theme_font_override("font", ThemeUtils.mono_font)
 		label.text = for_text
 		return label
-	else:
-		return null
+	return null
 
 
 func _input(event: InputEvent) -> void:
