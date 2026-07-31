@@ -4,10 +4,10 @@ extends VBoxContainer
 var element: Element
 const attribute_name = "d"  # Never propagates.
 
-# So, about this editor. Most of this code is about implementing a huge optimization.
+# So, about this editor. Most of this code is about implementing a big optimization.
 # All the path commands are a single node that draws fake-outs in order to prevent
-# adding too many nodes to the scene tree. The real controls are only created when
-# necessary, such as when hovered or focused.
+# adding too many nodes to the scene tree. Real controls are only created when necessary,
+# i.e., a strip that's hovered, focused, or directly above or below the focused strip.
 
 const STRIP_HEIGHT = 22.0
 
@@ -27,18 +27,13 @@ var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 @onready var commands_container: Control = $Commands
 
 # Variables around the big optimization.
-# The idea is that when the mouse enters a strip, it's remembered as hovered.
-# If a numfield is focused, its strip is remembered as focused.
-# If a numfield is hovered and then focused, the controls aren't re-added,
-# instead, the references are moved from the hovered to the focused fields array.
-# If a focused field is hovered, no hovered fields are added.
-var hovered_idx := -1
-var focused_idx := -1
-var hovered_strip: Control
-var focused_strip: Control
+# The dictionary of real strips is synced every time the mouse hovers a strip,
+# a control is focused in or around a strip, or the line_edit is focused and needs
+# the first strip to be accessible via focus. Strips that haven't been changed get reused.
+var hovered_index := -1
+var focused_index := -1
+var real_strips: Dictionary[int, Control] = {}
 
-var current_selections: Array[int] = []
-var current_hovered := -1
 @onready var ci := commands_container.get_canvas_item()
 var add_move_button: Control
 
@@ -66,18 +61,14 @@ func setup() -> void:
 	commands_container.draw.connect(_commands_draw)
 	commands_container.gui_input.connect(_on_commands_gui_input)
 	commands_container.mouse_exited.connect(_on_commands_mouse_exited)
-	State.hover_changed.connect(_on_selections_or_hover_changed)
-	State.selection_changed.connect(_on_selections_or_hover_changed)
-	# So, the reason we need this is quite complicated. We need to know
-	# the current_selections and current_hovered at the time this widget is created.
-	# This is because the widget can sometimes be created before they are cleared
-	# from a past state of the SVG. So we trigger this method to update those.
-	_on_selections_or_hover_changed()
+	State.hover_changed.connect(commands_container.queue_redraw)
+	State.selection_changed.connect(commands_container.queue_redraw)
+	commands_container.queue_redraw()
+	HandlerGUI.register_focus_sequence(self, [line_edit, commands_container])
 
 
 func get_inner_rect(index: int) -> Rect2:
-	return Rect2(commands_container.position + Vector2(0, STRIP_HEIGHT * index),
-			Vector2(commands_container.size.x, STRIP_HEIGHT))
+	return Rect2(commands_container.position + Vector2(0, STRIP_HEIGHT * index), Vector2(commands_container.size.x, STRIP_HEIGHT))
 
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
@@ -95,6 +86,7 @@ func sync_theming() -> void:
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
+	set_focused(-1)
 
 func setup_font_with_current_text() -> void:
 	setup_font(line_edit.text)
@@ -133,9 +125,8 @@ func sync() -> void:
 	commands_container.custom_minimum_size.y = cmd_count * STRIP_HEIGHT
 	if get_rect().has_point(get_local_mouse_position()):
 		HandlerGUI.throw_mouse_motion_event()
-	if hovered_idx >= cmd_count:
-		activate_hovered(-1)
-	reactivate_hovered()
+	if hovered_index >= cmd_count:
+		set_hovered(-1)
 	commands_container.queue_redraw()
 
 
@@ -146,14 +137,12 @@ func update_parameter(new_value: float, property: String, idx: int) -> void:
 		match property:
 			"x", "x1", "x2": new_value += cmd.start_x
 			"y", "y1", "y2": new_value += cmd.start_y
-		attrib.set_command_property(idx, property, new_value)
-	else:
-		attrib.set_command_property(idx, property, new_value)
+	attrib.set_command_property(idx, property, new_value)
 	State.save_svg()
 
 func _on_relative_button_pressed() -> void:
-	element.get_attribute(attribute_name).toggle_relative_command(hovered_idx)
-	setup_path_command_controls(hovered_idx)
+	element.get_attribute(attribute_name).toggle_relative_command(focused_index)
+	set_focused(focused_index, true, not get_viewport().gui_get_focus_owner().has_focus(true))
 	State.save_svg()
 
 func _on_add_move_button_pressed() -> void:
@@ -164,31 +153,16 @@ func _on_add_move_button_pressed() -> void:
 
 # Path commands editor orchestration.
 
-func _on_selections_or_hover_changed() -> void:
-	var new_selections: Array[int] = []
-	if State.semi_selected_xid == element.xid:
-		new_selections = State.inner_selections.duplicate()
-	var new_hovered := -1
-	if State.semi_hovered_xid == element.xid:
-		new_hovered = State.inner_hovered
-	# Only redraw if selections or hovered changed.
-	if new_selections != current_selections:
-		current_selections = new_selections
-		commands_container.queue_redraw()
-	if new_hovered != current_hovered:
-		current_hovered = new_hovered
-		commands_container.queue_redraw()
-
 func _on_commands_mouse_exited() -> void:
 	var cmd_idx := State.inner_hovered
 	if State.semi_hovered_xid == element.xid:
-		activate_hovered(-1)
+		set_hovered(-1)
 	State.remove_hovered(element.xid, cmd_idx)
 
 
 # Prevents buttons from selecting a whole subpath when double-clicked.
 func _eat_double_clicks(event: InputEvent, button: Button) -> void:
-	if hovered_idx >= 0 and event is InputEventMouseButton and event.double_click:
+	if hovered_index >= 0 and event is InputEventMouseButton and event.double_click:
 		button.accept_event()
 		if event.is_pressed():
 			if button.toggle_mode:
@@ -210,7 +184,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 			State.set_hovered(element.xid, cmd_idx)
 		else:
 			State.remove_hovered(element.xid, cmd_idx)
-		activate_hovered(cmd_idx)
+		set_hovered(cmd_idx)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
@@ -264,9 +238,10 @@ func _commands_draw() -> void:
 			elif hovered:
 				stylebox.bg_color = ThemeUtils.soft_hover_overlay_color
 			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(commands_container.size.x, STRIP_HEIGHT)))
-		# Draw the child controls. They are going to be drawn, not added as a node unless
-		# the mouse hovers them. This is a hack to significantly improve performance.
-		if i == hovered_idx or i == focused_idx:
+		
+		# Draw the child controls. They won't be added as nodes until necessary for UI purposes.
+		# This is a hack to significantly improve performance.
+		if i in real_strips.keys():
 			continue
 		
 		var cmd := path_attribute.get_command(i)
@@ -350,52 +325,65 @@ func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: PackedStringAr
 		draw_numfield(first_rect, names[i + 1], path_command)
 
 
-func activate_hovered(idx: int) -> void:
-	if idx != hovered_idx and idx < element.get_attribute(attribute_name).get_command_count():
-		activate_hovered_shared_logic(idx)
+func set_hovered(index: int) -> void:
+	if hovered_index != index:
+		hovered_index = index
+		sync_real_strips()
 
-func reactivate_hovered() -> void:
-	activate_hovered_shared_logic(hovered_idx)
-
-func activate_hovered_shared_logic(idx: int) -> void:
-	if is_instance_valid(hovered_strip):
-		hovered_strip.queue_free()
-	if focused_idx != idx:
-		hovered_strip = setup_path_command_controls(idx)
-	hovered_idx = idx
-	commands_container.queue_redraw()
-
-func activate_focused(idx: int) -> void:
-	if idx == focused_idx:
+func set_focused(idx: int, focus_relative_button := false, hide_relative_button_focus := false) -> void:
+	if focused_index == idx and not focus_relative_button and not (idx == -1 and line_edit.has_focus()):
 		return
+	focused_index = idx
+	sync_real_strips(focus_relative_button, hide_relative_button_focus)
+
+func sync_real_strips(focus_relative_button := false, hide_relative_button_focus := false) -> void:
+	var wanted: Array[int] = []
+	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
 	
-	if idx == -1:
-		if focused_idx == hovered_idx:
-			hovered_strip = focused_strip
-			focused_strip = null
-		else:
-			focused_strip.queue_free()
-	elif idx == hovered_idx:
-		if focused_idx >= 0:
-			focused_strip.queue_free()
-		focused_strip = hovered_strip
-		hovered_strip = null
-	else:
-		focused_strip = setup_path_command_controls(idx)
+	if hovered_index >= 0 and hovered_index < cmd_count:
+		wanted.append(hovered_index)
 	
-	focused_idx = idx
+	if focused_index >= 0 and focused_index < cmd_count:
+		for i in range(focused_index - 1, focused_index + 2):
+			if i >= 0 and i < cmd_count and not i in wanted:
+				wanted.append(i)
+	elif line_edit.has_focus() and cmd_count > 0 and not 0 in wanted:
+		wanted.append(0)
+	
+	wanted.sort()
+	
+	for idx in real_strips.keys():
+		if not idx in wanted:
+			real_strips[idx].queue_free()
+			real_strips.erase(idx)
+	
+	for idx in wanted:
+		if not idx in real_strips.keys():
+			real_strips[idx] = setup_path_command_controls(idx, focus_relative_button, hide_relative_button_focus)
+		elif focus_relative_button and idx == focused_index:
+			real_strips[idx].queue_free()
+			real_strips[idx] = setup_path_command_controls(idx, focus_relative_button, hide_relative_button_focus)
+	
+	HandlerGUI.forget_focus_sequence(commands_container)
+	var focus_sequence: Array[Control] = []
+	for idx in wanted:
+		var strip := real_strips[idx]
+		if is_instance_valid(strip):
+			focus_sequence.append_array(strip.get_children())
+	HandlerGUI.register_focus_sequence(commands_container, focus_sequence)
 	commands_container.queue_redraw()
 
-func check_focused() -> void:
-	for child in focused_strip.get_children():
+
+func check_if_strip_still_focused(index: int) -> void:
+	if focused_index != index:
+		return
+	for child in real_strips[index].get_children():
 		if child.has_focus():
 			return
-	activate_focused(-1)
+	set_focused(-1)
 
-func setup_path_command_controls(idx: int) -> Control:
-	if idx < 0:
-		return null
-	
+
+func setup_path_command_controls(idx: int, focus_relative_button := false, hide_relative_button_focus := false) -> Control:
 	var cmd: PathCommand = element.get_attribute(attribute_name).get_command(idx)
 	var cmd_char := cmd.command_char
 	
@@ -413,34 +401,24 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.text = cmd_char
 	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char)
 	container.add_child(relative_button)
+	if focus_relative_button:
+		relative_button.grab_focus(hide_relative_button_focus)
 	relative_button.pressed.connect(_on_relative_button_pressed)
 	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))
-	relative_button.focus_entered.connect(activate_focused.bind(idx))
-	relative_button.focus_exited.connect(check_focused, CONNECT_DEFERRED)
+	relative_button.focus_entered.connect(set_focused.bind(idx))
+	relative_button.focus_entered.connect(State.normal_select.bind(element.xid, idx))
+	relative_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
 	relative_button.position = Vector2(3, 2)
 	relative_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
-	# Setup the action button.
-	var action_button := Button.new()
-	action_button.icon = more_icon
-	action_button.theme_type_variation = "FlatButton"
-	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	container.add_child(action_button)
-	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
-	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
-	action_button.focus_entered.connect(activate_focused.bind(idx))
-	action_button.focus_exited.connect(check_focused, CONNECT_DEFERRED)
-	action_button.position = Vector2(commands_container.size.x - 21, 2)
-	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the fields.
 	var fields: Array[Control] = []
 	var spacings := PackedInt32Array()
 	var property_names: PackedStringArray = []
 	match cmd_char.to_upper():
 		"A":
-			var field_rx: BetterLineEdit = numfield(idx)
-			var field_ry: BetterLineEdit = numfield(idx)
-			var field_rot: BetterLineEdit = numfield(idx)
+			var field_rx := numfield()
+			var field_ry := numfield()
+			var field_rot := numfield()
 			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
 			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
 			field_rot.mode = field_rot.Mode.HALF_ANGLE
@@ -448,30 +426,30 @@ func setup_path_command_controls(idx: int) -> Control:
 			var field_sweep := FlagFieldScene.instantiate()
 			field_large_arc.gui_input.connect(_eat_double_clicks.bind(field_large_arc))
 			field_sweep.gui_input.connect(_eat_double_clicks.bind(field_sweep))
-			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep, numfield(idx), numfield(idx)]
+			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep, numfield(), numfield()]
 			spacings = PackedInt32Array([3, 4, 4, 4, 4, 3])
 			property_names = PackedStringArray(["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
 		"C":
-			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
+			fields = [numfield(), numfield(), numfield(), numfield(), numfield(), numfield()]
 			spacings = PackedInt32Array([3, 4, 3, 4, 3])
 			property_names = PackedStringArray(["x1", "y1", "x2", "y2", "x", "y"])
 		"Q":
-			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
+			fields = [numfield(), numfield(), numfield(), numfield()]
 			spacings = PackedInt32Array([3, 4, 3])
 			property_names = PackedStringArray(["x1", "y1", "x", "y"])
 		"S":
-			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
+			fields = [numfield(), numfield(), numfield(), numfield()]
 			spacings = PackedInt32Array([3, 4, 3])
 			property_names = PackedStringArray(["x2", "y2", "x", "y"])
 		"M", "L", "T":
-			fields = [numfield(idx), numfield(idx)]
+			fields = [numfield(), numfield()]
 			spacings = PackedInt32Array([3])
 			property_names = PackedStringArray(["x", "y"])
 		"H":
-			fields = [numfield(idx)]
+			fields = [numfield()]
 			property_names = PackedStringArray(["x"])
 		"V":
-			fields = [numfield(idx)]
+			fields = [numfield()]
 			property_names = PackedStringArray(["y"])
 	# Setup the fields.
 	if not fields.is_empty():
@@ -481,24 +459,33 @@ func setup_path_command_controls(idx: int) -> Control:
 			field.set_value(get_presented_num(cmd, property_name))
 			field.tooltip_text = property_name
 			field.value_changed.connect(update_parameter.bind(property_name, idx))
-			field.focus_entered.connect(activate_focused.bind(idx))
-			field.focus_exited.connect(check_focused, CONNECT_DEFERRED)
+			field.focus_entered.connect(set_focused.bind(idx))
+			field.focus_entered.connect(State.normal_select.bind(element.xid, idx))
+			field.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
 			container.add_child(field)
 			field.position.y = 2
 		fields[0].position.x = 25
 		for i in fields.size() - 1:
 			fields[i + 1].position.x = fields[i].get_end().x + spacings[i]
-	var focus_sequence: Array[Control] = [relative_button]
-	focus_sequence += fields
-	focus_sequence.append(action_button)
-	HandlerGUI.register_focus_sequence(commands_container, focus_sequence)
+	# Setup the action button.
+	var action_button := Button.new()
+	action_button.icon = more_icon
+	action_button.theme_type_variation = "FlatButton"
+	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	container.add_child(action_button)
+	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
+	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
+	action_button.focus_entered.connect(set_focused.bind(idx))
+	action_button.focus_entered.connect(State.normal_select.bind(element.xid, idx))
+	action_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
+	action_button.position = Vector2(commands_container.size.x - 21, 2)
+	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	return container
 
 
-func numfield(cmd_idx: int) -> BetterLineEdit:
-	var new_field := MiniNumberFieldScene.instantiate()
-	new_field.focus_entered.connect(State.normal_select.bind(element.xid, cmd_idx))
-	return new_field
+func numfield() -> BetterLineEdit:
+	return MiniNumberFieldScene.instantiate()
 
 func get_presented_num(path_command: PathCommand, property: String) -> float:
 	var num: float = path_command.get(property)
@@ -510,9 +497,8 @@ func get_presented_num(path_command: PathCommand, property: String) -> float:
 
 
 func _on_action_button_pressed(action_button_ref: Button) -> void:
-	# Update the selection immediately, since if this path command is
-	# in a multi-selection, only the mouse button release would change the selection.
-	State.normal_select(element.xid, hovered_idx)
+	# Update the selection immediately, since if this path command is in a multi-selection,
+	# only the mouse button release would change the selection.
 	var viewport := get_viewport()
 	var action_button_rect := action_button_ref.get_global_rect()
 	HandlerGUI.popup_under_rect_center(State.get_selection_context(HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport),

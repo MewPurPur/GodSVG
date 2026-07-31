@@ -13,7 +13,6 @@ script = ExtResource("1_22rk2")
 custom_minimum_size = Vector2(358, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-focus_mode = 1
 script = ExtResource("2_48xgh")
 mono_font_tooltip = true
 

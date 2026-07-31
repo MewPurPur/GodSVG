@@ -11,6 +11,25 @@ var palette: Palette
 @onready var palette_preview: PalettePreview = $MainContainer/PalettePreview
 @onready var warning_sign: TextureRect = $WarningSign/TextureRect
 
+
+# Used to setup a palette for this element.
+func assign_palette(new_palette: Palette) -> void:
+	palette = new_palette
+	palette_preview.setup(palette)
+	palette.changed.connect(sync_warnings)
+	sync_localization()
+	set_label_text(palette.title)
+
+func _ready() -> void:
+	palette_button.pressed.connect(_on_palette_button_pressed)
+	name_edit.text_change_canceled.connect(_on_name_edit_text_change_canceled)
+	name_edit.text_changed.connect(_on_name_edit_text_changed)
+	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
+	Configs.language_changed.connect(sync_localization)
+
+
 func sync_theming() -> void:
 	warning_sign.modulate = ThemeUtils.warning_icon_color
 	palette_button.begin_bulk_theme_override()
@@ -26,25 +45,12 @@ func sync_theming() -> void:
 	add_theme_stylebox_override("panel", panel_stylebox)
 	palette_button.end_bulk_theme_override()
 
-
-# Used to setup a palette for this element.
-func assign_palette(new_palette: Palette) -> void:
-	palette = new_palette
-	palette_preview.setup(palette)
-	palette.changed.connect(display_warnings)
-	display_warnings()
+func sync_localization() -> void:
+	sync_warnings()
 	set_label_text(palette.title)
 
-func _ready() -> void:
-	palette_button.pressed.connect(_on_palette_button_pressed)
-	name_edit.text_change_canceled.connect(_on_name_edit_text_change_canceled)
-	name_edit.text_changed.connect(_on_name_edit_text_changed)
-	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
-	Configs.theme_changed.connect(sync_theming)
-	sync_theming()
 
-
-func display_warnings() -> void:
+func sync_warnings() -> void:
 	var warnings := PackedStringArray()
 	if palette.title.is_empty():
 		warnings.append(Translator.translate("Unnamed palettes won't be shown."))

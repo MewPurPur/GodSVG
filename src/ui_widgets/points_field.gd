@@ -4,10 +4,10 @@ extends VBoxContainer
 var element: Element
 const attribute_name = "points"  # Never propagates.
 
-# So, about this editor. Most of this code is about implementing a huge optimization.
+# So, about this editor. Most of this code is about implementing a big optimization.
 # All the points are a single node that draws fake-outs in order to prevent
-# adding too many nodes to the scene tree. The real controls are only created when
-# necessary, such as when hovered or focused.
+# adding too many nodes to the scene tree. Real controls are only created when necessary,
+# i.e., a strip that's hovered, focused, or directly above or below the focused strip.
 
 const STRIP_HEIGHT = 22.0
 
@@ -36,8 +36,6 @@ var focused_idx := -1
 var hovered_strip: Control
 var focused_strip: Control
 
-var current_selections: Array[int] = []
-var current_hovered := -1
 @onready var ci := points_container.get_canvas_item()
 var add_first_point_button: Control
 
@@ -64,18 +62,13 @@ func setup() -> void:
 	points_container.draw.connect(points_draw)
 	points_container.gui_input.connect(_on_points_gui_input)
 	points_container.mouse_exited.connect(_on_points_mouse_exited)
-	State.hover_changed.connect(_on_selections_or_hover_changed)
-	State.selection_changed.connect(_on_selections_or_hover_changed)
-	# So, the reason we need this is quite complicated. We need to know
-	# the current_selections and current_hovered at the time this widget is created.
-	# This is because the widget can sometimes be created before they are cleared
-	# from a past state of the SVG. So we trigger this method to update those.
-	_on_selections_or_hover_changed()
+	State.hover_changed.connect(points_container.queue_redraw)
+	State.selection_changed.connect(points_container.queue_redraw)
+	points_container.queue_redraw()
 
 
 func get_inner_rect(index: int) -> Rect2:
-	return Rect2(points_container.position + Vector2(0, STRIP_HEIGHT * index),
-			Vector2(points_container.size.x, STRIP_HEIGHT))
+	return Rect2(points_container.position + Vector2(0, STRIP_HEIGHT * index), Vector2(points_container.size.x, STRIP_HEIGHT))
 
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
@@ -137,15 +130,9 @@ func sync() -> void:
 	points_container.queue_redraw()
 
 
-func update_point_x_coordinate(new_value: float, idx: int) -> void:
+func update_list(new_value: float, index: int) -> void:
 	var list := element.get_attribute_list(attribute_name)
-	list[idx * 2] = new_value
-	element.get_attribute(attribute_name).set_list(list)
-	State.save_svg()
-
-func update_point_y_coordinate(new_value: float, idx: int) -> void:
-	var list := element.get_attribute_list(attribute_name)
-	list[idx * 2 + 1] = new_value
+	list[index] = new_value
 	element.get_attribute(attribute_name).set_list(list)
 	State.save_svg()
 
@@ -156,21 +143,6 @@ func _on_add_first_point_button_pressed() -> void:
 
 
 # Points editor orchestration.
-
-func _on_selections_or_hover_changed() -> void:
-	var new_selections: Array[int] = []
-	if State.semi_selected_xid == element.xid:
-		new_selections = State.inner_selections.duplicate()
-	var new_hovered := -1
-	if State.semi_hovered_xid == element.xid:
-		new_hovered = State.inner_hovered
-	# Only redraw if selections or hovered changed.
-	if new_selections != current_selections:
-		current_selections = new_selections
-		points_container.queue_redraw()
-	if new_hovered != current_hovered:
-		current_hovered = new_hovered
-		points_container.queue_redraw()
 
 func _on_points_mouse_exited() -> void:
 	var cmd_idx := State.inner_hovered
@@ -334,13 +306,13 @@ func setup_point_controls(idx: int) -> Control:
 	var x_field := numfield(idx)
 	x_field.set_value(point_x)
 	x_field.tooltip_text = "x"
-	x_field.value_changed.connect(update_point_x_coordinate.bind(idx))
+	x_field.value_changed.connect(update_list.bind(idx * 2))
 	x_field.focus_entered.connect(activate_focused.bind(idx))
 	x_field.focus_exited.connect(check_focused, CONNECT_DEFERRED)
 	var y_field := numfield(idx)
 	y_field.set_value(point_y)
 	y_field.tooltip_text = "y"
-	y_field.value_changed.connect(update_point_y_coordinate.bind(idx))
+	y_field.value_changed.connect(update_list.bind(idx * 2 + 1))
 	y_field.focus_entered.connect(activate_focused.bind(idx))
 	y_field.focus_exited.connect(check_focused, CONNECT_DEFERRED)
 	

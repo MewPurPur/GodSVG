@@ -64,14 +64,13 @@ func _on_base_class_editing_toggled(toggled_on: bool) -> void:
 			select_all()
 	else:
 		first_click = false
-		if is_editing():
-			if Input.is_action_pressed("ui_cancel"):
-				text = text_before_edit
-				text_change_canceled.emit()
-			elif not Input.is_action_pressed("ui_accept"):
-				# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
-				if text != text_before_edit:
-					text_submitted.emit(text)
+		if Input.is_action_pressed("ui_cancel"):
+			text = text_before_edit
+			text_change_canceled.emit()
+		elif not Input.is_action_pressed("ui_accept"):
+			# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
+			if text != text_before_edit:
+				text_submitted.emit(text)
 		text_before_edit = ""
 		deselect()
 
@@ -109,6 +108,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
 		if event.is_pressed() and not get_global_rect().has_point(event.position) and HandlerGUI.is_node_on_top_menu_or_popup(self):
 			correct_unedit()
+			grab_focus(true)
 		elif event.is_released() and first_click and not has_selection():
 			first_click = false
 			select_all()
