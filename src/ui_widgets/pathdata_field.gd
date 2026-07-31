@@ -7,7 +7,8 @@ const attribute_name = "d"  # Never propagates.
 # So, about this editor. Most of this code is about implementing a big optimization.
 # All the path commands are a single node that draws fake-outs in order to prevent
 # adding too many nodes to the scene tree. Real controls are only created when necessary,
-# i.e., a strip that's hovered, focused, or directly above or below the focused strip.
+# i.e., a strip that's hovered, focused, directly above or below the focused strip, or
+# the first strip if the line_edit is currently focused.
 
 const STRIP_HEIGHT = 22.0
 
@@ -50,7 +51,6 @@ func setup() -> void:
 	sync_localization()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
-	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
 	line_edit.text_submitted.connect(set_value.bind(true))
@@ -63,8 +63,8 @@ func setup() -> void:
 	commands_container.mouse_exited.connect(_on_commands_mouse_exited)
 	State.hover_changed.connect(commands_container.queue_redraw)
 	State.selection_changed.connect(commands_container.queue_redraw)
+	sync()
 	commands_container.queue_redraw()
-	HandlerGUI.register_focus_sequence(self, [line_edit, commands_container])
 
 
 func get_inner_rect(index: int) -> Rect2:
@@ -114,19 +114,28 @@ func sync() -> void:
 		add_move_button.icon = plus_icon
 		add_move_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 		add_move_button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-		add_move_button.focus_mode = Control.FOCUS_NONE
 		add_move_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		add_move_button.theme_type_variation = "FlatButton"
 		add_child(add_move_button)
 		add_move_button.pressed.connect(_on_add_move_button_pressed)
-	elif cmd_count != 0 and is_instance_valid(add_move_button):
-		add_move_button.queue_free()
+		HandlerGUI.register_focus_sequence(self, [line_edit, add_move_button])
+	elif cmd_count != 0:
+		if is_instance_valid(add_move_button):
+			add_move_button.queue_free()
+		HandlerGUI.register_focus_sequence(self, [line_edit, commands_container])
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * STRIP_HEIGHT
 	if get_rect().has_point(get_local_mouse_position()):
 		HandlerGUI.throw_mouse_motion_event()
 	if hovered_index >= cmd_count:
-		set_hovered(-1)
+		hovered_index = -1
+	if focused_index >= cmd_count:
+		focused_index = -1
+	for i in real_strips:
+		if hovered_index != i and focused_index != i:
+			real_strips[i].queue_free()
+			real_strips.erase(i)
+	sync_real_strips()
 	commands_container.queue_redraw()
 
 
@@ -147,6 +156,7 @@ func _on_relative_button_pressed() -> void:
 
 func _on_add_move_button_pressed() -> void:
 	element.get_attribute(attribute_name).insert_command(0, "M")
+	line_edit.grab_focus(not add_move_button.has_focus(true))
 	State.normal_select(element.xid, 0, true)
 	State.save_svg()
 
@@ -287,6 +297,7 @@ func _commands_draw() -> void:
 			"H": draw_numfield(rect, "x", cmd)
 			"V": draw_numfield(rect, "y", cmd)
 	
+	# Draw subpath indicators.
 	for start_idx in path_attribute.subpath_start_indices:
 		var subpath_polyline_positions := PackedVector2Array()
 		var current_subpath := path_attribute.get_subpath(start_idx)
@@ -334,6 +345,8 @@ func set_focused(idx: int, focus_relative_button := false, hide_relative_button_
 	if focused_index == idx and not focus_relative_button and not (idx == -1 and line_edit.has_focus()):
 		return
 	focused_index = idx
+	if idx != -1:
+		State.normal_select(element.xid, idx)
 	sync_real_strips(focus_relative_button, hide_relative_button_focus)
 
 func sync_real_strips(focus_relative_button := false, hide_relative_button_focus := false) -> void:
@@ -373,7 +386,6 @@ func sync_real_strips(focus_relative_button := false, hide_relative_button_focus
 	HandlerGUI.register_focus_sequence(commands_container, focus_sequence)
 	commands_container.queue_redraw()
 
-
 func check_if_strip_still_focused(index: int) -> void:
 	if focused_index != index:
 		return
@@ -406,7 +418,6 @@ func setup_path_command_controls(idx: int, focus_relative_button := false, hide_
 	relative_button.pressed.connect(_on_relative_button_pressed)
 	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))
 	relative_button.focus_entered.connect(set_focused.bind(idx))
-	relative_button.focus_entered.connect(State.normal_select.bind(element.xid, idx))
 	relative_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
 	relative_button.position = Vector2(3, 2)
 	relative_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
@@ -460,7 +471,6 @@ func setup_path_command_controls(idx: int, focus_relative_button := false, hide_
 			field.tooltip_text = property_name
 			field.value_changed.connect(update_parameter.bind(property_name, idx))
 			field.focus_entered.connect(set_focused.bind(idx))
-			field.focus_entered.connect(State.normal_select.bind(element.xid, idx))
 			field.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
 			container.add_child(field)
 			field.position.y = 2
@@ -477,7 +487,6 @@ func setup_path_command_controls(idx: int, focus_relative_button := false, hide_
 	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
 	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
 	action_button.focus_entered.connect(set_focused.bind(idx))
-	action_button.focus_entered.connect(State.normal_select.bind(element.xid, idx))
 	action_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
 	action_button.position = Vector2(commands_container.size.x - 21, 2)
 	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
