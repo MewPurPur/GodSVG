@@ -124,18 +124,23 @@ func sync() -> void:
 		HandlerGUI.register_focus_sequence(self, [line_edit, points_container])
 	# Rebuild the path commands.
 	points_container.custom_minimum_size.y = points_count * STRIP_HEIGHT
-	if get_rect().has_point(get_local_mouse_position()):
-		HandlerGUI.throw_mouse_motion_event()
 	if hovered_index >= points_count:
-		hovered_index = -1
+		set_hovered(-1)
 	if focused_index >= points_count:
-		focused_index = -1
+		set_focused(-1)
+	if focused_index != -1:
+		if element.xid == State.semi_selected_xid and State.inner_selections.size() == 1:
+			set_focused(State.inner_selections[0])
+		else:
+			set_focused(-1)
 	for i in real_strips:
 		if hovered_index != i and focused_index != i:
 			real_strips[i].queue_free()
 			real_strips.erase(i)
 	sync_real_strips()
 	points_container.queue_redraw()
+	if get_rect().has_point(get_local_mouse_position()):
+		HandlerGUI.throw_mouse_motion_event()
 
 
 func update_list(new_value: float, index: int) -> void:
@@ -299,7 +304,7 @@ func check_if_strip_still_focused(index: int) -> void:
 	if focused_index != index:
 		return
 	for child in real_strips[index].get_children():
-		if child.has_focus():
+		if child.has_focus() or child in HandlerGUI.suppressed_focused_controls.values():
 			return
 	set_focused(-1)
 
@@ -317,7 +322,7 @@ func setup_point_controls(idx: int) -> Control:
 	container.mouse_filter = Control.MOUSE_FILTER_PASS
 	points_container.add_child(container)
 	# Setup the fields.
-	var x_field := numfield()
+	var x_field := MiniNumberFieldScene.instantiate()
 	x_field.set_value(point_x)
 	x_field.tooltip_text = "x"
 	x_field.value_changed.connect(update_list.bind(idx * 2))
@@ -326,7 +331,7 @@ func setup_point_controls(idx: int) -> Control:
 	container.add_child(x_field)
 	x_field.position = Vector2(4, 2)
 	x_field.size = Vector2(44, 18)
-	var y_field := numfield()
+	var y_field := MiniNumberFieldScene.instantiate()
 	y_field.set_value(point_y)
 	y_field.tooltip_text = "y"
 	y_field.value_changed.connect(update_list.bind(idx * 2 + 1))
@@ -349,10 +354,6 @@ func setup_point_controls(idx: int) -> Control:
 	action_button.position = Vector2(points_container.size.x - 21, 2)
 	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	return container
-
-
-func numfield() -> BetterLineEdit:
-	return MiniNumberFieldScene.instantiate()
 
 
 func _on_action_button_pressed(action_button_ref: Button) -> void:
