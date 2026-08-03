@@ -131,13 +131,21 @@ func register_focus_sequence(focus_master: Control, sequence: Array[Control], fo
 		focus_first_control_in_sequence(sequence)
 
 func focus_first_control_in_sequence(sequence: Array[Control]) -> void:
+	var control := _find_first_focusable_control_in_sequence(sequence)
+	if is_instance_valid(control):
+		control.grab_focus(true)
+
+func _find_first_focusable_control_in_sequence(sequence: Array[Control]) -> Control:
 	for control in sequence:
+		if not is_instance_valid(control):
+			continue
 		if control.visible and control.focus_mode != Control.FocusMode.FOCUS_NONE:
-			control.grab_focus(true)
-			return
-		elif control in focus_sequences:
-			focus_first_control_in_sequence(focus_sequences[control])
-			return
+			return control
+		if control in focus_sequences:
+			var nested := _find_first_focusable_control_in_sequence(focus_sequences[control])
+			if is_instance_valid(nested):
+				return nested
+	return null
 
 ## Removes all shortcuts registered to a node.
 func forget_focus_sequence(focus_master: Control) -> void:

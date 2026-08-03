@@ -74,7 +74,7 @@ func _gui_input(event: InputEvent) -> void:
 				pressed_index = get_color_count()
 				focus_index = get_color_count()
 				grab_focus(true)
-			elif event.is_released() and pressed_index == get_color_count():
+			elif event.is_released() and pressed_index == get_color_count() and hover_index == get_color_count():
 				popup_add_color()
 				pressed_index = -1
 			elif event.is_released() and pressed_index != -1 and (configuration_mode or current_value.is_empty() or\
@@ -215,7 +215,7 @@ func _draw() -> void:
 
 func _get_tooltip(at_position: Vector2) -> String:
 	var index := get_index_at_pos(at_position)
-	if index == -1:
+	if index == -1 or index >= get_color_count():
 		return ""
 	return String.num_int64(index)
 
@@ -256,11 +256,13 @@ func get_index_rect(index: int) -> Rect2:
 	return Rect2((SWATCH_SIZE + SEPARATION) * (index % column_count), (SWATCH_SIZE + SEPARATION) * (index / column_count), SWATCH_SIZE, SWATCH_SIZE)
 
 func get_index_at_pos(pos: Vector2) -> int:
+	if not Rect2(Vector2.ZERO, size).has_point(pos):
+		return -1
 	var posmod_vec := pos.posmod(SWATCH_SIZE + SEPARATION)
 	if posmod_vec.x > SWATCH_SIZE or posmod_vec.y > SWATCH_SIZE:
-		return -1
-	var index := floori(pos.y / (SWATCH_SIZE + SEPARATION)) * get_column_count() + floori(pos.x / (SWATCH_SIZE + SEPARATION))
-	if index >= get_color_count():
+		return -1  # The mouse is between the gaps.
+	var index := floori(pos.y / (SWATCH_SIZE + SEPARATION)) * get_column_count() + maxi(floori(pos.x / (SWATCH_SIZE + SEPARATION)), 0)
+	if index > get_color_count() or (not configuration_mode and index == get_color_count()):
 		return -1
 	return index
 
@@ -282,7 +284,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	if not configuration_mode:
 		return null
 	var index := get_index_at_pos(at_position)
-	if index == -1:
+	if index == -1 or index == get_color_count():
 		return null
 	
 	var data := DragData.new(palette, index)
