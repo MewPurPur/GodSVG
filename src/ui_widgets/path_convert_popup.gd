@@ -129,7 +129,7 @@ func setup(new_path_attribute: AttributePathdata, new_indices: PackedInt32Array)
 		var children: Array[Control] = []
 		for child in vbox.get_children():
 			children.append(child)
-		HandlerGUI.register_focus_sequence(vbox, children, false)
+		HandlerGUI.register_focus_sequence(vbox, children)
 	HandlerGUI.register_focus_sequence(self, [exact_vbox, lossy_vbox], true)
 
 func add_path_command_button(conversion: AttributePathdata.Conversion, original_commands_char: String, is_disabled := false, is_warned := false) -> void:
