@@ -36,7 +36,7 @@ func _draw() -> void:
 	var right_margin := get_theme_stylebox("normal").content_margin_right
 	var max_size := size.x - left_margin - right_margin
 	var bold_text := command_char + ":"
-	var normal_text := " " + TranslationUtils.get_path_command_description(command_char, true)
+	var normal_text := " " + TranslationUtils.get_path_command_description(command_char)
 	# Try with font size 13.
 	text_obj.add_string(bold_text, ThemeUtils.bold_font, 13)
 	text_obj.add_string(normal_text, ThemeUtils.main_font, 13)

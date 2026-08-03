@@ -90,7 +90,7 @@ static func get_action_description(action_name: String, for_button := false) -> 
 
 ## Returns a translated description for an SVG path command character.
 ## If omit_relativity is true, doesn't append "(Relative)"/"(Absolute)" suffix.
-static func get_path_command_description(command_char: String, omit_relativity := false) -> String:
+static func get_path_command_description(command_char: String, show_relativity := false) -> String:
 	var description: String
 	match command_char:
 		"M", "m": description = Translator.translate("Move to")
@@ -105,7 +105,7 @@ static func get_path_command_description(command_char: String, omit_relativity :
 		"S", "s": description = Translator.translate("Shorthand Cubic Bezier to")
 		_: return command_char
 	
-	if omit_relativity:
+	if not show_relativity:
 		return description
 	elif Utils.is_string_lower(command_char):
 		return description + " (" + Translator.translate("Relative") + ")"

@@ -411,7 +411,7 @@ func setup_path_command_controls(idx: int, focus_relative_button := false, hide_
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
 	relative_button.theme_type_variation = "PathCommandAbsoluteButton" if Utils.is_string_upper(cmd_char) else "PathCommandRelativeButton"
 	relative_button.text = cmd_char
-	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char)
+	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char, true)
 	container.add_child(relative_button)
 	if focus_relative_button:
 		relative_button.grab_focus(hide_relative_button_focus)
