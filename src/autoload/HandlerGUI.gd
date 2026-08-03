@@ -56,6 +56,9 @@ var focus_sequences: Dictionary[Control, Array] = {}
 ## A dictionary of overlays and the focus they displaced when showing up. When they are closed, the focus is restored.
 var suppressed_focused_controls: Dictionary[Control, Control] = {}
 
+## Updated automatically, because sometimes controls get freed before the new one can learn from their state.
+var is_focus_hidden := true
+
 
 func _enter_tree() -> void:
 	var shortcuts := ShortcutsRegistration.new()
@@ -77,6 +80,7 @@ func _enter_tree() -> void:
 	window.files_dropped.connect(_on_files_dropped)
 	window.dpi_changed.connect(update_ui_scale)
 	window.size_changed.connect(remove_all_popups)
+	window.gui_focus_changed.connect(_on_gui_focus_changed)
 
 func _ready() -> void:
 	Configs.active_tab_changed.connect(update_window_title)
@@ -94,6 +98,9 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_ABOUT:
 		open_about.call_deferred()  # Children can't be added while a notification propagates to all nodes, so defer.
+
+func _on_gui_focus_changed(node: Control) -> void:
+	is_focus_hidden = not is_instance_valid(node) or not node.has_focus(true)
 
 # Handles drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
@@ -130,14 +137,16 @@ func register_focus_sequence(focus_master: Control, sequence: Array[Control], fo
 	if focus_first_control:
 		focus_first_control_in_sequence(sequence)
 
-func focus_first_control_in_sequence(sequence: Array[Control]) -> void:
+func focus_first_control_in_sequence(sequence: Array[Control]) -> bool:
 	for control in sequence:
+		if not is_instance_valid(control):
+			continue
 		if control.visible and control.focus_mode != Control.FocusMode.FOCUS_NONE:
-			control.grab_focus(true)
-			return
-		elif control in focus_sequences:
-			focus_first_control_in_sequence(focus_sequences[control])
-			return
+			control.grab_focus(is_focus_hidden)
+			return true
+		if control in focus_sequences and focus_first_control_in_sequence(focus_sequences[control]):
+			return true
+	return false
 
 ## Removes all shortcuts registered to a node.
 func forget_focus_sequence(focus_master: Control) -> void:
@@ -149,7 +158,7 @@ func _restore_suppressed_focus(suppressor: Control) -> void:
 		new_focus = suppressed_focused_controls[suppressor]
 	suppressed_focused_controls.erase(suppressor)
 	if is_instance_valid(new_focus):
-		new_focus.grab_focus(not new_focus.has_focus(true))
+		new_focus.grab_focus(is_focus_hidden)
 
 
 ## Adds a new menu to menu_stack which hides the previous one.
