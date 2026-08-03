@@ -52,7 +52,7 @@ func _draw() -> void:
 		AttributePathdata.Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: conversion_char = "S"
 	
 	var bold_text := "%s→%s:" % [original_commands_char, conversion_char]
-	var normal_text := " " + TranslationUtils.get_path_command_description(conversion_char, true)
+	var normal_text := " " + TranslationUtils.get_path_command_description(conversion_char)
 	# Try with font size 13.
 	text_obj.add_string(bold_text, ThemeUtils.bold_font, 13)
 	text_obj.add_string(normal_text, ThemeUtils.main_font, 13)
