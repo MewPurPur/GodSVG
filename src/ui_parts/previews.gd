@@ -42,11 +42,12 @@ class IconPreviewTileData extends RefCounted:
 		var svg_size := State.root_element.get_size()
 		var multiplier := bigger_dimension / maxf(svg_size.x, svg_size.y)
 		svg_size *= multiplier
+		var font := ThemeUtils.main_font
 		
 		dimensions_text = "%d×%d" % [int(svg_size.x), int(svg_size.y)]
 		additional_text = " (%sx)" % Utils.num_simple(multiplier, 1 if multiplier > 10 else 2)
-		dimensions_label_width = ThemeUtils.main_font.get_string_size(dimensions_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
-		var additional_text_width := ThemeUtils.main_font.get_string_size(additional_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
+		dimensions_label_width = font.get_string_size(dimensions_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
+		var additional_text_width := font.get_string_size(additional_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
 		var full_text_width := dimensions_label_width + additional_text_width
 		var preview_size := svg_size if bigger_dimension <= MAX_ICON_PREVIEW_SIZE else svg_size * MAX_ICON_PREVIEW_SIZE / maxf(svg_size.x, svg_size.y)
 		var bottom_row_width := dimensions_label_width + maxf(additional_text_width, ACTION_BUTTON_SIZE)
@@ -95,6 +96,7 @@ func _ready() -> void:
 	)
 	
 	State.svg_changed.connect(sync_tiles)
+	ThemeUtils.main_font.changed.connect(sync_tiles)
 	visibility_changed.connect(
 		func() -> void:
 			if visible:
