@@ -125,8 +125,6 @@ func sync() -> void:
 		HandlerGUI.register_focus_sequence(self, [line_edit, commands_container])
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * STRIP_HEIGHT
-	if get_rect().has_point(get_local_mouse_position()):
-		HandlerGUI.throw_mouse_motion_event()
 	if hovered_index >= cmd_count:
 		hovered_index = -1
 	if focused_index >= cmd_count:
@@ -136,6 +134,8 @@ func sync() -> void:
 			real_strips[i].queue_free()
 			real_strips.erase(i)
 	sync_real_strips()
+	if get_rect().has_point(get_local_mouse_position()):
+		HandlerGUI.throw_mouse_motion_event()
 	commands_container.queue_redraw()
 
 
@@ -149,7 +149,7 @@ func update_parameter(new_value: float, property: String, idx: int) -> void:
 	attrib.set_command_property(idx, property, new_value)
 	State.save_svg()
 
-func _on_relative_button_pressed() -> void:
+func _on_relativity_button_pressed() -> void:
 	element.get_attribute(attribute_name).toggle_relative_command(focused_index)
 	set_focused(focused_index, true, not get_viewport().gui_get_focus_owner().has_focus(true))
 	State.save_svg()
@@ -341,15 +341,15 @@ func set_hovered(index: int) -> void:
 		hovered_index = index
 		sync_real_strips()
 
-func set_focused(idx: int, focus_relative_button := false, hide_relative_button_focus := false) -> void:
-	if focused_index == idx and not focus_relative_button and not (idx == -1 and line_edit.has_focus()):
+func set_focused(idx: int, focus_relativity_button := false, hide_relativity_button_focus := false) -> void:
+	if focused_index == idx and not focus_relativity_button and not (idx == -1 and line_edit.has_focus()):
 		return
 	focused_index = idx
 	if idx != -1:
 		State.normal_select(element.xid, idx)
-	sync_real_strips(focus_relative_button, hide_relative_button_focus)
+	sync_real_strips(focus_relativity_button, hide_relativity_button_focus)
 
-func sync_real_strips(focus_relative_button := false, hide_relative_button_focus := false) -> void:
+func sync_real_strips(focus_relativity_button := false, hide_relativity_button_focus := false) -> void:
 	var wanted: Array[int] = []
 	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
 	
@@ -372,10 +372,10 @@ func sync_real_strips(focus_relative_button := false, hide_relative_button_focus
 	
 	for idx in wanted:
 		if not idx in real_strips.keys():
-			real_strips[idx] = setup_path_command_controls(idx, focus_relative_button, hide_relative_button_focus)
-		elif focus_relative_button and idx == focused_index:
+			real_strips[idx] = setup_path_command_controls(idx, focus_relativity_button, hide_relativity_button_focus)
+		elif focus_relativity_button and idx == focused_index:
 			real_strips[idx].queue_free()
-			real_strips[idx] = setup_path_command_controls(idx, focus_relative_button, hide_relative_button_focus)
+			real_strips[idx] = setup_path_command_controls(idx, focus_relativity_button, hide_relativity_button_focus)
 	
 	HandlerGUI.forget_focus_sequence(commands_container)
 	var focus_sequence: Array[Control] = []
@@ -395,7 +395,7 @@ func check_if_strip_still_focused(index: int) -> void:
 	set_focused(-1)
 
 
-func setup_path_command_controls(idx: int, focus_relative_button := false, hide_relative_button_focus := false) -> Control:
+func setup_path_command_controls(idx: int, focus_relativity_button := false, hide_relativity_button_focus := false) -> Control:
 	var cmd: PathCommand = element.get_attribute(attribute_name).get_command(idx)
 	var cmd_char := cmd.command_char
 	
@@ -405,22 +405,22 @@ func setup_path_command_controls(idx: int, focus_relative_button := false, hide_
 	container.mouse_filter = Control.MOUSE_FILTER_PASS
 	commands_container.add_child(container)
 	# Setup the relative button.
-	var relative_button := Button.new()
-	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
-	relative_button.theme_type_variation = "PathCommandAbsoluteButton" if Utils.is_string_upper(cmd_char) else "PathCommandRelativeButton"
-	relative_button.text = cmd_char
-	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char, true)
-	container.add_child(relative_button)
-	if focus_relative_button:
-		relative_button.grab_focus(hide_relative_button_focus)
-	relative_button.pressed.connect(_on_relative_button_pressed)
-	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))
-	relative_button.focus_entered.connect(set_focused.bind(idx))
-	relative_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
-	relative_button.position = Vector2(3, 2)
-	relative_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
+	var relativity_button := Button.new()
+	relativity_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	relativity_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	relativity_button.add_theme_font_override("font", ThemeUtils.mono_font)
+	relativity_button.theme_type_variation = "PathCommandAbsoluteButton" if Utils.is_string_upper(cmd_char) else "PathCommandRelativeButton"
+	relativity_button.text = cmd_char
+	relativity_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char, true)
+	container.add_child(relativity_button)
+	if focus_relativity_button:
+		relativity_button.grab_focus(hide_relativity_button_focus)
+	relativity_button.pressed.connect(_on_relativity_button_pressed)
+	relativity_button.gui_input.connect(_eat_double_clicks.bind(relativity_button))
+	relativity_button.focus_entered.connect(set_focused.bind(idx))
+	relativity_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
+	relativity_button.position = Vector2(3, 2)
+	relativity_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the fields.
 	var fields: Array[Control] = []
 	var spacings := PackedInt32Array()
