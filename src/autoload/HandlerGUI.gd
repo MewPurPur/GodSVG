@@ -25,7 +25,7 @@ func get_mobile_corner_radii() -> PackedInt32Array:
 	return _mobile_display_corner_radii
 
 
-signal popups_cleared
+signal menus_or_popups_cleared
 
 ## A stack of the current menus, dialogs in the foreground, center of the screen, that also darken the background for more focus.
 ## Menus should be added with add_menu(), which hides previous menus, or add_dialog() which doesn't hide previous menus.
@@ -53,8 +53,8 @@ var shortcut_registrations: Dictionary[Node, ShortcutsRegistration] = {}
 ## A dictionary of focus masters and their focus sequences.
 var focus_sequences: Dictionary[Control, Array] = {}
 
-## A dictionary of overlays and the focus they displaced when showing up. When they are closed, the focus is restored.
-var suppressed_focused_controls: Dictionary[Control, Control] = {}
+## A dictionary of overlays and the suppressed focused controls on them.
+var suppressed_focused_controls: Array[Control] = []
 
 
 func _enter_tree() -> void:
@@ -77,6 +77,7 @@ func _enter_tree() -> void:
 	window.files_dropped.connect(_on_files_dropped)
 	window.dpi_changed.connect(update_ui_scale)
 	window.size_changed.connect(remove_all_popups)
+	menus_or_popups_cleared.connect(_on_menus_or_popups_cleared)
 
 func _ready() -> void:
 	Configs.active_tab_changed.connect(update_window_title)
@@ -151,13 +152,13 @@ func _find_first_focusable_control_in_sequence(sequence: Array[Control]) -> Cont
 func forget_focus_sequence(focus_master: Control) -> void:
 	focus_sequences.erase(focus_master)
 
-func _restore_suppressed_focus(suppressor: Control) -> void:
-	var new_focus: Control = null
-	if suppressor in suppressed_focused_controls:
-		new_focus = suppressed_focused_controls[suppressor]
-	suppressed_focused_controls.erase(suppressor)
-	if is_instance_valid(new_focus):
-		new_focus.grab_focus(not new_focus.has_focus(true))
+func _on_menus_or_popups_cleared() -> void:
+	for control in suppressed_focused_controls:
+		if is_node_on_top_menu_or_popup(control):
+			suppressed_focused_controls.erase(control)
+			if is_instance_valid(control):
+				control.grab_focus(not control.has_focus(true))
+			return
 
 
 ## Adds a new menu to menu_stack which hides the previous one.
@@ -177,8 +178,7 @@ func _add_control(new_control: Control) -> void:
 	remove_all_popups()
 	var previous_focus := get_viewport().gui_get_focus_owner()
 	if is_instance_valid(previous_focus):
-		suppressed_focused_controls[new_control] = previous_focus
-		new_control.tree_exiting.connect(_restore_suppressed_focus.bind(new_control))
+		suppressed_focused_controls.append(previous_focus)
 	
 	var overlay_ref := ColorRect.new()
 	overlay_ref.color = Color(0, 0, 0, 0.4)
@@ -213,6 +213,7 @@ func _remove_control(overlay_ref: ColorRect = null) -> void:
 		menu_stack[matching_idx - 1].show()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
+	menus_or_popups_cleared.emit()
 	throw_mouse_motion_event()
 
 ## Frees all nodes in the menu_stack, emptying it.
@@ -220,6 +221,7 @@ func remove_all_menus() -> void:
 	if not menu_stack.is_empty():
 		while not menu_stack.is_empty():
 			menu_stack.pop_back().queue_free()
+		menus_or_popups_cleared.emit()
 		throw_mouse_motion_event()
 
 
@@ -228,8 +230,7 @@ func remove_all_menus() -> void:
 func add_popup(new_popup: Control, add_shadow := true) -> Control:
 	var previous_focus := get_viewport().gui_get_focus_owner()
 	if is_instance_valid(previous_focus):
-		suppressed_focused_controls[new_popup] = previous_focus
-		new_popup.tree_exiting.connect(_restore_suppressed_focus.bind(new_popup))
+		suppressed_focused_controls.append(previous_focus)
 	
 	var overlay_ref := Control.new()
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -288,16 +289,14 @@ func remove_popup(overlay_ref: Control = null) -> void:
 	overlay_ref = popup_stack.pop_at(matching_idx)
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	
-	if popup_stack.is_empty():
-		popups_cleared.emit()
+	menus_or_popups_cleared.emit()
 	throw_mouse_motion_event()
 
 func remove_all_popups() -> void:
 	if not popup_stack.is_empty():
 		while not popup_stack.is_empty():
 			popup_stack.pop_back().queue_free()
-		popups_cleared.emit()
+		menus_or_popups_cleared.emit()
 		throw_mouse_motion_event()
 
 
@@ -485,11 +484,11 @@ func _react_to_action(event: InputEvent) -> void:
 						ShortcutsRegistration.Behavior.PASS_THROUGH_ALL:
 							should_execute = true
 						ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS:
-							if is_node_on_top_menu(node):
+							if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
 								should_execute = true
 								should_clear_popups = true
 						ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS:
-							if is_node_on_top_menu(node):
+							if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
 								should_execute = true
 						ShortcutsRegistration.Behavior.NO_PASSTHROUGH:
 							if not get_viewport().gui_is_dragging() and is_node_on_top_menu_or_popup(node):
@@ -544,9 +543,6 @@ func _gather_focus_internal(control: Control, is_next: bool) -> Control:
 		current = parent
 	return current
 
-
-func is_node_on_top_menu(node: Node) -> bool:
-	return (menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node))
 
 func is_node_on_top_menu_or_popup(node: Node) -> bool:
 	return ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
