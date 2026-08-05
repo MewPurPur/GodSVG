@@ -230,11 +230,11 @@ func _draw() -> void:
 				var r := element.get_attribute_num("r")
 				
 				var points := PackedVector2Array()
-				points.resize(181)
-				for i in 180:
-					var d := i * TAU/180
+				points.resize(361)
+				for i in 360:
+					var d := i * TAU/360
 					points[i] = c + Vector2(cos(d), sin(d)) * r
-				points[180] = points[0]
+				points[360] = points[0]
 				var extras := PackedVector2Array([c, c + Vector2(r, 0)])
 				var final_transform := element.get_transform()
 				points = final_transform * points
@@ -270,11 +270,11 @@ func _draw() -> void:
 				var c := Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
 				# Squished circle.
 				var points := PackedVector2Array()
-				points.resize(181)
-				for i in 180:
-					var d := i * TAU/180
+				points.resize(361)
+				for i in 360:
+					var d := i * TAU/360
 					points[i] = c + Vector2(cos(d) * element.get_rx(), sin(d) * element.get_ry())
-				points[180] = points[0]
+				points[360] = points[0]
 				var extras := PackedVector2Array([c, c + Vector2(element.get_rx(), 0), c, c + Vector2(0, element.get_ry())])
 				var final_transform := element.get_transform()
 				points = final_transform * points
@@ -325,25 +325,25 @@ func _draw() -> void:
 					rx = minf(rx, rect_width / 2)
 					ry = minf(ry, rect_height / 2)
 					# Rounded rectangle.
-					points.resize(186)
+					points.resize(366)
 					points[0] = Vector2(x + rx, y)
 					points[1] = Vector2(x + rect_width - rx, y)
-					for i in range(135, 180):
-						var d := i * TAU/180
-						points[i - 133] = Vector2(x + rect_width - rx, y + ry) + Vector2(cos(d) * rx, sin(d) * ry)
-					points[47] =  Vector2(x + rect_width, y + rect_height - ry)
-					for i in range(0, 45):
-						var d := i * TAU/180
-						points[i + 48] = Vector2(x + rect_width - rx, y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)
-					points[93] = Vector2(x + rx, y + rect_height)
-					for i in range(45, 90):
-						var d := i * TAU/180
-						points[i + 49] = Vector2(x + rx, y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)
-					points[139] = Vector2(x, y + ry)
-					for i in range(90, 135):
-						var d := i * TAU/180
-						points[i + 50] = Vector2(x + rx, y + ry) + Vector2(cos(d) * rx, sin(d) * ry)
-					points[185] = points[0]
+					for i in range(270, 360):
+						var d := i * TAU/360
+						points[i - 268] = Vector2(x + rect_width - rx, y + ry) + Vector2(cos(d) * rx, sin(d) * ry)
+					points[92] =  Vector2(x + rect_width, y + rect_height - ry)
+					for i in range(0, 90):
+						var d := i * TAU/360
+						points[i + 93] = Vector2(x + rect_width - rx, y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)
+					points[183] = Vector2(x + rx, y + rect_height)
+					for i in range(90, 180):
+						var d := i * TAU/360
+						points[i + 94] = Vector2(x + rx, y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)
+					points[274] = Vector2(x, y + ry)
+					for i in range(180, 270):
+						var d := i * TAU/360
+						points[i + 95] = Vector2(x + rx, y + ry) + Vector2(cos(d) * rx, sin(d) * ry)
+					points[365] = points[0]
 				var extras := PackedVector2Array([Vector2(x, y), Vector2(x + rect_width, y), Vector2(x, y), Vector2(x, y + rect_height)])
 				var final_transform := element.get_transform()
 				points = final_transform * points

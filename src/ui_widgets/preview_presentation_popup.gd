@@ -53,7 +53,7 @@ func _ready() -> void:
 	presentation_type_dropdown.set_value(initial_type, false)
 	_apply_presentation_type(initial_type, false)
 	
-	HandlerGUI.register_focus_sequence(self, [background_edit, presentation_type_dropdown, quality_edit])
+	HandlerGUI.register_focus_sequence(self, [background_edit, presentation_type_dropdown, quality_edit], true)
 
 
 func _on_quality_edit_value_changed(new_value: float) -> void:
