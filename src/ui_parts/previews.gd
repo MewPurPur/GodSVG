@@ -22,6 +22,7 @@ const MAX_ICON_PREVIEW_SIZE = 128
 @onready var presentation_config_button: Button = $ActionContainer/PresentationConfigButton
 @onready var more_button: Button = $ActionContainer/MoreButton
 
+# Computes all layout data for one preview tile.
 class IconPreviewTileData extends RefCounted:
 	var index := -1
 	var position: Vector2
@@ -55,6 +56,7 @@ class IconPreviewTileData extends RefCounted:
 		# The position needs to be set when all sizes are known, so only size is set here.
 		size = Vector2(maxf(preview_size.x, bottom_row_width) + TILE_PADDING * 2, preview_size.y + 18 + TILE_PADDING * 2)
 		
+		# Wide previews keep the text centered beneath them, while narrow previews are centered over the label row.
 		if preview_size.x >= bottom_row_width:
 			preview_rect = Rect2(Vector2(TILE_PADDING, TILE_PADDING), preview_size)
 			dimensions_label_pos = Vector2(TILE_PADDING + roundf((preview_size.x - full_text_width) / 2.0) + 2,
@@ -74,6 +76,8 @@ var selected_tile_index := -1
 var edited_tile_index := -1
 var edit_field: NumberEdit
 
+var presentation_config_button_ci := RenderingServer.canvas_item_create()
+
 func _ready() -> void:
 	icon_preview_tiles.draw.connect(_on_preview_tiles_draw)
 	icon_preview_tiles.gui_input.connect(_on_tiles_gui_input)
@@ -87,7 +91,6 @@ func _ready() -> void:
 	
 	add_button.pressed.connect(_add_new_tile)
 	
-	var presentation_config_button_ci := RenderingServer.canvas_item_create()
 	RenderingServer.canvas_item_set_parent(presentation_config_button_ci, presentation_config_button.get_canvas_item())
 	presentation_config_button.pressed.connect(_on_presentation_config_button_pressed)
 	presentation_config_button.draw.connect(
@@ -113,7 +116,6 @@ func _ready() -> void:
 	_sync_preview_background()
 	HandlerGUI.register_focus_sequence(self, [add_button, presentation_config_button, more_button])
 
-
 func sync_theming() -> void:
 	preview_top_panel.add_theme_stylebox_override("panel", get_theme_stylebox("tabbar_background", "TabContainer"))
 	sync_preview_top_panel_expand_margins()
@@ -123,6 +125,10 @@ func sync_theming() -> void:
 
 func sync_localization() -> void:
 	add_button.text = Translator.translate("Add preview")
+
+func _exit_tree() -> void:
+	RenderingServer.free_rid(presentation_config_button_ci)
+
 
 func sync_preview_top_panel_expand_margins() -> void:
 	var stylebox := preview_top_panel.get_theme_stylebox("panel").duplicate()
@@ -144,6 +150,7 @@ func sync_tiles() -> void:
 	sync_tile_positions()
 	_sync_texture()
 
+# Reflow tiles into centered rows whenever the panel resizes or the tile set changes.
 func sync_tile_positions() -> void:
 	var current_x := TILE_MARGIN
 	var current_y := TILE_MARGIN
@@ -183,6 +190,7 @@ func sync_tile_positions() -> void:
 	
 	icon_preview_tiles.custom_minimum_size.y = current_y + row_height + TILE_MARGIN
 	_sync_buttons()
+	set_hovered_to_pos(icon_preview_tiles.get_local_mouse_position())
 	icon_preview_tiles.queue_redraw()
 
 
@@ -210,17 +218,7 @@ func _on_preview_tiles_draw() -> void:
 
 func _on_tiles_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		var old_hovered_index := hovered_tile_index
-		hovered_tile_index = -1
-		
-		for tile in tiles:
-			if Rect2(tile.position, tile.size).has_point(event.position):
-				hovered_tile_index = tile.index
-				break
-		
-		if old_hovered_index != hovered_tile_index:
-			icon_preview_tiles.queue_redraw()
-	
+		set_hovered_to_pos(event.position)
 	elif event is InputEventMouseButton:
 		if event.is_pressed():
 			if event.button_index == MOUSE_BUTTON_LEFT:
@@ -238,10 +236,19 @@ func _on_tiles_gui_input(event: InputEvent) -> void:
 					var vp := get_viewport()
 					HandlerGUI.popup_under_pos(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)
 
-
 func _on_tiles_mouse_exited() -> void:
 	hovered_tile_index = -1
 	icon_preview_tiles.queue_redraw()
+
+func set_hovered_to_pos(pos: Vector2) -> void:
+	var old_hovered_index := hovered_tile_index
+	hovered_tile_index = -1
+	for tile in tiles:
+		if Rect2(tile.position, tile.size).has_point(pos):
+			hovered_tile_index = tile.index
+			break
+	if old_hovered_index != hovered_tile_index:
+		icon_preview_tiles.queue_redraw()
 
 func _select_tile(tile_index: int) -> void:
 	if tile_index == selected_tile_index:
