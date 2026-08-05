@@ -70,6 +70,7 @@ func _on_base_class_editing_toggled(toggled_on: bool) -> void:
 		if Input.is_action_pressed("ui_cancel"):
 			text = text_before_edit
 			text_change_canceled.emit()
+			grab_focus(true)
 		elif not Input.is_action_pressed("ui_accept"):
 			# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
 			if text != text_before_edit:
@@ -101,10 +102,12 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("ui_focus_next") or event.is_action_pressed("ui_focus_prev"):
 		if not is_editing():
+			# When this was changed, edit() didn't emit editing_toggled() for some reason, but still blocking it.
 			set_block_signals(true)
-			correct_edit()
+			edit()
 			set_block_signals(false)
 			select_all()
+			text_before_edit = text
 			return
 	
 	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
