@@ -56,7 +56,6 @@ func setup() -> void:
 	line_edit.text_submitted.connect(set_value.bind(true))
 	line_edit.text_changed.connect(setup_font)
 	line_edit.text_change_canceled.connect(setup_font_with_current_text)
-	line_edit.text_change_canceled.connect(sync)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(_commands_draw)
 	commands_container.gui_input.connect(_on_commands_gui_input)
@@ -102,7 +101,7 @@ var last_synced_value := " "  # Invalid initial string.
 func sync() -> void:
 	var new_value := element.get_attribute_value(attribute_name)
 	line_edit.text = new_value
-	setup_font(new_value)
+	setup_font_with_current_text()
 	if last_synced_value == new_value:
 		return
 	last_synced_value = new_value

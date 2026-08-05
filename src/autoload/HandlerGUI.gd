@@ -152,6 +152,13 @@ func _find_first_focusable_control_in_sequence(sequence: Array[Control]) -> Cont
 func forget_focus_sequence(focus_master: Control) -> void:
 	focus_sequences.erase(focus_master)
 
+func add_suppressed_focus(control: Control) -> void:
+	suppressed_focused_controls.append(control)
+	control.tree_exited.connect(
+		func() -> void:
+			suppressed_focused_controls.erase(control)
+	)
+
 func _on_menus_or_popups_cleared() -> void:
 	for control in suppressed_focused_controls:
 		if is_node_on_top_menu_or_popup(control):
@@ -178,7 +185,7 @@ func _add_control(new_control: Control) -> void:
 	remove_all_popups()
 	var previous_focus := get_viewport().gui_get_focus_owner()
 	if is_instance_valid(previous_focus):
-		suppressed_focused_controls.append(previous_focus)
+		add_suppressed_focus(previous_focus)
 	
 	var overlay_ref := ColorRect.new()
 	overlay_ref.color = Color(0, 0, 0, 0.4)
@@ -230,7 +237,7 @@ func remove_all_menus() -> void:
 func add_popup(new_popup: Control, add_shadow := true) -> Control:
 	var previous_focus := get_viewport().gui_get_focus_owner()
 	if is_instance_valid(previous_focus):
-		suppressed_focused_controls.append(previous_focus)
+		add_suppressed_focus(previous_focus)
 	
 	var overlay_ref := Control.new()
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
