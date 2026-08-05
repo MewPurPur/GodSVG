@@ -842,13 +842,13 @@ func setup_frame(frame: Control, has_default := true) -> void:
 			if HandlerGUI.popup_stack.is_empty():
 				remove_preview(bind)
 			else:
-				HandlerGUI.menus_and_popups_changed.connect(_specific_use_remove_preview_if_no_popups.bind(bind))
+				HandlerGUI.menus_or_popups_cleared.connect(_specific_use_remove_preview_if_no_popups.bind(bind))
 	)
 
 func _specific_use_remove_preview_if_no_popups(setting: String) -> void:
 	if HandlerGUI.popup_stack.is_empty():
 		remove_preview(setting)
-		HandlerGUI.menus_and_popups_changed.disconnect(_specific_use_remove_preview_if_no_popups)
+		HandlerGUI.menus_or_popups_cleared.disconnect(_specific_use_remove_preview_if_no_popups)
 
 
 func add_preview(preview: RefCounted) -> void:

@@ -243,15 +243,16 @@ func _gui_input(event: InputEvent) -> void:
 			set_focus_index_to_button_at_global_position(event.global_position)
 
 func try_to_call_focused_button() -> void:
-	if focus_index != -1:
-		var btn := buttons[focus_index]
-		if not btn.disabled:
-			# If the context popup is cleared, ensure the callbacks run after GUI handling.
-			if btn.type == ContextButton.Type.NORMAL:
-				queue_free()
-				tree_exited.connect(btn.get_callback())
-			else:
-				btn.get_callback().call()
+	if focus_index == -1:
+		return
+	var btn := buttons[focus_index]
+	if not btn.disabled:
+		# If the context popup is cleared, ensure the callbacks run after GUI handling.
+		if btn.type == ContextButton.Type.NORMAL:
+			queue_free()
+			tree_exited.connect(btn.get_callback())
+		else:
+			btn.get_callback().call()
 
 func try_to_open_submenu() -> void:
 	if is_instance_valid(HandlerGUI.popup_submenu) and focus_index == -1:
@@ -273,6 +274,8 @@ func set_focus_index_to_button_at_global_position(pos: Vector2) -> void:
 		if buttons[button_idx].get_global_rect().has_point(pos):
 			focus_index = button_idx
 			return
+	if is_instance_valid(HandlerGUI.popup_submenu_source):
+		focus_index = buttons.find(HandlerGUI.popup_submenu_source)  # If not found, it's -1, so still works.
 
 func focus_first_below() -> void:
 	for button_idx in (range(focus_index + 1, buttons.size()) + range(0, focus_index)):
@@ -289,7 +292,10 @@ func focus_first_above() -> void:
 
 
 func _on_mouse_exited() -> void:
-	focus_index = -1
+	if is_instance_valid(HandlerGUI.popup_submenu_source):
+		focus_index = buttons.find(HandlerGUI.popup_submenu_source)  # If not found, it's -1, so still works.
+	else:
+		focus_index = -1
 
 func _on_ui_right() -> void:
 	try_to_open_submenu()
