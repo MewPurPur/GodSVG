@@ -21,7 +21,7 @@ func _ready() -> void:
 	lossless_checkbox.text = Translator.translate("Lossless")
 	HandlerGUI.register_focus_sequence(self, [lossless_checkbox, quality_edit, background_edit, export_scale_config])
 
-func setup(new_export_data_object: ImageExportDataWEBP, new_undo_redo: UndoRedoRef, dimensions: Vector2) -> void:
+func setup(new_export_data_object: ImageExportDataWEBP, new_undo_redo: UndoRedoRef, new_width: float, new_height: float) -> void:
 	export_data_object = new_export_data_object
 	undo_redo = new_undo_redo
 	
@@ -57,7 +57,7 @@ func setup(new_export_data_object: ImageExportDataWEBP, new_undo_redo: UndoRedoR
 				export_data_object.background_color = new_background_color
 	)
 	
-	export_scale_config.setup(dimensions, export_data_object.upscale_amount)
+	export_scale_config.setup(new_width, new_height, export_data_object.upscale_amount)
 	export_scale_config.scale_changed.connect(
 		func(new_value: float) -> void:
 			undo_redo.create_action()

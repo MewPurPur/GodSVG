@@ -18,7 +18,7 @@ func _ready() -> void:
 	background_label.text = Translator.translate("Background") + ":"
 	HandlerGUI.register_focus_sequence(self, [quality_edit, background_edit, export_scale_config])
 
-func setup(new_export_data_object: ImageExportDataJPG, new_undo_redo: UndoRedoRef, dimensions: Vector2) -> void:
+func setup(new_export_data_object: ImageExportDataJPG, new_undo_redo: UndoRedoRef, new_width: float, new_height: float) -> void:
 	export_data_object = new_export_data_object
 	undo_redo = new_undo_redo
 	
@@ -46,7 +46,7 @@ func setup(new_export_data_object: ImageExportDataJPG, new_undo_redo: UndoRedoRe
 				export_data_object.background_color = new_background_color
 	)
 	
-	export_scale_config.setup(dimensions, export_data_object.upscale_amount)
+	export_scale_config.setup(new_width, new_height, export_data_object.upscale_amount)
 	export_scale_config.scale_changed.connect(
 		func(new_value: float) -> void:
 			undo_redo.create_action()

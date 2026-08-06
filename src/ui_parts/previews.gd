@@ -40,7 +40,7 @@ class IconPreviewTileData extends RefCounted:
 	func _init(new_index: int) -> void:
 		index = new_index
 		bigger_dimension = Configs.savedata.preview_presentation_sizes[index]
-		var svg_size := State.root_element.get_size()
+		var svg_size := Vector2(State.root_element.width, State.root_element.height)
 		var multiplier := bigger_dimension / maxf(svg_size.x, svg_size.y)
 		svg_size *= multiplier
 		var font := ThemeUtils.main_font
@@ -281,9 +281,8 @@ func _sync_texture() -> void:
 	var tile := tiles[selected_tile_index]
 	size_label.text = tile.dimensions_text + tile.additional_text
 	
-	var svg_size := State.root_element.get_size()
-	var multiplier := Configs.savedata.preview_presentation_sizes[selected_tile_index] / maxf(svg_size.x, svg_size.y)
-	texture_rect.texture = Configs.savedata.preview_presentation.generate_texture(multiplier)
+	texture_rect.texture = Configs.savedata.preview_presentation.generate_texture(
+			Configs.savedata.preview_presentation_sizes[selected_tile_index] / maxf(State.root_element.width, State.root_element.height))
 
 
 func _generate_tile_popup(tile: IconPreviewTileData) -> ContextPopup:

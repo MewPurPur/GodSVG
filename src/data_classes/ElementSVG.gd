@@ -1,6 +1,7 @@
 ## An <svg> element.
 class_name ElementSVG extends Element
 
+# These are important to keep as 64-bit in some situations.
 var width: float
 var height: float
 var precise_viewbox := PackedFloat64Array([0, 0, 0, 0])
@@ -90,9 +91,6 @@ func world_to_canvas(pos: Vector2) -> Vector2:
 
 func world_to_canvas_64_bit(pos: PackedFloat64Array) -> PackedFloat64Array:
 	return Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(canvas_precise_transform), pos)
-
-func get_size() -> Vector2:
-	return Vector2(width, height)
 
 
 func _get_own_default(attribute_name: String) -> String:

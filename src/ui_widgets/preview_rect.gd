@@ -11,7 +11,7 @@ var last_image_size: int
 func setup_svg_without_dimensions(svg_text: String) -> void:
 	var root := SVGParser.markup_to_root(svg_text).svg
 	if is_instance_valid(root):
-		setup_svg(svg_text, root.get_size())
+		setup_svg(svg_text, Vector2(root.width, root.height))
 	else:
 		hide()
 
@@ -26,8 +26,7 @@ func setup_svg(svg_text: String, dimensions: Vector2) -> void:
 
 func setup_image(config: ImageExportDataRaster) -> void:
 	var final_image_config: ImageExportDataRaster = config.duplicate()
-	var svg_size := State.root_element.get_size()
-	final_image_config.upscale_amount = minf(config.upscale_amount, MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
+	final_image_config.upscale_amount = minf(config.upscale_amount, MAX_IMAGE_DIMENSION / maxf(State.root_element.width, State.root_element.height))
 	var image := Image.new()
 	var buffer := final_image_config.image_to_buffer(final_image_config.generate_image())
 	last_image_size = buffer.size()

@@ -1,12 +1,14 @@
 extends PanelContainer
 
+const PreviewRect = preload("res://src/ui_widgets/preview_rect.gd")
+
 var import_success := false
 
 signal imported
 signal canceled
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
-@onready var texture_preview: CenterContainer = %TexturePreview
+@onready var texture_preview: PreviewRect = %TexturePreview
 @onready var ok_button: Button = %ButtonContainer/OKButton
 @onready var margin_container: MarginContainer = %MarginContainer
 @onready var cancel_button: Button = $VBoxContainer/ButtonContainer/CancelButton
@@ -34,7 +36,7 @@ func _ready() -> void:
 		var preview_parse_result := SVGParser.markup_to_root(preview_text)
 		var preview := preview_parse_result.svg
 		if is_instance_valid(preview):
-			texture_preview.setup_svg(SVGParser.root_to_editor_markup(preview), preview.get_size())
+			texture_preview.setup_svg(SVGParser.root_to_editor_markup(preview), Vector2(preview.width, preview.height))
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:
 		texture_preview.hide()

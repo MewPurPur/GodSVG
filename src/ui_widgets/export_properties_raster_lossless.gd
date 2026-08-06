@@ -14,7 +14,7 @@ func _ready() -> void:
 	background_label.text = Translator.translate("Background") + ":"
 	HandlerGUI.register_focus_sequence(self, [background_edit, export_scale_config])
 
-func setup(new_export_data_object: ImageExportDataRaster, new_undo_redo: UndoRedoRef, dimensions: Vector2) -> void:
+func setup(new_export_data_object: ImageExportDataRaster, new_undo_redo: UndoRedoRef, new_width: float, new_height: float) -> void:
 	export_data_object = new_export_data_object
 	undo_redo = new_undo_redo
 	
@@ -31,7 +31,7 @@ func setup(new_export_data_object: ImageExportDataRaster, new_undo_redo: UndoRed
 				export_data_object.background_color = new_background_color
 	)
 	
-	export_scale_config.setup(dimensions, export_data_object.upscale_amount)
+	export_scale_config.setup(new_width, new_height, export_data_object.upscale_amount)
 	# The actual limit is ~2 million pixels, but that doesn't seem relevant.
 	if export_data_object is ImageExportDataPNG:
 		export_scale_config.max_dimension = 65535
