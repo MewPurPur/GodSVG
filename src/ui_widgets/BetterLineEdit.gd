@@ -18,11 +18,6 @@ func _set(property: StringName, value: Variant) -> bool:
 	return false
 
 # TODO The need for this seems to be caused by a Godot bug.
-func correct_edit() -> void:
-	if not is_editing():
-		edit()
-		editing_toggled.emit(true)
-
 func correct_unedit(was_previously_focus := false) -> void:
 	if is_editing() or (not editable and (was_previously_focus or has_focus(true))):
 		unedit()
@@ -73,7 +68,7 @@ func _on_base_class_editing_toggled(toggled_on: bool) -> void:
 			grab_focus(true)
 		elif not Input.is_action_pressed("ui_accept"):
 			# If ui_accept is pressed, text_submitted gets emitted anyway, so don't emit again.
-			if text != text_before_edit:
+			if editable and text != text_before_edit:
 				text_submitted.emit(text)
 		text_before_edit = ""
 		deselect()
@@ -195,3 +190,5 @@ func _gui_input(event: InputEvent) -> void:
 		# TODO Make it so LineEdit caret automatically moves to the clicked position to finish the right-click logic.
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		grab_focus(not has_focus())
+		if not editable:
+			editing_toggled.emit(true)
