@@ -106,6 +106,7 @@ func _on_underlying_control_unfocused() -> void:
 func _setup() -> void:
 	if active:
 		temp_line_edit.size.x = size.x - button_width
+		temp_button.position.x = size.x - button_width
 		return
 	active = true
 	temp_line_edit = BetterLineEdit.new()
