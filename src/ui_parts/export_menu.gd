@@ -17,7 +17,8 @@ var export_data_resources: Dictionary[String, ImageExportData] = {
 	"dds": ImageExportDataDDS.new(),
 }
 var current_format := ""
-var dimensions := Vector2.ZERO
+var svg_width := 0.0
+var svg_height := 0.0
 
 @onready var dimensions_label: Label = %DimensionsLabel
 @onready var texture_preview: PreviewRect = %TexturePreview
@@ -47,14 +48,15 @@ func _ready() -> void:
 	format_dropdown.value_changed.connect(_on_format_dropdown_value_changed)
 	
 	# Update dimensions label.
-	dimensions = State.root_element.get_size()
-	dimensions_label.text = Translator.translate("Dimensions") + ": " + get_dimensions_text(dimensions)
+	svg_width = State.root_element.width
+	svg_height = State.root_element.height
+	dimensions_label.text = Translator.translate("Dimensions") + ": " + get_dimensions_text(svg_width, svg_height)
 	set_current_format("svg")
 	
 	# Setup the warning for when the image is too big to have a preview.
-	var scaling_factor := texture_preview.MAX_IMAGE_DIMENSION / maxf(dimensions.x, dimensions.y)
+	var scaling_factor := texture_preview.MAX_IMAGE_DIMENSION / maxf(svg_width, svg_height)
 	info_tooltip.tooltip_text = Translator.translate("Preview image size is limited to {dimensions}").format(
-			{"dimensions": get_dimensions_text(Vector2(maxf(dimensions.x * scaling_factor, 1.0), maxf(dimensions.y * scaling_factor, 1.0)), true)})
+			{"dimensions": get_dimensions_text(maxf(svg_width * scaling_factor, 1.0), maxf(svg_height * scaling_factor, 1.0), true)})
 	info_tooltip.modulate = ThemeUtils.info_icon_color
 	
 	if Configs.savedata.get_active_tab().svg_file_path.is_empty():
@@ -121,7 +123,7 @@ func set_current_format(new_format: String) -> void:
 	if is_instance_valid(new_properties_scene_root):
 		content_container.add_child(new_properties_scene_root)
 		HandlerGUI.register_focus_sequence(content_container, [new_properties_scene_root])
-		new_properties_scene_root.setup(get_edited_export_data(), undo_redo, dimensions)
+		new_properties_scene_root.setup(get_edited_export_data(), undo_redo, svg_width, svg_height)
 	
 	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 	if not file_name.is_empty():
@@ -139,21 +141,21 @@ func _on_edited_export_data_changed() -> void:
 	var export_size: int
 	if export_data is ImageExportDataRaster:
 		texture_preview.setup_image(export_data)
-		var export_size_factor := roundf(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) / texture_preview.MAX_IMAGE_DIMENSION
+		var export_size_factor := roundf(export_data.upscale_amount * maxf(svg_width, svg_height)) / texture_preview.MAX_IMAGE_DIMENSION
 		# Calculate or estimate size. WebP fares better when scaled.
 		if not export_data is ImageExportDataWEBP:
 			export_size_factor **= 2
 		export_size = roundi(texture_preview.last_image_size * maxf(1.0, export_size_factor))
 		final_size_label.text = Translator.translate("Size") if export_size_factor <= 1.0 else Translator.translate("Estimated size")
 	else:
-		texture_preview.setup_svg(State.get_export_text(), dimensions)
+		texture_preview.setup_svg(State.get_export_text(), Vector2(svg_width, svg_height))
 		export_size = State.get_export_text().length()
 		final_size_label.text = Translator.translate("Size")
 	
 	final_size_label.text += ": " + String.humanize_size(export_size)
 	info_tooltip.visible = (export_data is ImageExportDataRaster and\
-			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) > texture_preview.MAX_IMAGE_DIMENSION)
+			roundi(export_data.upscale_amount * maxf(svg_width, svg_height)) > texture_preview.MAX_IMAGE_DIMENSION)
 
-func get_dimensions_text(sides: Vector2, integer := false) -> String:
+func get_dimensions_text(width: float, height: float, integer := false) -> String:
 	var precision := 0 if integer else 2
-	return "%s×%s" % [Utils.num_simple(sides.x, precision), Utils.num_simple(sides.y, precision)]
+	return "%s×%s" % [Utils.num_simple(width, precision), Utils.num_simple(height, precision)]

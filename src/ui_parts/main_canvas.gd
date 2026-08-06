@@ -34,13 +34,15 @@ func sync_camera_zoom_in_tab() -> void:
 	Configs.savedata.get_active_tab().camera_zoom = camera_zoom
 
 func sync_svg_size() -> void:
-	if _current_svg_size != root_element.get_size():
-		_current_svg_size = root_element.get_size()
+	if _current_svg_width != root_element.width or _current_svg_height != root_element.height:
+		_current_svg_width = root_element.width
+		_current_svg_width = root_element.height
 		sync_checkerboard()
 		center_frame()
 		queue_redraw()
 
-var _current_svg_size: Vector2
+var _current_svg_width: float
+var _current_svg_height: float
 
 func react_to_last_parsing() -> void:
 	if State.last_parse_error == SVGParser.ParseError.OK:
@@ -53,7 +55,8 @@ func _on_svg_changed(is_edit: bool) -> void:
 	if is_edit:
 		sync_svg_size()
 	else:
-		_current_svg_size = root_element.get_size()
+		_current_svg_width = root_element.width
+		_current_svg_height = root_element.height
 	queue_texture_update()
 	handles_manager.queue_update_handles()
 

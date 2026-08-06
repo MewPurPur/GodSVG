@@ -150,15 +150,15 @@ func toggle_show_handles() -> void:
 	handles_manager.update_show_handles()
 
 func center_frame() -> void:
-	var available_size := size * ZOOM_RESET_BUFFER
-	var ratio := available_size / root_element.get_size()
-	if ratio.is_finite():
-		camera_zoom = nearest_po2(ceili(minf(ratio.x, ratio.y) * 32.0)) / 64.0
+	var ratio_x := size.x * ZOOM_RESET_BUFFER / root_element.width
+	var ratio_y := size.y * ZOOM_RESET_BUFFER / root_element.height
+	if is_finite(ratio_x) and is_finite(ratio_y):
+		camera_zoom = nearest_po2(ceili(minf(ratio_x, ratio_y) * 32.0)) / 64.0
 	else:
 		camera_zoom = 1.0
 	
 	adjust_view()
-	set_view(root_element.get_size() / 2.0)
+	set_view(Vector2(root_element.width, root_element.height) / 2)
 
 func sync_canvas_transform() -> void:
 	viewport.canvas_transform = Transform2D(0.0, Vector2(camera_zoom, camera_zoom), 0.0, -get_camera_position() * camera_zoom)
@@ -212,9 +212,8 @@ func _texture_update() -> void:
 
 
 func sync_checkerboard() -> void:
-	var root_element_size := root_element.get_size()
-	if root_element_size.is_finite():
-		checkerboard.size = root_element_size
+	if is_finite(root_element.width) and is_finite(root_element.height):
+		checkerboard.size = Vector2(root_element.width, root_element.height)
 
 
 func update_show_grid() -> void:

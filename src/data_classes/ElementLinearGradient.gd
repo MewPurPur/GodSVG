@@ -20,7 +20,7 @@ func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
 func generate_texture() -> DPITexture:
 	var svg_texture_text := """<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" """
 	
-	var scaling := Vector2(64.0, 64.0) / svg.get_size()
+	var scaling := Vector2(64/svg.width, 64/svg.height)
 	var is_user_space_on_use := (get_attribute_value("gradientUnits") == "userSpaceOnUse")
 	
 	for attrib in ["x1", "x2"]:
