@@ -80,15 +80,13 @@ func _init() -> void:
 	set_anchors_and_offsets_preset(PRESET_TOP_LEFT)
 	focus_mode = Control.FOCUS_ALL
 	mouse_filter = Control.MOUSE_FILTER_PASS
-	focus_entered.connect(_on_base_class_focus_entered)
 	mouse_entered.connect(_on_base_class_mouse_entered)
+	focus_entered.connect(_setup)
+	resized.connect(_setup)
 	mouse_exited.connect(_on_base_class_mouse_exited)
 
 func _on_base_class_mouse_entered() -> void:
 	_is_mouse_outside = false
-	_setup()
-
-func _on_base_class_focus_entered() -> void:
 	_setup()
 
 func _on_base_class_mouse_exited() -> void:
@@ -107,6 +105,7 @@ func _on_underlying_control_unfocused() -> void:
 
 func _setup() -> void:
 	if active:
+		temp_line_edit.size.x = size.x - button_width
 		return
 	active = true
 	temp_line_edit = BetterLineEdit.new()
