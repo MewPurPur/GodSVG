@@ -40,7 +40,7 @@ func generate_texture() -> DPITexture:
 	if has_attribute("gradientTransform"):
 		if is_user_space_on_use:
 			svg_texture_text += """gradientTransform="scale(%f %f) %s scale(%f %f)" """ % [scaling.x, scaling.y,
-					get_attribute_value("gradientTransform"), 1 / scaling.x, 1 / scaling.y]
+					get_attribute_value("gradientTransform"), 1/scaling.x, 1/scaling.y]
 		else:
 			svg_texture_text += """gradientTransform="%s" """ % get_attribute_value("gradientTransform")
 	
