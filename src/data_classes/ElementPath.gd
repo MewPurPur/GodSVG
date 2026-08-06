@@ -95,7 +95,7 @@ func get_bounding_box() -> Rect2:
 				
 				var t_y: float = (cmd.start_y - cp2[1]) / (cmd.start_y - 2 * cp2[1] + cmd.y)
 				if 0 <= t_y and t_y <= 1:
-					var y_extrema := Utils.quadratic_bezier_point(cmd.y, cp2[1], cmd.y, t_y)
+					var y_extrema := Utils.quadratic_bezier_point(cmd.start_y, cp2[1], cmd.y, t_y)
 					min_y = minf(min_y, y_extrema)
 					max_y = maxf(max_y, y_extrema)
 			"A":
