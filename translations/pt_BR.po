@@ -42,10 +42,6 @@ msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Esse gráfico pode ser exportado apenas como um SVG pois as suas proporções são extremas."
-
-#: src/autoload/HandlerGUI.gd
 msgid "The graphic can be exported only as SVG because its size is not defined."
 msgstr "Esse gráfico pode ser exportado apenas como SVG pois o seu tamanho não foi definido."
 
@@ -499,10 +495,6 @@ msgstr "Ajuda"
 #: src/ui_parts/previews.gd
 #, fuzzy
 msgid "Add preview"
-msgstr "Adicionar nova prévia"
-
-#: src/ui_parts/previews.gd
-msgid "Add new preview"
 msgstr "Adicionar nova prévia"
 
 #: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd
@@ -1719,6 +1711,12 @@ msgstr "Um aplicativo de gráficos vetoriais para edição estruturada de SVG"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vetor;gráficos;desenho;design;ilustração;imagem;arte;diagrama;ícone;logo;editor;arte;caminho;forma;2D;código;azul;raposa"
+
+#~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+#~ msgstr "Esse gráfico pode ser exportado apenas como um SVG pois as suas proporções são extremas."
+
+#~ msgid "Add new preview"
+#~ msgstr "Adicionar nova prévia"
 
 #~ msgid "Add new color"
 #~ msgstr "Adicionar nova cor"

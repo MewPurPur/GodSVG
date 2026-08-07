@@ -27,10 +27,12 @@ func setup(new_original_width: float, new_original_height: float, initial_scale:
 		await ready
 	original_width = new_original_width
 	original_height = new_original_height
-	scale_edit.min_value = 1 / minf(original_width, new_original_height)
-	scale_edit.max_value = max_dimension / maxf(new_original_width, new_original_height)
-	width_edit.max_value = max_dimension
-	height_edit.max_value = max_dimension
+	var bigger_dimension := maxf(original_width, original_height)
+	var max_scale := max_dimension / bigger_dimension
+	scale_edit.min_value = 1 / bigger_dimension
+	scale_edit.max_value = max_dimension / bigger_dimension
+	width_edit.max_value = floori(original_width * max_scale)
+	height_edit.max_value = floori(original_height * max_scale)
 	scale_edit.value_changed.connect(_on_scale_edit_value_changed)
 	width_edit.value_changed.connect(_on_width_edit_value_changed)
 	height_edit.value_changed.connect(_on_height_edit_value_changed)

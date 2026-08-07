@@ -42,10 +42,6 @@ msgid "OK"
 msgstr "Добре"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Графиката може да бъде експортирана само като SVG защото височината и широчината са твърде различни."
-
-#: src/autoload/HandlerGUI.gd
 msgid "The graphic can be exported only as SVG because its size is not defined."
 msgstr "Графиката може да бъде експортирана само като SVG защото размерът не е определен."
 
@@ -493,10 +489,6 @@ msgstr "Помощ"
 #: src/ui_parts/previews.gd
 msgid "Add preview"
 msgstr "Добави гледка"
-
-#: src/ui_parts/previews.gd
-msgid "Add new preview"
-msgstr "Добави нова гледка"
 
 #: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd
 #: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
