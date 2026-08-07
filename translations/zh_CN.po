@@ -42,10 +42,6 @@ msgid "OK"
 msgstr "确定"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "此图像只能以 SVG 格式导出，因为其大小过于极端。"
-
-#: src/autoload/HandlerGUI.gd
 msgid "The graphic can be exported only as SVG because its size is not defined."
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。"
 
@@ -493,10 +489,6 @@ msgstr "帮助"
 #: src/ui_parts/previews.gd
 msgid "Add preview"
 msgstr "添加预览"
-
-#: src/ui_parts/previews.gd
-msgid "Add new preview"
-msgstr "添加新预览"
 
 #: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd
 #: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
@@ -1695,6 +1687,12 @@ msgstr "结构化SVG编辑应用"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标志;编辑器;路径;形狀;二维;代码;蓝色;狐狸"
+
+#~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+#~ msgstr "此图像只能以 SVG 格式导出，因为其大小过于极端。"
+
+#~ msgid "Add new preview"
+#~ msgstr "添加新预览"
 
 #~ msgid "Add new color"
 #~ msgstr "添加新颜色"

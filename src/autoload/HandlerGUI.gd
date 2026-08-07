@@ -737,25 +737,14 @@ func open_export() -> void:
 	var width := State.root_element.width
 	var height := State.root_element.height
 	
-	var dimensions_valid := (is_finite(width) and is_finite(height) and width > 0.0 and height > 0.0)
-	var dimensions_too_different := false
-	
-	if dimensions_valid:
-		dimensions_too_different = (1 / minf(width, height) > 16384 / maxf(width, height))
-		if not dimensions_too_different:
-			add_menu(ExportMenuScene.instantiate())
-			return
-	
-	var message: String
-	if dimensions_too_different:
-		message = Translator.translate("The graphic can be exported only as SVG because its proportions are too extreme.")
-	else:
-		message = Translator.translate("The graphic can be exported only as SVG because its size is not defined.")
-	message += "\n\n" + Translator.translate("Do you want to proceed?")
+	if is_finite(width) and is_finite(height) and width > 0.0 and height > 0.0:
+		add_menu(ExportMenuScene.instantiate())
+		return
 	
 	var confirm_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirm_dialog)
-	confirm_dialog.setup(Translator.translate("Export SVG"), message,
+	confirm_dialog.setup(Translator.translate("Export SVG"), "%s\n\n%s" %\
+			[Translator.translate("The graphic can only be exported as SVG because its size is undefined."), Translator.translate("Do you want to proceed?")],
 			Translator.translate("Export"), FileUtils.open_export_dialog.bind(ImageExportDataSVG.new()))
 
 

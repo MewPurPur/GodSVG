@@ -41,10 +41,6 @@ msgid "OK"
 msgstr ""
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr ""
-
-#: src/autoload/HandlerGUI.gd
 msgid "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
 
@@ -491,10 +487,6 @@ msgstr ""
 
 #: src/ui_parts/previews.gd
 msgid "Add preview"
-msgstr ""
-
-#: src/ui_parts/previews.gd
-msgid "Add new preview"
 msgstr ""
 
 #: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd
