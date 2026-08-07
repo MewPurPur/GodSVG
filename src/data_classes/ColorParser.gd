@@ -1,7 +1,6 @@
 ## Parser for SVG colors.
 @abstract class_name ColorParser
 
-
 ## Adds a hash prefix to hex color strings if they don't already have one
 static func add_hash_if_hex(color: String) -> String:
 	color = color.strip_edges()
