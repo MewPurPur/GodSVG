@@ -36,10 +36,8 @@ func setup(new_export_data_object: ImageExportDataWEBP, new_undo_redo: UndoRedoR
 	quality_edit.initial_value = export_data_object.quality * 100
 	quality_edit.value_changed.connect(
 		func(new_value: float) -> void:
-			var new_quality := new_value / 100
-			quality_edit.text = String.num_uint64(roundi(new_quality * 100))
 			undo_redo.create_action()
-			undo_redo.add_do_property(export_data_object, "quality", new_quality)
+			undo_redo.add_do_property(export_data_object, "quality", new_value / 100)
 			undo_redo.add_undo_property(export_data_object, "quality", export_data_object.quality)
 			undo_redo.commit_action()
 	)
