@@ -40,6 +40,7 @@ func setup(new_original_width: float, new_original_height: float, initial_scale:
 
 func set_export_scale(new_scale: float) -> void:
 	scale_edit.set_value(new_scale, false)
+	new_scale = scale_edit.get_value()
 	width_edit.set_value(roundi(original_width * new_scale), false)
 	height_edit.set_value(roundi(original_height * new_scale), false)
 

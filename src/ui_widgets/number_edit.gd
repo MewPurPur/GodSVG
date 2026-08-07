@@ -27,6 +27,8 @@ func set_value(new_value: float, emit_changed := true) -> void:
 		return
 	elif _value != new_value:
 		new_value = clampf(new_value, min_value, max_value)
+		if not is_float:
+			new_value = roundf(new_value)
 		if _value != new_value:
 			_value = new_value
 			if emit_changed:

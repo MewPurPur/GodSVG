@@ -45,7 +45,8 @@ class IconPreviewTileData extends RefCounted:
 		svg_size *= multiplier
 		var font := ThemeUtils.main_font
 		
-		dimensions_text = "%d×%d" % [int(svg_size.x), int(svg_size.y)]
+		preview_texture = DPITexture.create_from_string(State.stable_export_markup, multiplier)
+		dimensions_text = "%d×%d" % [preview_texture.get_width(), preview_texture.get_height()]
 		additional_text = " (%sx)" % Utils.num_simple(multiplier, 1 if multiplier > 10 else 2)
 		dimensions_label_width = font.get_string_size(dimensions_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
 		var additional_text_width := font.get_string_size(additional_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
@@ -59,8 +60,7 @@ class IconPreviewTileData extends RefCounted:
 		# Wide previews keep the text centered beneath them, while narrow previews are centered over the label row.
 		if preview_size.x >= bottom_row_width:
 			preview_rect = Rect2(Vector2(TILE_PADDING, TILE_PADDING), preview_size)
-			dimensions_label_pos = Vector2(TILE_PADDING + roundf((preview_size.x - full_text_width) / 2.0) + 2,
-					TILE_PADDING + preview_size.y)
+			dimensions_label_pos = Vector2(TILE_PADDING + roundf((preview_size.x - full_text_width) / 2.0) + 2, TILE_PADDING + preview_size.y)
 		else:
 			preview_rect = Rect2(Vector2(TILE_PADDING, TILE_PADDING) + Vector2(roundf((bottom_row_width - preview_size.x) / 2.0), 0), preview_size)
 			dimensions_label_pos = Vector2(TILE_PADDING + 2, TILE_PADDING + preview_size.y)
@@ -68,7 +68,6 @@ class IconPreviewTileData extends RefCounted:
 		action_button_rect = Rect2(Vector2(additional_label_pos.x + (additional_text_width - ACTION_BUTTON_SIZE) / 2, additional_label_pos.y + 2),
 				Vector2(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE))
 		
-		preview_texture = DPITexture.create_from_string(State.stable_export_markup, multiplier)
 
 var tiles: Array[IconPreviewTileData] = []
 var hovered_tile_index := -1
