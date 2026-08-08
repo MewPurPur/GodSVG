@@ -47,7 +47,14 @@ class IconPreviewTileData extends RefCounted:
 		
 		preview_texture = DPITexture.create_from_string(State.stable_export_markup, multiplier)
 		dimensions_text = "%d×%d" % [preview_texture.get_width(), preview_texture.get_height()]
-		additional_text = " (%sx)" % Utils.num_simple(multiplier, 1 if multiplier > 10 else 2)
+		var precision := 0
+		if multiplier < 1:
+			precision = 3
+		elif multiplier < 10:
+			precision = 2
+		elif multiplier < 100:
+			precision = 1
+		additional_text = " (%sx)" % Utils.num_simple(multiplier, precision)
 		dimensions_label_width = font.get_string_size(dimensions_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
 		var additional_text_width := font.get_string_size(additional_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
 		var full_text_width := dimensions_label_width + additional_text_width

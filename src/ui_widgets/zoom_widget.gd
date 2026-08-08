@@ -31,14 +31,21 @@ func setup_limits(new_min_zoom: float, new_max_zoom: float) -> void:
 
 func sync_to_value(new_zoom: float) -> void:
 	new_zoom = clampf(new_zoom, min_zoom, max_zoom)
-	if new_zoom < 0.1:
-		zoom_reset_button.text = Utils.num_simple(new_zoom * 100, 2) + "%"
-	elif new_zoom < 10.0:
-		zoom_reset_button.text = Utils.num_simple(new_zoom * 100, 1) + "%"
-	elif new_zoom < 100.0:
-		zoom_reset_button.text = String.num_uint64(roundi(new_zoom * 100)) + "%"
+	if new_zoom < 100:
+		var precision := 0
+		if new_zoom < 0.1:
+			precision = 2
+		elif new_zoom < 10:
+			precision = 1
+		zoom_reset_button.text = Utils.num_simple(new_zoom * 100, precision) + "%"
 	else:
 		zoom_reset_button.text = Utils.num_simple(new_zoom, 1) + "x"
+	
+	if zoom_reset_button.has_theme_font_size_override("font_size"):
+		zoom_reset_button.remove_theme_font_size_override("font_size")
+	zoom_reset_button.reset_size()
+	if zoom_reset_button.size.x > zoom_reset_button.custom_minimum_size.x:
+		zoom_reset_button.add_theme_font_size_override("font_size", zoom_reset_button.get_theme_font_size("font_size") - 1)
 	
 	var is_max_zoom := is_equal_approx(new_zoom, max_zoom)
 	zoom_in_button.disabled = is_max_zoom

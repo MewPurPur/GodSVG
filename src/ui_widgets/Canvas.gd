@@ -308,11 +308,7 @@ func set_zoom(new_zoom: float, offset := Vector2(0.5, 0.5)) -> void:
 
 # Top left corner.
 func set_view(new_center: Vector2) -> void:
-	new_center = new_center.clamp(limit_top_left, limit_bottom_right)
-	if new_center == camera_center:
-		return
-	
-	camera_center = new_center
+	camera_center = new_center.clamp(limit_top_left, limit_bottom_right)
 	var stripped_left := maxf(camera_center.x - size.x / camera_zoom / 2.0, 0.0)
 	var stripped_top := maxf(camera_center.y - size.y / camera_zoom / 2.0, 0.0)
 	var stripped_right := minf(camera_center.x + size.x / camera_zoom / 2.0, root_element.width)
