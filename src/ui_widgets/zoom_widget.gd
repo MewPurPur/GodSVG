@@ -21,7 +21,7 @@ func _ready() -> void:
 	zoom_out_button.shortcuts_bind = shortcuts
 	zoom_in_button.shortcuts_bind = shortcuts
 	zoom_reset_button.shortcuts_bind = shortcuts
-	
+	zoom_reset_button.theme_changed.connect(_sync_zoom_reset_button_font_size)
 	HandlerGUI.register_focus_sequence(self, [zoom_out_button, zoom_reset_button, zoom_in_button])
 
 
@@ -40,12 +40,7 @@ func sync_to_value(new_zoom: float) -> void:
 		zoom_reset_button.text = Utils.num_simple(new_zoom * 100, precision) + "%"
 	else:
 		zoom_reset_button.text = Utils.num_simple(new_zoom, 1) + "x"
-	
-	if zoom_reset_button.has_theme_font_size_override("font_size"):
-		zoom_reset_button.remove_theme_font_size_override("font_size")
-	zoom_reset_button.reset_size()
-	if zoom_reset_button.size.x > zoom_reset_button.custom_minimum_size.x:
-		zoom_reset_button.add_theme_font_size_override("font_size", zoom_reset_button.get_theme_font_size("font_size") - 1)
+	_sync_zoom_reset_button_font_size()
 	
 	var is_max_zoom := is_equal_approx(new_zoom, max_zoom)
 	zoom_in_button.disabled = is_max_zoom
@@ -54,3 +49,12 @@ func sync_to_value(new_zoom: float) -> void:
 	var is_min_zoom := is_equal_approx(new_zoom, min_zoom)
 	zoom_out_button.disabled = is_min_zoom
 	zoom_out_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if is_min_zoom else Control.CURSOR_POINTING_HAND
+
+func _sync_zoom_reset_button_font_size() -> void:
+	zoom_reset_button.theme_changed.disconnect(_sync_zoom_reset_button_font_size)
+	if zoom_reset_button.has_theme_font_size_override("font_size"):
+		zoom_reset_button.remove_theme_font_size_override("font_size")
+	zoom_reset_button.reset_size()
+	if zoom_reset_button.size.x > zoom_reset_button.custom_minimum_size.x:
+		zoom_reset_button.add_theme_font_size_override("font_size", zoom_reset_button.get_theme_font_size("font_size") - 1)
+	zoom_reset_button.theme_changed.connect(_sync_zoom_reset_button_font_size)
