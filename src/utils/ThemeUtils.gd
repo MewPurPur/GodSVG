@@ -255,7 +255,7 @@ static func recalculate_colors() -> void:
 	shadow_color = Color(0, 0, 0, 0.1 if ThemeUtils.is_theme_dark else 0.08)
 
 static func rebuild_fonts() -> void:
-	# FIXME emitting changed seems to be necessitated only by a Godot bug: #122082.
+	# FIXME emitting changed seems to be necessary only due to Godot bug #122082.
 	main_font.base_font = FontFile.new()
 	if not Configs.savedata.main_font_path.is_empty():
 		main_font.base_font.load_dynamic_font(Configs.savedata.main_font_path)

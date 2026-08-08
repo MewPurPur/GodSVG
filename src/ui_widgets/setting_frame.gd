@@ -10,7 +10,7 @@ const OptimizerSettingInfoScene = preload("res://src/ui_widgets/optimizer_settin
 const ColorEditScene = preload("res://src/ui_widgets/color_edit.tscn")
 const BasicDropdownScene = preload("res://src/ui_widgets/dropdown_basic.tscn")
 const NumericDropdownScene = preload("res://src/ui_widgets/dropdown_numeric.tscn")
-const FilePathFieldScene = preload("res://src/ui_widgets/file_path_field.tscn")
+const FilePathFieldScene = preload("res://src/ui_widgets/file_path_edit.tscn")
 
 const reload_icon = preload("res://assets/icons/Reload.svg")
 const clear_icon = preload("res://assets/icons/Clear.svg")

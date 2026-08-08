@@ -475,13 +475,13 @@ func setup_theming_content() -> void:
 	
 	add_section(Translator.translate("Fonts"))
 	current_setup_setting = "main_font_path"
-	add_font_file_path_field(Translator.translate("Main font"))
+	add_font_file_path_edit(Translator.translate("Main font"))
 	add_preview(SettingFontPreview.new(ThemeUtils.main_font))
 	current_setup_setting = "bold_font_path"
-	add_font_file_path_field(Translator.translate("Bold font"))
+	add_font_file_path_edit(Translator.translate("Bold font"))
 	add_preview(SettingFontPreview.new(ThemeUtils.bold_font))
 	current_setup_setting = "mono_font_path"
-	add_font_file_path_field(Translator.translate("Mono font"))
+	add_font_file_path_edit(Translator.translate("Mono font"))
 	add_preview(SettingFontPreview.new(ThemeUtils.mono_font))
 	
 	add_section(Translator.translate("SVG Text colors"))
@@ -815,10 +815,10 @@ func add_color_edit(text: String, alpha_enabled := true) -> Control:
 	current_setup_container.add_child(frame)
 	return frame
 
-func add_font_file_path_field(text: String) -> Control:
-	return _add_file_path_field(text, Utils.DYNAMIC_FONT_FORMATS)
+func add_font_file_path_edit(text: String) -> Control:
+	return _add_file_path_edit(text, Utils.DYNAMIC_FONT_FORMATS)
 
-func _add_file_path_field(text: String, extensions_list: PackedStringArray) -> Control:
+func _add_file_path_edit(text: String, extensions_list: PackedStringArray) -> Control:
 	var frame := SettingFrameScene.instantiate()
 	frame.text = text
 	setup_frame(frame)

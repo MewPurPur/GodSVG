@@ -89,7 +89,7 @@ static func get_action_description(action_name: String, for_button := false) -> 
 		_: return action_name
 
 ## Returns a translated description for an SVG path command character.
-## If omit_relativity is true, doesn't append "(Relative)"/"(Absolute)" suffix.
+## If show_relativity is true, append "(Relative)"/"(Absolute)" suffix.
 static func get_path_command_description(command_char: String, show_relativity := false) -> String:
 	var description: String
 	match command_char:
@@ -107,10 +107,8 @@ static func get_path_command_description(command_char: String, show_relativity :
 	
 	if not show_relativity:
 		return description
-	elif Utils.is_string_lower(command_char):
-		return description + " (" + Translator.translate("Relative") + ")"
-	else:
-		return description + " (" + Translator.translate("Absolute") + ")"
+	return "%s (%s)" % [description, Translator.translate("Relative") if\
+			Utils.is_string_lower(command_char) else Translator.translate("Absolute")]
 
 ## Returns the translated name for a layout part.
 static func get_layout_part_name(layout_part: Utils.LayoutPart) -> String:
