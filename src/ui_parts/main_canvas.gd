@@ -36,7 +36,7 @@ func sync_camera_zoom_in_tab() -> void:
 func sync_svg_size() -> void:
 	if _current_svg_width != root_element.width or _current_svg_height != root_element.height:
 		_current_svg_width = root_element.width
-		_current_svg_width = root_element.height
+		_current_svg_height = root_element.height
 		sync_checkerboard()
 		center_frame()
 		queue_redraw()

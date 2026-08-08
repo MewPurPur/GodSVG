@@ -69,7 +69,7 @@ static func rotate_flat_stylebox_90_left(stylebox: StyleBoxFlat) -> void:
 	stylebox.corner_radius_top_right = stylebox.corner_radius_bottom_right
 	stylebox.corner_radius_bottom_right = temp2
 	
-	var temp3 := stylebox.border_width_left
+	var temp3 := stylebox.content_margin_left
 	stylebox.content_margin_left = stylebox.content_margin_top
 	stylebox.content_margin_top = stylebox.content_margin_right
 	stylebox.content_margin_right = stylebox.content_margin_bottom

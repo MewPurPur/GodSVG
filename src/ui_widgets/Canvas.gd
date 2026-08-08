@@ -107,6 +107,7 @@ func _enter_tree() -> void:
 	checkerboard.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	checkerboard.stretch_mode = TextureRect.STRETCH_TILE
 	checkerboard.texture_filter = TEXTURE_FILTER_NEAREST
+	checkerboard.clip_contents = true
 	var zoom_shader_material := ShaderMaterial.new()
 	zoom_shader_material.shader = preload("res://src/shaders/zoom_shader.gdshader")
 	checkerboard.material = zoom_shader_material
@@ -188,7 +189,7 @@ func _texture_update() -> void:
 	var image_zoom := 1.0 if view_rasterized and camera_zoom > 1.0 else camera_zoom
 	var pixel_size := 1 / image_zoom
 	
-	# Translate to canvas coords.
+	# Expand by pixel_size * 2 so external colors can affect it.
 	var display_rect := texture_view_rect.grow(pixel_size * 2)
 	display_rect.position = display_rect.position.snapped(Vector2(pixel_size, pixel_size)).maxf(0.0)
 	display_rect.size = display_rect.size.snapped(Vector2(pixel_size, pixel_size))
@@ -199,6 +200,7 @@ func _texture_update() -> void:
 	if cached_inner_markup.is_empty():
 		cached_inner_markup = SVGParser.get_inner_markup_with_percentages_converted(root_element)
 	
+	# Translate to canvas coords.
 	var svg_text := SVGParser.root_cutout_to_markup(root_element, display_rect.size,
 			Rect2(root_element.world_to_canvas(display_rect.position),
 			display_rect.size / root_element.canvas_transform.get_scale()), cached_inner_markup)
@@ -206,7 +208,6 @@ func _texture_update() -> void:
 	# TODO Necessary workaround to Godot ignoring position changes below a treshold.
 	display_texture.position = Vector2(NAN, NAN)
 	display_texture.position = display_rect.position
-	
 	display_texture.size = display_rect.size
 	display_texture.texture = DPITexture.create_from_string(svg_text, image_zoom)
 
@@ -307,8 +308,11 @@ func set_zoom(new_zoom: float, offset := Vector2(0.5, 0.5)) -> void:
 
 # Top left corner.
 func set_view(new_center: Vector2) -> void:
-	camera_center = new_center.clamp(limit_top_left, limit_bottom_right)
+	new_center = new_center.clamp(limit_top_left, limit_bottom_right)
+	if new_center == camera_center:
+		return
 	
+	camera_center = new_center
 	var stripped_left := maxf(camera_center.x - size.x / camera_zoom / 2.0, 0.0)
 	var stripped_top := maxf(camera_center.y - size.y / camera_zoom / 2.0, 0.0)
 	var stripped_right := minf(camera_center.x + size.x / camera_zoom / 2.0, root_element.width)
