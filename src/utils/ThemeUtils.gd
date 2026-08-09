@@ -1136,6 +1136,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	theme.set_type_variation("GoodColorPickerLineEdit", "LineEdit")
 	theme.set_font_size("font_size", "GoodColorPickerLineEdit", 11)
 	theme.set_font("font", "GoodColorPickerLineEdit", mono_font)
+	theme.set_constant("minimum_character_width", "GoodColorPickerLineEdit", 4)
 	var color_picker_line_edit_stylebox := StyleBoxFlat.new()
 	color_picker_line_edit_stylebox.set_corner_radius_all(2)
 	color_picker_line_edit_stylebox.bg_color = mini_line_edit_inner_color
