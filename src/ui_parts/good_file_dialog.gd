@@ -489,6 +489,7 @@ func _on_file_field_text_submitted(new_text: String) -> void:
 		default_saved_file = new_text
 	else:
 		file_field.text = default_saved_file
+	action_button.grab_focus()
 
 
 func _on_search_field_text_changed(new_text: String) -> void:
