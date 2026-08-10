@@ -215,20 +215,20 @@ func _remove_control(overlay_ref: ColorRect = null) -> void:
 		return
 	
 	overlay_ref = menu_stack.pop_at(matching_idx)
+	overlay_ref.tree_exited.connect(menus_or_popups_cleared.emit)
 	# If a visible control gets removed, unhide the previous one.
 	if overlay_ref.visible and matching_idx >= 1:
 		menu_stack[matching_idx - 1].show()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	menus_or_popups_cleared.emit()
 	throw_mouse_motion_event()
 
 ## Frees all nodes in the menu_stack, emptying it.
 func remove_all_menus() -> void:
 	if not menu_stack.is_empty():
+		menu_stack[0].tree_exited.connect(menus_or_popups_cleared.emit)
 		while not menu_stack.is_empty():
 			menu_stack.pop_back().queue_free()
-		menus_or_popups_cleared.emit()
 		throw_mouse_motion_event()
 
 
@@ -294,16 +294,16 @@ func remove_popup(overlay_ref: Control = null) -> void:
 		return
 	
 	overlay_ref = popup_stack.pop_at(matching_idx)
+	overlay_ref.tree_exited.connect(menus_or_popups_cleared.emit)
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	menus_or_popups_cleared.emit()
 	throw_mouse_motion_event()
 
 func remove_all_popups() -> void:
 	if not popup_stack.is_empty():
+		popup_stack[0].tree_exited.connect(menus_or_popups_cleared.emit)
 		while not popup_stack.is_empty():
 			popup_stack.pop_back().queue_free()
-		menus_or_popups_cleared.emit()
 		throw_mouse_motion_event()
 
 
@@ -445,6 +445,10 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			if not focus_owner.has_focus(true):
 				focus_owner.grab_focus()
+				if focus_owner.has_user_signal("visible_focus_changed"):
+					focus_owner.emit_signal("visible_focus_changed")
+				elif focus_owner.has_signal("visible_focus_changed"):
+					focus_owner.visible_focus_changed.emit()
 			else:
 				gather_focus(focus_owner, false).grab_focus()
 		elif ShortcutUtils.is_action_pressed(event, "ui_accept", true):
@@ -552,7 +556,7 @@ func _gather_focus_internal(control: Control, is_next: bool) -> Control:
 
 
 func is_node_on_top_menu_or_popup(node: Node) -> bool:
-	return ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
+	return is_instance_valid(node) and ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
 			menu_stack[-1].is_ancestor_of(node)) or (not popup_stack.is_empty() and not is_instance_valid(popup_submenu) and\
 			popup_stack[-1].is_ancestor_of(node)) or (is_instance_valid(popup_submenu) and popup_submenu.is_ancestor_of(node)))
 

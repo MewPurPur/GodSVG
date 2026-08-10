@@ -48,9 +48,9 @@ void fragment() {
 		vec2 dir = normalize(base_color.rgb * 2.0 - 1.0).xy;
 		float len = length(dir);
 		if (len > 0.00001) {
-		    dir /= len;
+			dir /= len;
 		} else {
-		    dir = vec2(0.0);
+			dir = vec2(0.0);
 		}
 		vec2 xy = dir * offset;
 		COLOR = vec4(vec3(xy, sqrt(max(0.0, 1.0 - dot(xy, xy)))) * 0.5 + 0.5, 1.0);

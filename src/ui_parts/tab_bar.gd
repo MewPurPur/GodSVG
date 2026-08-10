@@ -223,7 +223,7 @@ func _gui_input(event: InputEvent) -> void:
 					btn_arr.append(ContextButton.create_from_action("new_tab"))
 				else:
 					var new_active_tab := Configs.savedata.get_tab(hovered_idx)
-					var file_absent := not FileAccess.file_exists(new_active_tab.svg_file_path)
+					var external_file_missing := not FileAccess.file_exists(new_active_tab.svg_file_path)
 					var tab_count := Configs.savedata.get_tab_count()
 					
 					var has_empty_tabs := false
@@ -246,10 +246,13 @@ func _gui_input(event: InputEvent) -> void:
 						func() -> ContextButton: return ContextButton.create_from_action("close_empty_tabs", not has_empty_tabs).set_icon_none(),
 						func() -> ContextButton: return ContextButton.create_from_action("close_saved_tabs", not has_saved_tabs).set_icon_none(),
 					]))
-					btn_arr.append(ContextButton.create_from_action("open_externally", file_absent))
-					btn_arr.append(ContextButton.create_from_action("open_in_folder", file_absent))
+					btn_arr.append(ContextButton.create_from_action("save"))
+					btn_arr.append(ContextButton.create_from_action("save_as").add_custom_text(Translator.translate("Save SVG as…")))
+					btn_arr.append(ContextButton.create_from_action("reset_svg", FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT))
+					btn_arr.append(ContextButton.create_from_action("open_externally", external_file_missing))
+					btn_arr.append(ContextButton.create_from_action("open_in_folder", external_file_missing))
 				
-				var tab_popup := ContextPopup.create(btn_arr, true, -1, PackedInt32Array([6]))
+				var tab_popup := ContextPopup.create(btn_arr, true, -1, PackedInt32Array([2, 5]))
 				if hovered_idx != -1:
 					var tab_global_rect := get_tab_rect(hovered_idx)
 					tab_global_rect.position += get_global_rect().position

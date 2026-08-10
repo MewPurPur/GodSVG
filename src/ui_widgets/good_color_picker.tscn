@@ -51,9 +51,8 @@ shader_parameter/inverted = false
 shader_parameter/interpolation = 0
 
 [node name="GoodColorPicker" type="MarginContainer" unique_id=2024296627]
-offset_top = 347.0
-offset_right = 200.0
-offset_bottom = 347.0
+offset_right = 212.0
+offset_bottom = 353.0
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6

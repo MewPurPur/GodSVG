@@ -10,6 +10,11 @@ const attribute_name = "points"  # Never propagates.
 # i.e., a strip that's hovered, focused, directly above or below the focused strip, or
 # the first strip if the line_edit is currently focused.
 
+class Strip extends Control:
+	var field_x: BetterLineEdit
+	var field_y: BetterLineEdit
+	var action_button: Button
+
 const STRIP_HEIGHT = 22.0
 
 signal focused
@@ -32,7 +37,7 @@ var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 # the first strip to be accessible via focus. Strips that haven't been changed get reused.
 var hovered_index := -1
 var focused_index := -1
-var real_strips: Dictionary[int, Control] = {}
+var real_strips: Dictionary[int, Strip] = {}
 
 @onready var ci := points_container.get_canvas_item()
 var add_first_point_button: Control
@@ -56,7 +61,8 @@ func setup() -> void:
 	line_edit.text_changed.connect(setup_font)
 	line_edit.text_change_canceled.connect(setup_font_with_current_text)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
-	points_container.draw.connect(points_draw)
+	line_edit.visible_focus_changed.connect(_on_line_edit_visible_focus_changed)
+	points_container.draw.connect(_points_draw)
 	points_container.gui_input.connect(_on_points_gui_input)
 	points_container.mouse_exited.connect(_on_points_mouse_exited)
 	State.hover_changed.connect(points_container.queue_redraw)
@@ -83,8 +89,12 @@ func sync_theming() -> void:
 	queue_redraw()
 
 func _on_line_edit_focus_entered() -> void:
-	focused.emit()
+	if line_edit.has_focus(true):
+		_on_line_edit_visible_focus_changed()
+
+func _on_line_edit_visible_focus_changed() -> void:
 	set_focused(-1)
+	focused.emit()
 
 func setup_font_with_current_text() -> void:
 	setup_font(line_edit.text)
@@ -121,19 +131,41 @@ func sync() -> void:
 		if is_instance_valid(add_first_point_button):
 			add_first_point_button.queue_free()
 		HandlerGUI.register_focus_sequence(self, [line_edit, points_container])
-	# Rebuild the path commands.
-	points_container.custom_minimum_size.y = points_count * STRIP_HEIGHT
+	sync_to_new_value_and_selection.call_deferred()
+
+func sync_to_new_value_and_selection() -> void:
+	var point_count: int = element.get_attribute(attribute_name).get_list_size() / 2
+	
+	if focused_index != -1:
+		if State.semi_selected_xid != element.xid or State.inner_selections.size() != 1:
+			line_edit.grab_focus(true)
+			set_focused(-1, true)
+		else:
+			# Gather the old focus.
+			var focused_strip := real_strips[focused_index]
+			var is_field_x_focused := focused_strip.field_x.has_focus()
+			var is_field_y_focused := focused_strip.field_y.has_focus()
+			var is_action_button_focused := focused_strip.action_button.has_focus() or focused_strip.action_button in HandlerGUI.suppressed_focused_controls
+			
+			var is_focus_hidden := not (is_action_button_focused and focused_strip.action_button.has_focus(true))
+			
+			if State.inner_selections[0] != focused_index:
+				set_focused(State.inner_selections[0], true)
+				real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
+			else:
+				set_focused(State.inner_selections[0], true)
+				if is_field_x_focused:
+					real_strips[focused_index].field_x.grab_focus(true)
+				elif is_field_y_focused:
+					real_strips[focused_index].field_y.grab_focus(true)
+				elif is_action_button_focused:
+					real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
+	elif line_edit.has_focus():
+		set_focused(-1, true)
+	
 	if get_rect().has_point(get_local_mouse_position()):
 		HandlerGUI.throw_mouse_motion_event()
-	if hovered_index >= points_count:
-		hovered_index = -1
-	if focused_index >= points_count:
-		focused_index = -1
-	for i in real_strips:
-		if hovered_index != i and focused_index != i:
-			real_strips[i].queue_free()
-			real_strips.erase(i)
-	sync_real_strips()
+	points_container.custom_minimum_size.y = STRIP_HEIGHT * point_count
 	points_container.queue_redraw()
 
 
@@ -209,7 +241,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 
 
-func points_draw() -> void:
+func _points_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
 	var points_attribute: AttributeList = element.get_attribute(attribute_name)
 	var point_count := points_attribute.get_list_size() / 2
@@ -230,8 +262,8 @@ func points_draw() -> void:
 				stylebox.bg_color = ThemeUtils.soft_hover_overlay_color
 			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(points_container.size.x, STRIP_HEIGHT)))
 		
-		# Draw the child controls. They are going to be drawn, not added as a node unless
-		# the mouse hovers them. This is a hack to significantly improve performance.
+		# Draw the child controls. They won't be added as nodes until necessary for UI purposes.
+		# This is a hack to significantly improve performance.
 		if i in real_strips.keys():
 			continue
 		
@@ -252,15 +284,15 @@ func set_hovered(index: int) -> void:
 		hovered_index = index
 		sync_real_strips()
 
-func set_focused(idx: int) -> void:
-	if focused_index == idx and not (idx == -1 and line_edit.has_focus()):
+func set_focused(index: int, full_rebuild := false) -> void:
+	if focused_index == index and not full_rebuild and not (index == -1 and line_edit.has_focus()):
 		return
-	focused_index = idx
-	if idx != -1:
-		State.normal_select(element.xid, idx)
-	sync_real_strips()
+	focused_index = index
+	if index != -1:
+		State.normal_select(element.xid, index)
+	sync_real_strips(full_rebuild)
 
-func sync_real_strips() -> void:
+func sync_real_strips(rebuild_all := false) -> void:
 	var wanted: Array[int] = []
 	var point_count: int = element.get_attribute(attribute_name).get_list_size() / 2
 	
@@ -276,10 +308,15 @@ func sync_real_strips() -> void:
 	
 	wanted.sort()
 	
-	for idx in real_strips.keys():
-		if not idx in wanted:
+	if rebuild_all:
+		for idx in real_strips.keys():
 			real_strips[idx].queue_free()
 			real_strips.erase(idx)
+	else:
+		for idx in real_strips.keys():
+			if not idx in wanted:
+				real_strips[idx].queue_free()
+				real_strips.erase(idx)
 	
 	for idx in wanted:
 		if not idx in real_strips.keys():
@@ -297,61 +334,61 @@ func sync_real_strips() -> void:
 func check_if_strip_still_focused(index: int) -> void:
 	if focused_index != index:
 		return
-	for child in real_strips[index].get_children():
-		if child.has_focus():
-			return
+	var strip := real_strips[index]
+	if strip.field_x.has_focus() or strip.field_y.has_focus() or\
+	strip.action_button.has_focus() or strip.action_button in HandlerGUI.suppressed_focused_controls:
+		return
 	set_focused(-1)
 
 
-func setup_point_controls(idx: int) -> Control:
+func setup_point_controls(idx: int) -> Strip:
 	if idx < 0:
 		return null
 	
 	var point_x := element.get_attribute_list(attribute_name)[idx * 2]
 	var point_y := element.get_attribute_list(attribute_name)[idx * 2 + 1]
 	
-	var container := Control.new()
-	container.position.y = idx * STRIP_HEIGHT
-	container.size = Vector2(points_container.size.x, STRIP_HEIGHT)
-	container.mouse_filter = Control.MOUSE_FILTER_PASS
-	points_container.add_child(container)
+	var strip := Strip.new()
+	strip.position.y = idx * STRIP_HEIGHT
+	strip.size = Vector2(points_container.size.x, STRIP_HEIGHT)
+	strip.mouse_filter = Control.MOUSE_FILTER_PASS
+	points_container.add_child(strip)
 	# Setup the fields.
-	var x_field := numfield()
-	x_field.set_value(point_x)
-	x_field.tooltip_text = "x"
-	x_field.value_changed.connect(update_list.bind(idx * 2))
-	x_field.focus_entered.connect(set_focused.bind(idx))
-	x_field.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
-	container.add_child(x_field)
-	x_field.position = Vector2(4, 2)
-	x_field.size = Vector2(44, 18)
-	var y_field := numfield()
-	y_field.set_value(point_y)
-	y_field.tooltip_text = "y"
-	y_field.value_changed.connect(update_list.bind(idx * 2 + 1))
-	y_field.focus_entered.connect(set_focused.bind(idx))
-	y_field.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
-	container.add_child(y_field)
-	y_field.position = Vector2(52, 2)
-	y_field.size = Vector2(44, 18)
+	var field_x := MiniNumberFieldScene.instantiate()
+	field_x.set_value(point_x)
+	field_x.tooltip_text = "x"
+	field_x.value_changed.connect(update_list.bind(idx * 2))
+	field_x.focus_entered.connect(set_focused.bind(idx))
+	field_x.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
+	strip.field_x = field_x
+	strip.add_child(field_x)
+	field_x.position = Vector2(4, 2)
+	field_x.size = Vector2(44, 18)
+	var field_y := MiniNumberFieldScene.instantiate()
+	field_y.set_value(point_y)
+	field_y.tooltip_text = "y"
+	field_y.value_changed.connect(update_list.bind(idx * 2 + 1))
+	field_y.focus_entered.connect(set_focused.bind(idx))
+	field_y.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
+	strip.field_y = field_y
+	strip.add_child(field_y)
+	field_y.position = Vector2(52, 2)
+	field_y.size = Vector2(44, 18)
 	# Setup the action button.
 	var action_button := Button.new()
 	action_button.icon = more_icon
 	action_button.theme_type_variation = "FlatButton"
 	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	container.add_child(action_button)
+	strip.action_button = action_button
+	strip.add_child(action_button)
 	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
 	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
 	action_button.focus_entered.connect(set_focused.bind(idx))
 	action_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
 	action_button.position = Vector2(points_container.size.x - 21, 2)
 	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
-	return container
-
-
-func numfield() -> BetterLineEdit:
-	return MiniNumberFieldScene.instantiate()
+	return strip
 
 
 func _on_action_button_pressed(action_button_ref: Button) -> void:

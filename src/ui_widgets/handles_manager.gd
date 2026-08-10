@@ -331,7 +331,7 @@ func _draw() -> void:
 					for i in range(270, 360):
 						var d := i * TAU/360
 						points[i - 268] = Vector2(x + rect_width - rx, y + ry) + Vector2(cos(d) * rx, sin(d) * ry)
-					points[92] =  Vector2(x + rect_width, y + rect_height - ry)
+					points[92] = Vector2(x + rect_width, y + rect_height - ry)
 					for i in range(0, 90):
 						var d := i * TAU/360
 						points[i + 93] = Vector2(x + rect_width - rx, y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)
