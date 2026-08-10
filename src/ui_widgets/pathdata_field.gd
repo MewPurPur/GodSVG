@@ -10,6 +10,11 @@ const attribute_name = "d"  # Never propagates.
 # i.e., a strip that's hovered, focused, directly above or below the focused strip, or
 # the first strip if the line_edit is currently focused.
 
+class Strip extends Control:
+	var relativity_button: Button
+	var fields: Array[Control]
+	var action_button: Button
+
 const STRIP_HEIGHT = 22.0
 
 signal focused
@@ -33,7 +38,7 @@ var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 # the first strip to be accessible via focus. Strips that haven't been changed get reused.
 var hovered_index := -1
 var focused_index := -1
-var real_strips: Dictionary[int, Control] = {}
+var real_strips: Dictionary[int, Strip] = {}
 
 @onready var ci := commands_container.get_canvas_item()
 var add_move_button: Control
@@ -57,6 +62,7 @@ func setup() -> void:
 	line_edit.text_changed.connect(setup_font)
 	line_edit.text_change_canceled.connect(setup_font_with_current_text)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
+	line_edit.visible_focus_changed.connect(_on_line_edit_visible_focus_changed)
 	commands_container.draw.connect(_commands_draw)
 	commands_container.gui_input.connect(_on_commands_gui_input)
 	commands_container.mouse_exited.connect(_on_commands_mouse_exited)
@@ -84,8 +90,12 @@ func sync_theming() -> void:
 	queue_redraw()
 
 func _on_line_edit_focus_entered() -> void:
-	focused.emit()
+	if line_edit.has_focus(true):
+		_on_line_edit_visible_focus_changed()
+
+func _on_line_edit_visible_focus_changed() -> void:
 	set_focused(-1)
+	focused.emit()
 
 func setup_font_with_current_text() -> void:
 	setup_font(line_edit.text)
@@ -122,19 +132,48 @@ func sync() -> void:
 		if is_instance_valid(add_move_button):
 			add_move_button.queue_free()
 		HandlerGUI.register_focus_sequence(self, [line_edit, commands_container])
-	# Rebuild the path commands.
-	commands_container.custom_minimum_size.y = cmd_count * STRIP_HEIGHT
-	if hovered_index >= cmd_count:
-		hovered_index = -1
-	if focused_index >= cmd_count:
-		focused_index = -1
-	for i in real_strips:
-		if hovered_index != i and focused_index != i:
-			real_strips[i].queue_free()
-			real_strips.erase(i)
-	sync_real_strips()
+	sync_to_new_value_and_selection.call_deferred()
+
+func sync_to_new_value_and_selection() -> void:
+	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
+	
+	if focused_index != -1:
+		if State.semi_selected_xid != element.xid or State.inner_selections.size() != 1:
+			line_edit.grab_focus(true)
+			set_focused(-1, true)
+		else:
+			# Gather the old focus.
+			var focused_strip := real_strips[focused_index]
+			var is_relativity_button_focused := focused_strip.relativity_button.has_focus()
+			var field_focused_index := -1
+			for i in focused_strip.fields.size():
+				var field := focused_strip.fields[i]
+				if field.has_focus():
+					field_focused_index = i
+					break
+			var is_action_button_focused := focused_strip.action_button.has_focus() or focused_strip.action_button in HandlerGUI.suppressed_focused_controls
+			
+			var is_focus_hidden := not ((is_relativity_button_focused and focused_strip.relativity_button.has_focus(true)) or\
+					(is_action_button_focused and focused_strip.action_button.has_focus(true)) or\
+					(field_focused_index != -1 and focused_strip.fields[field_focused_index] is Button and focused_strip.fields[field_focused_index].has_focus(true)))
+			
+			if State.inner_selections[0] != focused_index:
+				set_focused(State.inner_selections[0], true)
+				real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
+			else:
+				set_focused(State.inner_selections[0], true)
+				if is_relativity_button_focused:
+					real_strips[focused_index].relativity_button.grab_focus(is_focus_hidden)
+				elif field_focused_index != -1:
+					real_strips[focused_index].fields[field_focused_index].grab_focus(is_focus_hidden)
+				elif is_action_button_focused:
+					real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
+	elif line_edit.has_focus():
+		set_focused(-1, true)
+	
 	if get_rect().has_point(get_local_mouse_position()):
 		HandlerGUI.throw_mouse_motion_event()
+	commands_container.custom_minimum_size.y = STRIP_HEIGHT * cmd_count
 	commands_container.queue_redraw()
 
 
@@ -150,7 +189,7 @@ func update_parameter(new_value: float, property: String, idx: int) -> void:
 
 func _on_relativity_button_pressed() -> void:
 	element.get_attribute(attribute_name).toggle_relative_command(focused_index)
-	set_focused(focused_index, true, not get_viewport().gui_get_focus_owner().has_focus(true))
+	set_focused(focused_index)
 	State.save_svg()
 
 func _on_add_move_button_pressed() -> void:
@@ -340,15 +379,15 @@ func set_hovered(index: int) -> void:
 		hovered_index = index
 		sync_real_strips()
 
-func set_focused(idx: int, focus_relativity_button := false, hide_relativity_button_focus := false) -> void:
-	if focused_index == idx and not focus_relativity_button and not (idx == -1 and line_edit.has_focus()):
+func set_focused(index: int, full_rebuild := false) -> void:
+	if focused_index == index and not full_rebuild and not (index == -1 and line_edit.has_focus()):
 		return
-	focused_index = idx
-	if idx != -1:
-		State.normal_select(element.xid, idx)
-	sync_real_strips(focus_relativity_button, hide_relativity_button_focus)
+	focused_index = index
+	if index != -1:
+		State.normal_select(element.xid, index)
+	sync_real_strips(full_rebuild)
 
-func sync_real_strips(focus_relativity_button := false, hide_relativity_button_focus := false) -> void:
+func sync_real_strips(rebuild_all := false) -> void:
 	var wanted: Array[int] = []
 	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
 	
@@ -364,17 +403,19 @@ func sync_real_strips(focus_relativity_button := false, hide_relativity_button_f
 	
 	wanted.sort()
 	
-	for idx in real_strips.keys():
-		if not idx in wanted:
+	if rebuild_all:
+		for idx in real_strips.keys():
 			real_strips[idx].queue_free()
 			real_strips.erase(idx)
+	else:
+		for idx in real_strips.keys():
+			if not idx in wanted:
+				real_strips[idx].queue_free()
+				real_strips.erase(idx)
 	
 	for idx in wanted:
 		if not idx in real_strips.keys():
-			real_strips[idx] = setup_path_command_controls(idx, focus_relativity_button, hide_relativity_button_focus)
-		elif focus_relativity_button and idx == focused_index:
-			real_strips[idx].queue_free()
-			real_strips[idx] = setup_path_command_controls(idx, focus_relativity_button, hide_relativity_button_focus)
+			real_strips[idx] = setup_path_command_controls(idx)
 	
 	HandlerGUI.forget_focus_sequence(commands_container)
 	var focus_sequence: Array[Control] = []
@@ -388,21 +429,24 @@ func sync_real_strips(focus_relativity_button := false, hide_relativity_button_f
 func check_if_strip_still_focused(index: int) -> void:
 	if focused_index != index:
 		return
-	for child in real_strips[index].get_children():
-		if child.has_focus():
+	var strip := real_strips[index]
+	if strip.relativity_button.has_focus() or strip.action_button.has_focus() or strip.action_button in HandlerGUI.suppressed_focused_controls:
+		return
+	for field in strip.fields:
+		if field.has_focus():
 			return
 	set_focused(-1)
 
 
-func setup_path_command_controls(idx: int, focus_relativity_button := false, hide_relativity_button_focus := false) -> Control:
+func setup_path_command_controls(idx: int) -> Strip:
 	var cmd: PathCommand = element.get_attribute(attribute_name).get_command(idx)
 	var cmd_char := cmd.command_char
 	
-	var container := Control.new()
-	container.position.y = idx * STRIP_HEIGHT
-	container.size = Vector2(commands_container.size.x, STRIP_HEIGHT)
-	container.mouse_filter = Control.MOUSE_FILTER_PASS
-	commands_container.add_child(container)
+	var strip := Strip.new()
+	strip.position.y = idx * STRIP_HEIGHT
+	strip.size = Vector2(commands_container.size.x, STRIP_HEIGHT)
+	strip.mouse_filter = Control.MOUSE_FILTER_PASS
+	commands_container.add_child(strip)
 	# Setup the relative button.
 	var relativity_button := Button.new()
 	relativity_button.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -411,9 +455,8 @@ func setup_path_command_controls(idx: int, focus_relativity_button := false, hid
 	relativity_button.theme_type_variation = "PathCommandAbsoluteButton" if Utils.is_string_upper(cmd_char) else "PathCommandRelativeButton"
 	relativity_button.text = cmd_char
 	relativity_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char, true)
-	container.add_child(relativity_button)
-	if focus_relativity_button:
-		relativity_button.grab_focus(hide_relativity_button_focus)
+	strip.relativity_button = relativity_button
+	strip.add_child(relativity_button)
 	relativity_button.pressed.connect(_on_relativity_button_pressed)
 	relativity_button.gui_input.connect(_eat_double_clicks.bind(relativity_button))
 	relativity_button.focus_entered.connect(set_focused.bind(idx))
@@ -426,9 +469,9 @@ func setup_path_command_controls(idx: int, focus_relativity_button := false, hid
 	var property_names: PackedStringArray = []
 	match cmd_char.to_upper():
 		"A":
-			var field_rx := numfield()
-			var field_ry := numfield()
-			var field_rot := numfield()
+			var field_rx := MiniNumberFieldScene.instantiate()
+			var field_ry := MiniNumberFieldScene.instantiate()
+			var field_rot := MiniNumberFieldScene.instantiate()
 			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
 			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
 			field_rot.mode = field_rot.Mode.HALF_ANGLE
@@ -436,31 +479,37 @@ func setup_path_command_controls(idx: int, focus_relativity_button := false, hid
 			var field_sweep := FlagFieldScene.instantiate()
 			field_large_arc.gui_input.connect(_eat_double_clicks.bind(field_large_arc))
 			field_sweep.gui_input.connect(_eat_double_clicks.bind(field_sweep))
-			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep, numfield(), numfield()]
+			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep,
+					MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate()]
 			spacings = PackedInt32Array([3, 4, 4, 4, 4, 3])
 			property_names = PackedStringArray(["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
 		"C":
-			fields = [numfield(), numfield(), numfield(), numfield(), numfield(), numfield()]
+			fields = [MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate(),
+					MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate(),
+					MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate()]
 			spacings = PackedInt32Array([3, 4, 3, 4, 3])
 			property_names = PackedStringArray(["x1", "y1", "x2", "y2", "x", "y"])
 		"Q":
-			fields = [numfield(), numfield(), numfield(), numfield()]
+			fields = [MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate(),
+					MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate()]
 			spacings = PackedInt32Array([3, 4, 3])
 			property_names = PackedStringArray(["x1", "y1", "x", "y"])
 		"S":
-			fields = [numfield(), numfield(), numfield(), numfield()]
+			fields = [MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate(),
+					MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate()]
 			spacings = PackedInt32Array([3, 4, 3])
 			property_names = PackedStringArray(["x2", "y2", "x", "y"])
 		"M", "L", "T":
-			fields = [numfield(), numfield()]
+			fields = [MiniNumberFieldScene.instantiate(), MiniNumberFieldScene.instantiate()]
 			spacings = PackedInt32Array([3])
 			property_names = PackedStringArray(["x", "y"])
 		"H":
-			fields = [numfield()]
+			fields = [MiniNumberFieldScene.instantiate()]
 			property_names = PackedStringArray(["x"])
 		"V":
-			fields = [numfield()]
+			fields = [MiniNumberFieldScene.instantiate()]
 			property_names = PackedStringArray(["y"])
+	strip.fields = fields
 	# Setup the fields.
 	if not fields.is_empty():
 		for i in fields.size():
@@ -471,7 +520,7 @@ func setup_path_command_controls(idx: int, focus_relativity_button := false, hid
 			field.value_changed.connect(update_parameter.bind(property_name, idx))
 			field.focus_entered.connect(set_focused.bind(idx))
 			field.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
-			container.add_child(field)
+			strip.add_child(field)
 			field.position.y = 2
 		fields[0].position.x = 25
 		for i in fields.size() - 1:
@@ -482,18 +531,16 @@ func setup_path_command_controls(idx: int, focus_relativity_button := false, hid
 	action_button.theme_type_variation = "FlatButton"
 	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	container.add_child(action_button)
+	strip.action_button = action_button
+	strip.add_child(action_button)
 	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
 	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
 	action_button.focus_entered.connect(set_focused.bind(idx))
 	action_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
 	action_button.position = Vector2(commands_container.size.x - 21, 2)
 	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
-	return container
+	return strip
 
-
-func numfield() -> BetterLineEdit:
-	return MiniNumberFieldScene.instantiate()
 
 func get_presented_num(path_command: PathCommand, property: String) -> float:
 	var num: float = path_command.get(property)

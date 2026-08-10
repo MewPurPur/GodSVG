@@ -62,7 +62,8 @@ func _line_number_draw_callback(line: int, _gutter: int, region: Rect2) -> void:
 	# Center vertically, align to the left of the gutter.
 	var text_pos := Vector2(-5, region.get_center().y + font.get_ascent(font_size) - font.get_string_size(
 			line_number_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y / 2)
-	draw_string(font, text_pos, line_number_text, HORIZONTAL_ALIGNMENT_RIGHT, _line_gutter_needed_space, font_size, ThemeUtils.dimmer_text_color)
+	draw_string(font, text_pos, line_number_text, HORIZONTAL_ALIGNMENT_RIGHT, _line_gutter_needed_space, font_size,
+			ThemeUtils.dim_text_color if (get_caret_line() == line and has_focus()) else ThemeUtils.subtle_text_color)
 
 
 func _exit_tree() -> void:
@@ -201,42 +202,55 @@ func _gui_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		queue_redraw()
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		grab_focus()
-		var btn_arr: Array[ContextButton] = []
-		var separator_arr := PackedInt32Array()
-		
-		var is_text_empty := text.is_empty()
-		
-		if editable:
-			var text_to_evaluate := get_selected_text() if has_selection() else text
-			var selection_evaluation := NumstringParser.evaluate(text_to_evaluate)
-			if not is_nan(selection_evaluation) and Utils.num_simple(selection_evaluation, Utils.MAX_NUMERIC_PRECISION) != text_to_evaluate:
-				btn_arr.append(ContextButton.create_from_action("evaluate"))
+	elif event is InputEventMouseButton and event.is_pressed():
+		if get_gutter_count() == 1 and event.position.x < get_gutter_width(0):
+			if event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+				grab_focus()
+				var click_line := get_line_column_at_pos(event.position).y
+				if event.alt_pressed:
+					add_caret(click_line, 0)
+				else:
+					remove_secondary_carets()
+					deselect()
+					set_caret_line(click_line)
+					set_caret_column(0)
+				accept_event()
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			grab_focus()
+			var btn_arr: Array[ContextButton] = []
+			var separator_arr := PackedInt32Array()
 			
-			if not btn_arr.is_empty():
-				separator_arr.append(btn_arr.size())
+			var is_text_empty := text.is_empty()
 			
-			btn_arr.append(ContextButton.create_from_action("ui_undo", not has_undo()))
-			btn_arr.append(ContextButton.create_from_action("ui_redo", not has_redo()))
-			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
-				separator_arr.append(btn_arr.size())
-				btn_arr.append(ContextButton.create_from_action("ui_cut", is_text_empty))
+			if editable:
+				var text_to_evaluate := get_selected_text() if has_selection() else text
+				var selection_evaluation := NumstringParser.evaluate(text_to_evaluate)
+				if not is_nan(selection_evaluation) and Utils.num_simple(selection_evaluation, Utils.MAX_NUMERIC_PRECISION) != text_to_evaluate:
+					btn_arr.append(ContextButton.create_from_action("evaluate"))
+				
+				if not btn_arr.is_empty():
+					separator_arr.append(btn_arr.size())
+				
+				btn_arr.append(ContextButton.create_from_action("ui_undo", not has_undo()))
+				btn_arr.append(ContextButton.create_from_action("ui_redo", not has_redo()))
+				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+					separator_arr.append(btn_arr.size())
+					btn_arr.append(ContextButton.create_from_action("ui_cut", is_text_empty))
+					btn_arr.append(ContextButton.create_from_action("ui_copy", is_text_empty))
+					btn_arr.append(ContextButton.create_from_action("ui_paste", not Utils.has_clipboard_web_safe()))
+					btn_arr.append(ContextButton.create_from_action("select_all", is_text_empty))
+			else:
 				btn_arr.append(ContextButton.create_from_action("ui_copy", is_text_empty))
-				btn_arr.append(ContextButton.create_from_action("ui_paste", not Utils.has_clipboard_web_safe()))
 				btn_arr.append(ContextButton.create_from_action("select_all", is_text_empty))
-		else:
-			btn_arr.append(ContextButton.create_from_action("ui_copy", is_text_empty))
-			btn_arr.append(ContextButton.create_from_action("select_all", is_text_empty))
-		
-		var vp := get_viewport()
-		HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr, true, -1, separator_arr), vp.get_mouse_position(), vp)
-		accept_event()
-		var click_pos := get_line_column_at_pos(event.position)
-		if get_selection_at_line_column(click_pos.y, click_pos.x) == -1:
-			deselect()
-			set_caret_line(click_pos.y, false)
-			set_caret_column(click_pos.x, false)
+			
+			var vp := get_viewport()
+			HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr, true, -1, separator_arr), vp.get_mouse_position(), vp)
+			accept_event()
+			var click_pos := get_line_column_at_pos(event.position)
+			if get_selection_at_line_column(click_pos.y, click_pos.x) == -1:
+				deselect()
+				set_caret_line(click_pos.y, false)
+				set_caret_column(click_pos.x, false)
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
 		if ShortcutUtils.is_action_pressed(event, "ui_undo"):

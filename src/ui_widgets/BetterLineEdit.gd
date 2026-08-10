@@ -6,6 +6,8 @@ var ci := get_canvas_item()
 
 ## Emitted when Esc is pressed to cancel the current text change.
 signal text_change_canceled
+@warning_ignore("unused_signal")
+signal visible_focus_changed
 
 ## When turned on, uses the mono font for the tooltip.
 @export var mono_font_tooltip := false
@@ -57,7 +59,6 @@ func _on_base_class_editing_toggled(toggled_on: bool) -> void:
 			if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 				first_click = true
 			text_before_edit = text
-			grab_focus()
 			if not first_click:
 				select_all()
 	else:
@@ -156,7 +157,9 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		queue_redraw()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		grab_focus()
+		if not has_focus(true):
+			grab_focus()
+			visible_focus_changed.emit()
 		var btn_arr: Array[ContextButton] = []
 		var separator_arr := PackedInt32Array()
 		
@@ -189,6 +192,10 @@ func _gui_input(event: InputEvent) -> void:
 		# Wow, no way to find out the column of a given click? Okay...
 		# TODO Make it so LineEdit caret automatically moves to the clicked position to finish the right-click logic.
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		grab_focus(not has_focus())
+		if has_focus():
+			grab_focus()
+			visible_focus_changed.emit()
+		else:
+			grab_focus(true)
 		if not editable:
 			editing_toggled.emit(true)
