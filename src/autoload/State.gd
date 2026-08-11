@@ -66,6 +66,10 @@ func sync_stable_editor_markup() -> void:
 	if not stable_editor_markup.is_empty():
 		apply_markup(stable_editor_markup, true)
 
+func sync_stable_export_markup() -> void:
+	if not stable_export_markup.is_empty():
+		apply_markup(stable_export_markup, true)
+
 func apply_markup(markup: String, is_edit: bool) -> void:
 	var svg_parse_result := SVGParser.markup_to_root(markup)
 	last_parse_error = svg_parse_result.error
