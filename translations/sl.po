@@ -15,7 +15,7 @@ msgstr ""
 #. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
 #. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
 msgid "translation-credits"
-msgstr "prevod-zasluge"
+msgstr "Andrew Poženel <andrew.pozenel@tutanota.com>"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
