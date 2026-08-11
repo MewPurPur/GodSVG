@@ -439,8 +439,13 @@ func _on_hslider_text_submitted(new_text: String, index: int) -> void:
 	sync_hslider(index)
 
 func sync_hslider(index: int) -> void:
-	fields_arr[index].text = String.num_uint64(roundi(
-			ColorPickerUtils.get_channel_offset(color_config.color, index) * ColorPickerUtils.get_channel_fidelity(index)))
+	if Configs.savedata.color_picker_current_model == ColorPickerUtils.ColorModel.RGB:
+		# In this case, it's better to use the hex value, as it benefits from paint calibration.
+		fields_arr[index].text = String.num_uint64(roundi(
+				Color.html(color_config.color.paint)[index] * ColorPickerUtils.get_channel_fidelity(index)))
+	else:
+		fields_arr[index].text = String.num_uint64(roundi(
+				ColorPickerUtils.get_channel_offset(color_config.color, index) * ColorPickerUtils.get_channel_fidelity(index)))
 
 
 func _on_keyword_button_pressed() -> void:
