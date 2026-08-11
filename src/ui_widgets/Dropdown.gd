@@ -80,9 +80,11 @@ func _enter_edit_mode() -> void:
 	add_child(line_edit)
 	line_edit.grab_focus()
 
+## To be overridden by scripts that extend Dropdown to change the initial text when editing.
 func _get_line_edit_activation_text() -> String:
 	return _text
 
+## To be overridden by scripts that extend Dropdown to change the placeholder text when editing.
 func _get_line_edit_activation_placeholder_text() -> String:
 	return ""
 
