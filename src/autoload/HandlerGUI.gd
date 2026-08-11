@@ -422,11 +422,11 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	var focus_owner := get_viewport().gui_get_focus_owner()
-	if is_instance_valid(focus_owner) and not is_node_on_top_menu_or_popup(focus_owner):
+	if not is_instance_valid(focus_owner):
+		return
+	elif not is_node_on_top_menu_or_popup(focus_owner):
 		get_viewport().set_input_as_handled()
 		_react_to_action(event)
-		return
-	if not is_instance_valid(focus_owner):
 		return
 	
 	# Intercept focus in favor of our own system.
@@ -452,8 +452,10 @@ func _input(event: InputEvent) -> void:
 			else:
 				gather_focus(focus_owner, false).grab_focus()
 		elif ShortcutUtils.is_action_pressed(event, "ui_accept", true):
+			# Make it so ui_accept doesn't work if the focus is hidden and it does nothing else.
 			if not focus_owner.has_focus(true):
 				get_viewport().set_input_as_handled()
+				_react_to_action(event)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventAction or event is InputEventKey):
