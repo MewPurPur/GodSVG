@@ -41,14 +41,12 @@ func check_shortcuts_validity() -> void:
 			var warning_color := Color(Configs.savedata.basic_color_warning, 0.8)
 			shortcut_btn.add_theme_color_override("font_disabled_color", warning_color)
 			var conflicts := Configs.savedata.get_actions_with_shortcut(events[i])
-			var action_pos := conflicts.find(action)
-			if action_pos != -1:
-				conflicts.remove_at(action_pos)
-			for ii in conflicts.size():
-				conflicts[ii] = TranslationUtils.get_action_description(conflicts[ii])
+			conflicts.erase(action)
 			if conflicts.size() > 8:
 				conflicts.resize(8)
 				conflicts.append("...")
+			for ii in conflicts.size():
+				conflicts[ii] = TranslationUtils.get_action_description(conflicts[ii])
 			shortcut_btn.tooltip_text = Translator.translate("Also used by") + ":\n" + "\n".join(conflicts)
 		else:
 			shortcut_btn.remove_theme_color_override("font_disabled_color")
