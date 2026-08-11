@@ -42,16 +42,17 @@ msgid "OK"
 msgstr "Добре"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its size is not defined."
+msgid "Export SVG"
+msgstr "Експортирай SVG-то"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "Графиката може да бъде експортирана само като SVG защото размерът не е определен."
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Искаш ли да продължиш?"
-
-#: src/autoload/HandlerGUI.gd
-msgid "Export SVG"
-msgstr "Експортирай SVG-то"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -272,7 +273,7 @@ msgstr "Лицензи от трети партии"
 msgid "Close"
 msgstr "Затвори"
 
-#: src/ui_parts/current_file_button.gd
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
 msgstr "Запиши SVG-то като…"
 
@@ -679,7 +680,7 @@ msgstr "Широчина"
 msgid "Height"
 msgstr "Височина"
 
-#: src/ui_widgets/file_path_field.gd
+#: src/ui_widgets/file_path_edit.gd
 msgid "No file path"
 msgstr "Няма пътека към файл"
 
@@ -733,16 +734,16 @@ msgid "Rename"
 msgstr "Преименувай"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Приложи шаблон"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Премести нагоре"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Премести надолу"
-
-#: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "Приложи шаблон"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"

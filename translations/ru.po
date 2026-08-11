@@ -43,16 +43,17 @@ msgid "OK"
 msgstr "Хорошо"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its size is not defined."
+msgid "Export SVG"
+msgstr "Экспортировать SVG"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "Изображение можно экспортировать только как SVG, поскольку его размеры не заданы."
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Продолжить?"
-
-#: src/autoload/HandlerGUI.gd
-msgid "Export SVG"
-msgstr "Экспортировать SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -274,7 +275,7 @@ msgstr "Лицензии третьих лиц"
 msgid "Close"
 msgstr "Закрыть"
 
-#: src/ui_parts/current_file_button.gd
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
 msgstr "Сохранить SVG как…"
 
@@ -682,7 +683,7 @@ msgstr "Ширина"
 msgid "Height"
 msgstr "Высота"
 
-#: src/ui_widgets/file_path_field.gd
+#: src/ui_widgets/file_path_edit.gd
 msgid "No file path"
 msgstr "Нет пути файла"
 
@@ -736,16 +737,16 @@ msgid "Rename"
 msgstr "Переименовать"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Применить пресет"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Подвинуть вверх"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Подвинуть вниз"
-
-#: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "Применить пресет"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"

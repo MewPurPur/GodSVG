@@ -42,16 +42,17 @@ msgid "OK"
 msgstr "确定"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its size is not defined."
+msgid "Export SVG"
+msgstr "导出 SVG"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "您确定要继续吗？"
-
-#: src/autoload/HandlerGUI.gd
-msgid "Export SVG"
-msgstr "导出 SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -272,7 +273,7 @@ msgstr "第三方协议"
 msgid "Close"
 msgstr "关闭"
 
-#: src/ui_parts/current_file_button.gd
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
 msgstr "保存 SVG 为…"
 
@@ -679,7 +680,7 @@ msgstr "宽度"
 msgid "Height"
 msgstr "高度"
 
-#: src/ui_widgets/file_path_field.gd
+#: src/ui_widgets/file_path_edit.gd
 msgid "No file path"
 msgstr "无文件路经"
 
@@ -733,16 +734,16 @@ msgid "Rename"
 msgstr "重命名"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "应用预设"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "上移"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "下移"
-
-#: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "应用预设"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"

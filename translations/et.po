@@ -42,16 +42,17 @@ msgid "OK"
 msgstr "Okei"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its size is not defined."
+msgid "Export SVG"
+msgstr "Ekspordi SVG"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "Graafika saab eksportida ainult SVG-na, sest selle suurus pole defineeritud."
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Kas te tahate jätkata?"
-
-#: src/autoload/HandlerGUI.gd
-msgid "Export SVG"
-msgstr "Ekspordi SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -273,7 +274,7 @@ msgstr "Kolmandad litsentsid"
 msgid "Close"
 msgstr "Sulge"
 
-#: src/ui_parts/current_file_button.gd
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
 msgstr "Salvesta SVG kui…"
 
@@ -681,7 +682,7 @@ msgstr "Laius"
 msgid "Height"
 msgstr "Kõrgus"
 
-#: src/ui_widgets/file_path_field.gd
+#: src/ui_widgets/file_path_edit.gd
 msgid "No file path"
 msgstr "Faili asukoht puudub"
 
@@ -735,16 +736,16 @@ msgid "Rename"
 msgstr "Nimeta ümber"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Rakenda eelseadistus"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Liiguta üles"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Liiguta alla"
-
-#: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "Rakenda eelseadistus"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
