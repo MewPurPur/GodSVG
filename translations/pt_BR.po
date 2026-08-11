@@ -42,16 +42,17 @@ msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its size is not defined."
+msgid "Export SVG"
+msgstr "Exportar SVG"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "Esse gráfico pode ser exportado apenas como SVG pois o seu tamanho não foi definido."
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Você deseja prosseguir?"
-
-#: src/autoload/HandlerGUI.gd
-msgid "Export SVG"
-msgstr "Exportar SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -277,7 +278,7 @@ msgstr "Licenças de terceiros"
 msgid "Close"
 msgstr "Fechar"
 
-#: src/ui_parts/current_file_button.gd
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
 msgstr "Salvar SVG como…"
 
@@ -692,7 +693,7 @@ msgstr "Largura"
 msgid "Height"
 msgstr "Altura"
 
-#: src/ui_widgets/file_path_field.gd
+#: src/ui_widgets/file_path_edit.gd
 msgid "No file path"
 msgstr "Nenhum caminho de arquivo"
 
@@ -746,16 +747,16 @@ msgid "Rename"
 msgstr "Renomear"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Aplicar Predefinição"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Mover para acima"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Mover para abaixo"
-
-#: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "Aplicar Predefinição"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"

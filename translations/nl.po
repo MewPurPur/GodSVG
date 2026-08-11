@@ -42,16 +42,17 @@ msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its size is not defined."
+msgid "Export SVG"
+msgstr "Exporteer SVG"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "De afbeelding kan alleen maar als SVG geëxporteerd worden want zijn maat is niet gedefiniëerd."
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Wil je voortgaan?"
-
-#: src/autoload/HandlerGUI.gd
-msgid "Export SVG"
-msgstr "Exporteer SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -276,7 +277,7 @@ msgstr "Derde partij Licenties"
 msgid "Close"
 msgstr "Afluiten"
 
-#: src/ui_parts/current_file_button.gd
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
 msgstr "SVG opslaan als…"
 
@@ -695,7 +696,7 @@ msgstr "Breedte"
 msgid "Height"
 msgstr "Hoogte"
 
-#: src/ui_widgets/file_path_field.gd
+#: src/ui_widgets/file_path_edit.gd
 msgid "No file path"
 msgstr ""
 
@@ -750,16 +751,16 @@ msgid "Rename"
 msgstr "Hernoemen"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Voorinstelling toepassen"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Naar Boven"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Naar Onder"
-
-#: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "Voorinstelling toepassen"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"

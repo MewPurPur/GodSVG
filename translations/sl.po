@@ -6,7 +6,7 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: Andrew Poženel <andrew.pozenel@tutanota.com>\n"
 "Language-Team: \n"
-"Language: sl_SI\n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,27 +35,27 @@ msgstr "Preveri za posodobitvami?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
-msgstr ""
-"To bo vzpostavilo povezavo z github.com za primerjavo številk različic. Drugi podatki se ne zbirajo ali "
-"prenašajo."
+msgstr "To bo vzpostavilo povezavo z github.com za primerjavo številk različic. Drugi podatki se ne zbirajo ali prenašajo."
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "V redu"
 
 #: src/autoload/HandlerGUI.gd
-msgid "The graphic can be exported only as SVG because its size is not defined."
+msgid "Export SVG"
+msgstr "Izvozi SVG"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "Grafiko je mogoče izvoziti samo kot SVG, ker njena velikost ni določena."
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Ali želite nadaljevati?"
 
-#: src/autoload/HandlerGUI.gd
-msgid "Export SVG"
-msgstr "Izvozi SVG"
-
-#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Izvozi"
 
@@ -63,7 +63,8 @@ msgstr "Izvozi"
 msgid "The last edited state of this tab could not be found."
 msgstr "Zadnjega urejevanega stanja tega zavihka ni bilo mogoče najti."
 
-#: src/autoload/State.gd src/ui_parts/good_file_dialog.gd src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
+#: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
 msgstr "Opozorilo!"
 
@@ -135,13 +136,16 @@ msgstr "3-mestno ali 6-mestno šestnajstiško"
 msgid "6-digit hex"
 msgstr "6-mestno šestnajstiško"
 
-#: src/config_classes/PreviewPresentationJPG.gd src/config_classes/PreviewPresentationLossyWEBP.gd
-#: src/ui_widgets/export_properties_jpg.gd src/ui_widgets/export_properties_webp.gd
+#: src/config_classes/PreviewPresentationJPG.gd
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_webp.gd
 #: src/ui_widgets/preview_presentation_popup.gd
 msgid "Quality"
 msgstr "Kvaliteta"
 
-#: src/config_classes/PreviewPresentationLossless.gd src/ui_widgets/export_properties_webp.gd
+#: src/config_classes/PreviewPresentationLossless.gd
+#: src/ui_widgets/export_properties_webp.gd
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Lossless"
 msgstr "Brezizgubno"
@@ -263,12 +267,13 @@ msgstr "Licenca"
 msgid "Third-party licenses"
 msgstr "Licence tretjih oseb"
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
-#: src/ui_parts/shortcut_panel_config.gd src/ui_parts/update_menu.gd
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Zapri"
 
-#: src/ui_parts/current_file_button.gd
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
 msgstr "Shrani SVG kot…"
 
@@ -292,8 +297,9 @@ msgstr "Počisti referenčno sliko"
 msgid "Links to donation platforms"
 msgstr "Povezave do platform za donacije"
 
-#: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd src/ui_parts/import_warning_menu.gd
-#: src/ui_widgets/choose_name_dialog.gd src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
+#: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
+#: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -349,7 +355,8 @@ msgstr "Velikost"
 msgid "Estimated size"
 msgstr "Ocenjena velikost"
 
-#: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
+#: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
 msgstr "Postavitev"
 
@@ -458,7 +465,8 @@ msgstr "Povlecite in spustite, da spremenite postavitev"
 msgid "File"
 msgstr "Datoteka"
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/previews.gd src/ui_widgets/color_picker_layout_popup.gd
+#: src/ui_parts/mac_menu.gd src/ui_parts/previews.gd
+#: src/ui_widgets/color_picker_layout_popup.gd
 #: src/ui_widgets/settings_content_shortcuts.gd
 msgid "Edit"
 msgstr "Uredi"
@@ -483,12 +491,14 @@ msgstr "Pomoč"
 msgid "Add preview"
 msgstr "Dodaj predogled"
 
-#: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
-#: src/ui_widgets/transform_popup.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd
+#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
+#: src/utils/TranslationUtils.gd
 msgid "Delete"
 msgstr "Izbriši"
 
-#: src/ui_parts/previews.gd src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
+#: src/ui_parts/previews.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
 msgstr "Ponastavi na privzeto"
 
@@ -650,8 +660,10 @@ msgstr "Nazaj na izbirnik barv"
 msgid "Search color"
 msgstr "Išči po barvi"
 
-#: src/ui_widgets/export_properties_jpg.gd src/ui_widgets/export_properties_raster_lossless.gd
-#: src/ui_widgets/export_properties_webp.gd src/ui_widgets/preview_presentation_popup.gd
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_raster_lossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
 msgid "Background"
 msgstr "Ozadje"
 
@@ -659,7 +671,8 @@ msgstr "Ozadje"
 msgid "Scale"
 msgstr "Lestvica"
 
-#: src/ui_widgets/export_scale_config.gd src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Width"
 msgstr "Širina"
 
@@ -667,7 +680,7 @@ msgstr "Širina"
 msgid "Height"
 msgstr "Višina"
 
-#: src/ui_widgets/file_path_field.gd
+#: src/ui_widgets/file_path_edit.gd
 msgid "No file path"
 msgstr "Ni poti do datoteke"
 
@@ -721,16 +734,16 @@ msgid "Rename"
 msgstr "Preimenuj"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Uporabi prednastavitev"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Premakni navzgor"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Premakni navzdol"
-
-#: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "Uporabi prednastavitev"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -1160,14 +1173,8 @@ msgid "The setting can't be changed on this platform."
 msgstr "Nastavitve ni mogoče spremeniti na tej platformi."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid ""
-"Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its "
-"structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make "
-"the SVG prettier or more compact."
-msgstr ""
-"Oblikovalniki lahko spremenijo oblikovanje vsebine in atributov datoteke SVG. Te spremembe ne vplivajo na njeno "
-"strukturo ali strukturo bolj kompleksnih atributov, kot so podatki o poti. Oblikovalnike je mogoče konfigurirati "
-"tako, da je datoteka SVG lepša ali bolj kompaktna."
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgstr "Oblikovalniki lahko spremenijo oblikovanje vsebine in atributov datoteke SVG. Te spremembe ne vplivajo na njeno strukturo ali strukturo bolj kompleksnih atributov, kot so podatki o poti. Oblikovalnike je mogoče konfigurirati tako, da je datoteka SVG lepša ali bolj kompaktna."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of the formatter configs."
@@ -1178,26 +1185,16 @@ msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Ko je omogočeno, se za zamik namesto enega samega tabulatorja uporabljajo presledki."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid ""
-"Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes "
-"reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt "
-"future editing, compared to optimizing the SVG manually."
-msgstr ""
-"Optimizatorji lahko spremenijo strukturo datoteke SVG in njene kompleksne atribute, kot so podatki o poti. Te "
-"spremembe zmanjšajo kompleksnost datoteke SVG, kar običajno vodi do zmanjšanja velikosti datoteke, vendar so "
-"lahko v primerjavi z ročno optimizacijo datoteke SVG uničujoče in motijo ​​prihodnje urejanje."
+msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
+msgstr "Optimizatorji lahko spremenijo strukturo datoteke SVG in njene kompleksne atribute, kot so podatki o poti. Te spremembe zmanjšajo kompleksnost datoteke SVG, kar običajno vodi do zmanjšanja velikosti datoteke, vendar so lahko v primerjavi z ročno optimizacijo datoteke SVG uničujoče in motijo ​​prihodnje urejanje."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
-msgstr ""
-"Pretvori oblike v takšne, ki jih je mogoče definirati enako, vendar imajo, če je mogoče, krajšo predstavitev."
+msgstr "Pretvori oblike v takšne, ki jih je mogoče definirati enako, vendar imajo, če je mogoče, krajšo predstavitev."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid ""
-"Converts or simplifies path commands into ones with identical definition, but shorter representation, if "
-"possible."
-msgstr ""
-"Pretvori ali poenostavi ukaze poti v ukaze z enako definicijo, vendar s krajšo predstavitvijo, če je mogoče."
+msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
+msgstr "Pretvori ali poenostavi ukaze poti v ukaze z enako definicijo, vendar s krajšo predstavitvijo, če je mogoče."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
@@ -1213,8 +1210,7 @@ msgstr "Določa barvo poudarka, ki se uporablja za označene elemente v vmesniku
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr ""
-"Ko je omogočeno, klik na zavihek s srednjim gumbom miške le-tega zapre, namesto da bi ga preprosto fokusiral."
+msgstr "Ko je omogočeno, klik na zavihek s srednjim gumbom miške le-tega zapre, namesto da bi ga preprosto fokusiral."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
@@ -1233,12 +1229,8 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr "Ko je omogočeno, drsenje namesto povečave premika pogled. Za povečavo med drsenjem držite tipko CTRL."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid ""
-"Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase "
-"input lag slightly."
-msgstr ""
-"Sinhronizira upodabljanje grafike s hitrostjo osveževanja zaslona, ​​da prepreči artefakte trganja zaslona. Lahko "
-"nekoliko poveča vhodni zamik."
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr "Sinhronizira upodabljanje grafike s hitrostjo osveževanja zaslona, ​​da prepreči artefakte trganja zaslona. Lahko nekoliko poveča vhodni zamik."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1246,9 +1238,7 @@ msgstr "Zaslon ostane vklopljen tudi po neaktivnosti, tako da ohranjevalnik zasl
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
-msgstr ""
-"Ko je omogočeno, uporablja izvorno pogovorno okno datotek vašega operacijskega sistema namesto vgrajenega "
-"pogovornega okna GodSVG."
+msgstr "Ko je omogočeno, uporablja izvorno pogovorno okno datotek vašega operacijskega sistema namesto vgrajenega pogovornega okna GodSVG."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
