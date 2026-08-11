@@ -163,7 +163,7 @@ func _on_menus_or_popups_cleared() -> void:
 	for control in suppressed_focused_controls:
 		if is_node_on_top_menu_or_popup(control):
 			suppressed_focused_controls.erase(control)
-			if is_instance_valid(control):
+			if is_instance_valid(control) and not is_node_on_top_menu_or_popup(get_viewport().gui_get_focus_owner()):
 				control.grab_focus(not control.has_focus(true))
 			return
 
