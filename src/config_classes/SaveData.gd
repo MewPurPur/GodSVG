@@ -927,6 +927,8 @@ func get_palette(idx: int) -> Palette:
 			emit_changed()
 			if not export_formatter.changed.is_connected(emit_changed):
 				export_formatter.changed.connect(emit_changed)
+			if not export_formatter.changed_deferred.is_connected(State.sync_stable_export_markup):
+				export_formatter.changed_deferred.connect(State.sync_stable_export_markup)
 
 
 @export var default_optimizer: Optimizer = null:

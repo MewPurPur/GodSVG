@@ -101,7 +101,7 @@ func _init(new_id := -1) -> void:
 	super()
 
 func _connect_to_export_formatter_change() -> void:
-	Configs.savedata.export_formatter.changed.connect(_save_svg_text)
+	Configs.savedata.export_formatter.changed_deferred.connect(_save_svg_text)
 
 func get_edited_file_path() -> String:
 	return get_edited_file_path_for_id(id)
@@ -147,11 +147,9 @@ func _sync() -> void:
 			marked_unsaved = false
 		else:
 			var edited_text_parse_result := SVGParser.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
-			var file_text := FileAccess.get_file_as_string(svg_file_path)
-			if edited_text_parse_result.error == SVGParser.ParseError.OK:
-				marked_unsaved = (file_text != SVGParser.root_to_export_markup(edited_text_parse_result.svg))
-			else:
-				marked_unsaved = (file_text != FileAccess.get_file_as_string(get_edited_file_path()))
+			var text_to_compare := SVGParser.root_to_export_markup(edited_text_parse_result.svg) if\
+					(edited_text_parse_result.error == SVGParser.ParseError.OK) else FileAccess.get_file_as_string(get_edited_file_path())
+			marked_unsaved = (FileAccess.get_file_as_string(svg_file_path) != text_to_compare)
 	
 	elif not FileAccess.file_exists(get_edited_file_path()) or SVGParser.markup_check_is_root_empty(get_true_svg_text()):
 		empty_unsaved = true
