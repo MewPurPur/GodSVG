@@ -490,16 +490,15 @@ func _on_color_area_draw() -> void:
 	var handle_texture_size := handle_texture.get_size()
 	
 	# Unique case.
-	match Configs.savedata.color_picker_current_shape:
-		ColorPickerUtils.PickerShape.NORMAL_MAP:
-			var x := color_config.color.r * 2.0 - 1.0
-			var y := color_config.color.g * 2.0 - 1.0
-			var z := color_config.color.b * 2.0 - 1.0
-			if z < 0 or absf(Vector3(x, y, z).length() - 1.0) > ColorPickerUtils.NORMAL_CIRCLE_THRESHOLD:
-				if color_area.has_focus(true):
-					get_theme_stylebox("focus", "FlatButton").draw(color_area_surface, color_area_drawn.get_rect().grow(3))
-				return
-			point_pos += color_area_drawn.size / 2 * Vector2(x, -y)
+	if Configs.savedata.color_picker_current_shape ==  ColorPickerUtils.PickerShape.NORMAL_MAP:
+		var n := Vector2(color_config.color.r * 2.0 - 1.0, 1.0 - color_config.color.g * 2.0)
+		if n.length() > 1.0 + ColorPickerUtils.NORMAL_CIRCLE_ERROR_THRESHOLD:
+			if color_area.has_focus(true):
+				get_theme_stylebox("focus", "FlatButton").draw(color_area_surface, color_area_drawn.get_rect().grow(3))
+			return
+		elif n.length() > 1.0:
+			n = n.normalized()
+		point_pos += color_area_drawn.size * n/2
 	
 	match ColorPickerUtils.get_current_picker_shape_geometric_shape():
 		ColorPickerUtils.PickerGeometricShape.CIRCLE_AND_BAR:
@@ -533,15 +532,11 @@ func _on_primary_slider_draw() -> void:
 	RenderingServer.canvas_item_clear(primary_slider_surface)
 	
 	# Unique case.
-	match Configs.savedata.color_picker_current_shape:
-		ColorPickerUtils.PickerShape.NORMAL_MAP:
-			var x := color_config.color.r * 2.0 - 1.0
-			var y := color_config.color.g * 2.0 - 1.0
-			var z := color_config.color.b * 2.0 - 1.0
-			if z < 0 or absf(Vector3(x, y, z).length() - 1.0) > ColorPickerUtils.NORMAL_CIRCLE_THRESHOLD:
-				if primary_slider.has_focus(true):
-					get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, primary_slider_drawn.get_rect().grow(3))
-				return
+	if Configs.savedata.color_picker_current_shape == ColorPickerUtils.PickerShape.NORMAL_MAP:
+		if Vector2(color_config.color.r * 2.0 - 1.0, color_config.color.g * 2.0 - 1.0).length() > 1.0 + ColorPickerUtils.NORMAL_CIRCLE_ERROR_THRESHOLD:
+			if primary_slider.has_focus(true):
+				get_theme_stylebox("focus", "FlatButton").draw(primary_slider_surface, primary_slider_drawn.get_rect().grow(3))
+			return
 	
 	var primary_slider_offset := ColorPickerUtils.get_primary_slider_offset(color_config.color)
 	if primary_slider_offset < 0.0 or primary_slider_offset > 1.0:

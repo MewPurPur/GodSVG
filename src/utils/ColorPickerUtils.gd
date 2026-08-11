@@ -1,6 +1,6 @@
 class_name ColorPickerUtils extends RefCounted
 
-const NORMAL_CIRCLE_THRESHOLD = 0.02
+const NORMAL_CIRCLE_ERROR_THRESHOLD = 0.01
 
 # The color picker uses a 64-bit color because the precision is necessary for the approach of
 # things like keeping colors almost-grayscale-but-not-quite to preserve their hue.
@@ -381,11 +381,10 @@ static func get_primary_slider_offset(color: PreciseColor) -> float:
 		PickerShape.HL_S_SQUARE: return get_channel_offset_for_model(color, 1, ColorModel.HSL)
 		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: return color.get_hue()
 		PickerShape.NORMAL_MAP:
-			var z := color.b * 2.0 - 1.0
-			var n = Vector3(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0, z)
-			if z < 0 or absf(n.length() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
+			var n := Vector2(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0)
+			if n.length() > 1 + NORMAL_CIRCLE_ERROR_THRESHOLD:
 				return 0.0
-			return minf(Vector2(n.x, n.y).length(), 1.0)
+			return minf(n.length(), 1.0)
 	return 0.0
 
 static func set_primary_slider_offset(color: PreciseColor, offset: float) -> void:
@@ -395,27 +394,20 @@ static func set_primary_slider_offset(color: PreciseColor, offset: float) -> voi
 		PickerShape.HL_S_SQUARE: set_channel_offset_for_model(color, 1, offset, ColorModel.HSL)
 		PickerShape.SV_H_SQUARE, PickerShape.SL_H_SQUARE: set_channel_offset_for_model(color, 0, offset, ColorModel.HSV)
 		PickerShape.NORMAL_MAP:
-			var n := Vector3(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0, color.b * 2.0 - 1.0)
-			var dir = Vector2(n.x, n.y)
+			var dir = Vector2(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0)
 			if dir.length() > 0.0:
 				dir = dir.normalized()
 			var p = dir * clampf(offset, 0.0001, 0.9999)
-			var z = sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y))
-			var v = Vector3(p.x, p.y, z)
-			color.set_rgb(v.x * 0.5 + 0.5, v.y * 0.5 + 0.5, v.z * 0.5 + 0.5)
+			color.set_rgb(p.x * 0.5 + 0.5, p.y * 0.5 + 0.5, sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y)) * 0.5 + 0.5)
 
 static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2) -> void:
 	# Unique case.
-	match Configs.savedata.color_picker_current_shape:
-		PickerShape.NORMAL_MAP:
-			var p := coordinates * 2 - Vector2(1, 1)
-			p.y = -p.y
-			if p.length() > 1.0:
-				p = p.normalized()
-			var z := sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y))
-			var n := Vector3(p.x, p.y, z)
-			color.set_rgb(n.x * 0.5 + 0.5, n.y * 0.5 + 0.5, n.z * 0.5 + 0.5)
-			return
+	if Configs.savedata.color_picker_current_shape == PickerShape.NORMAL_MAP:
+		var p := Vector2(coordinates.x * 2.0 - 1.0, 1.0 - coordinates.y * 2.0)
+		if p.length() > 1.0:
+			p = p.normalized()
+		color.set_rgb(p.x * 0.5 + 0.5, p.y * 0.5 + 0.5, sqrt(maxf(0.0, 1.0 - p.x * p.x - p.y * p.y)) * 0.5 + 0.5)
+		return
 	
 	# Don't clamp coordinates, this allows keyboard navigation to overextend and make it easier to snap to the right value at edges.
 	var channel1_index: int
@@ -453,13 +445,11 @@ static func set_color_area_coordinates(color: PreciseColor, coordinates: Vector2
 			ColorPickerUtils.set_channel_offset_for_model(color, channel2_index, 1.0 - clampf(coordinates.y, 0.0, 1.0), model)
 
 static func get_color_area_coordinates(color: PreciseColor) -> Vector2:
-	match Configs.savedata.color_picker_current_shape:
-		PickerShape.NORMAL_MAP:
-			var z := color.b * 2.0 - 1.0
-			var n := Vector3(color.r * 2.0 - 1.0, color.g * 2.0 - 1.0, z)
-			if z < 0 or absf(n.length() - 1.0) > NORMAL_CIRCLE_THRESHOLD:
-				return Vector2(0.5, 0.5)
-			return Vector2(n.x, -n.y) * 0.5 + Vector2(0.5, 0.5)
+	if Configs.savedata.color_picker_current_shape == PickerShape.NORMAL_MAP:
+		var n := Vector2(color.r * 2.0 - 1.0, 1.0 - color.g * 2.0)
+		if n.length() > 1.0 + NORMAL_CIRCLE_ERROR_THRESHOLD:
+			return Vector2(0.5, 0.5)
+		return n/2 + Vector2(0.5, 0.5)
 	
 	var channel1_index := 0
 	var channel2_index := 0
