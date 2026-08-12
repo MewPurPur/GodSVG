@@ -46,7 +46,6 @@ msgid "Export SVG"
 msgstr "导出 SVG"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。"
 
