@@ -121,9 +121,9 @@ func register_focus_sequence(focus_master: Control, sequence: Array[Control], fo
 	for control in sequence:
 		control.visibility_changed.connect(
 			func() -> void:
-				if not control.visible and control.has_focus():
+				if not control.is_visible_in_tree() and control.has_focus():
 					for control2 in sequence:
-						if control2.visible:
+						if is_instance_valid(control2) and control2.is_visible_in_tree():
 							control2.grab_focus(true)
 							return
 		)
@@ -140,7 +140,7 @@ func _find_first_focusable_control_in_sequence(sequence: Array[Control]) -> Cont
 	for control in sequence:
 		if not is_instance_valid(control):
 			continue
-		if control.visible and control.focus_mode != Control.FocusMode.FOCUS_NONE:
+		if control.is_visible_in_tree() and control.focus_mode != Control.FocusMode.FOCUS_NONE:
 			return control
 		if control in focus_sequences:
 			var nested := _find_first_focusable_control_in_sequence(focus_sequences[control])
@@ -480,7 +480,7 @@ func _react_to_action(event: InputEvent) -> void:
 	
 	for behavior in ShortcutsRegistration.BEHAVIOR_PRIORITY:
 		for node in shortcut_registrations:
-			if node is CanvasItem and not node.visible:
+			if node is CanvasItem and not node.is_visible_in_tree():
 				continue
 			
 			var registrations := shortcut_registrations[node]

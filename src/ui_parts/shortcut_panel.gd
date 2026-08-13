@@ -102,8 +102,8 @@ func update_layout() -> void:
 	var margin_container := MarginContainer.new()
 	margin_container.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["margin_left", "margin_right", "margin_top", "margin_bottom"]
-	for theme_type in CONST_ARR:
-		margin_container.add_theme_constant_override(theme_type, 4)
+	for theme_item in CONST_ARR:
+		margin_container.add_theme_constant_override(theme_item, 4)
 	margin_container.begin_bulk_theme_override()
 	main_container.add_child(margin_container)
 	

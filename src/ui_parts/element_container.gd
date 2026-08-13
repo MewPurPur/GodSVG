@@ -113,8 +113,7 @@ func _gui_input(event: InputEvent) -> void:
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 
 func add_element(element_name: String, element_idx: int) -> void:
-	State.root_element.add_xnode(DB.element_with_setup(element_name, []),
-			PackedInt32Array([element_idx]))
+	State.root_element.add_xnode(DB.element_with_setup(element_name, []), PackedInt32Array([element_idx]))
 	State.save_svg()
 
 

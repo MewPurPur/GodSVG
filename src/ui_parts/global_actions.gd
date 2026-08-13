@@ -40,12 +40,11 @@ func _ready() -> void:
 func sync_theming() -> void:
 	size_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["normal", "focus", "hover", "disabled"]
-	for theme_type in CONST_ARR:
-		size_button.remove_theme_stylebox_override(theme_type)
-		var stylebox := size_button.get_theme_stylebox(theme_type).duplicate()
+	for theme_item in CONST_ARR:
+		var stylebox := size_button.get_theme_stylebox(theme_item).duplicate()
 		stylebox.content_margin_bottom = 0.0
 		stylebox.content_margin_top = 0.0
-		size_button.add_theme_stylebox_override(theme_type, stylebox)
+		size_button.add_theme_stylebox_override(theme_item, stylebox)
 	size_button.end_bulk_theme_override()
 	update_size_button_colors()
 
@@ -97,9 +96,8 @@ func update_size_button() -> void:
 func update_size_button_colors() -> void:
 	size_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["font_color", "font_hover_color", "font_focus_color", "font_pressed_color"]
-	for theme_type in CONST_ARR:
-		size_button.add_theme_color_override(theme_type,
-				Configs.savedata.basic_color_warning.lerp(ThemeUtils.max_contrast_color, 0.4))
+	for theme_item in CONST_ARR:
+		size_button.add_theme_color_override(theme_item, Configs.savedata.basic_color_warning.lerp(ThemeUtils.max_contrast_color, 0.4))
 	size_button.end_bulk_theme_override()
 
 func _on_layout_button_pressed() -> void:

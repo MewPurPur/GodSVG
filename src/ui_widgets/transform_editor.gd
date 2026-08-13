@@ -99,8 +99,7 @@ func setup_field_defaults_and_colors() -> void:
 
 func determine_field_font_color(field: BetterLineEdit, omit: bool) -> void:
 	if omit:
-		field.add_theme_color_override("font_color",
-				Color(field.get_theme_color("font_color"), 2/3.0))
+		field.add_theme_color_override("font_color", Color(field.get_theme_color("font_color"), 2/3.0))
 	else:
 		reset_field_color(field)
 
@@ -109,7 +108,6 @@ func reset_field_color(field: BetterLineEdit) -> void:
 
 func update_title_font_color() -> void:
 	if transform.is_redundant():
-		transform_button.add_theme_color_override("font_color",
-				Color(transform_button.get_theme_color("font_color"), 2/3.0))
+		transform_button.add_theme_color_override("font_color", Color(transform_button.get_theme_color("font_color"), 2/3.0))
 	else:
 		transform_button.remove_theme_color_override("font_color")

@@ -334,7 +334,9 @@ func select_all() -> void:
 	_clear_inner_selection_no_signal()
 	var xnode_list: Array[XNode] = root_element.get_all_xnode_descendants()
 	var xid_list: Array = xnode_list.map(
-			func(xnode: XNode) -> PackedInt32Array: return xnode.xid)
+		func(xnode: XNode) -> PackedInt32Array:
+			return xnode.xid
+	)
 	# The order might not be the same, so ensure like this.
 	if XIDUtils.are_xid_lists_same(xid_list, selected_xids):
 		return

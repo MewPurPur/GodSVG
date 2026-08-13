@@ -42,12 +42,15 @@ func _ready() -> void:
 		Configs.language_changed.connect(sync_button_locale)
 		sync_button_locale.call()
 		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		btn.focus_mode = Control.FOCUS_NONE
 		btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 		categories_container.add_child(btn)
 		if i == 0:
 			btn.button_pressed = true
 			btn.pressed.emit()
+	
+	var focus_sequence: Array[Control]
+	focus_sequence.assign(button_group.get_buttons())
+	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 func setup_undo_redo_utensils(new_undo_redo: UndoRedoRef, new_scroll_to_callback: Callable, new_settings_tab_change_callable: Callable) -> void:
 	undo_redo = new_undo_redo
@@ -72,9 +75,9 @@ func show_shortcuts_from_category(category: String) -> void:
 		var shortcut_config: Control
 		if ShortcutUtils.is_action_modifiable(action):
 			shortcut_config = ShortcutConfigWidgetScene.instantiate()
-			shortcut_config.shortcuts_modified.connect(
+			shortcut_config.shortcuts_edited.connect(
 				func(new_shortcuts: Array[InputEvent]) -> void:
-					_on_shortcuts_modified(action, new_shortcuts, category)
+					_on_shortcuts_edited(action, new_shortcuts, category)
 			)
 		else:
 			shortcut_config = ShortcutShowcaseWidgetScene.instantiate()
@@ -83,7 +86,7 @@ func show_shortcuts_from_category(category: String) -> void:
 		shortcuts_container.add_child(shortcut_config)
 		action_configs[action] = shortcut_config
 
-func _on_shortcuts_modified(action: String, new_shortcuts: Array[InputEvent], category: String) -> void:
+func _on_shortcuts_edited(action: String, new_shortcuts: Array[InputEvent], category: String) -> void:
 	undo_redo.create_action()
 	undo_redo.add_do_method(Configs.savedata.action_modify_shortcuts.bind(action, new_shortcuts))
 	undo_redo.add_do_method(highlight_action.bind(category, action))

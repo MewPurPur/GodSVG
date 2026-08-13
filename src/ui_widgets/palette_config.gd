@@ -34,12 +34,12 @@ func sync_theming() -> void:
 	warning_sign.modulate = ThemeUtils.warning_icon_color
 	palette_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
-	for theme_type in CONST_ARR:
-		var stylebox := palette_button.get_theme_stylebox(theme_type).duplicate()
+	for theme_item in CONST_ARR:
+		var stylebox := palette_button.get_theme_stylebox(theme_item).duplicate()
 		stylebox.content_margin_top -= 3.0
 		stylebox.content_margin_bottom -= 2.0
 		stylebox.content_margin_left += 1.0
-		palette_button.add_theme_stylebox_override(theme_type, stylebox)
+		palette_button.add_theme_stylebox_override(theme_item, stylebox)
 	var panel_stylebox := get_theme_stylebox("panel").duplicate()
 	panel_stylebox.content_margin_top = panel_stylebox.content_margin_bottom
 	add_theme_stylebox_override("panel", panel_stylebox)
@@ -77,10 +77,10 @@ func hide_name_edit() -> void:
 func _on_name_edit_text_changed(new_text: String) -> void:
 	name_edit.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["font_color", "font_hover_color"]
-	for theme_type in CONST_ARR:
+	for theme_item in CONST_ARR:
 		# If the new text matches the current title, show warning color if the palette is currently invalid.
 		# If the new text is different, check if it's unused, i.e., would be a valid title.
-		name_edit.add_theme_color_override(theme_type,
+		name_edit.add_theme_color_override(theme_item,
 				Configs.savedata.get_validity_color(false, (new_text != palette.title and not Configs.savedata.is_palette_title_unused(new_text)) or\
 				(new_text == palette.title and Configs.savedata.is_palette_valid(palette))))
 	name_edit.end_bulk_theme_override()
@@ -105,17 +105,15 @@ func set_label_text(new_text: String) -> void:
 	palette_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["font_color", "font_hover_color", "font_pressed_color"]
 	if palette.title.is_empty():
-		for theme_type in CONST_ARR:
-			palette_button.add_theme_color_override(theme_type,
-					ThemeUtils.subtle_text_color)
+		for theme_item in CONST_ARR:
+			palette_button.add_theme_color_override(theme_item, ThemeUtils.subtle_text_color)
 	else:
 		if not Configs.savedata.is_palette_valid(palette):
-			for theme_type in CONST_ARR:
-				palette_button.add_theme_color_override(theme_type,
-						Configs.savedata.basic_color_error)
+			for theme_item in CONST_ARR:
+				palette_button.add_theme_color_override(theme_item, Configs.savedata.basic_color_error)
 		else:
-			for theme_type in CONST_ARR:
-				palette_button.remove_theme_color_override(theme_type)
+			for theme_item in CONST_ARR:
+				palette_button.remove_theme_color_override(theme_item)
 	palette_button.end_bulk_theme_override()
 
 func delete() -> void:
@@ -130,11 +128,11 @@ func move_down() -> void:
 	Configs.savedata.move_palette_down(find_palette_index())
 	layout_changed.emit()
 
-func copy_palette(palette_idx: int) -> void:
-	DisplayServer.clipboard_set(Configs.savedata.get_palette(palette_idx).get_as_markup())
+func copy_palette(palette_index: int) -> void:
+	DisplayServer.clipboard_set(Configs.savedata.get_palette(palette_index).get_as_markup())
 
-func save_palette(palette_idx: int) -> void:
-	var saved_palette := Configs.savedata.get_palette(palette_idx)
+func save_palette(palette_index: int) -> void:
+	var saved_palette := Configs.savedata.get_palette(palette_index)
 	FileUtils.open_xml_export_dialog(saved_palette.get_as_markup(), saved_palette.title)
 
 func open_palette_options() -> void:
