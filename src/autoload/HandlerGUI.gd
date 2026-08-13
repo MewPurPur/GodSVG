@@ -341,11 +341,11 @@ func _move_popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) ->
 	popup.position = popup_clamp_pos(popup, popup_pos, vp)
 
 # Should usually be the global position of the mouse.
-func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:
+func popup_under_position(popup: Control, position: Vector2, viewport: Viewport) -> void:
 	var top_popup := add_popup(popup)
-	var screen_transform := vp.get_screen_transform()
-	pos += screen_transform.get_origin() / screen_transform.get_scale()
-	top_popup.position = popup_clamp_pos(top_popup, pos + Vector2(1, 1), vp)
+	var screen_transform := viewport.get_screen_transform()
+	position += screen_transform.get_origin() / screen_transform.get_scale()
+	top_popup.position = popup_clamp_pos(top_popup, position + Vector2(1, 1), viewport)
 
 # Should usually be the global rect of a control.
 func popup_submenu_to_right_or_left_side(submenu: Control, source: Control) -> void:
@@ -390,12 +390,12 @@ func clear_submenu() -> void:
 
 
 # Helper.
-func popup_clamp_pos(popup: Control, attempt_pos: Vector2, vp: Viewport) -> Vector2:
+func popup_clamp_pos(popup: Control, attempt_position: Vector2, vp: Viewport) -> Vector2:
 	var screen_transform := vp.get_screen_transform()
 	var vp_pos := screen_transform.get_origin() / screen_transform.get_scale()
 	for axis in 2:
-		attempt_pos[axis] = clampf(attempt_pos[axis], vp_pos[axis], vp_pos[axis] + vp.get_visible_rect().size[axis] - popup.size[axis])
-	return attempt_pos
+		attempt_position[axis] = clampf(attempt_position[axis], vp_pos[axis], vp_pos[axis] + vp.get_visible_rect().size[axis] - popup.size[axis])
+	return attempt_position
 
 
 func _parse_popup_overlay_event(event: InputEvent) -> void:

@@ -12,13 +12,13 @@ func _init(new_element: Element, xref: String, yref: String) -> void:
 	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
-func set_pos(new_pos: PackedFloat64Array) -> void:
-	if precise_pos != new_pos:
-		element.set_attribute(x_name, new_pos[0])
-		element.set_attribute(y_name, new_pos[1])
+func set_position(new_position: PackedFloat64Array) -> void:
+	if precise_position != new_position:
+		element.set_attribute(x_name, new_position[0])
+		element.set_attribute(y_name, new_position[1])
 		sync()
 
 func sync() -> void:
-	precise_pos[0] = element.get_attribute_num(x_name)
-	precise_pos[1] = element.get_attribute_num(y_name)
+	precise_position[0] = element.get_attribute_num(x_name)
+	precise_position[1] = element.get_attribute_num(y_name)
 	super()

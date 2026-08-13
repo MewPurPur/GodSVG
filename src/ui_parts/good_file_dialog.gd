@@ -416,7 +416,7 @@ func open_dir_context(dir: String) -> void:
 		ContextButton.create_from_action("open_in_folder", false, Translator.translate("Open in File Manager")),
 	]
 	var vp := get_viewport()
-	HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
+	HandlerGUI.popup_under_position(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
 
 func open_file_context() -> void:
 	sync_to_selection()
@@ -435,7 +435,7 @@ func open_file_context() -> void:
 	btn_arr.append(ContextButton.create_from_action("open_in_folder"))
 	
 	var vp := get_viewport()
-	HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
+	HandlerGUI.popup_under_position(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
 
 
 func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int) -> void:
@@ -449,7 +449,7 @@ func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int)
 		btn_arr.append(ContextButton.create_from_action("open_in_folder"))
 		
 		var vp := get_viewport()
-		HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
+		HandlerGUI.popup_under_position(ContextPopup.create(btn_arr), vp.get_mouse_position(), vp)
 
 func _on_file_list_item_activated(index: int) -> void:
 	call_activation_callback(file_list.get_item_metadata(index))

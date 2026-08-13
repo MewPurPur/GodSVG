@@ -196,7 +196,7 @@ func sync_tile_positions() -> void:
 	
 	icon_preview_tiles.custom_minimum_size.y = current_y + row_height + TILE_MARGIN
 	_sync_buttons()
-	set_hovered_to_pos(icon_preview_tiles.get_local_mouse_position())
+	_set_hovered_to_position(icon_preview_tiles.get_local_mouse_position())
 	icon_preview_tiles.queue_redraw()
 
 
@@ -225,7 +225,7 @@ func _on_preview_tiles_draw() -> void:
 func _on_tiles_gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouse:
 		return
-	set_hovered_to_pos(event.position)
+	_set_hovered_to_position(event.position)
 	
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -241,17 +241,17 @@ func _on_tiles_gui_input(event: InputEvent) -> void:
 					ContextButton.create_custom(Translator.translate("Add preview"), _add_new_tile, preload("res://assets/icons/Plus.svg"))
 				]
 				var vp := get_viewport()
-				HandlerGUI.popup_under_pos(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)
+				HandlerGUI.popup_under_position(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)
 
 func _on_tiles_mouse_exited() -> void:
 	hovered_tile_index = -1
 	icon_preview_tiles.queue_redraw()
 
-func set_hovered_to_pos(pos: Vector2) -> void:
+func _set_hovered_to_position(checked_position: Vector2) -> void:
 	var old_hovered_index := hovered_tile_index
 	hovered_tile_index = -1
 	for tile in tiles:
-		if Rect2(tile.position, tile.size).has_point(pos):
+		if Rect2(tile.position, tile.size).has_point(checked_position):
 			hovered_tile_index = tile.index
 			break
 	if old_hovered_index != hovered_tile_index:
@@ -299,8 +299,8 @@ func _generate_tile_popup(tile: IconPreviewTileData) -> ContextPopup:
 	]
 	return ContextPopup.create(btn_arr, true)
 
-func _show_tile_popup_at_pos(tile: IconPreviewTileData, pos: Vector2) -> void:
-	HandlerGUI.popup_under_pos(_generate_tile_popup(tile), pos, get_viewport())
+func _show_tile_popup_at_pos(tile: IconPreviewTileData, checked_position: Vector2) -> void:
+	HandlerGUI.popup_under_position(_generate_tile_popup(tile), checked_position, get_viewport())
 
 func _show_tile_popup_under_more_button(tile: IconPreviewTileData) -> void:
 	HandlerGUI.popup_under_rect_center(_generate_tile_popup(tile),

@@ -43,13 +43,13 @@ func sync_after_commands_change(apply_start_positions_sync := true) -> void:
 func get_command_count() -> int:
 	return _commands.size()
 
-func get_command(idx: int) -> PathCommand:
-	return _commands[idx]
+func get_command(index: int) -> PathCommand:
+	return _commands[index]
 
 # Return the start and end indices of the subpath.
-func get_subpath(idx: int) -> Vector2i:
+func get_subpath(index: int) -> Vector2i:
 	for i in range(subpath_start_indices.size() - 1, -1, -1):
-		if subpath_start_indices[i] <= idx:
+		if subpath_start_indices[i] <= index:
 			return Vector2i(subpath_start_indices[i], (subpath_start_indices[i + 1] if i < subpath_start_indices.size() - 1 else get_command_count()) - 1)
 	return Vector2i(-1, -1)
 

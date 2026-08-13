@@ -28,8 +28,8 @@ static func reset_svg() -> void:
 static func apply_svgs_from_paths(paths: PackedStringArray, show_incorrect_extension_errors := true) -> void:
 	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]), show_incorrect_extension_errors)
 
-static func compare_svg_to_disk_contents(idx := -1) -> FileState:
-	var tab := Configs.savedata.get_active_tab() if idx == -1 else Configs.savedata.get_tab(idx)
+static func compare_svg_to_disk_contents(index := -1) -> FileState:
+	var tab := Configs.savedata.get_active_tab() if index == -1 else Configs.savedata.get_tab(index)
 	var content := FileAccess.get_file_as_string(tab.svg_file_path)
 	if content.is_empty():
 		return FileState.DOES_NOT_EXIST
@@ -41,17 +41,11 @@ static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 		if content_parse_result.error != SVGParser.ParseError.OK:
 			return FileState.DIFFERENT
 		else:
-			var state_svg_text := State.stable_editor_markup if idx == -1 else SVGParser.root_to_editor_markup(parse_result.svg)
-			if state_svg_text == SVGParser.root_to_editor_markup(content_parse_result.svg):
-				return FileState.SAME
-			else:
-				return FileState.DIFFERENT
+			var state_svg_text := State.stable_editor_markup if index == -1 else SVGParser.root_to_editor_markup(parse_result.svg)
+			return FileState.SAME if state_svg_text == SVGParser.root_to_editor_markup(content_parse_result.svg) else FileState.DIFFERENT
 	else:
-		var state_svg_text := State.unstable_markup if idx == -1 else tab.get_true_svg_text()
-		if state_svg_text == content:
-			return FileState.SAME
-		else:
-			return FileState.DIFFERENT
+		var state_svg_text := State.unstable_markup if index == -1 else tab.get_true_svg_text()
+		return (FileState.SAME if state_svg_text == content else FileState.DIFFERENT)
 
 
 static func _save_svg_with_custom_final_callback(final_callback: Callable) -> void:
@@ -89,9 +83,9 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 	else:
 		if _is_native_preferred():
 			var native_callback :=\
-				func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+				func(has_selected: bool, selected_paths: PackedStringArray, _selected_filter_index: int) -> void:
 					if has_selected:
-						_finish_export(files[0], export_data)
+						_finish_export(selected_paths[0], export_data)
 						if final_callback.is_valid():
 							final_callback.call()
 			
@@ -119,9 +113,9 @@ static func open_xml_export_dialog(xml: String, file_name: String) -> void:
 	else:
 		if _is_native_preferred():
 			var native_callback :=\
-				func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+				func(has_selected: bool, selected_paths: PackedStringArray, _selected_filter_index: int) -> void:
 					if has_selected:
-						_finish_xml_export(files[0], xml)
+						_finish_xml_export(selected_paths[0], xml)
 			
 			DisplayServer.file_dialog_show(
 					TranslationUtils.get_file_dialog_save_mode_title_text("xml"),
@@ -204,9 +198,9 @@ static func open_custom_import_dialog(extensions: PackedStringArray, completion_
 				filters.append("*" + extension)
 			
 			var native_callback :=\
-				func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+				func(has_selected: bool, selected_paths: PackedStringArray, _selected_filter_index: int) -> void:
 					if has_selected:
-						_start_file_import_process(files, completion_callback, extensions)
+						_start_file_import_process(selected_paths, completion_callback, extensions)
 			
 			DisplayServer.file_dialog_show(
 					TranslationUtils.get_file_dialog_select_mode_title_text(multi_select, extensions), Configs.savedata.get_last_dir(), "", false,

@@ -147,7 +147,7 @@ signal hover_changed
 signal selection_changed
 
 # Locked scroll puts the object at a specific place on the screen, otherwise it's clamped.
-signal requested_scroll_to_selection(xid: PackedInt32Array, inner_idx: int, locked: bool)
+signal requested_scroll_to_selection(xid: PackedInt32Array, inner_index: int, locked: bool)
 
 # The viewport listens for this signal to put you in handle-placing mode.
 signal handle_added
@@ -193,12 +193,12 @@ func clear_proposed_drop_xid() -> void:
 
 
 # Override the selected elements with a single new selected element.
-# If inner_idx is given, this will be an inner selection.
-func normal_select(xid: PackedInt32Array, inner_idx := -1, scroll := false) -> void:
+# If inner_index is given, this will be an inner selection.
+func normal_select(xid: PackedInt32Array, inner_index := -1, scroll := false) -> void:
 	if xid.is_empty():
 		return
 	
-	if inner_idx == -1:
+	if inner_index == -1:
 		var old_selected_xids := selected_xids.duplicate()
 		if not semi_selected_xid.is_empty():
 			_clear_inner_selection_no_signal()
@@ -214,26 +214,26 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1, scroll := false) -> v
 		xid = xid.duplicate()
 		_clear_selection_no_signal()
 		
-		if semi_selected_xid == xid and inner_selections.size() == 1 and inner_selections[0] == inner_idx:
+		if semi_selected_xid == xid and inner_selections.size() == 1 and inner_selections[0] == inner_index:
 			return
 		
 		semi_selected_xid = xid.duplicate()
-		inner_selection_pivot = inner_idx
-		inner_selections = [inner_idx]
+		inner_selection_pivot = inner_index
+		inner_selections = [inner_index]
 		if inner_selections == old_inner_selections and old_semi_selected_xid == xid:
 			return
 	
 	selection_changed.emit()
 	if scroll:
-		requested_scroll_to_selection.emit(xid, inner_idx, false)
+		requested_scroll_to_selection.emit(xid, inner_index, false)
 
 # If the element was selected, unselect it. If it was unselected, select it.
-# If inner_idx is given, this will be an inner selection.
-func ctrl_select(xid: PackedInt32Array, inner_idx := -1) -> void:
+# If inner_index is given, this will be an inner selection.
+func ctrl_select(xid: PackedInt32Array, inner_index := -1) -> void:
 	if xid.is_empty():
 		return
 	
-	if inner_idx == -1:
+	if inner_index == -1:
 		_clear_inner_selection_no_signal()
 		var xid_idx := selected_xids.find(xid)
 		if xid_idx == -1:
@@ -245,14 +245,14 @@ func ctrl_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 			selected_xids.remove_at(xid_idx)
 	else:
 		if semi_selected_xid != xid:
-			normal_select(xid, inner_idx)
+			normal_select(xid, inner_index)
 		else:
 			_clear_selection_no_signal()
 			
-			var idx_idx := inner_selections.find(inner_idx)
+			var idx_idx := inner_selections.find(inner_index)
 			if idx_idx == -1:
-				inner_selection_pivot = inner_idx
-				inner_selections.append(inner_idx)
+				inner_selection_pivot = inner_index
+				inner_selections.append(inner_index)
 			else:
 				inner_selections.remove_at(idx_idx)
 				if inner_selections.is_empty():
@@ -261,12 +261,12 @@ func ctrl_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 	selection_changed.emit()
 
 # Select all elements between the element and the last selected element (pivot).
-# Similarly for inner selections if inner_idx is given, but without tree logic.
-func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
+# Similarly for inner selections if inner_index is given, but without tree logic.
+func shift_select(xid: PackedInt32Array, inner_index := -1) -> void:
 	if xid.is_empty():
 		return
 	
-	if inner_idx == -1:
+	if inner_index == -1:
 		if xid == selection_pivot_xid:
 			return
 		
@@ -274,7 +274,7 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 			if xid in selected_xids:
 				selection_pivot_xid = xid
 			else:
-				ctrl_select(xid, inner_idx)
+				ctrl_select(xid, inner_index)
 			return
 		
 		var old_selected_xids := selected_xids.duplicate()
@@ -303,12 +303,12 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 	
 	else:
 		if inner_selection_pivot == -1 or xid != semi_selected_xid:
-			normal_select(xid, inner_idx)
+			normal_select(xid, inner_index)
 			return
 		
 		var old_inner_selections := inner_selections.duplicate()
-		var first_idx := mini(inner_selection_pivot, inner_idx)
-		var last_idx := maxi(inner_selection_pivot, inner_idx)
+		var first_idx := mini(inner_selection_pivot, inner_index)
+		var last_idx := maxi(inner_selection_pivot, inner_index)
 		for i in range(first_idx, last_idx + 1):
 			if not i in inner_selections:
 				inner_selections.append(i)
@@ -377,8 +377,8 @@ func clear_all_selections() -> void:
 
 
 # Set the hovered element.
-func set_hovered(xid: PackedInt32Array, inner_idx := -1) -> void:
-	if inner_idx == -1:
+func set_hovered(xid: PackedInt32Array, inner_index := -1) -> void:
+	if inner_index == -1:
 		if hovered_xid != xid:
 			hovered_xid = xid.duplicate()
 			if not xid.is_empty():
@@ -388,24 +388,24 @@ func set_hovered(xid: PackedInt32Array, inner_idx := -1) -> void:
 	else:
 		if semi_hovered_xid != xid:
 			semi_hovered_xid = xid.duplicate()
-			inner_hovered = inner_idx
+			inner_hovered = inner_index
 			if not xid.is_empty():
 				hovered_xid.clear()
 			hover_changed.emit()
-		elif inner_hovered != inner_idx:
-			inner_hovered = inner_idx
+		elif inner_hovered != inner_index:
+			inner_hovered = inner_index
 			if not xid.is_empty():
 				hovered_xid.clear()
 			hover_changed.emit()
 
 # If the element is hovered, make it not hovered.
-func remove_hovered(xid: PackedInt32Array, inner_idx := -1) -> void:
-	if inner_idx == -1:
+func remove_hovered(xid: PackedInt32Array, inner_index := -1) -> void:
+	if inner_index == -1:
 		if hovered_xid == xid:
 			hovered_xid.clear()
 			hover_changed.emit()
 	else:
-		if semi_hovered_xid == xid and inner_hovered == inner_idx:
+		if semi_hovered_xid == xid and inner_hovered == inner_index:
 			semi_hovered_xid.clear()
 			inner_hovered = -1
 			hover_changed.emit()
@@ -431,29 +431,29 @@ func clear_all_hovered() -> void:
 		hover_changed.emit()
 
 # Returns whether the given element or inner editor is hovered.
-func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
+func is_hovered(xid: PackedInt32Array, inner_index := -1, propagate := false) -> bool:
 	if propagate:
 		if XIDUtils.is_ancestor_or_self(hovered_xid, xid):
 			return true
-		if inner_idx == -1:
+		if inner_index == -1:
 			return false
-		return inner_hovered == inner_idx and semi_hovered_xid == xid
-	if inner_idx == -1:
+		return inner_hovered == inner_index and semi_hovered_xid == xid
+	if inner_index == -1:
 		return hovered_xid == xid
-	return inner_hovered == inner_idx and semi_hovered_xid == xid
+	return inner_hovered == inner_index and semi_hovered_xid == xid
 
 # Returns whether the given element or inner editor is selected.
-func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
+func is_selected(xid: PackedInt32Array, inner_index := -1, propagate := false) -> bool:
 	if propagate:
 		for selected_xid in selected_xids:
 			if XIDUtils.is_ancestor_or_self(selected_xid, xid):
 				return true
-		if inner_idx == -1:
+		if inner_index == -1:
 			return false
-		return semi_selected_xid == xid and inner_idx in inner_selections
-	if inner_idx == -1:
+		return semi_selected_xid == xid and inner_index in inner_selections
+	if inner_index == -1:
 		return xid in selected_xids
-	return semi_selected_xid == xid and inner_idx in inner_selections
+	return semi_selected_xid == xid and inner_index in inner_selections
 
 
 # Returns whether the selection represents one or more subpaths of a path.
@@ -645,20 +645,19 @@ func _move_selected(down: bool) -> void:
 			if start in inner_selections:
 				selected.append(i)
 		
-		var order := range(pathdata.subpath_start_indices.size())
+		var order: Array[int] = range(pathdata.subpath_start_indices.size())
 		if down:
 			for i in range(selected.size() - 1, -1, -1):
-				var subpath := selected[i]
-				var pos := order.find(subpath)
+				var pos := order.find(selected[i])
 				if pos < order.size() - 1 and not selected.has(order[pos + 1]):
-					var tmp = order[pos]
+					var tmp := order[pos]
 					order[pos] = order[pos + 1]
 					order[pos + 1] = tmp
 		else:
 			for subpath in selected:
 				var pos := order.find(subpath)
 				if pos > 0 and not selected.has(order[pos - 1]):
-					var tmp = order[pos]
+					var tmp := order[pos]
 					order[pos] = order[pos - 1]
 					order[pos - 1] = tmp
 		

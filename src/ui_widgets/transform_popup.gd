@@ -100,33 +100,33 @@ func rebuild() -> void:
 	update_final_transform()
 
 
-func create_mini_number_field(idx: int, property: String) -> BetterLineEdit:
+func create_mini_number_field(index: int, property: String) -> BetterLineEdit:
 	var field := MiniNumberFieldScene.instantiate()
 	field.custom_minimum_size.x = 44
 	field.tooltip_text = property
-	field.value_changed.connect(update_value.bind(idx, property))
+	field.value_changed.connect(update_value.bind(index, property))
 	return field
 
 
-func update_value(new_value: float, idx: int, property: String) -> void:
+func update_value(new_value: float, index: int, property: String) -> void:
 	undo_redo.create_action()
-	undo_redo.add_do_method(attribute_ref.set_transform_property.bind(idx, property, new_value))
+	undo_redo.add_do_method(attribute_ref.set_transform_property.bind(index, property, new_value))
 	undo_redo.add_do_method(rebuild)
 	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(attribute_ref.get_transform_list()))
 	undo_redo.add_undo_method(rebuild)
 	undo_redo.commit_action()
 
-func insert_transform(idx: int, transform_type: String) -> void:
+func insert_transform(index: int, transform_type: String) -> void:
 	undo_redo.create_action()
-	undo_redo.add_do_method(attribute_ref.insert_transform.bind(idx, transform_type))
+	undo_redo.add_do_method(attribute_ref.insert_transform.bind(index, transform_type))
 	undo_redo.add_do_method(rebuild)
 	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(attribute_ref.get_transform_list()))
 	undo_redo.add_undo_method(rebuild)
 	undo_redo.commit_action()
 
-func delete_transform(idx: int) -> void:
+func delete_transform(index: int) -> void:
 	undo_redo.create_action()
-	undo_redo.add_do_method(attribute_ref.delete_transform.bind(idx))
+	undo_redo.add_do_method(attribute_ref.delete_transform.bind(index))
 	undo_redo.add_do_method(rebuild)
 	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(attribute_ref.get_transform_list()))
 	undo_redo.add_undo_method(rebuild)
@@ -154,22 +154,22 @@ func update_final_transform() -> void:
 	o2_edit.set_value(final_transform[5])
 
 
-func popup_transform_actions(idx: int, control: Control) -> void:
+func popup_transform_actions(index: int, control: Control) -> void:
 	var btn_arr: Array[ContextButton] = []
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
-			popup_new_transform_context.bind(idx + 1, control), preload("res://assets/icons/InsertAfter.svg")))
+			popup_new_transform_context.bind(index + 1, control), preload("res://assets/icons/InsertAfter.svg")))
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Insert before"),
-			popup_new_transform_context.bind(idx, control), preload("res://assets/icons/InsertBefore.svg")))
+			popup_new_transform_context.bind(index, control), preload("res://assets/icons/InsertBefore.svg")))
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"),
-			delete_transform.bind(idx), preload("res://assets/icons/Delete.svg")))
+			delete_transform.bind(index), preload("res://assets/icons/Delete.svg")))
 	
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), control.get_global_rect(), get_viewport())
 
-func popup_new_transform_context(idx: int, control: Control) -> void:
+func popup_new_transform_context(index: int, control: Control) -> void:
 	var btn_arr: Array[ContextButton] = []
 	const CONST_ARR: PackedStringArray = ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]
 	for transform_type in CONST_ARR:
-		var btn := ContextButton.create_custom(transform_type, insert_transform.bind(idx, transform_type), _icons_dict[transform_type])
+		var btn := ContextButton.create_custom(transform_type, insert_transform.bind(index, transform_type), _icons_dict[transform_type])
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_arr.append(btn)
 	HandlerGUI.popup_under_rect_center(ContextPopup.create_with_title(btn_arr, Translator.translate("New transform")), control.get_global_rect(), get_viewport())

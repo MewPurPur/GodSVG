@@ -867,36 +867,36 @@ func add_palette(new_palette: Palette) -> void:
 	_update_palette_validities()
 	emit_changed()
 
-func delete_palette(idx: int) -> void:
-	if _palettes.size() <= idx:
+func delete_palette(index: int) -> void:
+	if _palettes.size() <= index:
 		return
-	_palettes.remove_at(idx)
+	_palettes.remove_at(index)
 	_update_palette_validities()
 	emit_changed()
 
-func rename_palette(idx: int, new_name: String) -> void:
-	if _palettes.size() <= idx:
+func rename_palette(index: int, new_name: String) -> void:
+	if _palettes.size() <= index:
 		return
-	_palettes[idx].title = new_name
+	_palettes[index].title = new_name
 	_update_palette_validities()
 	emit_changed()
 
-func replace_palette(idx: int, new_palette: Palette) -> void:
-	if _palettes.size() <= idx:
+func replace_palette(index: int, new_palette: Palette) -> void:
+	if _palettes.size() <= index:
 		return
-	_palettes[idx] = new_palette
+	_palettes[index] = new_palette
 	new_palette.changed.connect(emit_changed)
 	_update_palette_validities()
 	emit_changed()
 
-func move_palette_up(idx: int) -> void:
-	var palette: Palette = _palettes.pop_at(idx)
-	_palettes.insert(idx - 1, palette)
+func move_palette_up(index: int) -> void:
+	var palette: Palette = _palettes.pop_at(index)
+	_palettes.insert(index - 1, palette)
 	emit_changed()
 
-func move_palette_down(idx: int) -> void:
-	var palette: Palette = _palettes.pop_at(idx)
-	_palettes.insert(idx + 1, palette)
+func move_palette_down(index: int) -> void:
+	var palette: Palette = _palettes.pop_at(index)
+	_palettes.insert(index + 1, palette)
 	emit_changed()
 
 func get_palettes() -> Array[Palette]:
@@ -905,8 +905,8 @@ func get_palettes() -> Array[Palette]:
 func get_palette_count() -> int:
 	return _palettes.size()
 
-func get_palette(idx: int) -> Palette:
-	return _palettes[idx]
+func get_palette(index: int) -> Palette:
+	return _palettes[index]
 
 
 @export var editor_formatter: Formatter = null:
@@ -984,8 +984,8 @@ const SHORTCUT_PANEL_MAX_SLOTS = 6
 func get_shortcut_panel_slots() -> Dictionary:
 	return _shortcut_panel_slots
 
-func get_shortcut_panel_slot(idx: int) -> String:
-	return _shortcut_panel_slots.get(idx, "")
+func get_shortcut_panel_slot(index: int) -> String:
+	return _shortcut_panel_slots.get(index, "")
 
 func set_shortcut_panel_slot(slot: int, shortcut: String) -> void:
 	if _shortcut_panel_slots.has(slot) and _shortcut_panel_slots[slot] == shortcut:
@@ -1055,8 +1055,8 @@ func has_tabs() -> bool:
 func get_tab_count() -> int:
 	return _tabs.size()
 
-func get_tab(idx: int) -> TabData:
-	return _tabs[idx] if (idx < _tabs.size() and idx >= 0) else null
+func get_tab(index: int) -> TabData:
+	return _tabs[index] if (index < _tabs.size() and index >= 0) else null
 
 func get_active_tab() -> TabData:
 	return get_tab(_active_tab_index)
@@ -1129,14 +1129,14 @@ func add_tab_with_path(new_file_path: String) -> void:
 
 # Note that a method for removing multiple tabs at once isn't straightforward,
 # since removed tabs can show dialogs asking the user if they should be saved.
-func remove_tab(idx: int) -> void:
-	if idx < 0 or idx >= _tabs.size():
+func remove_tab(index: int) -> void:
+	if index < 0 or index >= _tabs.size():
 		return
 	
 	var new_active_tab_index := _active_tab_index
 	# If there are no tabs in the end, add one.
-	_tabs.remove_at(idx)
-	if idx < _active_tab_index:
+	_tabs.remove_at(index)
+	if index < _active_tab_index:
 		new_active_tab_index -= 1
 	
 	# Clear unnecessary files. This will clear the removed tab too.
@@ -1153,7 +1153,7 @@ func remove_tab(idx: int) -> void:
 	if _tabs.is_empty():
 		_add_new_tab()
 	
-	var has_tab_changed := (_active_tab_index == idx)
+	var has_tab_changed := (_active_tab_index == index)
 	_active_tab_index = clampi(new_active_tab_index, 0, _tabs.size() - 1)
 	_tabs[_active_tab_index].activate()
 	
@@ -1165,12 +1165,12 @@ func remove_tab(idx: int) -> void:
 func remove_active_tab() -> void:
 	remove_tab(_active_tab_index)
 
-func move_tab(old_idx: int, new_idx: int) -> void:
-	if old_idx == new_idx or old_idx < 0 or old_idx > get_tab_count() or new_idx < 0 or new_idx > get_tab_count():
+func move_tab(old_index: int, new_index: int) -> void:
+	if old_index == new_index or old_index < 0 or old_index > get_tab_count() or new_index < 0 or new_index > get_tab_count():
 		return
 	
-	var tab: TabData = _tabs.pop_at(old_idx)
-	var adjusted_index := (new_idx - 1) if (old_idx < new_idx) else new_idx
+	var tab: TabData = _tabs.pop_at(old_index)
+	var adjusted_index := (new_index - 1) if (old_index < new_index) else new_index
 	_tabs.insert(adjusted_index, tab)
 	emit_changed()
 	set_active_tab_index(adjusted_index)

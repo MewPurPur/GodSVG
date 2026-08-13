@@ -693,7 +693,7 @@ handles_array: Array[Handle], atlas_textures_dict: Dictionary) -> void:
 		RenderingServer.canvas_item_add_multiline(surface, multiline, color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
 		atlas_textures_dict[handle.display_mode].draw(surface,
-				canvas.root_element.canvas_to_world(handle.transform * handle.pos) * canvas.camera_zoom - Vector2(half_handle_size, half_handle_size))
+				canvas.root_element.canvas_to_world(handle.transform * handle.position) * canvas.camera_zoom - Vector2(half_handle_size, half_handle_size))
 
 
 var dragged_handle: Handle = null
@@ -738,7 +738,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var new_pos := Utils64Bit.transform_vector_mult(
 					Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
 					canvas.root_element.world_to_canvas_64_bit(event_pos))
-			dragged_handle.set_pos(new_pos)
+			dragged_handle.set_position(new_pos)
 			was_handle_moved = true
 			accept_event()
 	elif event is InputEventMouseButton:
@@ -785,7 +785,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					var new_pos := Utils64Bit.transform_vector_mult(
 							Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
 							canvas.root_element.world_to_canvas_64_bit(event_pos))
-					dragged_handle.set_pos(new_pos)
+					dragged_handle.set_position(new_pos)
 					State.save_svg()
 					was_handle_moved = false
 				dragged_handle = null
@@ -799,7 +799,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var popup_pos := vp.get_mouse_position()
 			if not is_instance_valid(hovered_handle):
 				State.clear_all_selections()
-				HandlerGUI.popup_under_pos(create_element_context(
+				HandlerGUI.popup_under_position(create_element_context(
 						canvas.root_element.world_to_canvas_64_bit(event_pos)), popup_pos, vp)
 			elif visible:
 				var hovered_xid := hovered_handle.element.xid
@@ -813,13 +813,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				not (inner_idx == -1 and hovered_xid in State.selected_xids):
 					State.normal_select(hovered_xid, inner_idx)
 				
-				HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, vp), Utils.LayoutPart.VIEWPORT), popup_pos, vp)
+				HandlerGUI.popup_under_position(State.get_selection_context(HandlerGUI.popup_under_position.bind(popup_pos, vp),
+						Utils.LayoutPart.VIEWPORT), popup_pos, vp)
 
-func find_nearest_handle(event_pos: Vector2) -> Handle:
+func find_nearest_handle(event_position: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED * (Configs.savedata.handle_size / canvas.camera_zoom) ** 2
 	for handle in handles:
-		var dist_to_handle_squared := event_pos.distance_squared_to(canvas.root_element.canvas_to_world(handle.transform * handle.pos))
+		var dist_to_handle_squared := event_position.distance_squared_to(canvas.root_element.canvas_to_world(handle.transform * handle.position))
 		if dist_to_handle_squared < nearest_dist_squared:
 			nearest_dist_squared = dist_to_handle_squared
 			nearest_handle = handle
@@ -829,7 +830,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 func get_event_pos(event: InputEvent) -> PackedFloat64Array:
 	return apply_snap(event.position / canvas.camera_zoom + canvas.get_camera_position())
 
-func apply_snap(pos: Vector2) -> PackedFloat64Array:
+func apply_snap(position_to_snap: Vector2) -> PackedFloat64Array:
 	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / canvas.camera_zoom) / log(10)), 0)
 	var configured_snap := absf(Configs.savedata.snap)
 	var snap_size: float  # To be used for the snap.
@@ -841,7 +842,7 @@ func apply_snap(pos: Vector2) -> PackedFloat64Array:
 	else:
 		snap_size = configured_snap
 	
-	return PackedFloat64Array([snappedf(pos.x, snap_size), snappedf(pos.y, snap_size)])
+	return PackedFloat64Array([snappedf(position_to_snap.x, snap_size), snappedf(position_to_snap.y, snap_size)])
 
 
 func _on_handle_added() -> void:
@@ -866,21 +867,21 @@ func _on_handle_added() -> void:
 			var mouse_pos := apply_snap(get_global_mouse_position())
 			var new_pos := Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
 					canvas.root_element.world_to_canvas_64_bit(mouse_pos))
-			dragged_handle.set_pos(new_pos)
+			dragged_handle.set_position(new_pos)
 			was_handle_moved = true
 			return
 
 # Creates a popup for adding a shape at a position.
-func create_element_context(precise_pos: PackedFloat64Array) -> ContextPopup:
+func create_element_context(precise_position: PackedFloat64Array) -> ContextPopup:
 	var btn_arr: Array[ContextButton] = []
 	const CONST_ARR: PackedStringArray = ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline"]
 	for shape in CONST_ARR:
-		var btn := ContextButton.create_custom(shape, add_shape_at_pos.bind(shape, precise_pos), DB.get_element_icon(shape))
+		var btn := ContextButton.create_custom(shape, add_shape_at_pos.bind(shape, precise_position), DB.get_element_icon(shape))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_arr.append(btn)
 	var element_context := ContextPopup.create_with_title(btn_arr, Translator.translate("New shape"), true, -1, PackedInt32Array([1, 4]))
 	return element_context
 
-func add_shape_at_pos(element_name: String, precise_pos: PackedFloat64Array) -> void:
-	canvas.root_element.add_xnode(DB.element_with_setup(element_name, [precise_pos]), PackedInt32Array([canvas.root_element.get_child_count()]))
+func add_shape_at_pos(element_name: String, precise_position: PackedFloat64Array) -> void:
+	canvas.root_element.add_xnode(DB.element_with_setup(element_name, [precise_position]), PackedInt32Array([canvas.root_element.get_child_count()]))
 	State.save_svg()

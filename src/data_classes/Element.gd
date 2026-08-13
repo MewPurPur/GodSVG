@@ -43,8 +43,8 @@ func _on_attribute_value_changed(attribute: Attribute) -> void:
 func get_children() -> Array[XNode]:
 	return _child_elements.duplicate()
 
-func get_child(idx: int) -> XNode:
-	return _child_elements[idx]
+func get_child(index: int) -> XNode:
+	return _child_elements[index]
 
 func has_children() -> bool:
 	return not _child_elements.is_empty()
@@ -78,12 +78,12 @@ func get_all_xnode_descendants() -> Array[XNode]:
 	return xnodes
 
 
-func replace_child(idx: int, new_xnode: XNode) -> void:
+func replace_child(index: int, new_xnode: XNode) -> void:
 	if not is_instance_valid(new_xnode):
 		return
 	
-	var old_xnode := get_child(idx)
-	_child_elements[idx] = new_xnode
+	var old_xnode := get_child(index)
+	_child_elements[index] = new_xnode
 	if new_xnode.is_element():
 		for grandchild_element in new_xnode.get_children():
 			grandchild_element.parent = new_xnode
@@ -94,9 +94,9 @@ func replace_child(idx: int, new_xnode: XNode) -> void:
 	new_xnode.svg = old_xnode.svg
 	new_xnode.root = old_xnode.root
 
-func insert_child(idx: int, new_xnode: XNode) -> void:
-	if idx < 0:
-		idx += get_child_count() + 1
+func insert_child(index: int, new_xnode: XNode) -> void:
+	if index < 0:
+		index += get_child_count() + 1
 	
 	new_xnode.parent = self
 	new_xnode.root = root
@@ -108,28 +108,28 @@ func insert_child(idx: int, new_xnode: XNode) -> void:
 			xnode_descendant.root = root
 	
 	var new_xid := xid.duplicate()
-	new_xid.append(idx)
+	new_xid.append(index)
 	new_xnode.xid = new_xid
 	new_xnode.propagate_xid_correction()
-	for i in range(idx, get_child_count()):
+	for i in range(index, get_child_count()):
 		var child := get_child(i)
 		child.xid[-1] += 1
 		child.propagate_xid_correction()
-	_child_elements.insert(idx, new_xnode)
+	_child_elements.insert(index, new_xnode)
 
-func remove_child(idx: int) -> void:
-	for i in range(idx + 1, get_child_count()):
+func remove_child(index: int) -> void:
+	for i in range(index + 1, get_child_count()):
 		var child := get_child(i)
 		child.xid[-1] -= 1
 		child.propagate_xid_correction()
-	_child_elements.remove_at(idx)
+	_child_elements.remove_at(index)
 
-func pop_child(idx: int) -> XNode:
-	for i in range(idx + 1, get_child_count()):
+func pop_child(index: int) -> XNode:
+	for i in range(index + 1, get_child_count()):
 		var child := get_child(i)
 		child.xid[-1] -= 1
 		child.propagate_xid_correction()
-	return _child_elements.pop_at(idx)
+	return _child_elements.pop_at(index)
 
 
 func propagate_xid_correction() -> void:

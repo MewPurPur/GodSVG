@@ -4,9 +4,9 @@ class_name ElementPolyline extends Element
 const name = "polyline"
 const possible_conversions: PackedStringArray = ["path", "line"]
 
-func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
-	if precise_pos != PackedFloat64Array([0.0, 0.0]):
-		get_attribute("points").set_list(precise_pos)
+func user_setup(precise_position := PackedFloat64Array([0.0, 0.0])) -> void:
+	if precise_position != PackedFloat64Array([0.0, 0.0]):
+		get_attribute("points").set_list(precise_position)
 	set_attribute("fill", "none")
 	set_attribute("stroke", "black")
 

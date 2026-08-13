@@ -177,14 +177,14 @@ func sync_to_new_value_and_selection() -> void:
 	commands_container.queue_redraw()
 
 
-func update_parameter(new_value: float, property: String, idx: int) -> void:
+func update_parameter(new_value: float, property: String, index: int) -> void:
 	var attrib: AttributePathdata = element.get_attribute(attribute_name)
-	var cmd := attrib.get_command(idx)
+	var cmd := attrib.get_command(index)
 	if cmd.relative:
 		match property:
 			"x", "x1", "x2": new_value += cmd.start_x
 			"y", "y1", "y2": new_value += cmd.start_y
-	attrib.set_command_property(idx, property, new_value)
+	attrib.set_command_property(index, property, new_value)
 	State.save_svg()
 
 func _on_relativity_button_pressed() -> void:
@@ -262,7 +262,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+			HandlerGUI.popup_under_position(State.get_selection_context(HandlerGUI.popup_under_position.bind(popup_pos, viewport),
 					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 
 
@@ -438,12 +438,12 @@ func check_if_strip_still_focused(index: int) -> void:
 	set_focused(-1)
 
 
-func setup_path_command_controls(idx: int) -> Strip:
-	var cmd: PathCommand = element.get_attribute(attribute_name).get_command(idx)
+func setup_path_command_controls(index: int) -> Strip:
+	var cmd: PathCommand = element.get_attribute(attribute_name).get_command(index)
 	var cmd_char := cmd.command_char
 	
 	var strip := Strip.new()
-	strip.position.y = idx * STRIP_HEIGHT
+	strip.position.y = index * STRIP_HEIGHT
 	strip.size = Vector2(commands_container.size.x, STRIP_HEIGHT)
 	strip.mouse_filter = Control.MOUSE_FILTER_PASS
 	commands_container.add_child(strip)
@@ -459,8 +459,8 @@ func setup_path_command_controls(idx: int) -> Strip:
 	strip.add_child(relativity_button)
 	relativity_button.pressed.connect(_on_relativity_button_pressed)
 	relativity_button.gui_input.connect(_eat_double_clicks.bind(relativity_button))
-	relativity_button.focus_entered.connect(set_focused.bind(idx))
-	relativity_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
+	relativity_button.focus_entered.connect(set_focused.bind(index))
+	relativity_button.focus_exited.connect(check_if_strip_still_focused.bind(index), CONNECT_DEFERRED)
 	relativity_button.position = Vector2(3, 2)
 	relativity_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the fields.
@@ -517,9 +517,9 @@ func setup_path_command_controls(idx: int) -> Strip:
 			var property_name := property_names[i]
 			field.set_value(get_presented_num(cmd, property_name))
 			field.tooltip_text = property_name
-			field.value_changed.connect(update_parameter.bind(property_name, idx))
-			field.focus_entered.connect(set_focused.bind(idx))
-			field.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
+			field.value_changed.connect(update_parameter.bind(property_name, index))
+			field.focus_entered.connect(set_focused.bind(index))
+			field.focus_exited.connect(check_if_strip_still_focused.bind(index), CONNECT_DEFERRED)
 			strip.add_child(field)
 			field.position.y = 2
 		fields[0].position.x = 25
@@ -535,8 +535,8 @@ func setup_path_command_controls(idx: int) -> Strip:
 	strip.add_child(action_button)
 	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
 	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
-	action_button.focus_entered.connect(set_focused.bind(idx))
-	action_button.focus_exited.connect(check_if_strip_still_focused.bind(idx), CONNECT_DEFERRED)
+	action_button.focus_entered.connect(set_focused.bind(index))
+	action_button.focus_exited.connect(check_if_strip_still_focused.bind(index), CONNECT_DEFERRED)
 	action_button.position = Vector2(commands_container.size.x - 21, 2)
 	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	return strip
