@@ -223,24 +223,25 @@ func _on_preview_tiles_draw() -> void:
 
 
 func _on_tiles_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		set_hovered_to_pos(event.position)
-	elif event is InputEventMouseButton:
-		if event.is_pressed():
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				_select_tile(hovered_tile_index)
-			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				if hovered_tile_index >= 0:
-					for tile in tiles:
-						if Rect2(tile.position, tile.size).has_point(event.position):
-							_show_tile_popup_at_pos(tile, event.global_position)
-							break
-				else:
-					var btn_array: Array[ContextButton] = [
-						ContextButton.create_custom(Translator.translate("Add preview"), _add_new_tile, preload("res://assets/icons/Plus.svg"))
-					]
-					var vp := get_viewport()
-					HandlerGUI.popup_under_pos(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)
+	if not event is InputEventMouse:
+		return
+	set_hovered_to_pos(event.position)
+	
+	if event is InputEventMouseButton and event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			_select_tile(hovered_tile_index)
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			if hovered_tile_index >= 0:
+				for tile in tiles:
+					if Rect2(tile.position, tile.size).has_point(event.position):
+						_show_tile_popup_at_pos(tile, event.global_position)
+						break
+			else:
+				var btn_array: Array[ContextButton] = [
+					ContextButton.create_custom(Translator.translate("Add preview"), _add_new_tile, preload("res://assets/icons/Plus.svg"))
+				]
+				var vp := get_viewport()
+				HandlerGUI.popup_under_pos(ContextPopup.create(btn_array), vp.get_mouse_position(), vp)
 
 func _on_tiles_mouse_exited() -> void:
 	hovered_tile_index = -1

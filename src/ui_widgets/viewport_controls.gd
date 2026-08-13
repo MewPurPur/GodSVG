@@ -29,7 +29,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			execute_panning(event.delta)  # Panning with touch.
 	elif event is InputEventMagnifyGesture:
 		# Zooming with touch.
-		canvas.set_zoom(canvas.camera_zoom * event.factor)
+		canvas.set_zoom(canvas.camera_zoom * event.factor, event.position / canvas.size)
 	elif event is InputEventMouseButton and event.is_pressed():
 		# Actions with scrolling.
 		var move_vec := Vector2.ZERO
