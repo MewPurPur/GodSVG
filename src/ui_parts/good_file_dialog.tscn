@@ -89,6 +89,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true
+action_mode = 0
 icon = ExtResource("5_2ggtv")
 
 [node name="SearchButton" type="Button" parent="VBoxContainer/TopBar" unique_id=2048350652]
@@ -97,6 +98,7 @@ focus_previous = NodePath("../ShowHiddenButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true
+action_mode = 0
 icon = ExtResource("6_otods")
 script = ExtResource("7_ejhg0")
 action = "find"

@@ -32,9 +32,8 @@ func get_config_warnings() -> PackedStringArray:
 		# Different color from the initial one (which, even at offset 0, still always
 		# has effect on the stroke). Mark it for having the potential to begin an
 		# effective transition if the next stop offset is greater.
-		has_effective_transition = not (ColorParser.are_colors_same(
-				initial_color, stop_color) and initial_opacity == stop_opacity) and\
-				(initial_opacity != 0 or stop_opacity > 0)
+		has_effective_transition = not (ColorParser.are_colors_same(initial_color, stop_color) and\
+				initial_opacity == stop_opacity) and (initial_opacity != 0 or stop_opacity > 0)
 		
 		if has_effective_transition and stop_offset > prev_offset:
 			break

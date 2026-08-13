@@ -8,20 +8,9 @@ var action: String
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
-	Configs.language_changed.connect(sync)
 	Configs.shortcuts_changed.connect(check_shortcuts_validity)
-	sync()
-
-func sync_localization() -> void:
-	label.text = TranslationUtils.get_action_description(action)
-
-func sync() -> void:
+	# Set up shortcut buttons. Nothing on them needs to be localized.
 	var events := InputMap.action_get_events(action)
-	# Clear the existing buttons.
-	for button in shortcut_container.get_children():
-		shortcut_container.remove_child(button)
-		button.queue_free()
-	# Create new ones.
 	for i in events.size():
 		var new_btn := Button.new()
 		new_btn.custom_minimum_size = Vector2(160, 24)
@@ -32,6 +21,9 @@ func sync() -> void:
 		new_btn.text = events[i].as_text_keycode()
 		shortcut_container.add_child(new_btn)
 	check_shortcuts_validity()
+
+func sync_localization() -> void:
+	label.text = TranslationUtils.get_action_description(action)
 
 func check_shortcuts_validity() -> void:
 	var events := InputMap.action_get_events(action)

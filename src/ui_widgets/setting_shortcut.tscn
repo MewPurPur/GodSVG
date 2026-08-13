@@ -28,11 +28,34 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Button" type="Button" parent="MainContainer/HBoxContainer/ShortcutContainer" unique_id=1059475046]
+custom_minimum_size = Vector2(116, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButtonThin"
+button_mask = 3
+
+[node name="Button2" type="Button" parent="MainContainer/HBoxContainer/ShortcutContainer" unique_id=1919440987]
+custom_minimum_size = Vector2(116, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButtonThin"
+button_mask = 3
+
+[node name="Button3" type="Button" parent="MainContainer/HBoxContainer/ShortcutContainer" unique_id=584146147]
+custom_minimum_size = Vector2(116, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButtonThin"
+button_mask = 3
+
 [node name="ResetButton" type="Button" parent="MainContainer/HBoxContainer" unique_id=901831468]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_n8e0s")

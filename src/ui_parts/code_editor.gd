@@ -55,8 +55,8 @@ func sync_theming() -> void:
 	# Set up the code edit.
 	code_edit.begin_bulk_theme_override()
 	const CONST_ARR_1: PackedStringArray = ["normal", "focus", "hover"]
-	for theme_type in CONST_ARR_1:
-		var stylebox := get_theme_stylebox(theme_type, "TextEdit").duplicate()
+	for theme_item in CONST_ARR_1:
+		var stylebox := get_theme_stylebox(theme_item, "TextEdit").duplicate()
 		stylebox.corner_radius_top_right = 0
 		stylebox.corner_radius_top_left = 0
 		stylebox.border_width_top = 2
@@ -65,18 +65,18 @@ func sync_theming() -> void:
 			stylebox.corner_radius_bottom_right = 0
 			stylebox.corner_radius_bottom_left = 0
 			stylebox.border_width_bottom = 1
-		code_edit.add_theme_stylebox_override(theme_type, stylebox)
+		code_edit.add_theme_stylebox_override(theme_item, stylebox)
 	code_edit.end_bulk_theme_override()
 	# Make it so the scrollbar doesn't overlap with the code editor's border.
 	var scrollbar := code_edit.get_v_scroll_bar()
 	scrollbar.begin_bulk_theme_override()
 	const CONST_ARR_2: PackedStringArray = ["grabber", "grabber_highlight", "grabber_pressed"]
-	for theme_type in CONST_ARR_2:
-		var stylebox := get_theme_stylebox(theme_type, "VScrollBar").duplicate()
+	for theme_item in CONST_ARR_2:
+		var stylebox := get_theme_stylebox(theme_item, "VScrollBar").duplicate()
 		# TODO No idea why I need to adjust it for the TextEdit, maybe a Godot issue.
 		stylebox.expand_margin_right = -2.0
 		stylebox.expand_margin_bottom = 2.0
-		scrollbar.add_theme_stylebox_override(theme_type, stylebox)
+		scrollbar.add_theme_stylebox_override(theme_item, stylebox)
 	var bg_stylebox := get_theme_stylebox("scroll", "VScrollBar").duplicate()
 	bg_stylebox.expand_margin_right = -2.0
 	bg_stylebox.expand_margin_bottom = 2.0

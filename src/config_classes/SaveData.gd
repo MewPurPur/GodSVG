@@ -453,8 +453,7 @@ const MAX_SELECTION_RECTANGLE_SPEED = 600.0
 		if is_nan(new_value):
 			new_value = get_setting_default("selection_rectangle_speed")
 		else:
-			new_value = clampf(new_value, -MAX_SELECTION_RECTANGLE_SPEED,
-					MAX_SELECTION_RECTANGLE_SPEED)
+			new_value = clampf(new_value, -MAX_SELECTION_RECTANGLE_SPEED, MAX_SELECTION_RECTANGLE_SPEED)
 		# Main part
 		if selection_rectangle_speed != new_value:
 			selection_rectangle_speed = new_value
