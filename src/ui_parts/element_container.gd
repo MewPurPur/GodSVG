@@ -110,10 +110,10 @@ func _gui_input(event: InputEvent) -> void:
 			
 			var add_popup := ContextPopup.create_with_title(btn_arr, Translator.translate("New element"), true, -1, separation_indices)
 			var vp := get_viewport()
-			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
+			HandlerGUI.popup_under_position(add_popup, vp.get_mouse_position(), vp)
 
-func add_element(element_name: String, element_idx: int) -> void:
-	State.root_element.add_xnode(DB.element_with_setup(element_name, []), PackedInt32Array([element_idx]))
+func add_element(element_name: String, element_index: int) -> void:
+	State.root_element.add_xnode(DB.element_with_setup(element_name, []), PackedInt32Array([element_index]))
 	State.save_svg()
 
 
@@ -138,11 +138,11 @@ func get_xnode_editor_rect(xid: PackedInt32Array, inner_index := -1) -> Rect2:
 		return Rect2(xnode_pos + inner_rect.position, inner_rect.size)
 
 # This function assumes there exists an element editor for the corresponding XID.
-func scroll_to_view_element_editor(xid: PackedInt32Array, inner_idx := -1, locked := false) -> void:
+func scroll_to_view_element_editor(xid: PackedInt32Array, inner_index := -1, locked := false) -> void:
 	# Await the layout shift if inspector was not visible until now, or was resized since last being visible.
 	# TODO The frame delay is quite noticable and that's sad. Look for another solution.
 	await get_tree().process_frame
-	var xnode_editor_rect := get_xnode_editor_rect(xid, inner_idx)
+	var xnode_editor_rect := get_xnode_editor_rect(xid, inner_index)
 	var scrollbar := scroll_container.get_v_scroll_bar()
 	if locked:
 		scrollbar.value = xnode_editor_rect.position.y - scroll_container.size.y / 5

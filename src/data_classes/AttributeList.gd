@@ -24,12 +24,12 @@ func get_list_size() -> int:
 	return _list.size()
 
 
-func set_list_element(idx: int, new_value: float) -> void:
-	_list[idx] = new_value
+func set_list_element(index: int, new_value: float) -> void:
+	_list[index] = new_value
 	_sync_after_list_change()
 
-func get_list_element(idx: int) -> float:
-	return _list[idx] if idx < _list.size() else NAN
+func get_list_element(index: int) -> float:
+	return _list[index] if index < _list.size() else NAN
 
 func delete_elements(indices: PackedInt64Array) -> void:
 	if indices.is_empty():
@@ -38,21 +38,21 @@ func delete_elements(indices: PackedInt64Array) -> void:
 	indices = indices.duplicate()
 	indices.sort()
 	indices.reverse()
-	for idx in indices:
-		_list.remove_at(idx)
+	for i in indices:
+		_list.remove_at(i)
 	_sync_after_list_change()
 
-func insert_zeros(idx: int, zeros_count: int) -> void:
+func insert_zeros(index: int, zeros_count: int) -> void:
 	for i in zeros_count:
-		_list.insert(idx, 0.0)
+		_list.insert(index, 0.0)
 	_sync_after_list_change()
 
-func rotate_start(start_idx: int) -> void:
-	if _list.is_empty() or start_idx == 0:
+func rotate_start(start_index: int) -> void:
+	if _list.is_empty() or start_index == 0:
 		return
 	var size := _list.size()
-	start_idx = posmod(start_idx, size)
-	_list = _list.slice(start_idx) + _list.slice(0, start_idx)
+	start_index = posmod(start_index, size)
+	_list = _list.slice(start_index) + _list.slice(0, start_index)
 	_sync_after_list_change()
 
 

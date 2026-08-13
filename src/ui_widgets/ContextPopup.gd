@@ -268,10 +268,10 @@ func try_to_open_submenu() -> void:
 		new_popup.focus_first_below()
 		HandlerGUI.popup_submenu_to_right_or_left_side(new_popup, focus_button)
 
-func set_focus_index_to_button_at_global_position(pos: Vector2) -> void:
+func set_focus_index_to_button_at_global_position(checked_position: Vector2) -> void:
 	focus_index = -1
 	for button_idx in buttons.size():
-		if buttons[button_idx].get_global_rect().has_point(pos):
+		if buttons[button_idx].get_global_rect().has_point(checked_position):
 			focus_index = button_idx
 			return
 	if is_instance_valid(HandlerGUI.popup_submenu_source):

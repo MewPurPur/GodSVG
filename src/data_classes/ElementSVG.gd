@@ -83,14 +83,14 @@ func _set_cached_viewbox(x: float, y: float, w: float, h: float) -> void:
 	viewbox_normalized_diagonal = Vector2(w, h).length() / sqrt(2)
 
 
-func canvas_to_world(pos: Vector2) -> Vector2:
-	return canvas_transform * pos
+func canvas_to_world(position: Vector2) -> Vector2:
+	return canvas_transform * position
 
-func world_to_canvas(pos: Vector2) -> Vector2:
-	return canvas_transform.affine_inverse() * pos
+func world_to_canvas(position: Vector2) -> Vector2:
+	return canvas_transform.affine_inverse() * position
 
-func world_to_canvas_64_bit(pos: PackedFloat64Array) -> PackedFloat64Array:
-	return Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(canvas_precise_transform), pos)
+func world_to_canvas_64_bit(precise_position: PackedFloat64Array) -> PackedFloat64Array:
+	return Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(canvas_precise_transform), precise_position)
 
 
 func _get_own_default(attribute_name: String) -> String:

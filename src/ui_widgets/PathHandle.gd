@@ -7,115 +7,67 @@ var x_param: String
 var y_param: String
 
 
-func _init(new_element: Element, command_idx: int, x_name: String, y_name: String) -> void:
+func _init(new_element: Element, new_command_index: int, x_name: String, y_name: String) -> void:
 	element = new_element
-	command_index = command_idx
+	command_index = new_command_index
 	x_param = x_name
 	y_param = y_name
 	element.attribute_changed.connect(_on_attribute_changed)
 	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
-func set_pos(new_pos: PackedFloat64Array) -> void:
-	if precise_pos != new_pos:
-		var path_attribute: AttributePathdata = element.get_attribute(pathdata_name)
-		if Input.is_key_pressed(KEY_CTRL):
-			new_pos = LineConstraint.constrain(path_attribute, command_index, new_pos, x_param, y_param)
+func set_position(new_position: PackedFloat64Array) -> void:
+	if precise_position == new_position:
+		return
+	var pathdata: AttributePathdata = element.get_attribute(pathdata_name)
+	
+	# Constrain to match the angle of the neighboring segment if Ctrl is pressed.
+	if Input.is_key_pressed(KEY_CTRL):
+		var cmd := pathdata.get_command(command_index)
 		
-		path_attribute.set_command_property(command_index, x_param, new_pos[0])
-		path_attribute.set_command_property(command_index, y_param, new_pos[1])
-		sync()
+		var opposite: PackedFloat64Array
+		var offset: PackedFloat64Array
+		if command_index != 0 and pathdata.get_command(command_index - 1).command_char in "CcSsQqLlHhVv" and\
+		cmd.command_char in "CcQqLl" and not (cmd.command_char.to_lower() in "CcQq" and (x_param != "x1" or y_param != "y1")):
+			# Using previous command.
+			var other := pathdata.get_command(command_index - 1)
+			offset = [cmd.start_x, cmd.start_y]
+			
+			match other.command_char:
+				"C", "c", "S", "s": opposite = [other.x2, other.y2]
+				"Q", "q": opposite = [other.x1, other.y1]
+				"L", "l", "H", "h", "V", "v": opposite = [other.start_x, other.start_y]
+		elif command_index < pathdata.get_command_count() - 1 and pathdata.get_command(command_index + 1).command_char in "CcQqLlHhVv" and\
+		cmd.command_char in "CcSsQq" and not (cmd.command_char in "CcSs" and\
+		(x_param != "x2" or y_param != "y2") or cmd.command_char in "Qq" and (x_param != "x1" or y_param != "y1")):
+			# Using next command.
+			var other := pathdata.get_command(command_index + 1)
+			offset = [other.start_x, other.start_y]
+			
+			match other.command_char:
+				"C", "c", "Q", "q": opposite = [other.x1, other.y1]
+				"L", "l": opposite = [other.x, other.y]
+				"H", "h": opposite = [other.x, other.start_y]
+				"V", "v": opposite = [other.start_x, other.y]
+		
+		opposite = [opposite[0] - offset[0], opposite[1] - offset[1]]
+		new_position = Utils64Bit.vector_project([new_position[0] - offset[0], new_position[1] - offset[1]], opposite)
+		new_position = [new_position[0] + offset[0], new_position[1] + offset[1]]
+	
+	pathdata.set_command_property(command_index, x_param, new_position[0])
+	pathdata.set_command_property(command_index, y_param, new_position[1])
+	sync()
 
 func sync() -> void:
 	if command_index >= element.get_attribute(pathdata_name).get_command_count():
 		# Handle might have been removed.
 		return
-	
 	var command: PathCommand = element.get_attribute(pathdata_name).get_command(command_index)
-	if x_param in command:
-		var command_x: float = command.get(x_param)
-		precise_pos[0] = command_x
-	else:
-		precise_pos[0] = command.start_x
-	if y_param in command:
-		var command_y: float = command.get(y_param)
-		precise_pos[1] = command_y
-	else:
-		precise_pos[1] = command.start_y
+	precise_position[0] = command.get(x_param) if x_param in command else command.start_x
+	precise_position[1] = command.get(y_param) if y_param in command else command.start_y
 	super()
 
 
 func _on_attribute_changed(name: String) -> void:
 	if name in [pathdata_name, "transform"]:
 		sync()
-
-class LineConstraint:
-	extends RefCounted
-	
-	enum Mode {PREVIOUS, NEXT}
-	
-	const valid_prev_commands = ["c", "C", "s", "S", "q", "Q", "l", "L", "h", "H", "v", "V"]
-	const prev_mode_support = ["c", "C", "q", "Q", "l", "L"]
-	const valid_next_commands = ["c", "C", "q", "Q", "l", "L", "h", "H", "v", "V"]
-	const next_mode_support = ["c", "C", "s", "S", "q", "Q"]
-	
-	static func constrain(path: AttributePathdata, idx: int, pos: PackedFloat64Array, x_param: String, y_param: String) -> PackedFloat64Array:
-		var cmd := path.get_command(idx)
-		
-		# Move everything to a local (translated) coordinate system with the new origin at
-		# the connection between the two commands.
-		
-		# Define a line using the connection between the 2 commands and whichever attribute we
-		# care about on the other end. Use vector projection to transform the input.
-		var opposite := PackedFloat64Array([0, 0])
-		var mode: Mode
-		
-		# Determine if using next or previous command.
-		if idx != 0 and path.get_command(idx - 1).command_char in valid_prev_commands and\
-		cmd.command_char in prev_mode_support and not ((cmd.command_char in ["c", "C", "q", "Q"]) and\
-		(x_param != "x1" or y_param != "y1")):
-			mode = Mode.PREVIOUS
-		elif idx < path.get_command_count() - 1 and path.get_command(idx + 1).command_char in valid_next_commands and\
-		cmd.command_char in next_mode_support and not ((cmd.command_char in ["c", "C", "s", "S"]) and\
-		(x_param != "x2" or y_param != "y2") or (cmd.command_char in ["q", "Q"]) and (x_param != "x1" or y_param != "y1")):
-			mode = Mode.NEXT
-		else:
-			return pos
-		
-		# Get the other command and determine the translation offset.
-		var other:= path.get_command(idx - 1) if mode == Mode.PREVIOUS else path.get_command(idx + 1)
-		var offset: PackedFloat64Array = [cmd.start_x, cmd.start_y] if mode == Mode.PREVIOUS else [other.start_x, other.start_y]
-		
-		# Get the global coords of the opposite point.
-		match other.command_char:
-			"c", "C", "s", "S" when mode == Mode.PREVIOUS:
-				opposite = [other.get("x2"), other.get("y2")]
-			"q", "Q" when mode == Mode.PREVIOUS:
-				opposite = [other.get("x1"), other.get("y1")]
-			"l", "h", "v" when mode == Mode.PREVIOUS:
-				pass
-			"L", "H", "V" when mode == Mode.PREVIOUS:
-				opposite = [other.start_x, other.start_y]
-			"c", "C", "q", "Q" when mode == Mode.NEXT:
-				opposite = [other.get("x1"), other.get("y1")]
-			"l", "L" when mode == Mode.NEXT:
-				opposite = [other.get("x"), other.get("y")]
-			"h" when mode == Mode.NEXT:
-				opposite = [other.get("x"), 0.0]
-			"H" when mode == Mode.NEXT:
-				opposite = [other.get("x"), other.start_y]
-			"v" when mode == Mode.NEXT:
-				opposite = [0.0, other.get("y")]
-			"V" when mode == Mode.NEXT:
-				opposite = [other.start_x, other.get("y")]
-		
-		# Translate opposite point to local.
-		opposite = [opposite[0] - offset[0], opposite[1] - offset[1]]
-		
-		# Input to local.
-		pos = [pos[0] - offset[0], pos[1] - offset[1]]
-		
-		pos = Utils64Bit.vector_project(pos, opposite)
-		
-		# Input back to global.
-		return [pos[0] + offset[0], pos[1] + offset[1]]

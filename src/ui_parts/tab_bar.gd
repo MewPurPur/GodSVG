@@ -259,7 +259,7 @@ func _gui_input(event: InputEvent) -> void:
 				tab_global_rect.position += get_global_rect().position
 				HandlerGUI.popup_under_rect(tab_popup, tab_global_rect, get_viewport())
 			else:
-				HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(), get_viewport())
+				HandlerGUI.popup_under_position(tab_popup, get_global_mouse_position(), get_viewport())
 	elif event.button_index == MOUSE_BUTTON_MIDDLE:
 		if Configs.savedata.tab_mmb_close:
 			FileUtils.close_tabs(get_hovered_index())
@@ -432,11 +432,11 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	return margin_container
 
 
-func get_tab_index_at(pos: Vector2) -> int:
-	if not get_close_button_rect().has_point(pos):
+func get_tab_index_at(checked_position: Vector2) -> int:
+	if not get_close_button_rect().has_point(checked_position):
 		for tab_index in Configs.savedata.get_tab_count():
 			var tab_rect := get_tab_rect(tab_index)
-			if tab_rect.has_area() and tab_rect.has_point(pos):
+			if tab_rect.has_area() and tab_rect.has_point(checked_position):
 				return tab_index
 	return -1
 
@@ -446,11 +446,11 @@ class DragData:
 	func _init(new_index: int) -> void:
 		index = new_index
 
-func get_drop_index_at(pos: Vector2) -> int:
+func get_drop_index_at(checked_position: Vector2) -> int:
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
-	if pos.x < scroll_backwards_button_width or pos.x > size.x - scroll_forwards_button_width - size.y:
+	if checked_position.x < scroll_backwards_button_width or checked_position.x > size.x - scroll_forwards_button_width - size.y:
 		return -1
 	
 	var first_tab_with_area := 0
@@ -464,7 +464,7 @@ func get_drop_index_at(pos: Vector2) -> int:
 	
 	for idx in range(first_tab_with_area, Configs.savedata.get_tab_count()):
 		var tab_rect := get_tab_rect(idx)
-		if not tab_rect.has_area() or tab_width * (idx + 0.5) - current_scroll + scroll_backwards_button_width > pos.x:
+		if not tab_rect.has_area() or tab_width * (idx + 0.5) - current_scroll + scroll_backwards_button_width > checked_position.x:
 			return idx
 	return Configs.savedata.get_tab_count()
 

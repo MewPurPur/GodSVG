@@ -187,7 +187,7 @@ func _gui_input(event: InputEvent) -> void:
 		
 		var vp := get_viewport()
 		var context_popup := ContextPopup.create(btn_arr, true, -1, separator_arr)
-		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+		HandlerGUI.popup_under_position(context_popup, vp.get_mouse_position(), vp)
 		accept_event()
 		# Wow, no way to find out the column of a given click? Okay...
 		# TODO Make it so LineEdit caret automatically moves to the clicked position to finish the right-click logic.

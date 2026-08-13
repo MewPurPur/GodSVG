@@ -255,13 +255,13 @@ func get_index_rect(index: int) -> Rect2:
 		return Rect2()
 	return Rect2((SWATCH_SIZE + SEPARATION) * (index % column_count), (SWATCH_SIZE + SEPARATION) * (index / column_count), SWATCH_SIZE, SWATCH_SIZE)
 
-func get_index_at_pos(pos: Vector2) -> int:
-	if not Rect2(Vector2.ZERO, size).has_point(pos):
+func get_index_at_pos(checked_position: Vector2) -> int:
+	if not Rect2(Vector2.ZERO, size).has_point(checked_position):
 		return -1
-	var posmod_vec := pos.posmod(SWATCH_SIZE + SEPARATION)
+	var posmod_vec := checked_position.posmod(SWATCH_SIZE + SEPARATION)
 	if posmod_vec.x > SWATCH_SIZE or posmod_vec.y > SWATCH_SIZE:
 		return -1  # The mouse is between the gaps.
-	var index := floori(pos.y / (SWATCH_SIZE + SEPARATION)) * get_column_count() + maxi(floori(pos.x / (SWATCH_SIZE + SEPARATION)), 0)
+	var index := floori(checked_position.y / (SWATCH_SIZE + SEPARATION)) * get_column_count() + maxi(floori(checked_position.x / (SWATCH_SIZE + SEPARATION)), 0)
 	if index > get_color_count() or (not configuration_mode and index == get_color_count()):
 		return -1
 	return index
@@ -331,8 +331,8 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		palette.insert_color(proposed_drop_index, data.palette.get_color(data.index), data.palette.get_color_name(data.index))
 		data.palette.remove_color(data.index)
 
-func get_drop_index_at(pos: Vector2) -> int:
-	var drop_coordinate := (pos + Vector2(SWATCH_SIZE / 2 + SEPARATION / 2, SEPARATION / 2)) / (SWATCH_SIZE + SEPARATION)
+func get_drop_index_at(checked_position: Vector2) -> int:
+	var drop_coordinate := (checked_position + Vector2(SWATCH_SIZE / 2 + SEPARATION / 2, SEPARATION / 2)) / (SWATCH_SIZE + SEPARATION)
 	return floori(drop_coordinate.y) * get_column_count() + floori(drop_coordinate.x)
 
 

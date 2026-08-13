@@ -127,7 +127,7 @@ func _gui_input(event: InputEvent) -> void:
 				State.normal_select(element.xid)
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+			HandlerGUI.popup_under_position(State.get_selection_context(HandlerGUI.popup_under_position.bind(popup_pos, viewport),
 					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 			accept_event()
 
@@ -164,13 +164,13 @@ func _on_mouse_exited() -> void:
 	determine_selection_highlight()
 
 
-func get_xnode_editor(idx: int) -> Control:
-	return child_xnodes_container.get_child(idx)
+func get_xnode_editor(index: int) -> Control:
+	return child_xnodes_container.get_child(index)
 
 func get_xnodes_container_pos() -> Vector2:
 	return main_container.position + child_xnodes_container.position
 
-func get_inner_rect(idx: int) -> Rect2:
+func get_inner_rect(index: int) -> Rect2:
 	if element is ElementPath or element is ElementPolygon or element is ElementPolyline:
 		var attributes_container := main_container.get_child(0)
 		# If there are unrecognized attributes their container will be the first child.
@@ -180,11 +180,11 @@ func get_inner_rect(idx: int) -> Rect2:
 				break
 		
 		if element is ElementPath:
-			var inner_rect: Rect2 = attributes_container.path_field.get_inner_rect(idx)
+			var inner_rect: Rect2 = attributes_container.path_field.get_inner_rect(index)
 			inner_rect.position += main_container.position + attributes_container.position + attributes_container.path_field.position
 			return inner_rect
 		elif element is ElementPolygon or element is ElementPolyline:
-			var inner_rect: Rect2 = attributes_container.points_field.get_inner_rect(idx)
+			var inner_rect: Rect2 = attributes_container.points_field.get_inner_rect(index)
 			inner_rect.position += main_container.position + attributes_container.position + attributes_container.points_field.position
 			return inner_rect
 	return Rect2()

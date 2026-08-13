@@ -47,11 +47,11 @@ func get_colors() -> PackedStringArray:
 func get_color_names() -> PackedStringArray:
 	return _color_names
 
-func get_color(idx: int) -> String:
-	return _colors[idx]
+func get_color(index: int) -> String:
+	return _colors[index]
 
-func get_color_name(idx: int) -> String:
-	return _color_names[idx]
+func get_color_name(index: int) -> String:
+	return _color_names[index]
 
 func get_color_count() -> int:
 	return _colors.size()
@@ -62,9 +62,9 @@ func setup(new_colors: PackedStringArray, new_color_names: PackedStringArray) ->
 	_validate()
 	emit_changed()
 
-func insert_color(idx: int, color: String, color_name: String) -> void:
-	_colors.insert(idx, color)
-	_color_names.insert(idx, color_name)
+func insert_color(index: int, color: String, color_name: String) -> void:
+	_colors.insert(index, color)
+	_color_names.insert(index, color_name)
 	emit_changed()
 	layout_changed.emit()
 
@@ -74,34 +74,34 @@ func add_new_color() -> void:
 	emit_changed()
 	layout_changed.emit()
 
-func remove_color(idx: int) -> void:
-	_colors.remove_at(idx)
-	_color_names.remove_at(idx)
+func remove_color(index: int) -> void:
+	_colors.remove_at(index)
+	_color_names.remove_at(index)
 	emit_changed()
 	layout_changed.emit()
 
-func move_color(old_idx: int, new_idx: int) -> void:
-	if old_idx == new_idx:
+func move_color(old_index: int, new_index: int) -> void:
+	if old_index == new_index:
 		return
 	
-	if old_idx < new_idx:
-		new_idx -= 1
+	if old_index < new_index:
+		new_index -= 1
 	
-	var old_color := _colors[old_idx]
-	_colors.remove_at(old_idx)
-	_colors.insert(new_idx, old_color)
-	var old_name := _color_names[old_idx]
-	_color_names.remove_at(old_idx)
-	_color_names.insert(new_idx, old_name)
+	var old_color := _colors[old_index]
+	_colors.remove_at(old_index)
+	_colors.insert(new_index, old_color)
+	var old_name := _color_names[old_index]
+	_color_names.remove_at(old_index)
+	_color_names.insert(new_index, old_name)
 	emit_changed()
 	layout_changed.emit()
 
-func modify_color(idx: int, new_color: String) -> void:
-	_colors[idx] = new_color
+func modify_color(index: int, new_color: String) -> void:
+	_colors[index] = new_color
 	emit_changed()
 
-func modify_color_name(idx: int, new_color_name: String) -> void:
-	_color_names[idx] = new_color_name
+func modify_color_name(index: int, new_color_name: String) -> void:
+	_color_names[index] = new_color_name
 	emit_changed()
 
 func apply_preset(new_preset: Preset) -> void:

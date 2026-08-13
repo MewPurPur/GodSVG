@@ -237,7 +237,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+			HandlerGUI.popup_under_position(State.get_selection_context(HandlerGUI.popup_under_position.bind(popup_pos, viewport),
 					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 
 

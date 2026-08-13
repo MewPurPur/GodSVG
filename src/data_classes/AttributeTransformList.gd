@@ -19,9 +19,9 @@ func set_transform_list(new_transform_list: Array[Transform]) -> void:
 	_final_precise_transform = compute_final_precise_transform(new_transform_list)
 	set_value(transform_list_to_text(new_transform_list))
 
-func set_transform_property(idx: int, property: String, new_value: float) -> void:
-	if _transform_list[idx].get(property) != new_value:
-		_transform_list[idx].set(property, new_value)
+func set_transform_property(index: int, property: String, new_value: float) -> void:
+	if _transform_list[index].get(property) != new_value:
+		_transform_list[index].set(property, new_value)
 		sync_after_transforms_change()
 
 func get_transform_list() -> Array[Transform]:
@@ -30,8 +30,8 @@ func get_transform_list() -> Array[Transform]:
 func get_transform_count() -> int:
 	return _transform_list.size()
 
-func get_transform(idx: int) -> Transform:
-	return _transform_list[idx]
+func get_transform(index: int) -> Transform:
+	return _transform_list[index]
 
 func get_final_precise_transform() -> PackedFloat64Array:
 	return _final_precise_transform
@@ -45,18 +45,18 @@ transform_list: Array[Transform]) -> PackedFloat64Array:
 	return final_transform
 
 
-func delete_transform(idx: int) -> void:
-	_transform_list.remove_at(idx)
+func delete_transform(index: int) -> void:
+	_transform_list.remove_at(index)
 	sync_after_transforms_change()
 
-func insert_transform(idx: int, type: String) -> void:
+func insert_transform(index: int, type: String) -> void:
 	match type:
-		"matrix": _transform_list.insert(idx, Transform.TransformMatrix.new(1, 0, 0, 1, 0, 0))
-		"translate": _transform_list.insert(idx, Transform.TransformTranslate.new(0, 0))
-		"rotate": _transform_list.insert(idx, Transform.TransformRotate.new(0, 0, 0))
-		"scale": _transform_list.insert(idx, Transform.TransformScale.new(1, 1))
-		"skewX": _transform_list.insert(idx, Transform.TransformSkewX.new(0))
-		"skewY": _transform_list.insert(idx, Transform.TransformSkewY.new(0))
+		"matrix": _transform_list.insert(index, Transform.TransformMatrix.new(1, 0, 0, 1, 0, 0))
+		"translate": _transform_list.insert(index, Transform.TransformTranslate.new(0, 0))
+		"rotate": _transform_list.insert(index, Transform.TransformRotate.new(0, 0, 0))
+		"scale": _transform_list.insert(index, Transform.TransformScale.new(1, 1))
+		"skewX": _transform_list.insert(index, Transform.TransformSkewX.new(0))
+		"skewY": _transform_list.insert(index, Transform.TransformSkewY.new(0))
 	sync_after_transforms_change()
 
 

@@ -244,7 +244,7 @@ func _gui_input(event: InputEvent) -> void:
 				btn_arr.append(ContextButton.create_from_action("select_all", is_text_empty))
 			
 			var vp := get_viewport()
-			HandlerGUI.popup_under_pos(ContextPopup.create(btn_arr, true, -1, separator_arr), vp.get_mouse_position(), vp)
+			HandlerGUI.popup_under_position(ContextPopup.create(btn_arr, true, -1, separator_arr), vp.get_mouse_position(), vp)
 			accept_event()
 			var click_pos := get_line_column_at_pos(event.position)
 			if get_selection_at_line_column(click_pos.y, click_pos.x) == -1:

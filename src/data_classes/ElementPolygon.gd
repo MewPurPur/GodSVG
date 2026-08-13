@@ -4,9 +4,9 @@ class_name ElementPolygon extends Element
 const name = "polygon"
 const possible_conversions: PackedStringArray = ["path", "rect"]
 
-func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
-	if precise_pos != PackedFloat64Array([0.0, 0.0]):
-		get_attribute("points").set_list(precise_pos)
+func user_setup(precise_position := PackedFloat64Array([0.0, 0.0])) -> void:
+	if precise_position != PackedFloat64Array([0.0, 0.0]):
+		get_attribute("points").set_list(precise_position)
 
 func _get_own_default(attribute_name: String) -> String:
 	if attribute_name == "opacity":
@@ -23,9 +23,9 @@ func get_bounding_box() -> Rect2:
 	var max_x := -INF
 	var max_y := -INF
 	
-	for idx in list.get_list_size() / 2:
-		var x_coord := list.get_list_element(idx * 2)
-		var y_coord := list.get_list_element(idx * 2 + 1)
+	for i in list.get_list_size() / 2:
+		var x_coord := list.get_list_element(i * 2)
+		var y_coord := list.get_list_element(i * 2 + 1)
 		min_x = minf(min_x, x_coord)
 		max_x = maxf(max_x, x_coord)
 		min_y = minf(min_y, y_coord)
@@ -72,8 +72,8 @@ func get_replacement(new_element: String) -> Element:
 			var list := get_attribute_list("points")
 			if list.size() > 1:
 				commands.append(PathCommand.MoveCommand.new(list[0], list[1]))
-			for idx in range(3, list.size(), 2):
-				commands.append(PathCommand.LineCommand.new(list[idx - 1], list[idx]))
+			for i in range(3, list.size(), 2):
+				commands.append(PathCommand.LineCommand.new(list[i - 1], list[i]))
 			if list.size() > 5:
 				commands.append(PathCommand.CloseCommand.new())
 			element.set_attribute("d", commands)
@@ -85,13 +85,13 @@ func simplify() -> void:
 	var list := get_attribute_list("points")
 	var new_list_points := PackedFloat64Array()
 	
-	for idx in list.size() / 2 - 1:
-		var prev_point := Vector2(list[idx * 2 - 2], list[idx * 2 - 1])
+	for i in list.size() / 2 - 1:
+		var prev_point := Vector2(list[i * 2 - 2], list[i * 2 - 1])
 		if not is_equal_approx(prev_point.angle_to_point(
-		Vector2(list[idx * 2], list[idx * 2 + 1])), prev_point.angle_to_point(
-		Vector2(list[idx * 2 + 2], list[idx * 2 + 3]))):
-			new_list_points.append(list[idx * 2])
-			new_list_points.append(list[idx * 2 + 1])
+		Vector2(list[i * 2], list[i * 2 + 1])), prev_point.angle_to_point(
+		Vector2(list[i * 2 + 2], list[i * 2 + 3]))):
+			new_list_points.append(list[i * 2])
+			new_list_points.append(list[i * 2 + 1])
 	
 	var second_to_last_point := Vector2(list[-4], list[-3])
 	if not is_equal_approx(second_to_last_point.angle_to_point(Vector2(list[-2], list[-1])),

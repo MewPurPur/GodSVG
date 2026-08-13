@@ -14,8 +14,8 @@ var undo_redo: UndoRedoRef
 var scroll_to_callback: Callable
 var settings_tab_change_callable: Callable
 
-func get_translated_shortcut_tab(tab_idx: String) -> String:
-	match tab_idx:
+func get_translated_shortcut_tab(tab_index: String) -> String:
+	match tab_index:
 		"file": return Translator.translate("File")
 		"edit": return Translator.translate("Edit")
 		"view": return Translator.translate("View")

@@ -32,28 +32,28 @@ var inner_selections: Array[int] = []
 var inner_selection_pivot := -1
 
 # These methods are duplicated from State.
-func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
+func is_hovered(xid: PackedInt32Array, inner_index := -1, propagate := false) -> bool:
 	if propagate:
 		if XIDUtils.is_ancestor_or_self(hovered_xid, xid):
 			return true
-		if inner_idx == -1:
+		if inner_index == -1:
 			return false
-		return inner_hovered == inner_idx and semi_hovered_xid == xid
-	if inner_idx == -1:
+		return inner_hovered == inner_index and semi_hovered_xid == xid
+	if inner_index == -1:
 		return hovered_xid == xid
-	return inner_hovered == inner_idx and semi_hovered_xid == xid
+	return inner_hovered == inner_index and semi_hovered_xid == xid
 
-func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
+func is_selected(xid: PackedInt32Array, inner_index := -1, propagate := false) -> bool:
 	if propagate:
 		for selected_xid in selected_xids:
 			if XIDUtils.is_ancestor_or_self(selected_xid, xid):
 				return true
-		if inner_idx == -1:
+		if inner_index == -1:
 			return false
-		return semi_selected_xid == xid and inner_idx in inner_selections
-	if inner_idx == -1:
+		return semi_selected_xid == xid and inner_index in inner_selections
+	if inner_index == -1:
 		return xid in selected_xids
-	return semi_selected_xid == xid and inner_idx in inner_selections
+	return semi_selected_xid == xid and inner_index in inner_selections
 
 
 signal camera_zoom_changed
