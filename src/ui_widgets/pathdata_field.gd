@@ -227,12 +227,12 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 	if Rect2(Vector2.ZERO, commands_container.size).has_point(event_pos):
 		cmd_idx = int(event_pos.y / STRIP_HEIGHT)
 	
+	set_hovered(cmd_idx)
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if cmd_idx >= 0:
 			State.set_hovered(element.xid, cmd_idx)
 		else:
 			State.remove_hovered(element.xid, cmd_idx)
-		set_hovered(cmd_idx)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():

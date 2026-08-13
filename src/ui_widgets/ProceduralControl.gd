@@ -159,12 +159,11 @@ func _gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				pressed_button = hovered_button
-				queue_redraw()
 			elif event.is_released():
 				if is_instance_valid(pressed_button) and pressed_button == hovered_button and not pressed_button.disabled:
 					pressed_button.callable.call()
 				pressed_button = null
-				queue_redraw()
+			queue_redraw()
 
 func _update_hover(mouse_pos: Vector2) -> void:
 	var new_hover: ButtonData = null

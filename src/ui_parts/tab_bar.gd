@@ -175,100 +175,101 @@ func _draw() -> void:
 			x_pos = get_tab_rect(proposed_drop_idx).position.x
 		draw_line(Vector2(x_pos, 0), Vector2(x_pos, size.y), Configs.savedata.basic_color_valid, 4)
 
-
 func _gui_input(event: InputEvent) -> void:
 	super(event)
 	if not event is InputEventMouse:
 		return
 	
 	queue_redraw()
-	if event is InputEventMouseButton:
-		if event.is_pressed():
-			if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT]:
-				scroll_backwards(event.factor)
-			if event.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_RIGHT]:
-				scroll_forwards(event.factor)
-			elif event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
-				var hovered_idx := get_hovered_index()
-				if hovered_idx != -1:
-					if hovered_idx == Configs.savedata.get_active_tab_index():
-						scroll_to_active()
-					else:
-						# Give time for deferred callbacks that might change the active SVG. For example, the code editor
-						# might get unfocused by clicking on a tab, changing the SVG, so this should be deferred.
-						Configs.savedata.set_active_tab_index.call_deferred(hovered_idx)
-				if event.button_index == MOUSE_BUTTON_LEFT:
-					var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
-					if scroll_backwards_area_rect.has_area() and scroll_backwards_area_rect.has_point(event.position) and not is_scroll_backwards_disabled():
-						scrolling_backwards = true
-						set_process(true)
-						return
-					
-					var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
-					if scroll_forwards_area_rect.has_area() and scroll_forwards_area_rect.has_point(event.position) and not is_scroll_forwards_disabled():
-						scrolling_forwards = true
-						set_process(true)
-						return
-					
-					if hovered_idx == -1 and not get_close_button_rect().has_point(event.position) and event.double_click:
-						Configs.savedata.add_empty_tab()
+	if not event is InputEventMouseButton:
+		return
+	
+	if event.is_pressed():
+		if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT]:
+			scroll_backwards(event.factor)
+		elif event.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_RIGHT]:
+			scroll_forwards(event.factor)
+		elif event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+			var hovered_idx := get_hovered_index()
+			if hovered_idx != -1:
+				if hovered_idx == Configs.savedata.get_active_tab_index():
+					scroll_to_active()
+				else:
+					# Give time for deferred callbacks that might change the active SVG. For example, the code editor
+					# might get unfocused by clicking on a tab, changing the SVG, so this should be deferred.
+					Configs.savedata.set_active_tab_index.call_deferred(hovered_idx)
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
+				if scroll_backwards_area_rect.has_area() and scroll_backwards_area_rect.has_point(event.position) and not is_scroll_backwards_disabled():
+					scrolling_backwards = true
+					set_process(true)
 					return
 				
-				var btn_arr: Array[ContextButton] = []
+				var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
+				if scroll_forwards_area_rect.has_area() and scroll_forwards_area_rect.has_point(event.position) and not is_scroll_forwards_disabled():
+					scrolling_forwards = true
+					set_process(true)
+					return
 				
-				if hovered_idx == -1:
-					if get_add_button_rect().has_point(event.position) or get_scroll_forwards_area_rect().has_point(event.position) or\
-					get_scroll_backwards_area_rect().has_point(event.position):
-						return
-					btn_arr.append(ContextButton.create_from_action("new_tab"))
-				else:
-					var new_active_tab := Configs.savedata.get_tab(hovered_idx)
-					var external_file_missing := not FileAccess.file_exists(new_active_tab.svg_file_path)
-					var tab_count := Configs.savedata.get_tab_count()
-					
-					var has_empty_tabs := false
-					for tab in Configs.savedata.get_tabs():
-						if tab.is_empty():
-							has_empty_tabs = true
-							break
-					
-					var has_saved_tabs := false
-					for tab in Configs.savedata.get_tabs():
-						if tab.is_saved():
-							has_saved_tabs = true
-							break
-					
-					btn_arr.append(ContextButton.create_from_action("close_tab").set_icon_none())
-					btn_arr.append(ContextButton.create_arrow(Translator.translate("Close multiple"), [
-						func() -> ContextButton: return ContextButton.create_from_action("close_all_other_tabs", tab_count < 2).set_icon_none(),
-						func() -> ContextButton: return ContextButton.create_from_action("close_tabs_to_left", hovered_idx == 0).set_icon_none(),
-						func() -> ContextButton: return ContextButton.create_from_action("close_tabs_to_right", hovered_idx == tab_count - 1).set_icon_none(),
-						func() -> ContextButton: return ContextButton.create_from_action("close_empty_tabs", not has_empty_tabs).set_icon_none(),
-						func() -> ContextButton: return ContextButton.create_from_action("close_saved_tabs", not has_saved_tabs).set_icon_none(),
-					]))
-					btn_arr.append(ContextButton.create_from_action("save"))
-					btn_arr.append(ContextButton.create_from_action("save_as").add_custom_text(Translator.translate("Save SVG as…")))
-					btn_arr.append(ContextButton.create_from_action("reset_svg", FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT))
-					btn_arr.append(ContextButton.create_from_action("open_externally", external_file_missing))
-					btn_arr.append(ContextButton.create_from_action("open_in_folder", external_file_missing))
-				
-				var tab_popup := ContextPopup.create(btn_arr, true, -1, PackedInt32Array([2, 5]))
-				if hovered_idx != -1:
-					var tab_global_rect := get_tab_rect(hovered_idx)
-					tab_global_rect.position += get_global_rect().position
-					HandlerGUI.popup_under_rect(tab_popup, tab_global_rect, get_viewport())
-				else:
-					HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(), get_viewport())
-		elif event.button_index == MOUSE_BUTTON_MIDDLE:
-			if Configs.savedata.tab_mmb_close:
-				FileUtils.close_tabs(get_hovered_index())
+				if hovered_idx == -1 and not get_close_button_rect().has_point(event.position) and event.double_click:
+					Configs.savedata.add_empty_tab()
+				return
+			
+			var btn_arr: Array[ContextButton] = []
+			
+			if hovered_idx == -1:
+				if get_add_button_rect().has_point(event.position) or get_scroll_forwards_area_rect().has_point(event.position) or\
+				get_scroll_backwards_area_rect().has_point(event.position):
+					return
+				btn_arr.append(ContextButton.create_from_action("new_tab"))
 			else:
-				# Refer to a previous comment for why it needs to be deferred.
-				Configs.savedata.set_active_tab_index.call_deferred(get_hovered_index())
-		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-			scrolling_backwards = false
-			scrolling_forwards = false
-			set_process(false)
+				var new_active_tab := Configs.savedata.get_tab(hovered_idx)
+				var external_file_missing := not FileAccess.file_exists(new_active_tab.svg_file_path)
+				var tab_count := Configs.savedata.get_tab_count()
+				
+				var has_empty_tabs := false
+				for tab in Configs.savedata.get_tabs():
+					if tab.is_empty():
+						has_empty_tabs = true
+						break
+				
+				var has_saved_tabs := false
+				for tab in Configs.savedata.get_tabs():
+					if tab.is_saved():
+						has_saved_tabs = true
+						break
+				
+				btn_arr.append(ContextButton.create_from_action("close_tab").set_icon_none())
+				btn_arr.append(ContextButton.create_arrow(Translator.translate("Close multiple"), [
+					func() -> ContextButton: return ContextButton.create_from_action("close_all_other_tabs", tab_count < 2).set_icon_none(),
+					func() -> ContextButton: return ContextButton.create_from_action("close_tabs_to_left", hovered_idx == 0).set_icon_none(),
+					func() -> ContextButton: return ContextButton.create_from_action("close_tabs_to_right", hovered_idx == tab_count - 1).set_icon_none(),
+					func() -> ContextButton: return ContextButton.create_from_action("close_empty_tabs", not has_empty_tabs).set_icon_none(),
+					func() -> ContextButton: return ContextButton.create_from_action("close_saved_tabs", not has_saved_tabs).set_icon_none(),
+				]))
+				btn_arr.append(ContextButton.create_from_action("save"))
+				btn_arr.append(ContextButton.create_from_action("save_as").add_custom_text(Translator.translate("Save SVG as…")))
+				btn_arr.append(ContextButton.create_from_action("reset_svg", FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT))
+				btn_arr.append(ContextButton.create_from_action("open_externally", external_file_missing))
+				btn_arr.append(ContextButton.create_from_action("open_in_folder", external_file_missing))
+			
+			var tab_popup := ContextPopup.create(btn_arr, true, -1, PackedInt32Array([2, 5]))
+			if hovered_idx != -1:
+				var tab_global_rect := get_tab_rect(hovered_idx)
+				tab_global_rect.position += get_global_rect().position
+				HandlerGUI.popup_under_rect(tab_popup, tab_global_rect, get_viewport())
+			else:
+				HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(), get_viewport())
+	elif event.button_index == MOUSE_BUTTON_MIDDLE:
+		if Configs.savedata.tab_mmb_close:
+			FileUtils.close_tabs(get_hovered_index())
+		else:
+			# Refer to a previous comment for why it needs to be deferred.
+			Configs.savedata.set_active_tab_index.call_deferred(get_hovered_index())
+	elif event.button_index == MOUSE_BUTTON_LEFT:
+		scrolling_backwards = false
+		scrolling_forwards = false
+		set_process(false)
 
 
 # Autoscroll when the dragged tab is hovered beyond the tabs area.
