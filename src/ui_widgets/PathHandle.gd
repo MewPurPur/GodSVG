@@ -22,37 +22,61 @@ func set_position(new_position: PackedFloat64Array) -> void:
 	var pathdata: AttributePathdata = element.get_attribute(pathdata_name)
 	
 	# Constrain to match the angle of the neighboring segment if Ctrl is pressed.
+	# Quadratic beziers can have two neighboring segments, align to the closest.
 	if Input.is_key_pressed(KEY_CTRL):
 		var cmd := pathdata.get_command(command_index)
+		var cmd_char := cmd.command_char.to_lower()
+		var subpath := pathdata.get_subpath(command_index)
 		
-		var opposite: PackedFloat64Array
-		var offset: PackedFloat64Array
-		if command_index != 0 and pathdata.get_command(command_index - 1).command_char in "CcSsQqLlHhVv" and\
-		cmd.command_char in "CcQqLl" and not (cmd.command_char.to_lower() in "CcQq" and (x_param != "x1" or y_param != "y1")):
-			# Using previous command.
-			var other := pathdata.get_command(command_index - 1)
-			offset = [cmd.start_x, cmd.start_y]
-			
-			match other.command_char:
-				"C", "c", "S", "s": opposite = [other.x2, other.y2]
-				"Q", "q": opposite = [other.x1, other.y1]
-				"L", "l", "H", "h", "V", "v": opposite = [other.start_x, other.start_y]
-		elif command_index < pathdata.get_command_count() - 1 and pathdata.get_command(command_index + 1).command_char in "CcQqLlHhVv" and\
-		cmd.command_char in "CcSsQq" and not (cmd.command_char in "CcSs" and\
-		(x_param != "x2" or y_param != "y2") or cmd.command_char in "Qq" and (x_param != "x1" or y_param != "y1")):
-			# Using next command.
-			var other := pathdata.get_command(command_index + 1)
-			offset = [other.start_x, other.start_y]
-			
-			match other.command_char:
-				"C", "c", "Q", "q": opposite = [other.x1, other.y1]
-				"L", "l": opposite = [other.x, other.y]
-				"H", "h": opposite = [other.x, other.start_y]
-				"V", "v": opposite = [other.start_x, other.y]
+		# Batches of 4 coordinates representing lines: [x1, y1, x2, y2].
+		var alignment_lines: Array[PackedFloat64Array] = []
 		
-		opposite = [opposite[0] - offset[0], opposite[1] - offset[1]]
-		new_position = Utils64Bit.vector_project([new_position[0] - offset[0], new_position[1] - offset[1]], opposite)
-		new_position = [new_position[0] + offset[0], new_position[1] + offset[1]]
+		if cmd_char in "l" or (cmd_char in "cq" and x_param == "x1" and y_param == "y1"):
+			var prev_cmd_index := command_index
+			while true:
+				prev_cmd_index -= 1
+				if prev_cmd_index < subpath.x and pathdata.get_command(subpath.y) is PathCommand.CloseCommand:
+					prev_cmd_index = subpath.y
+				if not pathdata.is_command_zero_length(prev_cmd_index) or prev_cmd_index == command_index:
+					break
+			if prev_cmd_index != command_index:
+				var prev_cmd := pathdata.get_command(prev_cmd_index)
+				var new_line := PackedFloat64Array([cmd.start_x, cmd.start_y])
+				match prev_cmd.command_char.to_lower():
+					"c", "s": alignment_lines.append(new_line + PackedFloat64Array([prev_cmd.x2, prev_cmd.y2]))
+					"q": alignment_lines.append(new_line + PackedFloat64Array([prev_cmd.x1, prev_cmd.y1]))
+					"l", "h", "v": alignment_lines.append(new_line + PackedFloat64Array([prev_cmd.start_x, prev_cmd.start_y]))
+		
+		if (cmd_char in "cs" and x_param == "x2" and y_param == "y2") or (cmd_char in "q" and x_param == "x1" and y_param == "y1"):
+			var next_cmd_index := command_index
+			while true:
+				next_cmd_index += 1
+				if next_cmd_index > subpath.y and pathdata.get_command(subpath.y) is PathCommand.CloseCommand:
+					next_cmd_index = subpath.x
+				if not pathdata.is_command_zero_length(next_cmd_index) or next_cmd_index == command_index:
+					break
+			if next_cmd_index != command_index:
+				var next_cmd := pathdata.get_command(next_cmd_index)
+				var new_line := PackedFloat64Array([cmd.x, cmd.y])
+				match next_cmd.command_char.to_lower():
+					"c", "q": alignment_lines.append(new_line + PackedFloat64Array([next_cmd.x1, next_cmd.y1]))
+					"l": alignment_lines.append(new_line + PackedFloat64Array([next_cmd.x, next_cmd.y]))
+					"h": alignment_lines.append(new_line + PackedFloat64Array([next_cmd.x, next_cmd.start_y]))
+					"v": alignment_lines.append(new_line + PackedFloat64Array([next_cmd.start_x, next_cmd.y]))
+					"z":
+						var start_command := pathdata.get_command(subpath.x)
+						alignment_lines.append(new_line + PackedFloat64Array([start_command.x, start_command.y]))
+		
+		var closest_distance := INF
+		for line in alignment_lines:
+			var direction := [line[0] - line[2], line[1] - line[3]]
+			var relative_position := [new_position[0] - line[2], new_position[1] - line[3]]
+			var projected := Utils64Bit.vector_project(relative_position, direction)
+			var projected_position := [projected[0] + line[2], projected[1] + line[3]]
+			var distance := Utils64Bit.distance_squared_to(projected_position, new_position)
+			if distance < closest_distance:
+				closest_distance = distance
+				new_position = projected_position
 	
 	pathdata.set_command_property(command_index, x_param, new_position[0])
 	pathdata.set_command_property(command_index, y_param, new_position[1])

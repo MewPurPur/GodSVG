@@ -84,3 +84,9 @@ static func vector_project(a: PackedFloat64Array, b: PackedFloat64Array) -> Pack
 ## 64-bit version of Vector2.dot(Vector2) = float
 static func dot(a: PackedFloat64Array, b: PackedFloat64Array) -> float:
 	return a[0] * b[0] + a[1] * b[1]
+
+## 64-bit version of Vector2.distance_squared_to(Vector2) = float
+static func distance_squared_to(a: PackedFloat64Array, b: PackedFloat64Array) -> float:
+	var x := a[0] - b[0]
+	var y := a[1] - b[1]
+	return x * x + y * y
