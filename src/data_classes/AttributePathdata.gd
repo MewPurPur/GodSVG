@@ -53,6 +53,21 @@ func get_subpath(index: int) -> Vector2i:
 			return Vector2i(subpath_start_indices[i], (subpath_start_indices[i + 1] if i < subpath_start_indices.size() - 1 else get_command_count()) - 1)
 	return Vector2i(-1, -1)
 
+# Check if a command is zero-length.
+func is_command_zero_length(index: int) -> bool:
+	var cmd := get_command(index)
+	if cmd is PathCommand.MoveCommand:
+		return true
+	elif cmd is PathCommand.CloseCommand:
+		var start_cmd := get_command(get_subpath(index).x)
+		return is_equal_approx(cmd.start_x, start_cmd.x) and is_equal_approx(cmd.start_y, start_cmd.y)
+	elif cmd is PathCommand.HorizontalLineCommand:
+		return is_equal_approx(cmd.start_x, cmd.x)
+	elif cmd is PathCommand.VerticalLineCommand:
+		return is_equal_approx(cmd.start_y, cmd.y)
+	else:
+		return is_equal_approx(cmd.start_x, cmd.x) and is_equal_approx(cmd.start_y, cmd.y)
+
 # Gets the implied shorthand cubic bezier curve control. Not dependent on the current path command (even if it's not a curve).
 func get_implied_S_control(index: int) -> PackedFloat64Array:
 	var cmd := get_command(index)
