@@ -6,34 +6,69 @@ const GRID_COLOR = Color(0.5, 0.5, 0.5, 0.35)
 const PIXEL_SIZE = 7
 const FRAME_RADIUS = 50
 const FRAME_WIDTH = 5
+const KEYBOARD_DELAY_DURATION = 0.5
 
 var color: Color
 var ci := get_canvas_item()
+var keyboard_offset := Vector2.ZERO
+var keyboard_scrolled_time := -1.0
+
+
+func pick_color() -> void:
+	color_picked.emit(color)
+	queue_free()
+
 
 func _enter_tree() -> void:
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
 	await RenderingServer.frame_post_draw
 	texture = ImageTexture.create_from_image(get_viewport().get_texture().get_image())
 	size = get_window().get_visible_rect().size
-
+	
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("ui_accept", pick_color)
+	HandlerGUI.register_shortcuts(self, shortcuts)
 
 func _exit_tree() -> void:
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_VISIBLE)
 
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
+		keyboard_offset = Vector2.ZERO
+		keyboard_scrolled_time = -1.0
 		queue_redraw()
 	elif event is InputEventMouseButton:
 		if event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
-			color_picked.emit(color)
-			queue_free()
+			pick_color()
+	elif event is InputEventKey:
+		for action_name in ["ui_left", "ui_right", "ui_up", "ui_down"]:
+			if event.is_action_pressed(action_name, true, true):
+				accept_event()
+
+func _process(delta: float) -> void:
+	var vector := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down").round()
+	if not vector.is_zero_approx():
+		var offset_change := 0
+		if keyboard_scrolled_time < 0:
+			keyboard_scrolled_time = 0.0
+			offset_change = 1
+		elif keyboard_scrolled_time > KEYBOARD_DELAY_DURATION:
+			offset_change = clampi(roundi(keyboard_scrolled_time * delta * 200.0), 1, 10)
+		keyboard_scrolled_time += delta
+		keyboard_offset = (keyboard_offset + vector * offset_change).round()
+		var mouse_pos := get_global_mouse_position()
+		keyboard_offset = keyboard_offset.clamp(-mouse_pos, size - mouse_pos - Vector2(1, 1))
+		queue_redraw()
+	elif keyboard_scrolled_time >= 0:
+		keyboard_scrolled_time = -1.0
 
 func _draw() -> void:
-	if texture == null:
+	if not is_instance_valid(texture):
 		return
 	
-	var pos := get_global_mouse_position()
-	var texture_pos := get_global_mouse_position() * get_window().get_final_transform()
+	var pos := get_global_mouse_position() + keyboard_offset
+	var texture_pos := pos * get_window().get_final_transform()
 	
 	if pos.x < 0 or pos.x >= size.x or pos.y < 0 or pos.y >= size.y:
 		return
