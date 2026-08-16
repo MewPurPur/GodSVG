@@ -33,7 +33,7 @@ func _exit_tree() -> void:
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_VISIBLE)
 
 
-func _input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		keyboard_offset = Vector2.ZERO
 		keyboard_scrolled_time = -1.0
@@ -53,7 +53,25 @@ func _process(delta: float) -> void:
 		if keyboard_scrolled_time < 0:
 			keyboard_scrolled_time = 0.0
 			offset_change = 1
-		elif keyboard_scrolled_time > KEYBOARD_DELAY_DURATION:
+		elif keyboard_scrolled_time <= KEYBOARD_DELAY_DURATION:
+			var new_move := false
+			if Input.is_action_just_pressed("ui_left"):
+				vector = Vector2.LEFT
+				new_move = true
+			elif Input.is_action_just_pressed("ui_right"):
+				vector = Vector2.RIGHT
+				new_move = true
+			elif Input.is_action_just_pressed("ui_up"):
+				vector = Vector2.UP
+				new_move = true
+			elif Input.is_action_just_pressed("ui_down"):
+				vector = Vector2.DOWN
+				new_move = true
+			
+			if new_move:
+				keyboard_scrolled_time = 0.0
+				offset_change = 1
+		else:
 			offset_change = clampi(roundi(keyboard_scrolled_time * delta * 200.0), 1, 10)
 		keyboard_scrolled_time += delta
 		keyboard_offset = (keyboard_offset + vector * offset_change).round()

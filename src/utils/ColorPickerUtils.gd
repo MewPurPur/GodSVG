@@ -46,8 +46,8 @@ class PreciseColor:
 		return PackedFloat64Array([r, g, b, a])
 	
 	func equals(color: PreciseColor) -> bool:
-		return absf(r - color.r) < 0.000000009 and absf(g - color.g) < 0.000000009 and\
-				absf(b - color.b) < 0.000000009 and absf(a - color.a) < 0.000000009 and ColorParser.are_colors_same(paint, color.paint, true)
+		return absf(r - color.r) < 0.00000009 and absf(g - color.g) < 0.00000009 and\
+				absf(b - color.b) < 0.00000009 and absf(a - color.a) < 0.00000009 and ColorParser.are_colors_same(paint, color.paint, true)
 	
 	func set_paint(new_paint: String) -> void:
 		paint = new_paint
