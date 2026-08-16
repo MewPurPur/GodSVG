@@ -294,7 +294,19 @@ func _process(delta: float) -> void:
 			if primary_slider_scrolled_time < 0:
 				primary_slider_scrolled_time = 0.0
 				offset_change = 0.01
-			elif primary_slider_scrolled_time > KEYBOARD_DELAY_DURATION:
+			elif primary_slider_scrolled_time <= KEYBOARD_DELAY_DURATION:
+				var new_move := false
+				if Input.is_action_just_pressed("ui_up"):
+					axis = 1
+					new_move = true
+				elif Input.is_action_just_pressed("ui_down"):
+					axis = -1
+					new_move = true
+				
+				if new_move:
+					primary_slider_scrolled_time = 0.0
+					offset_change = 0.01
+			else:
 				offset_change = clampf(snappedf(primary_slider_scrolled_time * delta, 0.01), 0.01, 0.05)
 			primary_slider_scrolled_time += delta
 			ColorPickerUtils.set_primary_slider_offset(color_config.color,
@@ -318,6 +330,18 @@ func _process(delta: float) -> void:
 				if hsliders_scrolled_time[index] < 0:
 					hsliders_scrolled_time[index] = 0.0
 					offset_change = 1.0 / ColorPickerUtils.get_channel_fidelity(index)
+				elif primary_slider_scrolled_time <= KEYBOARD_DELAY_DURATION:
+					var new_move := false
+					if Input.is_action_just_pressed("ui_left"):
+						axis = -1
+						new_move = true
+					elif Input.is_action_just_pressed("ui_right"):
+						axis = 1
+						new_move = true
+					
+					if new_move:
+						hsliders_scrolled_time[index] = 0.0
+						offset_change = 1.0 / ColorPickerUtils.get_channel_fidelity(index)
 				elif hsliders_scrolled_time[index] > KEYBOARD_DELAY_DURATION:
 					offset_change = clampf(snappedf(hsliders_scrolled_time[index] * delta, 0.01), 0.01, 0.05)
 				hsliders_scrolled_time[index] += delta
@@ -340,7 +364,25 @@ func _process(delta: float) -> void:
 			if color_area_scrolled_time < 0:
 				color_area_scrolled_time = 0.0
 				offset_change = 0.01
-			elif color_area_scrolled_time > KEYBOARD_DELAY_DURATION:
+			elif color_area_scrolled_time <= KEYBOARD_DELAY_DURATION:
+				var new_move := false
+				if Input.is_action_just_pressed("ui_left"):
+					vector = Vector2.LEFT
+					new_move = true
+				elif Input.is_action_just_pressed("ui_right"):
+					vector = Vector2.RIGHT
+					new_move = true
+				elif Input.is_action_just_pressed("ui_up"):
+					vector = Vector2.UP
+					new_move = true
+				elif Input.is_action_just_pressed("ui_down"):
+					vector = Vector2.DOWN
+					new_move = true
+				
+				if new_move:
+					color_area_scrolled_time = 0.0
+					offset_change = 0.01
+			else:
 				offset_change = clampf(snappedf(color_area_scrolled_time * delta, 0.01), 0.01, 0.05)
 			color_area_scrolled_time += delta
 			ColorPickerUtils.set_color_area_coordinates(color_config.color,
