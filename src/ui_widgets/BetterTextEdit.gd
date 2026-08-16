@@ -3,7 +3,6 @@ class_name BetterTextEdit extends TextEdit
 ## A TextEdit with some improvements.
 
 @export var show_line_numbers := true
-var _line_gutter_needed_space: int
 
 var _surface := RenderingServer.canvas_item_create()
 var _timer := Timer.new()
@@ -33,13 +32,14 @@ func _ready() -> void:
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
 	caret_changed.connect(queue_redraw_caret)
+	focus_entered.connect(queue_redraw_caret)  # If focusing at (0, 0), caret_changed doesn't run.
 	# Add gutter for line numbers.
 	if show_line_numbers:
-		text_changed.connect(recalibrate_line_gutter)
-		text_set.connect(recalibrate_line_gutter)
-		recalibrate_line_gutter()
+		text_changed.connect(recalibrate_line_numbers_gutter)
+		text_set.connect(recalibrate_line_numbers_gutter)
+		recalibrate_line_numbers_gutter()
 
-func recalibrate_line_gutter() -> void:
+func recalibrate_line_numbers_gutter() -> void:
 	if get_gutter_count() == 1:
 		remove_gutter(0)
 	add_gutter(0)
@@ -48,10 +48,10 @@ func recalibrate_line_gutter() -> void:
 	set_gutter_custom_draw(0, _line_number_draw_callback)
 	set_gutter_clickable(0, false)
 	var max_digits := floori(log(get_line_count()) / log(10) + 1.0)
-	_line_gutter_needed_space = int(max_digits * get_theme_font("font").get_char_size(69, get_theme_font_size("font_size")).x) + 12
-	set_gutter_width(0, _line_gutter_needed_space)
+	set_gutter_width(0, int(max_digits * get_theme_font("font").get_char_size(69, get_theme_font_size("font_size")).x) + 12)
 
-func _line_number_draw_callback(line: int, _gutter: int, region: Rect2) -> void:
+# Called for every line.
+func _line_number_draw_callback(line: int, gutter: int, region: Rect2) -> void:
 	if not Rect2(Vector2.ZERO, size).intersects(region):
 		return
 	
@@ -62,7 +62,7 @@ func _line_number_draw_callback(line: int, _gutter: int, region: Rect2) -> void:
 	# Center vertically, align to the left of the gutter.
 	var text_pos := Vector2(-5, region.get_center().y + font.get_ascent(font_size) - font.get_string_size(
 			line_number_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y / 2)
-	draw_string(font, text_pos, line_number_text, HORIZONTAL_ALIGNMENT_RIGHT, _line_gutter_needed_space, font_size,
+	draw_string(font, text_pos, line_number_text, HORIZONTAL_ALIGNMENT_RIGHT, get_gutter_width(gutter), font_size,
 			ThemeUtils.dim_text_color if (get_caret_line() == line and has_focus()) else ThemeUtils.subtle_text_color)
 
 
@@ -150,7 +150,8 @@ func _draw() -> void:
 		var normal_stylebox := get_theme_stylebox("normal")
 		var top_border: float = normal_stylebox.border_width_top if normal_stylebox is StyleBoxFlat else 0.0
 		var bottom_border: float = normal_stylebox.border_width_bottom if normal_stylebox is StyleBoxFlat else 0.0
-		draw_line(Vector2(_line_gutter_needed_space, top_border), Vector2(_line_gutter_needed_space, size.y - bottom_border), col)
+		var gutter_width := get_gutter_width(0)
+		draw_line(Vector2(gutter_width, top_border), Vector2(gutter_width, size.y - bottom_border), col)
 
 
 func _input(event: InputEvent) -> void:
@@ -203,9 +204,11 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		queue_redraw()
 	elif event is InputEventMouseButton and event.is_pressed():
-		if get_gutter_count() == 1 and event.position.x < get_gutter_width(0):
+		var normal_stylebox := get_theme_stylebox("normal")
+		var left_border: float = normal_stylebox.border_width_left if normal_stylebox is StyleBoxFlat else 0.0
+		var left_margin: float = normal_stylebox.content_margin_left if normal_stylebox is StyleBoxFlat else 0.0
+		if get_gutter_count() == 1 and event.position.x <= left_border + left_margin + get_total_gutter_width():
 			if event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
-				grab_focus()
 				var click_line := get_line_column_at_pos(event.position).y
 				if event.alt_pressed:
 					add_caret(click_line, 0)
