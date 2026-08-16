@@ -645,7 +645,9 @@ func _move_selected(down: bool) -> void:
 			if start in inner_selections:
 				selected.append(i)
 		
-		var order: Array[int] = range(pathdata.subpath_start_indices.size())
+		# FIXME range() should really be returning Array[int]. #72762
+		var order: Array[int]
+		order.assign(range(pathdata.subpath_start_indices.size()))
 		if down:
 			for i in range(selected.size() - 1, -1, -1):
 				var pos := order.find(selected[i])
