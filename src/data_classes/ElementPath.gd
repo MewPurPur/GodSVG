@@ -2,7 +2,7 @@
 class_name ElementPath extends Element
 
 const name = "path"
-const possible_conversions: PackedStringArray = []
+const possible_conversions: PackedStringArray = ["polygon", "polyline"]
 
 func user_setup(precise_position := PackedFloat64Array([0.0, 0.0])) -> void:
 	if precise_position != PackedFloat64Array([0.0, 0.0]):
@@ -158,7 +158,6 @@ func get_bounding_box() -> Rect2:
 	
 	return Rect2(min_x, min_y, max_x - min_x, max_y - min_y)
 
-
 func _solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 	if a == 0:
 		return [-c/b]
@@ -168,3 +167,64 @@ func _solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 		return []
 	else:
 		return [(-b + D) / (2 * a), (-b - D) / (2 * a)]
+
+
+func can_replace(new_element: String) -> bool:
+	var pathdata: AttributePathdata = get_attribute("d")
+	var command_count := pathdata.get_command_count()
+	
+	match new_element:
+		"polygon":
+			if command_count == 0:
+				return true
+			if not pathdata.get_command(0) is PathCommand.MoveCommand:
+				return false
+			
+			for i in range(1, command_count - 1):
+				if not pathdata.is_conversion_exact(i, AttributePathdata.Conversion.ANY_TO_LINE, true):
+					return false
+			if command_count >= 2 and not pathdata.get_command(command_count - 1) is PathCommand.CloseCommand:
+				return false
+			return true
+		"polyline":
+			if command_count == 0:
+				return true
+			if not pathdata.get_command(0) is PathCommand.MoveCommand:
+				return false
+			
+			for i in range(1, command_count):
+				if not pathdata.is_conversion_exact(i, AttributePathdata.Conversion.ANY_TO_LINE, true):
+					return false
+			return true
+	return false
+
+func get_replacement(new_element: String) -> Element:
+	if not can_replace(new_element):
+		return null
+	
+	var element := DB.element(new_element)
+	var pathdata: AttributePathdata = get_attribute("d")
+	var command_count := pathdata.get_command_count()
+	var dropped_attributes: PackedStringArray
+	match new_element:
+		"polygon":
+			dropped_attributes = PackedStringArray(["points", "d"])
+			var points := PackedFloat64Array()
+			# Skip the closure if there are multiple points.
+			for i in (command_count if command_count < 2 else command_count - 1):
+				var command := pathdata.get_command(i)
+				var x: float = command.x if not command is PathCommand.VerticalLineCommand else command.start_x
+				var y: float = command.y if not command is PathCommand.HorizontalLineCommand else command.start_y
+				points.append_array(PackedFloat64Array([x, y]))
+			element.set_attribute("points", points)
+		"polyline":
+			dropped_attributes = PackedStringArray(["points", "d"])
+			var points := PackedFloat64Array()
+			for i in command_count:
+				var command := pathdata.get_command(i)
+				var x: float = command.x if not command is PathCommand.VerticalLineCommand else command.start_x
+				var y: float = command.y if not command is PathCommand.HorizontalLineCommand else command.start_y
+				points.append_array(PackedFloat64Array([x, y]))
+			element.set_attribute("points", points)
+	apply_to(element, dropped_attributes)
+	return element
