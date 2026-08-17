@@ -74,7 +74,7 @@ func get_replacement(new_element: String) -> Element:
 				commands.append(PathCommand.MoveCommand.new(list[0], list[1]))
 			for i in range(3, list.size(), 2):
 				commands.append(PathCommand.LineCommand.new(list[i - 1], list[i]))
-			if list.size() > 5:
+			if list.size() > 3:
 				commands.append(PathCommand.CloseCommand.new())
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
