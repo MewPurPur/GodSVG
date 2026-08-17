@@ -52,7 +52,7 @@ func get_replacement(new_element: String) -> Element:
 	var dropped_attributes: PackedStringArray
 	match new_element:
 		"line":
-			dropped_attributes = PackedStringArray(["points", "rx", "ry", "cx", "cy", "width", "height", "fill", "fill-opacity", "stroke-linejoin"])
+			dropped_attributes = PackedStringArray(["points", "x1", "y1", "x2", "y2", "fill", "fill-opacity", "stroke-linejoin"])
 			simplify()
 			var list := get_attribute_list("points")
 			element.set_attribute("x1", list[0])
