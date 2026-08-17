@@ -27,8 +27,7 @@ func _on_name_edit_text_submitted(_text: String) -> void:
 		cancel_button.grab_focus()
 
 # The error/warning callables should take the stripped text and return a string.
-func setup(title: String, action: Callable, error_callable := Callable(),
-warning_callable := Callable()) -> void:
+func setup(title: String, action: Callable, error_callable := Callable(), warning_callable := Callable()) -> void:
 	title_label.text = title
 	action_button.pressed.connect(
 		func() -> void:

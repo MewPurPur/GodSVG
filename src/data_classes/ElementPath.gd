@@ -166,7 +166,8 @@ func _solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 	if is_nan(D):
 		return []
 	else:
-		return [(-b + D) / (2 * a), (-b - D) / (2 * a)]
+		var double_a := 2 * a
+		return [(-b + D) / double_a, (-b - D) / double_a]
 
 
 func can_replace(new_element: String) -> bool:
@@ -210,9 +211,10 @@ func get_replacement(new_element: String) -> Element:
 		"polygon":
 			dropped_attributes = PackedStringArray(["points", "d"])
 			var points := PackedFloat64Array()
-			# Skip the closure if there are multiple points.
-			for i in (command_count if command_count < 2 else command_count - 1):
+			for i in command_count:
 				var command := pathdata.get_command(i)
+				if command is PathCommand.CloseCommand:
+					break
 				var x: float = command.x if not command is PathCommand.VerticalLineCommand else command.start_x
 				var y: float = command.y if not command is PathCommand.HorizontalLineCommand else command.start_y
 				points.append_array(PackedFloat64Array([x, y]))

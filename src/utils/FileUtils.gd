@@ -514,8 +514,7 @@ class WebSafeFileAccess:
 			return _file_access.get_length()
 
 
-static func _web_load_files(allowed_extensions: PackedStringArray,
-completion_callback: Callable, multi_select: bool) -> void:
+static func _web_load_files(allowed_extensions: PackedStringArray, completion_callback: Callable, multi_select: bool) -> void:
 	var allowed_extensions_with_dots := PackedStringArray()
 	for allowed_extension in allowed_extensions:
 		allowed_extensions_with_dots.append("." + allowed_extension)
