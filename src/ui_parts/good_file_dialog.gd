@@ -461,8 +461,7 @@ func _on_file_list_item_multi_selected(index: int, selected: bool) -> void:
 	if selected:
 		call_selection_callback(file_list.get_item_metadata(index))
 
-func _on_file_list_item_clicked(index: int, _at_position: Vector2,
-mouse_button_index: int) -> void:
+func _on_file_list_item_clicked(index: int, _at_position: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		call_right_click_callback(file_list.get_item_metadata(index))
 
