@@ -40,7 +40,7 @@ func can_replace(new_element: String) -> bool:
 	if new_element == "line":
 		var optimized_polyline := duplicate()
 		optimized_polyline.simplify()
-		return optimized_polyline.get_attribute("points").get_list_size() == 4
+		return optimized_polyline.get_attribute_list("points").size() == 4
 	else:
 		return new_element == "path"
 
@@ -74,6 +74,9 @@ func get_replacement(new_element: String) -> Element:
 
 func simplify() -> void:
 	var list := get_attribute_list("points")
+	var list_size := list.size()
+	if list_size < 6:
+		return
 	var new_list_points := PackedFloat64Array()
 	
 	new_list_points.append(list[0])

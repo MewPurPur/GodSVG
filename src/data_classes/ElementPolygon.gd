@@ -83,13 +83,15 @@ func get_replacement(new_element: String) -> Element:
 
 func simplify() -> void:
 	var list := get_attribute_list("points")
+	var list_size := list.size()
+	if list_size < 6:
+		return
 	var new_list_points := PackedFloat64Array()
 	
-	for i in list.size() / 2 - 1:
+	for i in list_size / 2 - 1:
 		var prev_point := Vector2(list[i * 2 - 2], list[i * 2 - 1])
-		if not is_equal_approx(prev_point.angle_to_point(
-		Vector2(list[i * 2], list[i * 2 + 1])), prev_point.angle_to_point(
-		Vector2(list[i * 2 + 2], list[i * 2 + 3]))):
+		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[i * 2], list[i * 2 + 1])),
+		prev_point.angle_to_point(Vector2(list[i * 2 + 2], list[i * 2 + 3]))):
 			new_list_points.append(list[i * 2])
 			new_list_points.append(list[i * 2 + 1])
 	
