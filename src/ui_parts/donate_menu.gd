@@ -1,8 +1,8 @@
 extends PanelContainer
 
-# This overengineered menu mostly has logic around not hiding the text as you move your
-# mouse between the buttons. The text stays unless the mouse moves too far away from
-# the specific button that showed the current list of pros/cons.
+# This overengineered menu mostly has logic around not hiding the text as you
+# move your mouse between the buttons. The text stays unless the mouse moves too far away
+# from the specific button that showed the current list of pros/cons.
 
 enum Link {NONE, GITHUB, KO_FI, PATREON}
 var current_link := Link.NONE
@@ -77,6 +77,12 @@ func _on_link_focused(button: Button, link: Link) -> void:
 		set_link(link)
 
 func set_link(new_link: Link) -> void:
+	if new_link == Link.NONE:
+		for button in button_links:
+			if button.has_focus(true):
+				new_link = button_links[button]
+				break
+	
 	current_link = new_link
 	if new_link == Link.NONE:
 		clarifications.clear()
