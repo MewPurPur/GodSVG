@@ -81,7 +81,7 @@ func simplify() -> void:
 	
 	new_list_points.append(list[0])
 	new_list_points.append(list[1])
-	for idx in range(1, list.size() / 2 - 1):
+	for idx in range(1, list_size / 2 - 1):
 		var prev_point := Vector2(list[idx * 2 - 2], list[idx * 2 - 1])
 		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[idx * 2], list[idx * 2 + 1])),
 		prev_point.angle_to_point(Vector2(list[idx * 2 + 2], list[idx * 2 + 3]))):
