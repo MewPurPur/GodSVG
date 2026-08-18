@@ -4,7 +4,7 @@ const MacMenuScene = preload("res://src/ui_parts/mac_menu.tscn")
 const GlobalActionsScene = preload("res://src/ui_parts/global_actions.tscn")
 const CodeEditorScene = preload("res://src/ui_parts/code_editor.tscn")
 const InspectorScene = preload("res://src/ui_parts/inspector.tscn")
-const ViewportScene = preload("res://src/ui_parts/display.tscn")
+const CanvasScene = preload("res://src/ui_parts/display.tscn")
 const PreviewsScene = preload("res://src/ui_parts/previews.tscn")
 
 @onready var panel_container: PanelContainer = $PanelContainer
@@ -101,7 +101,7 @@ func update_layout() -> void:
 		set_mobile_margins.call()
 	else:
 		right_margin_container.add_theme_constant_override("margin_top", 6)
-	right_margin_container.add_child(create_layout_node(Utils.LayoutPart.VIEWPORT))
+	right_margin_container.add_child(create_layout_node(Utils.LayoutPart.CANVAS))
 	horizontal_splitter.add_child(right_margin_container)
 	
 	var left_vbox := VBoxContainer.new()
@@ -215,7 +215,7 @@ func create_layout_node(layout_part: Utils.LayoutPart) -> Node:
 	match layout_part:
 		Utils.LayoutPart.CODE_EDITOR: return CodeEditorScene.instantiate()
 		Utils.LayoutPart.INSPECTOR: return InspectorScene.instantiate()
-		Utils.LayoutPart.VIEWPORT: return ViewportScene.instantiate()
+		Utils.LayoutPart.CANVAS: return CanvasScene.instantiate()
 		Utils.LayoutPart.PREVIEWS: return PreviewsScene.instantiate()
 		_: return Control.new()
 

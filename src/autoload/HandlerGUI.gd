@@ -341,11 +341,11 @@ func _move_popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) ->
 	popup.position = popup_clamp_pos(popup, popup_pos, vp)
 
 # Should usually be the global position of the mouse.
-func popup_under_position(popup: Control, position: Vector2, viewport: Viewport) -> void:
+func popup_under_position(popup: Control, position: Vector2, vp: Viewport) -> void:
 	var top_popup := add_popup(popup)
-	var screen_transform := viewport.get_screen_transform()
+	var screen_transform := vp.get_screen_transform()
 	position += screen_transform.get_origin() / screen_transform.get_scale()
-	top_popup.position = popup_clamp_pos(top_popup, position + Vector2(1, 1), viewport)
+	top_popup.position = popup_clamp_pos(top_popup, position + Vector2(1, 1), vp)
 
 # Should usually be the global rect of a control.
 func popup_submenu_to_right_or_left_side(submenu: Control, source: Control) -> void:

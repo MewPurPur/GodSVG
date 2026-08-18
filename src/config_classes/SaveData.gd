@@ -1205,7 +1205,7 @@ enum LayoutLocation {NONE, EXCLUDED, TOP_LEFT, BOTTOM_LEFT}
 				if arr.is_empty():
 					new_value.erase(location)
 		# Put all layout parts that aren't listed in excluded.
-		used_layout_parts += [Utils.LayoutPart.NONE, Utils.LayoutPart.VIEWPORT]
+		used_layout_parts += [Utils.LayoutPart.NONE, Utils.LayoutPart.CANVAS]
 		for part in Utils.LayoutPart.size():
 			if not part in used_layout_parts:
 				if not new_value.has(LayoutLocation.EXCLUDED):

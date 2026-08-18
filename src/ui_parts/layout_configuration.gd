@@ -92,7 +92,7 @@ func _draw() -> void:
 	# Fixed viewport location for now.
 	
 	get_theme_stylebox("disabled", "TranslucentButton").draw(ci, right_rect.grow(-BUFFER_SIZE))
-	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.VIEWPORT)
+	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.CANVAS)
 	viewport_icon.draw(ci, (right_rect.get_center() - viewport_icon.get_size() / 2).round(), ThemeUtils.tinted_contrast_color)
 	
 	for layout_location in section_areas:
@@ -285,7 +285,7 @@ func _get_tooltip(at_position: Vector2) -> String:
 	# TODO Hack for the viewport tooltip.
 	var half_width := size.x / 2.0
 	if Rect2(half_width, 18, half_width, half_width * 1.25).grow(-BUFFER_SIZE).has_point(at_position):
-		return TranslationUtils.get_layout_part_name(Utils.LayoutPart.VIEWPORT)
+		return TranslationUtils.get_layout_part_name(Utils.LayoutPart.CANVAS)
 	
 	for layout_part in layout_part_areas:
 		if layout_part_areas[layout_part].grow(-BUFFER_SIZE).has_point(at_position):
@@ -302,7 +302,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	main_label.text = for_text
 	# TODO The condition is a hack for the viewport tooltip.
 	vbox.add_child(main_label)
-	if for_text != TranslationUtils.get_layout_part_name(Utils.LayoutPart.VIEWPORT):
+	if for_text != TranslationUtils.get_layout_part_name(Utils.LayoutPart.CANVAS):
 		var dim_label := Label.new()
 		dim_label.add_theme_color_override("font_color", ThemeUtils.dimmer_text_color)
 		dim_label.text = Translator.translate("Drag and drop to change the layout")

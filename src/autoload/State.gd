@@ -1002,7 +1002,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 	var btn_arr: Array[ContextButton] = []
 	
 	if not selected_xids.is_empty():
-		if context == Utils.LayoutPart.VIEWPORT:
+		if context == Utils.LayoutPart.CANVAS:
 			btn_arr.append(ContextButton.create_custom(Translator.translate("View in Inspector"),
 					view_in_inspector.bind(selected_xids[0]), preload("res://assets/icons/Inspector.svg")))
 		
@@ -1094,7 +1094,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var element_ref := root_element.get_xnode(semi_selected_xid)
 		
-		if context == Utils.LayoutPart.VIEWPORT:
+		if context == Utils.LayoutPart.CANVAS:
 			var inner_idx := inner_selections[0]
 			for idx in inner_selections:
 				if idx < inner_idx:

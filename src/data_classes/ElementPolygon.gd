@@ -88,12 +88,12 @@ func simplify() -> void:
 		return
 	var new_list_points := PackedFloat64Array()
 	
-	for i in list_size / 2 - 1:
-		var prev_point := Vector2(list[i * 2 - 2], list[i * 2 - 1])
-		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[i * 2], list[i * 2 + 1])),
-		prev_point.angle_to_point(Vector2(list[i * 2 + 2], list[i * 2 + 3]))):
-			new_list_points.append(list[i * 2])
-			new_list_points.append(list[i * 2 + 1])
+	for i in range(0, list_size - 2, 2):
+		var prev_point := Vector2(list[i - 2], list[i - 1])
+		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[i], list[i + 1])),
+		prev_point.angle_to_point(Vector2(list[i + 2], list[i + 3]))):
+			new_list_points.append(list[i])
+			new_list_points.append(list[i + 1])
 	
 	var second_to_last_point := Vector2(list[-4], list[-3])
 	if not is_equal_approx(second_to_last_point.angle_to_point(Vector2(list[-2], list[-1])),

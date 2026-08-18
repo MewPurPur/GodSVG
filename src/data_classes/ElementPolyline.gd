@@ -25,9 +25,9 @@ func get_bounding_box() -> Rect2:
 	var max_x := -INF
 	var max_y := -INF
 	
-	for idx in list.get_list_size() / 2:
-		var x_coord := list.get_list_element(idx * 2)
-		var y_coord := list.get_list_element(idx * 2 + 1)
+	for i in range(0, list.get_list_size(), 2):
+		var x_coord := list.get_list_element(i)
+		var y_coord := list.get_list_element(i + 1)
 		min_x = minf(min_x, x_coord)
 		max_x = maxf(max_x, x_coord)
 		min_y = minf(min_y, y_coord)
@@ -81,12 +81,12 @@ func simplify() -> void:
 	
 	new_list_points.append(list[0])
 	new_list_points.append(list[1])
-	for idx in range(1, list_size / 2 - 1):
-		var prev_point := Vector2(list[idx * 2 - 2], list[idx * 2 - 1])
-		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[idx * 2], list[idx * 2 + 1])),
-		prev_point.angle_to_point(Vector2(list[idx * 2 + 2], list[idx * 2 + 3]))):
-			new_list_points.append(list[idx * 2])
-			new_list_points.append(list[idx * 2 + 1])
+	for i in range(1, list_size - 2):
+		var prev_point := Vector2(list[i - 2], list[i - 1])
+		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[i], list[i + 1])),
+		prev_point.angle_to_point(Vector2(list[i + 2], list[i + 3]))):
+			new_list_points.append(list[i])
+			new_list_points.append(list[i + 1])
 	new_list_points.append(list[-2])
 	new_list_points.append(list[-1])
 	get_attribute("points").set_list(new_list_points)

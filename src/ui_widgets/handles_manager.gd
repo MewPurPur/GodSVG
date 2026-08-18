@@ -813,8 +813,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				not (inner_idx == -1 and hovered_xid in State.selected_xids):
 					State.normal_select(hovered_xid, inner_idx)
 				
-				HandlerGUI.popup_under_position(State.get_selection_context(HandlerGUI.popup_under_position.bind(popup_pos, vp),
-						Utils.LayoutPart.VIEWPORT), popup_pos, vp)
+				HandlerGUI.popup_under_position(State.get_selection_context(
+						HandlerGUI.popup_under_position.bind(popup_pos, vp), Utils.LayoutPart.CANVAS), popup_pos, vp)
 
 func find_nearest_handle(event_position: Vector2) -> Handle:
 	var nearest_handle: Handle = null

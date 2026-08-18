@@ -3,7 +3,7 @@
 class_name Canvas extends SubViewportContainer
 
 const HandlesManager = preload("res://src/ui_widgets/handles_manager.gd")
-const ViewportControls = preload("res://src/ui_widgets/viewport_controls.gd")
+const CanvasNavigation = preload("res://src/ui_widgets/canvas_navigation.gd")
 
 const MIN_ZOOM = 0.125
 const MAX_ZOOM = 512.0
@@ -87,7 +87,7 @@ var ci := get_canvas_item()
 var grid_ci := RenderingServer.canvas_item_create()
 var grid_numbers_ci := RenderingServer.canvas_item_create()
 
-var viewport := ViewportControls.new()
+var viewport := CanvasNavigation.new()
 var display_texture := TextureRect.new()
 var handles_manager := HandlesManager.new()
 var checkerboard := TextureRect.new()
