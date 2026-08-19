@@ -649,9 +649,9 @@ func setup_other_content() -> void:
 			"Swaps the scroll directions for zooming in and zooming out.")))
 	
 	current_setup_setting = "pan_with_lmb"
-	add_checkbox(Translator.translate('Pan with Left Mouse Button'))
+	add_checkbox(Translator.translate("Pan with left mouse button"))
 	add_preview(SettingTextPreview.new(Translator.translate(
-		"Enables the use of the left mouse button to move the viewport around the canvas."))) # Feel free to rewrite this description.
+		"When enabled, the left mouse button can be used to pan the canvas."))) # Feel free to rewrite this description.
 	
 	current_setup_setting = "wraparound_panning"
 	var wraparound_panning := add_checkbox(Translator.translate("Wrap-around panning"))

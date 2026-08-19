@@ -79,7 +79,7 @@ msgstr "还原"
 msgid "View in Inspector"
 msgstr "在检视器中查看"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Convert to"
 msgstr "转换为"
 
@@ -1060,7 +1060,7 @@ msgstr "虚线长度"
 msgid "Color {index}"
 msgstr "颜色 {index}"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 msgid "Canvas"
 msgstr "画布"
 
@@ -1105,6 +1105,11 @@ msgstr "鼠标中键关闭分页"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "反转缩放方向"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Pan with left mouse button"
+msgstr "鼠标中键关闭分页"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1170,6 +1175,10 @@ msgstr "设置于当前配置下无效。"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
 msgstr "设置于当前平台下无法更改。"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
@@ -1641,11 +1650,6 @@ msgstr "代码编辑器"
 msgid "Inspector"
 msgstr "检视器"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "视图"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1687,6 +1691,9 @@ msgstr "结构化SVG编辑应用"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标志;编辑器;路径;形狀;二维;代码;蓝色;狐狸"
+
+#~ msgid "Viewport"
+#~ msgstr "视图"
 
 #~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
 #~ msgstr "此图像只能以 SVG 格式导出，因为其大小过于极端。"

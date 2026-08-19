@@ -79,7 +79,7 @@ msgstr "Възстанови"
 msgid "View in Inspector"
 msgstr "Виж в инспектора"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Convert to"
 msgstr "Превърни във"
 
@@ -1060,7 +1060,7 @@ msgstr "Дължина на чертичките"
 msgid "Color {index}"
 msgstr "Цвят {index}"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 msgid "Canvas"
 msgstr "Платно"
 
@@ -1105,6 +1105,10 @@ msgstr "Затваряне на раздели със средното копч�
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "Обърни посоката на увеличение"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Pan with left mouse button"
+msgstr "Панорамиране с ляво копче на мишката"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1172,6 +1176,10 @@ msgid "The setting can't be changed on this platform."
 msgstr "Настройката не може да бъде променена на тази платформа."
 
 #: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
+msgstr "Когато е активирано, лявото копче на мишката може да се озползва за влачене на гледката."
+
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
 msgstr "Форматировачите могат да променят форматирането на съдържанието и атрибутите на SVG. Тези промени не засягат неговата структура или структурата на по-сложните атрибути, като данни за пътеки. Форматировачите могат да бъдат конфигурирани да направят SVG по-красив или по-компактен."
 
@@ -1181,7 +1189,7 @@ msgstr "Определя стойностите по подразбиране н
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses spaces instead of a single tab for indentation."
-msgstr "Когато е активирано, използва интервали за отстъп вместо едни табулатор."
+msgstr "Когато е активирано, използва интервали за отстъп вместо един табулатор."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
@@ -1641,11 +1649,6 @@ msgstr "Редактор за код"
 msgid "Inspector"
 msgstr "Инспектор"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "Гледка"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1687,3 +1690,6 @@ msgstr "Приложение за структурирано редактира�
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "свг;вектор;графика;рисуване;дизайн;илюстрация;изображение;изкуство;диаграма;иконка;лого;редактор;изкуство;пътека;фигура;2д;код;синя;лисица"
+
+#~ msgid "Viewport"
+#~ msgstr "Гледка"

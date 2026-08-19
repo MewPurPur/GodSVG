@@ -80,7 +80,7 @@ msgstr "Taasta"
 msgid "View in Inspector"
 msgstr "Näita inspektoris"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Convert to"
 msgstr "Teisenda"
 
@@ -1065,7 +1065,7 @@ msgstr "Kriipsu pikkus"
 msgid "Color {index}"
 msgstr "Värv {index}"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 msgid "Canvas"
 msgstr "Lõuend"
 
@@ -1110,6 +1110,11 @@ msgstr "Sulge vahekaarte keskmise hiireklahviga"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "Inverteeri suurendussuund"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Pan with left mouse button"
+msgstr "Sulge vahekaarte keskmise hiireklahviga"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1175,6 +1180,10 @@ msgstr "Sättel pole präeguses konfiguratsioonis mõju."
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
 msgstr "Sätet ei saa sellel platvormil muuta."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
@@ -1647,11 +1656,6 @@ msgstr "Koodiredaktor"
 msgid "Inspector"
 msgstr "Inspektor"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "Vaade"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1693,6 +1697,9 @@ msgstr "Vektorkraafika rakendus SVG struktureeritud redigeerimiseks"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vektor;graafika;joonista;disain;illustratsioon;pilt;kunst;skeem;diagramm;logo;ikoon;redigeerija;kuju;2D;kood;sinine;rebane"
+
+#~ msgid "Viewport"
+#~ msgstr "Vaade"
 
 #~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
 #~ msgstr "Graafika saab eksportida ainult SVG-na, sest selle proportsioonid on liiga ekstreemsed."
