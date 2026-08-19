@@ -10,6 +10,8 @@ const ProfileFrameScene = preload("res://src/ui_widgets/profile_frame.tscn")
 var current_setup_resources: Array[ConfigResource]
 var setup_method: Callable
 
+var undo_redo: UndoRedoRef
+
 var current_setup_setting := ""
 var current_setup_resource_index := 0
 var current_setup_container: VBoxContainer
@@ -75,6 +77,8 @@ class SettingCanvasPreview:
 
 func _ready() -> void:
 	Configs.language_changed.connect(setup_content)
+	undo_redo.version_changed.connect(_on_undo_redo_version_changed)
+	tree_exiting.connect(undo_redo.version_changed.disconnect.bind(_on_undo_redo_version_changed), CONNECT_ONE_SHOT)
 	if current_setup_resources.size() > 1:
 		var categories := HFlowContainer.new()
 		categories.alignment = FlowContainer.ALIGNMENT_CENTER
@@ -119,6 +123,10 @@ func setup_content() -> void:
 	current_setup_container = setting_container
 	setup_method.call()
 	HandlerGUI.throw_mouse_motion_event()
+
+func _on_undo_redo_version_changed() -> void:
+	if not undo_redo.is_committing_action():
+		setup_content()
 
 func setup_formatting_content() -> void:
 	var current_setup_resource: Formatter = _get_current_setup_resource()
@@ -829,7 +837,12 @@ func _add_file_path_edit(text: String, extensions_list: PackedStringArray) -> Co
 func setup_frame(frame: Control, has_default := true) -> void:
 	var bind := current_setup_setting
 	var resource_ref := _get_current_setup_resource()
-	frame.setter = func(p: Variant) -> void: resource_ref.set(bind, p)
+	frame.setter = func(p: Variant) -> void:
+		if resource_ref.get(bind) != p:
+			undo_redo.create_action(bind, UndoRedo.MERGE_ENDS, false)
+			undo_redo.add_do_method(resource_ref.set.bind(bind, p))
+			undo_redo.add_undo_method(resource_ref.set.bind(bind, resource_ref.get(bind)))
+			undo_redo.commit_action()
 	frame.getter = resource_ref.get.bind(bind)
 	if has_default:
 		frame.default = resource_ref.get_setting_default(current_setup_setting)
