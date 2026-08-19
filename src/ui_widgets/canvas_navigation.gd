@@ -9,7 +9,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if HandlerGUI.get_viewport().gui_is_dragging():
 		return
 	
-	if event is InputEventMouseMotion and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_MIDDLE):
+	if event is InputEventMouseMotion and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_MIDDLE if Configs.savedata.pan_with_lmb else MOUSE_BUTTON_MASK_MIDDLE):
 		# Zooming with Ctrl + MMB.
 		if event.ctrl_pressed and event.button_mask == MOUSE_BUTTON_MASK_MIDDLE:
 			if _zoom_to == Vector2.ZERO:  # Set zoom position if starting action.

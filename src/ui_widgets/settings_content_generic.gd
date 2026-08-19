@@ -647,6 +647,12 @@ func setup_other_content() -> void:
 	add_checkbox(Translator.translate("Invert zoom direction"))
 	add_preview(SettingTextPreview.new(Translator.translate(
 			"Swaps the scroll directions for zooming in and zooming out.")))
+	
+	current_setup_setting = "pan_with_lmb"
+	add_checkbox(Translator.translate('Pan with Left Mouse Button'))
+	add_preview(SettingTextPreview.new(Translator.translate(
+		"Enables the use of the left mouse button to move the viewport around the canvas."))) # Feel free to rewrite this description.
+	
 	current_setup_setting = "wraparound_panning"
 	var wraparound_panning := add_checkbox(Translator.translate("Wrap-around panning"))
 	var wraparound_panning_forced_off := not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP)
