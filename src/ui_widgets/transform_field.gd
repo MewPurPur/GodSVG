@@ -43,7 +43,7 @@ func sync() -> void:
 
 func _on_pressed() -> void:
 	var transform_popup := TransformPopupScene.instantiate()
-	transform_popup.attribute_ref = element.get_attribute(attribute_name)
+	transform_popup.attribute = element.get_attribute(attribute_name)
 	HandlerGUI.popup_under_rect(transform_popup, get_global_rect(), get_viewport())
 
 

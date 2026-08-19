@@ -11,6 +11,7 @@ var current_setup_resources: Array[ConfigResource]
 var setup_method: Callable
 
 var undo_redo: UndoRedoRef
+var settings_tab_change_callable: Callable
 
 var current_setup_setting := ""
 var current_setup_resource_index := 0
@@ -105,6 +106,11 @@ func _ready() -> void:
 	add_child(setting_container)
 	setup_content()
 
+func setup_undo_redo_utensils(new_undo_redo: UndoRedoRef, new_settings_tab_change_callable: Callable) -> void:
+	undo_redo = new_undo_redo
+	settings_tab_change_callable = new_settings_tab_change_callable
+
+
 func _get_current_setup_resource() -> ConfigResource:
 	return current_setup_resources[current_setup_resource_index]
 
@@ -125,6 +131,7 @@ func setup_content() -> void:
 	HandlerGUI.throw_mouse_motion_event()
 
 func _on_undo_redo_version_changed() -> void:
+	# Only rebuild if using undo/redo.
 	if not undo_redo.is_committing_action():
 		setup_content()
 
@@ -788,8 +795,7 @@ func add_checkbox(text: String, use_dim_text := false) -> Control:
 	frame.setup_checkbox()
 	current_setup_container.add_child(frame)
 	# Some checkboxes need to update the dimness of the text of other settings.
-	# There's no continuous editing with checkboxes, so it's safe to just rebuild
-	# the content for them.
+	# There's no continuous editing with checkboxes, so it's safe to just rebuild the content for them.
 	frame.value_changed.connect(setup_content)
 	return frame
 
@@ -837,12 +843,20 @@ func _add_file_path_edit(text: String, extensions_list: PackedStringArray) -> Co
 func setup_frame(frame: Control, has_default := true) -> void:
 	var bind := current_setup_setting
 	var resource_ref := _get_current_setup_resource()
-	frame.setter = func(p: Variant) -> void:
-		if resource_ref.get(bind) != p:
-			undo_redo.create_action(bind, UndoRedo.MERGE_ENDS, false)
-			undo_redo.add_do_method(resource_ref.set.bind(bind, p))
-			undo_redo.add_undo_method(resource_ref.set.bind(bind, resource_ref.get(bind)))
-			undo_redo.commit_action()
+	frame.setter =\
+		func(p: Variant, is_final := true, old_final_value: Variant = null) -> void:
+			if typeof(old_final_value) == TYPE_NIL:
+				old_final_value = resource_ref.get(bind)
+			if old_final_value != p:
+				if is_final:
+					undo_redo.create_action(bind)
+					undo_redo.add_do_method(resource_ref.set.bind(bind, p))
+					undo_redo.add_do_method(settings_tab_change_callable)
+					undo_redo.add_undo_method(resource_ref.set.bind(bind, old_final_value))
+					undo_redo.add_undo_method(settings_tab_change_callable)
+					undo_redo.commit_action()
+				else:
+					resource_ref.set(bind, p)
 	frame.getter = resource_ref.get.bind(bind)
 	if has_default:
 		frame.default = resource_ref.get_setting_default(current_setup_setting)

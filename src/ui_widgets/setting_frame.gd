@@ -186,8 +186,8 @@ func _checkbox_modification() -> void:
 	setter.call(not getter.call())
 	post_modification()
 
-func _color_modification(value: String, _is_final: bool, _old_final_value: String, alpha_enabled: bool) -> void:
-	setter.call(ColorParser.text_to_color(value, Color.BLACK, alpha_enabled))
+func _color_modification(value: String, is_final: bool, old_final_value: String, alpha_enabled: bool) -> void:
+	setter.call(ColorParser.text_to_color(value, Color.BLACK, alpha_enabled), is_final, ColorParser.text_to_color(old_final_value, Color.BLACK, alpha_enabled))
 	post_modification()
 
 func _generic_modification(value: Variant) -> void:
@@ -195,10 +195,7 @@ func _generic_modification(value: Variant) -> void:
 	post_modification()
 
 func _float_modification_with_nan_reset(value: float) -> void:
-	if is_nan(value):
-		setter.call(default)
-	else:
-		setter.call(value)
+	setter.call(default if is_nan(value) else value)
 	post_modification()
 
 

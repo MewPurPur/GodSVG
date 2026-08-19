@@ -11,8 +11,8 @@ var _undo_redo := UndoRedo.new()
 func _init() -> void:
 	_undo_redo.version_changed.connect(version_changed.emit)
 
-func create_action(name := "", merge_mode := UndoRedo.MERGE_DISABLE, backward_undo_ops := false) -> void:
-	_undo_redo.create_action(name, merge_mode, backward_undo_ops)
+func create_action(name := "") -> void:
+	_undo_redo.create_action(name)
 
 func add_do_method(callable: Callable) -> void:
 	_undo_redo.add_do_method(callable)

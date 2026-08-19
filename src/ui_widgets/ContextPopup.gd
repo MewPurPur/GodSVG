@@ -188,12 +188,25 @@ func _draw() -> void:
 				icon_color = button.get_theme_color("icon_focus_color")
 			
 			var icon_size := button_icon.get_size() * 16.0 / maxi(button_icon.get_width(), button_icon.get_height())
-			if button_text.is_empty() and not align_left:
+			if button_text.is_empty() and not is_instance_valid(button.custom_text_line) and not align_left:
 				button_icon.draw_rect(vbox_ci, Rect2(button_rect.get_center() - icon_size / 2, icon_size), false, icon_color)
 			else:
 				button_icon.draw_rect(vbox_ci, Rect2(button_rect.position + Vector2(1, 1) * ContextButton.PADDING, icon_size), false, icon_color)
 		
-		if not button_text.is_empty():
+		if is_instance_valid(button.custom_text_line):
+			var font_color := button.get_theme_color("font_color")
+			if button.disabled:
+				font_color = button.get_theme_color("font_disabled_color")
+			elif button_idx == focus_index:
+				font_color = button.get_theme_color("font_focus_color")
+			
+			var text_width := button.custom_text_line.get_line_width()
+			var text_pos := button_rect.position + Vector2(text_offset, (button_rect.size.y - button.custom_text_line.get_size().y) / 2.0)
+			if not align_left:
+				text_pos.x = button_rect.position.x + (button_rect.size.x - text_width) / 2.0
+			
+			button.custom_text_line.draw(vbox_ci, text_pos, font_color)
+		elif not button_text.is_empty():
 			var font := button.get_theme_font("font")
 			var font_size := button.get_theme_font_size("font_size")
 			var font_color := button.get_theme_color("font_color")

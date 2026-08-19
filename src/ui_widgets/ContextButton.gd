@@ -16,6 +16,7 @@ var custom_callback := Callable()
 var custom_icon: Texture2D
 var custom_text := ""
 var custom_dim_text := ""
+var custom_text_line: TextLine
 var toggled_on := true
 var submenu_button_builders: Array[Callable] = []
 var disabled := false
@@ -37,7 +38,9 @@ func _ready() -> void:
 	
 	# The size increase from icon spacing is based on the widest icon, so it's determined in the ContextPopup.
 	var min_width := PADDING * 2
-	if not text.is_empty():
+	if is_instance_valid(custom_text_line):
+		min_width += custom_text_line.get_line_width()
+	elif not text.is_empty():
 		min_width += font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	if not dim_text.is_empty():
 		min_width += DIM_TEXT_SPACING + font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
@@ -160,6 +163,10 @@ func add_custom_icon(new_icon: Texture2D) -> ContextButton:
 
 func add_custom_dim_text(new_dim_text: String) -> ContextButton:
 	custom_dim_text = new_dim_text
+	return self
+
+func add_custom_text_line(new_text_line: TextLine) -> ContextButton:
+	custom_text_line = new_text_line
 	return self
 
 

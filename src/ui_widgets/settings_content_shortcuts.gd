@@ -89,11 +89,11 @@ func show_shortcuts_from_category(category: String) -> void:
 func _on_shortcuts_edited(action: String, new_shortcuts: Array[InputEvent], category: String) -> void:
 	undo_redo.create_action()
 	undo_redo.add_do_method(Configs.savedata.action_modify_shortcuts.bind(action, new_shortcuts))
-	undo_redo.add_do_method(highlight_action.bind(category, action))
 	undo_redo.add_do_method(settings_tab_change_callable)
+	undo_redo.add_do_method(highlight_action.bind(category, action))
 	undo_redo.add_undo_method(Configs.savedata.action_modify_shortcuts.bind(action, Configs.savedata.action_get_shortcuts(action)))
-	undo_redo.add_undo_method(highlight_action.bind(category, action))
 	undo_redo.add_undo_method(settings_tab_change_callable)
+	undo_redo.add_undo_method(highlight_action.bind(category, action))
 	undo_redo.commit_action(false)
 	# Only this method needs to run, so commit execution was disabled.
 	Configs.savedata.action_modify_shortcuts(action, new_shortcuts)

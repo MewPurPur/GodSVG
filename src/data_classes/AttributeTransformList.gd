@@ -24,7 +24,7 @@ func set_transform_property(index: int, property: String, new_value: float) -> v
 		_transform_list[index].set(property, new_value)
 		sync_after_transforms_change()
 
-func get_transform_list() -> Array[Transform]:
+func get_transforms() -> Array[Transform]:
 	return _transform_list.duplicate()
 
 func get_transform_count() -> int:
