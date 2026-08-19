@@ -73,11 +73,13 @@ func get_content(index: TabIndex) -> Control:
 	match index:
 		TabIndex.FORMATTING:
 			current_content = SettingsContentGeneric.instantiate()
+			current_content.undo_redo = undo_redo
 			current_content.setup([Configs.savedata.editor_formatter,
 					Configs.savedata.export_formatter] as Array[ConfigResource], current_content.setup_formatting_content)
 			current_content.preview_changed.connect(set_preview)
 		TabIndex.OPTIMIZER:
 			current_content = SettingsContentGeneric.instantiate()
+			current_content.undo_redo = undo_redo
 			current_content.setup([Configs.savedata.default_optimizer] as Array[ConfigResource], current_content.setup_optimizer_content)
 		TabIndex.PALETTES:
 			current_content = SettingsContentPalettes.instantiate()
@@ -87,6 +89,7 @@ func get_content(index: TabIndex) -> Control:
 					settings_tab_container.select_tab.bind(TabIndex.SHORTCUTS))
 		TabIndex.THEMING, TabIndex.TAB_BAR, TabIndex.OTHER:
 			current_content = SettingsContentGeneric.instantiate()
+			current_content.undo_redo = undo_redo
 			var callback := Callable()
 			match index:
 				TabIndex.THEMING: callback = current_content.setup_theming_content
