@@ -110,6 +110,7 @@ func get_setting_default(setting: String) -> Variant:
 		
 		# Other
 		"invert_zoom": return false
+		"pan_with_lmb": return true
 		"wraparound_panning": return false
 		"panning_speed": return 20
 		"use_ctrl_for_zoom": return true
@@ -540,6 +541,12 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 		if invert_zoom != new_value:
 			invert_zoom = new_value
 			emit_changed()
+
+@export var pan_with_lmb := true:
+	set(new_value):
+			if pan_with_lmb != new_value:
+				pan_with_lmb = new_value
+				emit_changed()
 
 @export var wraparound_panning := false:
 	set(new_value):
