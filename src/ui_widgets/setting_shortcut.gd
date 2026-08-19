@@ -208,7 +208,7 @@ func enter_listening_mode(index: int) -> void:
 		delete_btn.size = Vector2(btn.size.y - 2, btn.size.y - 2)
 		delete_btn.pressed.connect(delete_shortcut.bind(index))
 		# Fake delete icon to offset the main button's text.
-		btn.icon = ImageTexture.create_from_image(Image.create(delete_icon.get_width(), delete_icon.get_height(), false, Image.FORMAT_LA8))
+		btn.icon = ImageTexture.create_from_image(Image.create_empty(delete_icon.get_width(), delete_icon.get_height(), false, Image.FORMAT_LA8))
 	queue_redraw()
 
 func cancel_listening() -> void:

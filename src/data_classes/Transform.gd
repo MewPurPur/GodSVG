@@ -1,6 +1,12 @@
 @abstract class_name Transform
 
+@abstract func compute_transform() -> Transform2D
+@abstract func compute_precise_transform() -> PackedFloat64Array
+@abstract func is_redundant() -> bool
+
 class TransformMatrix extends Transform:
+	const name = "matrix"
+	
 	var x1: float
 	var x2: float
 	var y1: float
@@ -24,8 +30,31 @@ class TransformMatrix extends Transform:
 	
 	func is_redundant() -> bool:
 		return x1 == 1.0 and x2 == 0.0 and y1 == 0.0 and y2 == 1.0 and o1 == 0.0 and o2 == 0.0
+	
+	func get_equivalent_basic_transform() -> Transform:
+		if x1 == 1.0 and x2 == 0.0 and y1 == 0.0 and y2 == 1.0:
+			if o1 == 0.0 and o2 == 0.0:
+				return null  # The matrix is redundant.
+			return TransformTranslate.new(o1, o2)
+		
+		if o1 == 0.0 and o2 == 0.0:
+			if x2 == 0.0 and y1 == 0.0:
+				return TransformScale.new(x1, y2)
+			if x1 == 1.0 and y2 == 1.0:
+				if x2 == 0.0:
+					return TransformSkewX.new(rad_to_deg(atan(y1)))
+				if y1 == 0.0:
+					return TransformSkewY.new(rad_to_deg(atan(x2)))
+		
+		# For rotation, we need determinant and scale in both directions to be 1.
+		if is_equal_approx(x1 * y2 - x2 * y1, 1.0) and is_equal_approx(sqrt(x1 * x1 + x2 * x2), 1.0) and is_equal_approx(sqrt(y1 * y1 + y2 * y2), 1.0):
+			return TransformRotate.new(rad_to_deg(atan2(x2, x1)), o1, o2)
+		
+		return null
 
 class TransformTranslate extends Transform:
+	const name = "translate"
+	
 	var x: float
 	var y: float
 	
@@ -43,6 +72,8 @@ class TransformTranslate extends Transform:
 		return x == 0.0 and y == 0.0
 
 class TransformRotate extends Transform:
+	const name = "rotate"
+	
 	var deg: float
 	var x: float
 	var y: float
@@ -60,14 +91,14 @@ class TransformRotate extends Transform:
 		var rad := deg_to_rad(deg)
 		var cos_val := cos(rad)
 		var sin_val := sin(rad)
-		var ox := x - x * cos_val + y * sin_val
-		var oy := y - x * sin_val - y * cos_val
-		return PackedFloat64Array([cos_val, sin_val, -sin_val, cos_val, ox, oy])
+		return PackedFloat64Array([cos_val, sin_val, -sin_val, cos_val, x - x * cos_val + y * sin_val, y - x * sin_val - y * cos_val])
 	
 	func is_redundant() -> bool:
 		return fmod(deg, 360.0) == 0.0
 
 class TransformScale extends Transform:
+	const name = "scale"
+	
 	var x: float
 	var y: float
 	
@@ -85,6 +116,8 @@ class TransformScale extends Transform:
 		return x == 1.0 and y == 1.0
 
 class TransformSkewX extends Transform:
+	const name = "skewX"
+	
 	var x: float
 	
 	func _init(new_x: float) -> void:
@@ -101,6 +134,8 @@ class TransformSkewX extends Transform:
 
 
 class TransformSkewY extends Transform:
+	const name = "skewY"
+	
 	var y: float
 	
 	func _init(new_y: float) -> void:

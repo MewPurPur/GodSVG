@@ -160,6 +160,9 @@ func add_suppressed_focus(control: Control) -> void:
 	)
 
 func _on_menus_or_popups_cleared() -> void:
+	# This method is connected to by tree_exited signals, it can run as the window is being closed
+	if not is_inside_tree():
+		return
 	for control in suppressed_focused_controls:
 		if is_node_on_top_menu_or_popup(control):
 			suppressed_focused_controls.erase(control)

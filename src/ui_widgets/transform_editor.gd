@@ -1,9 +1,7 @@
 extends PanelContainer
 
-# Very reliant on the transform popup.
-# But that's fine, this isn't intended to be used elsewhere.
+# Very reliant on the transform popup. But that's fine, this isn't intended to be used elsewhere.
 
-var type: String
 var transform: Transform
 
 @onready var transform_list: VBoxContainer = $TransformList
@@ -13,22 +11,9 @@ var _fields: Array[BetterLineEdit]
 
 func setup(new_transform: Transform, new_fields: Array[BetterLineEdit]) -> void:
 	transform = new_transform
-	if transform is Transform.TransformMatrix:
-		type = "matrix"
-	elif transform is Transform.TransformTranslate:
-		type = "translate"
-	elif transform is Transform.TransformRotate:
-		type = "rotate"
-	elif transform is Transform.TransformScale:
-		type = "scale"
-	elif transform is Transform.TransformSkewX:
-		type = "skewX"
-	elif transform is Transform.TransformSkewY:
-		type = "skewY"
-	transform_button.text = type
-	
+	transform_button.text = transform.name
 	_fields = new_fields
-	match type:
+	match transform.name:
 		"matrix":
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -86,7 +71,7 @@ func resync(new_transform: Transform) -> void:
 
 func setup_field_defaults_and_colors() -> void:
 	update_title_font_color()
-	match type:
+	match transform.name:
 		"translate":
 			_fields[1].default = 0
 			determine_field_font_color(_fields[1], transform.y == 0)
