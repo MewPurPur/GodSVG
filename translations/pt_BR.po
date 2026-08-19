@@ -80,7 +80,7 @@ msgstr "Restaurar"
 msgid "View in Inspector"
 msgstr "Ver no Inspetor"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 #, fuzzy
 msgid "Convert to"
 msgstr "Converter Para"
@@ -1080,7 +1080,7 @@ msgstr "Tamanho do traçado"
 msgid "Color {index}"
 msgstr "Cor {index}"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Canvas"
 msgstr "Cor da tela"
@@ -1126,6 +1126,11 @@ msgstr "Fechar guias com o botão do meio do mouse"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "Inverter direção do zoom"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Pan with left mouse button"
+msgstr "Fechar guias com o botão do meio do mouse"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1191,6 +1196,10 @@ msgstr "Essa configuração não possui efeito na configuração atual."
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
 msgstr "Essa configuração não pode ser modificada nessa plataforma."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
@@ -1666,11 +1675,6 @@ msgstr "Editor de código"
 msgid "Inspector"
 msgstr "Inspetor"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "Tela"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1712,6 +1716,9 @@ msgstr "Um aplicativo de gráficos vetoriais para edição estruturada de SVG"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vetor;gráficos;desenho;design;ilustração;imagem;arte;diagrama;ícone;logo;editor;arte;caminho;forma;2D;código;azul;raposa"
+
+#~ msgid "Viewport"
+#~ msgstr "Tela"
 
 #~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
 #~ msgstr "Esse gráfico pode ser exportado apenas como um SVG pois as suas proporções são extremas."

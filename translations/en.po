@@ -79,7 +79,7 @@ msgstr ""
 msgid "View in Inspector"
 msgstr ""
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Convert to"
 msgstr ""
 
@@ -1060,7 +1060,7 @@ msgstr ""
 msgid "Color {index}"
 msgstr ""
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 msgid "Canvas"
 msgstr ""
 
@@ -1104,6 +1104,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Pan with left mouse button"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1169,6 +1173,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1639,11 +1647,6 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Inspector"
-msgstr ""
-
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
 msgstr ""
 
 #. Refers to a part of the layout where icons are previewed at various sizes.

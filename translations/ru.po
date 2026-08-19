@@ -81,7 +81,7 @@ msgstr "Восстановить"
 msgid "View in Inspector"
 msgstr "Просмотреть в инспекторе"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Convert to"
 msgstr "Конвертировать в"
 
@@ -1066,7 +1066,7 @@ msgstr "Длина линии"
 msgid "Color {index}"
 msgstr "Цвет {index}"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 msgid "Canvas"
 msgstr "Полотно"
 
@@ -1111,6 +1111,11 @@ msgstr "Закрывать вкладки средней клавишей мыш
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "Инвертировать направление масштабирования"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Pan with left mouse button"
+msgstr "Закрывать вкладки средней клавишей мыши"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1176,6 +1181,10 @@ msgstr "Эта опция не имеет эффекта на текущую к�
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
 msgstr "Эту опцию нельзя изменить на текущей платформе."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
@@ -1648,11 +1657,6 @@ msgstr "Редактор кода"
 msgid "Inspector"
 msgstr "Инспектор"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "Окно просмотра"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1694,6 +1698,9 @@ msgstr "Графическое приложение для структурир�
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "свг;вектор;графика;рисование;дизайн;иллюстрация;изображение;искусство;диаграмма;иконка;лого;редактор;путь;форма;2д;код;синий;лис"
+
+#~ msgid "Viewport"
+#~ msgstr "Окно просмотра"
 
 #~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
 #~ msgstr "Изображение можно экспортировать только как SVG, поскольку его пропорции слишком экстремальные."

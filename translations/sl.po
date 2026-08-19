@@ -80,7 +80,7 @@ msgstr "Obnovi"
 msgid "View in Inspector"
 msgstr "Ogled v nadzorniku"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Convert to"
 msgstr "Pretvori v"
 
@@ -1061,7 +1061,7 @@ msgstr "Dolžina pomišljaja"
 msgid "Color {index}"
 msgstr "Barva {index}"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 msgid "Canvas"
 msgstr "Platno"
 
@@ -1106,6 +1106,11 @@ msgstr "Zapri zavihke s srednjim gumbom miške"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "Obrni smer povečave"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Pan with left mouse button"
+msgstr "Zapri zavihke s srednjim gumbom miške"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1171,6 +1176,10 @@ msgstr "Nastavitev nima učinka v trenutni konfiguraciji."
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
 msgstr "Nastavitve ni mogoče spremeniti na tej platformi."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
@@ -1642,11 +1651,6 @@ msgstr "Urejevalnik kode"
 msgid "Inspector"
 msgstr "Nadzornik"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "Okno prikaza"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1688,3 +1692,6 @@ msgstr "Aplikacija za vektorsko grafiko za strukturirano urejanje SVG-jev"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vektor;grafika;risanje;oblikovanje;ilustracija;slika;umetnost;diagram;ikona;logotip;urejevalnik;pot;oblika;2D;koda;modra;lisica"
+
+#~ msgid "Viewport"
+#~ msgstr "Okno prikaza"

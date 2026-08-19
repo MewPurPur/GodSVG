@@ -80,7 +80,7 @@ msgstr "Restaurer"
 msgid "View in Inspector"
 msgstr "Voir dans l'inspecteur"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 #, fuzzy
 msgid "Convert to"
 msgstr "Convertir en"
@@ -1097,7 +1097,7 @@ msgstr ""
 msgid "Color {index}"
 msgstr "Pipette"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Canvas"
 msgstr "Couleur d'intérieur"
@@ -1144,6 +1144,11 @@ msgstr "Fermer les onglets avec la molette de la souris"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "Inverser la direction du zoom"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Pan with left mouse button"
+msgstr "Fermer les onglets avec la molette de la souris"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1210,6 +1215,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1692,11 +1701,6 @@ msgstr "Éditeur de code"
 msgid "Inspector"
 msgstr "Inspecteur"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "Zone d'affichage"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1739,6 +1743,9 @@ msgstr ""
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr ""
+
+#~ msgid "Viewport"
+#~ msgstr "Zone d'affichage"
 
 #~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
 #~ msgstr "Le graphique ne peut être exporté qu'en SVG car ses proportions sont trop extrêmes."

@@ -80,7 +80,7 @@ msgstr "Wiederherstellen"
 msgid "View in Inspector"
 msgstr "Im Inspektor anzeigen"
 
-#: src/autoload/State.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 #, fuzzy
 msgid "Convert to"
 msgstr "Konvertieren zu"
@@ -1097,7 +1097,7 @@ msgstr ""
 msgid "Color {index}"
 msgstr "Farbauswahl"
 
-#: src/ui_widgets/settings_content_generic.gd
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Canvas"
 msgstr "Innenfarbe"
@@ -1144,6 +1144,11 @@ msgstr "Registerkarten mit mittlerer Maustaste schließen"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Invert zoom direction"
 msgstr "Zoomrichtung umkehren"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Pan with left mouse button"
+msgstr "Registerkarten mit mittlerer Maustaste schließen"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1209,6 +1214,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "The setting can't be changed on this platform."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1691,11 +1700,6 @@ msgstr "Code-Editor"
 msgid "Inspector"
 msgstr "Inspektor"
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
-msgid "Viewport"
-msgstr "Ansichtsfenster"
-
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
@@ -1738,6 +1742,9 @@ msgstr ""
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr ""
+
+#~ msgid "Viewport"
+#~ msgstr "Ansichtsfenster"
 
 #~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
 #~ msgstr "Die Grafik kann nur als SVG exportiert werden, da ihre Proportionen zu extrem sind."
