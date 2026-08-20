@@ -1107,9 +1107,8 @@ msgid "Invert zoom direction"
 msgstr "反转缩放方向"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Pan with left mouse button"
-msgstr "鼠标中键关闭分页"
+msgstr "鼠标左键平移"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1178,7 +1177,7 @@ msgstr "设置于当前平台下无法更改。"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, the left mouse button can be used to pan the canvas."
-msgstr ""
+msgstr "启用时，可使用鼠标左键平移画布。"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
