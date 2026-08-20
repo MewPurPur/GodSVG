@@ -2,6 +2,8 @@ extends PanelContainer
 
 # Very reliant on the transform popup. But that's fine, this isn't intended to be used elsewhere.
 
+signal focused
+
 var transform: Transform
 
 @onready var transform_list: VBoxContainer = $TransformList
@@ -62,12 +64,24 @@ func setup(new_transform: Transform, new_fields: Array[BetterLineEdit]) -> void:
 		field.focus_entered.connect(reset_field_color.bind(field))
 		field.focus_exited.connect(setup_field_defaults_and_colors)
 	setup_field_defaults_and_colors()
+	
+	transform_button.focus_entered.emit(focused)
+	
+	var focus_sequence: Array[Control] = [transform_button]
+	focus_sequence.append_array(_fields)
+	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 func resync(new_transform: Transform) -> void:
 	transform = new_transform
 	for field in _fields:
 		field.set_value(transform.get(field.tooltip_text), true)
 	setup_field_defaults_and_colors()
+
+func grab_focus_override(hide_focus := true) -> void:
+	transform_button.grab_focus(hide_focus)
+
+func has_focus_override(ignore_hidden_focus := false) -> void:
+	transform_button.has_focus(ignore_hidden_focus)
 
 func setup_field_defaults_and_colors() -> void:
 	update_title_font_color()

@@ -18,6 +18,9 @@ const _icons_dict: Dictionary[String, Texture2D] = {
 var attribute: AttributeTransformList
 var undo_redo := UndoRedoRef.new()
 
+var focus_index := -1
+var is_rebuilt_focus_hidden := true
+
 @onready var x1_edit: NumberEdit = %FinalMatrix/X1
 @onready var x2_edit: NumberEdit = %FinalMatrix/X2
 @onready var y1_edit: NumberEdit = %FinalMatrix/Y1
@@ -26,7 +29,7 @@ var undo_redo := UndoRedoRef.new()
 @onready var o2_edit: NumberEdit = %FinalMatrix/O2
 @onready var transforms_container: VBoxContainer = %TransformList
 @onready var add_button: Button = %AddButton
-@onready var apply_matrix: Button = %ApplyMatrix
+@onready var apply_matrix_button: Button = %ApplyMatrix
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
@@ -37,33 +40,34 @@ func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
 	add_button.pressed.connect(popup_new_transform_context.bind(0, add_button))
-	apply_matrix.pressed.connect(_on_apply_matrix_pressed)
+	apply_matrix_button.pressed.connect(_on_apply_matrix_pressed)
 	sync()
 
 func _exit_tree() -> void:
 	State.save_svg()
 
 func sync_localization() -> void:
-	apply_matrix.tooltip_text = Translator.translate("Apply the matrix")
+	apply_matrix_button.tooltip_text = Translator.translate("Apply the matrix")
 
 func sync() -> void:
 	var transform_count := attribute.get_transform_count()
 	# Sync until the first different transform type is found; then rebuild the rest.
-	var i := 0
+	var last_resync_index := 0
 	for transform_editor in transforms_container.get_children():
-		if i >= transform_count:
+		if last_resync_index >= transform_count:
 			break
-		var t := attribute.get_transform(i)
+		var t := attribute.get_transform(last_resync_index)
 		if t.name == transform_editor.transform.name:
 			transform_editor.resync(t)
 		else:
 			break
-		i += 1
+		last_resync_index += 1
 	
-	for child in transforms_container.get_children():
-		if child.get_index() >= i:
-			child.queue_free()
-	while i < transform_count:
+	for i in transforms_container.get_child_count():
+		if i >= last_resync_index:
+			transforms_container.get_child(i).queue_free()
+	
+	for i in range(last_resync_index, transform_count):
 		var t := attribute.get_transform(i)
 		var t_editor := TransformEditorScene.instantiate()
 		transforms_container.add_child(t_editor)
@@ -87,11 +91,35 @@ func sync() -> void:
 		t_editor.setup(t, fields)
 		t_editor.transform_button.icon = _icons_dict[t_editor.transform.name]
 		t_editor.transform_button.pressed.connect(popup_transform_actions.bind(i, t_editor.transform_button))
-		i += 1
+		t_editor.focused.connect(func() -> void: focus_index = i)
+	
+	if transform_count == 0 or focus_index < 0 or focus_index >= transform_count:
+		add_button.grab_focus(is_rebuilt_focus_hidden)
+	else:
+		transforms_container.get_child(focus_index).grab_focus_override(is_rebuilt_focus_hidden)
+	
 	# Show the add button if there are no transforms.
 	transforms_container.visible = (transform_count != 0)
 	add_button.visible = (transform_count == 0)
-	update_final_transform()
+	# Sync final transform.
+	var final_transform := attribute.get_final_precise_transform()
+	x1_edit.set_value(final_transform[0])
+	x2_edit.set_value(final_transform[1])
+	y1_edit.set_value(final_transform[2])
+	y2_edit.set_value(final_transform[3])
+	o1_edit.set_value(final_transform[4])
+	o2_edit.set_value(final_transform[5])
+	
+	var focus_sequence: Array[Control] = [add_button]
+	focus_sequence.append_array(transforms_container.get_children())
+	focus_sequence.append(x1_edit)
+	focus_sequence.append(x2_edit)
+	focus_sequence.append(y1_edit)
+	focus_sequence.append(y2_edit)
+	focus_sequence.append(o1_edit)
+	focus_sequence.append(o2_edit)
+	focus_sequence.append(apply_matrix_button)
+	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 
 func create_mini_number_field(index: int, property: String) -> BetterLineEdit:
@@ -134,15 +162,6 @@ func _on_apply_matrix_pressed() -> void:
 	edit(attribute.set_transform_list.bind([Transform.TransformMatrix.new(
 			final_transform[0], final_transform[1], final_transform[2], final_transform[3],
 			final_transform[4], final_transform[5])] as Array[Transform]))
-
-func update_final_transform() -> void:
-	var final_transform := attribute.get_final_precise_transform()
-	x1_edit.set_value(final_transform[0])
-	x2_edit.set_value(final_transform[1])
-	y1_edit.set_value(final_transform[2])
-	y2_edit.set_value(final_transform[3])
-	o1_edit.set_value(final_transform[4])
-	o2_edit.set_value(final_transform[5])
 
 
 func popup_transform_actions(index: int, control: Control) -> void:

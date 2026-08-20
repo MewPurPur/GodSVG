@@ -38,8 +38,8 @@ func set_position_relative(new_position: Vector2) -> void:
 	position = usable_area_size * position_window_relative
 
 func _ready() -> void:
-	Configs.shortcut_panel_changed.connect(update_layout)
-	update_layout()
+	Configs.shortcut_panel_changed.connect(sync_layout)
+	sync_layout()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	# Positioning callbacks and logic.
@@ -51,7 +51,7 @@ func _ready() -> void:
 		Layout.VERTICAL_STRIP:
 			set_position_relative(Vector2(0.95, 0.9))
 
-func update_layout() -> void:
+func sync_layout() -> void:
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()
