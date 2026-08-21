@@ -842,7 +842,7 @@ msgstr "预设"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Add trailing newline"
-msgstr "在文件末尾添加"
+msgstr "在文件末尾添加换行"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use shorthand tag syntax"
