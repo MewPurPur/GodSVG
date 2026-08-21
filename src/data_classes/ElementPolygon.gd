@@ -23,9 +23,9 @@ func get_bounding_box() -> Rect2:
 	var max_x := -INF
 	var max_y := -INF
 	
-	for i in list.get_list_size() / 2:
-		var x_coord := list.get_list_element(i * 2)
-		var y_coord := list.get_list_element(i * 2 + 1)
+	for i in range(0, list.get_list_size(), 2):
+		var x_coord := list.get_list_element(i)
+		var y_coord := list.get_list_element(i + 1)
 		min_x = minf(min_x, x_coord)
 		max_x = maxf(max_x, x_coord)
 		min_y = minf(min_y, y_coord)

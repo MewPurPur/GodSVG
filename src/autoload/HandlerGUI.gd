@@ -115,9 +115,13 @@ func forget_all_shortcuts(node: Node) -> void:
 
 ## Registers a focus sequence to an owner.
 func register_focus_sequence(focus_master: Control, sequence: Array[Control], focus_first_control := false) -> void:
+	if not focus_master.is_inside_tree():
+		return
 	focus_sequences[focus_master] = sequence
-	if not focus_master.tree_exiting.is_connected(forget_focus_sequence):
-		focus_master.tree_exiting.connect(forget_focus_sequence.bind(focus_master))
+	# Disconnect only when the tree is actually exited.
+	# Otherwise if the control is registered again after that, it would already wouldn't be forgotten.
+	if not focus_master.tree_exited.is_connected(forget_focus_sequence):
+		focus_master.tree_exited.connect(forget_focus_sequence.bind(focus_master))
 	for control in sequence:
 		control.visibility_changed.connect(
 			func() -> void:
@@ -130,6 +134,10 @@ func register_focus_sequence(focus_master: Control, sequence: Array[Control], fo
 	
 	if focus_first_control:
 		focus_first_control_in_sequence(sequence)
+
+## Removes all shortcuts registered to a node.
+func forget_focus_sequence(focus_master: Control) -> void:
+	focus_sequences.erase(focus_master)
 
 func focus_first_control_in_sequence(sequence: Array[Control]) -> void:
 	var control := _find_first_focusable_control_in_sequence(sequence)
@@ -147,10 +155,6 @@ func _find_first_focusable_control_in_sequence(sequence: Array[Control]) -> Cont
 			if is_instance_valid(nested):
 				return nested
 	return null
-
-## Removes all shortcuts registered to a node.
-func forget_focus_sequence(focus_master: Control) -> void:
-	focus_sequences.erase(focus_master)
 
 func add_suppressed_focus(control: Control) -> void:
 	suppressed_focused_controls.append(control)
@@ -228,11 +232,12 @@ func _remove_control(overlay_ref: ColorRect = null) -> void:
 
 ## Frees all nodes in the menu_stack, emptying it.
 func remove_all_menus() -> void:
-	if not menu_stack.is_empty():
-		menu_stack[0].tree_exited.connect(menus_or_popups_cleared.emit)
-		while not menu_stack.is_empty():
-			menu_stack.pop_back().queue_free()
-		throw_mouse_motion_event()
+	if menu_stack.is_empty():
+		return
+	menu_stack[0].tree_exited.connect(menus_or_popups_cleared.emit)
+	while not menu_stack.is_empty():
+		menu_stack.pop_back().queue_free()
+	throw_mouse_motion_event()
 
 
 # The passed popup control may be added to a shadow panel. The shadow panel is
@@ -303,11 +308,12 @@ func remove_popup(overlay_ref: Control = null) -> void:
 	throw_mouse_motion_event()
 
 func remove_all_popups() -> void:
-	if not popup_stack.is_empty():
-		popup_stack[0].tree_exited.connect(menus_or_popups_cleared.emit)
-		while not popup_stack.is_empty():
-			popup_stack.pop_back().queue_free()
-		throw_mouse_motion_event()
+	if popup_stack.is_empty():
+		return
+	popup_stack[0].tree_exited.connect(menus_or_popups_cleared.emit)
+	while not popup_stack.is_empty():
+		popup_stack.pop_back().queue_free()
+	throw_mouse_motion_event()
 
 
 # Should usually be the global rect of a control.

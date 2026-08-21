@@ -38,8 +38,8 @@ func _ready() -> void:
 	shortcuts.add_shortcut("add_shorthand_quadratic_bezier", State.respond_to_key_input.bind("T"))
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
-	Configs.layout_changed.connect(update_layout)
-	update_layout()
+	Configs.layout_changed.connect(sync_layout)
+	sync_layout()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	
@@ -55,7 +55,7 @@ func sync_theming() -> void:
 	panel_container.add_theme_stylebox_override("panel", stylebox)
 
 
-func update_layout() -> void:
+func sync_layout() -> void:
 	for child in panel_container.get_children():
 		child.queue_free()
 	
