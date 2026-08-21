@@ -253,7 +253,7 @@ func _gui_input(event: InputEvent) -> void:
 				btn_arr.append(ContextButton.create_from_action("open_externally", external_file_missing))
 				btn_arr.append(ContextButton.create_from_action("open_in_folder", external_file_missing))
 			
-			var tab_popup := ContextPopup.create(btn_arr, true, -1, PackedInt32Array([2, 5]))
+			var tab_popup := ContextPopup.create(btn_arr, true, -1, PackedInt32Array([2, 4]))
 			if hovered_idx != -1:
 				var tab_global_rect := get_tab_rect(hovered_idx)
 				tab_global_rect.position += get_global_rect().position

@@ -15,10 +15,10 @@ func setup(new_transform: Transform, new_fields: Array[BetterLineEdit]) -> void:
 	transform = new_transform
 	transform_button.text = transform.name
 	_fields = new_fields
+	var transform_fields := HBoxContainer.new()
+	transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 	match transform.name:
 		"matrix":
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
 			transform_fields.add_child(_fields[2])
 			transform_fields.add_child(_fields[4])
@@ -30,42 +30,33 @@ func setup(new_transform: Transform, new_fields: Array[BetterLineEdit]) -> void:
 			transform_list.add_child(transform_fields)
 			transform_list.add_child(transform_fields_additional)
 		"translate":
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
 			transform_fields.add_child(_fields[1])
 			transform_list.add_child(transform_fields)
 		"rotate":
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
 			transform_fields.add_child(_fields[1])
 			transform_fields.add_child(_fields[2])
 			transform_list.add_child(transform_fields)
 		"scale":
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
 			transform_fields.add_child(_fields[1])
 			transform_list.add_child(transform_fields)
 		"skewX":
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
 			transform_list.add_child(transform_fields)
 		"skewY":
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
 			transform_list.add_child(transform_fields)
 	
 	for field in _fields:
 		field.set_value(transform.get(field.tooltip_text), true)  # "Clean code" is a sham.
 		field.focus_entered.connect(reset_field_color.bind(field))
+		field.focus_entered.connect(focused.emit)
 		field.focus_exited.connect(setup_field_defaults_and_colors)
 	setup_field_defaults_and_colors()
 	
-	transform_button.focus_entered.emit(focused)
+	transform_button.focus_entered.connect(focused.emit)
 	
 	var focus_sequence: Array[Control] = [transform_button]
 	focus_sequence.append_array(_fields)

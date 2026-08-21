@@ -113,16 +113,15 @@ func forget_all_shortcuts(node: Node) -> void:
 	shortcut_registrations.erase(node)
 
 
-func _process(delta: float) -> void:
-	if Engine.get_process_frames() % 288 == 0:
-		print("---")
-		print(focus_sequences)
-
 ## Registers a focus sequence to an owner.
 func register_focus_sequence(focus_master: Control, sequence: Array[Control], focus_first_control := false) -> void:
+	if not focus_master.is_inside_tree():
+		return
 	focus_sequences[focus_master] = sequence
-	if not focus_master.tree_exiting.is_connected(forget_focus_sequence):
-		focus_master.tree_exiting.connect(forget_focus_sequence.bind(focus_master))
+	# Disconnect only when the tree is actually exited.
+	# Otherwise if the control is registered again after that, it would already wouldn't be forgotten.
+	if not focus_master.tree_exited.is_connected(forget_focus_sequence):
+		focus_master.tree_exited.connect(forget_focus_sequence.bind(focus_master))
 	for control in sequence:
 		control.visibility_changed.connect(
 			func() -> void:
@@ -135,6 +134,10 @@ func register_focus_sequence(focus_master: Control, sequence: Array[Control], fo
 	
 	if focus_first_control:
 		focus_first_control_in_sequence(sequence)
+
+## Removes all shortcuts registered to a node.
+func forget_focus_sequence(focus_master: Control) -> void:
+	focus_sequences.erase(focus_master)
 
 func focus_first_control_in_sequence(sequence: Array[Control]) -> void:
 	var control := _find_first_focusable_control_in_sequence(sequence)
@@ -152,10 +155,6 @@ func _find_first_focusable_control_in_sequence(sequence: Array[Control]) -> Cont
 			if is_instance_valid(nested):
 				return nested
 	return null
-
-## Removes all shortcuts registered to a node.
-func forget_focus_sequence(focus_master: Control) -> void:
-	focus_sequences.erase(focus_master)
 
 func add_suppressed_focus(control: Control) -> void:
 	suppressed_focused_controls.append(control)
