@@ -149,7 +149,7 @@ signal selection_changed
 # Locked scroll puts the object at a specific place on the screen, otherwise it's clamped.
 signal requested_scroll_to_selection(xid: PackedInt32Array, inner_index: int, locked: bool)
 
-# The viewport listens for this signal to put you in handle-placing mode.
+# The canvas listens for this signal to put you in handle-placing mode.
 signal handle_added
 
 # The PackedInt32Array holds the hierarchical orders. XID means XMLNode ID.

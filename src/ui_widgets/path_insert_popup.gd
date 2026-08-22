@@ -57,7 +57,7 @@ func reset() -> void:
 	add_path_command_button("S", false, not prev_command_char in "CcSs")
 	sync_to_path_command_insert_relative()
 	
-	var focus_sequence: Array[Control] = [relative_toggle]
+	var focus_sequence: Array[Control] = [keep_open_toggle, relative_toggle]
 	focus_sequence.append_array(command_container.get_children())
 	HandlerGUI.register_focus_sequence(self, focus_sequence, true)
 

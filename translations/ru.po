@@ -1232,7 +1232,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Поменяет местами направление прокрутки при масштабировании."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+#, fuzzy
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
 msgstr "Курсор будет телепортироваться от одного до противоположного края на границе окна просмотра."
 
 #: src/ui_widgets/settings_content_generic.gd

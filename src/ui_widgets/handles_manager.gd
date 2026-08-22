@@ -705,7 +705,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		dragged_handle = null
 		hovered_handle = null
-		# Mouse events on the viewport clear hovered, but other events don't.
+		# Mouse events on the canvas clear hovered, but other events don't.
 		if ((event is InputEventMouseMotion and event.button_mask == 0) or\
 		(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]))):
 			State.clear_all_hovered()

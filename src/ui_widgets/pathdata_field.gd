@@ -145,29 +145,21 @@ func sync_to_new_value_and_selection() -> void:
 			# Gather the old focus.
 			var focused_strip := real_strips[focused_index]
 			var is_relativity_button_focused := focused_strip.relativity_button.has_focus()
+			var is_action_button_focused := focused_strip.action_button.has_focus() or focused_strip.action_button in HandlerGUI.suppressed_focused_controls
 			var field_focused_index := -1
 			for i in focused_strip.fields.size():
 				var field := focused_strip.fields[i]
 				if field.has_focus():
 					field_focused_index = i
 					break
-			var is_action_button_focused := focused_strip.action_button.has_focus() or focused_strip.action_button in HandlerGUI.suppressed_focused_controls
 			
-			var is_focus_hidden := not ((is_relativity_button_focused and focused_strip.relativity_button.has_focus(true)) or\
-					(is_action_button_focused and focused_strip.action_button.has_focus(true)) or\
-					(field_focused_index != -1 and focused_strip.fields[field_focused_index] is Button and focused_strip.fields[field_focused_index].has_focus(true)))
-			
-			if State.inner_selections[0] != focused_index:
-				set_focused(State.inner_selections[0], true)
-				real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
-			else:
-				set_focused(State.inner_selections[0], true)
-				if is_relativity_button_focused:
-					real_strips[focused_index].relativity_button.grab_focus(is_focus_hidden)
-				elif field_focused_index != -1:
-					real_strips[focused_index].fields[field_focused_index].grab_focus(is_focus_hidden)
-				elif is_action_button_focused:
-					real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
+			set_focused(State.inner_selections[0], true)
+			if State.inner_selections[0] != focused_index or is_action_button_focused:
+				real_strips[focused_index].action_button.grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
+			elif is_relativity_button_focused:
+				real_strips[focused_index].relativity_button.grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
+			elif field_focused_index != -1:
+				real_strips[focused_index].fields[field_focused_index].grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
 	elif line_edit.has_focus():
 		set_focused(-1, true)
 	

@@ -1270,7 +1270,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Inverser les sens de défilement pour le zoom avant et le zoom arrière."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+#, fuzzy
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
 msgstr "Téléporte le curseur de l'autre côté de la vue à chaque fois qu'il en atteind la limite."
 
 #: src/ui_widgets/settings_content_generic.gd

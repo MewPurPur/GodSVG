@@ -89,7 +89,7 @@ func _draw() -> void:
 	var half_width := size.x / 2.0
 	var right_rect := Rect2(half_width, 20, half_width, half_width * 1.25)
 	
-	# Fixed viewport location for now.
+	# The canvas stays in a fixed location for now.
 	
 	get_theme_stylebox("disabled", "TranslucentButton").draw(ci, right_rect.grow(-BUFFER_SIZE))
 	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.CANVAS)
@@ -282,7 +282,7 @@ func clear_proposed_drop() -> void:
 # Tooltips
 
 func _get_tooltip(at_position: Vector2) -> String:
-	# TODO Hack for the viewport tooltip.
+	# TODO Hack for the canvas tooltip.
 	var half_width := size.x / 2.0
 	if Rect2(half_width, 18, half_width, half_width * 1.25).grow(-BUFFER_SIZE).has_point(at_position):
 		return TranslationUtils.get_layout_part_name(Utils.LayoutPart.CANVAS)
@@ -300,7 +300,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	vbox.add_theme_constant_override("separation", 2)
 	var main_label := Label.new()
 	main_label.text = for_text
-	# TODO The condition is a hack for the viewport tooltip.
+	# TODO The condition is a hack for the canvas tooltip.
 	vbox.add_child(main_label)
 	if for_text != TranslationUtils.get_layout_part_name(Utils.LayoutPart.CANVAS):
 		var dim_label := Label.new()
