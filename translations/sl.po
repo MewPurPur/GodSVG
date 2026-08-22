@@ -1226,7 +1226,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Zamenja smeri drsenja za povečavo in pomanjšavo."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+#, fuzzy
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
 msgstr "Med premikanjem kazalec ukrivi na nasprotno stran, kadar koli doseže mejo vidnega polja."
 
 #: src/ui_widgets/settings_content_generic.gd

@@ -657,7 +657,7 @@ func setup_other_content() -> void:
 	var wraparound_panning := add_checkbox(Translator.translate("Wrap-around panning"))
 	var wraparound_panning_forced_off := not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP)
 	add_preview(SettingTextPreview.new(Translator.translate(
-			"Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."),
+			"Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."),
 			SettingTextPreview.get_platform_availability_warning(wraparound_panning_forced_off)))
 	# Disable mouse wrap if not available.
 	if wraparound_panning_forced_off:

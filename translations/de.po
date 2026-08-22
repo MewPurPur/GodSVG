@@ -1269,7 +1269,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Tauscht die Scrollrichtung für das Rein- und Rauszoomen."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+#, fuzzy
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
 msgstr "Teleportiert den Mauszeiger zur gegenüberliegenden Seite, soblald eine Bildschirmgrenze während des Verschiebens erreicht wird."
 
 #: src/ui_widgets/settings_content_generic.gd

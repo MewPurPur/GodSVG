@@ -147,19 +147,13 @@ func sync_to_new_value_and_selection() -> void:
 			var is_field_y_focused := focused_strip.field_y.has_focus()
 			var is_action_button_focused := focused_strip.action_button.has_focus() or focused_strip.action_button in HandlerGUI.suppressed_focused_controls
 			
-			var is_focus_hidden := not (is_action_button_focused and focused_strip.action_button.has_focus(true))
-			
-			if State.inner_selections[0] != focused_index:
-				set_focused(State.inner_selections[0], true)
-				real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
-			else:
-				set_focused(State.inner_selections[0], true)
-				if is_field_x_focused:
-					real_strips[focused_index].field_x.grab_focus(true)
-				elif is_field_y_focused:
-					real_strips[focused_index].field_y.grab_focus(true)
-				elif is_action_button_focused:
-					real_strips[focused_index].action_button.grab_focus(is_focus_hidden)
+			set_focused(State.inner_selections[0], true)
+			if State.inner_selections[0] != focused_index or is_action_button_focused:
+				real_strips[focused_index].action_button.grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
+			elif is_field_x_focused:
+				real_strips[focused_index].field_x.grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
+			elif is_field_y_focused:
+				real_strips[focused_index].field_y.grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
 	elif line_edit.has_focus():
 		set_focused(-1, true)
 	

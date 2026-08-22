@@ -1231,7 +1231,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Vahetab kerimissuunad suurendamiseks ja vähendamiseks ümber."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+#, fuzzy
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
 msgstr "Viib kursori akna vastaspoolele, kui see jõuab vaate liigutamise ajal selle servani, et see liikumist ei takistaks."
 
 #: src/ui_widgets/settings_content_generic.gd

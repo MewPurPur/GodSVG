@@ -1224,7 +1224,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "互換放大和缩小的滚动方向。"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+#, fuzzy
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
 msgstr "鼠标移至视图边缘時自动环绕至对则。"
 
 #: src/ui_widgets/settings_content_generic.gd

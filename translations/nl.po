@@ -1257,7 +1257,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Verwisselt de scroll richtingen voor inzoomen en uitzoomen."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+#, fuzzy
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
 msgstr "Verplaatst de cursur naar de overkant wanneer het buiten het kijkvenster gaat tijdens het rondkijken."
 
 #: src/ui_widgets/settings_content_generic.gd
