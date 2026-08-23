@@ -92,6 +92,7 @@ func sync_theming() -> void:
 func _on_line_edit_focus_entered() -> void:
 	if line_edit.has_focus(true):
 		_on_line_edit_visible_focus_changed()
+	sync_to_new_value_and_selection()
 
 func _on_line_edit_visible_focus_changed() -> void:
 	set_focused(-1)
@@ -160,10 +161,11 @@ func sync_to_new_value_and_selection() -> void:
 				real_strips[focused_index].relativity_button.grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
 			elif field_focused_index != -1:
 				real_strips[focused_index].fields[field_focused_index].grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
-	elif line_edit.has_focus():
+	elif line_edit.has_focus() != (0 in real_strips):
 		set_focused(-1, true)
 	
 	if get_rect().has_point(get_local_mouse_position()):
+		set_hovered(-1)
 		HandlerGUI.throw_mouse_motion_event()
 	commands_container.custom_minimum_size.y = STRIP_HEIGHT * cmd_count
 	commands_container.queue_redraw()
@@ -372,7 +374,7 @@ func set_hovered(index: int) -> void:
 		sync_real_strips()
 
 func set_focused(index: int, full_rebuild := false) -> void:
-	if focused_index == index and not full_rebuild and not (index == -1 and line_edit.has_focus()):
+	if focused_index == index and not full_rebuild:
 		return
 	focused_index = index
 	if index != -1:
