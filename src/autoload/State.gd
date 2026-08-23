@@ -583,7 +583,7 @@ func add_path_command(path_cmd_char: String) -> void:
 				if (path_cmd_count == 0 and not path_cmd_char in "Mm") or (path_cmd_char in "Zz" and path_cmd_count > 0 and\
 				path_attrib.get_command(path_cmd_count - 1) is PathCommand.CloseCommand):
 					return
-				path_attrib.insert_command(path_cmd_count, path_cmd_char, Vector2.ZERO)
+				path_attrib.insert_command(path_cmd_count, path_cmd_char)
 				normal_select(selected_xids[0], path_cmd_count, true)
 				handle_added.emit()
 	else:
@@ -596,7 +596,7 @@ func add_path_command(path_cmd_char: String) -> void:
 			if path_cmd_char in "Zz" and (path_attrib.get_command(last_selection) is PathCommand.CloseCommand or\
 			(path_attrib.get_command_count() > last_selection + 1 and path_attrib.get_command(last_selection + 1) is PathCommand.CloseCommand)):
 				return
-			path_attrib.insert_command(last_selection + 1, path_cmd_char, Vector2.ZERO)
+			path_attrib.insert_command(last_selection + 1, path_cmd_char)
 			normal_select(semi_selected_xid, last_selection + 1, true)
 			handle_added.emit()
 
@@ -1127,7 +1127,8 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					for start in pathdata.subpath_start_indices:
 						if not start in inner_selections:
 							continue
-						if pathdata.get_subpath(start).y > start:
+						var subpath_end := pathdata.get_subpath(start).y
+						if subpath_end > start and not (subpath_end == start + 1 and pathdata.get_command(subpath_end) is PathCommand.CloseCommand):
 							can_reverse_order = true
 							break
 					

@@ -161,8 +161,8 @@ func sync_to_new_value_and_selection() -> void:
 				real_strips[focused_index].relativity_button.grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
 			elif field_focused_index != -1:
 				real_strips[focused_index].fields[field_focused_index].grab_focus(not get_viewport().gui_get_focus_owner().has_focus(true))
-	elif line_edit.has_focus() != (0 in real_strips):
-		set_focused(-1, true)
+	elif line_edit.has_focus() or 0 in real_strips:
+		set_focused(-1, true)  # Clear the first strip if LineEdit is unfocused, or rebuild it as it may have changed.
 	
 	if get_rect().has_point(get_local_mouse_position()):
 		set_hovered(-1)
