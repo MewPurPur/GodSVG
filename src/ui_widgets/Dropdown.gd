@@ -79,6 +79,7 @@ func _enter_edit_mode() -> void:
 	line_edit.add_theme_font_override("font", get_theme_font("font"))
 	add_child(line_edit)
 	line_edit.grab_focus()
+	line_edit.post_focus_grabbed()
 
 ## To be overridden by scripts that extend Dropdown to change the initial text when editing.
 func _get_line_edit_activation_text() -> String:

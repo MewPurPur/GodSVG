@@ -25,6 +25,15 @@ func correct_unedit(was_previously_focus := false) -> void:
 		unedit()
 		editing_toggled.emit(false)
 
+# I have no idea why this is needed, but it seems to help.
+func post_focus_grabbed() -> void:
+	# When this was changed, edit() didn't emit editing_toggled() for some reason, but still blocking it.
+	set_block_signals(true)
+	edit()
+	set_block_signals(false)
+	select_all()
+	text_before_edit = text
+
 
 func _init() -> void:
 	# Solves an issue where Ctrl+S would type an "s" and handle the input.
@@ -56,7 +65,8 @@ func _on_base_class_editing_toggled(toggled_on: bool) -> void:
 			correct_unedit()
 		else:
 			# Hack to check if focus entered was from a mouse click.
-			if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			if get_global_rect().has_point(get_viewport().get_mouse_position()) and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or\
+			Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)):
 				first_click = true
 			text_before_edit = text
 			if not first_click:
@@ -98,12 +108,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("ui_focus_next") or event.is_action_pressed("ui_focus_prev"):
 		if not is_editing():
-			# When this was changed, edit() didn't emit editing_toggled() for some reason, but still blocking it.
-			set_block_signals(true)
-			edit()
-			set_block_signals(false)
-			select_all()
-			text_before_edit = text
+			post_focus_grabbed()
 			return
 	
 	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
@@ -118,6 +123,7 @@ func _input(event: InputEvent) -> void:
 		select_all()
 
 func _gui_input(event: InputEvent) -> void:
+	# Handle actions.
 	if event.is_action_pressed("evaluate"):
 		var numstring_evaluation := NumstringParser.evaluate(get_selected_text() if has_selection() else text)
 		if not is_nan(numstring_evaluation):
@@ -154,12 +160,14 @@ func _gui_input(event: InputEvent) -> void:
 	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
+	# Handle mouse events.
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		queue_redraw()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		if not has_focus(true):
+		if not is_editing():
 			grab_focus()
-			visible_focus_changed.emit()
+			post_focus_grabbed()
+		
 		var btn_arr: Array[ContextButton] = []
 		var separator_arr := PackedInt32Array()
 		
