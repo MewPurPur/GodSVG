@@ -11,14 +11,14 @@ var last_image_size: int
 func setup_svg_without_dimensions(svg_text: String) -> void:
 	var root := SVGParser.markup_to_root(svg_text).svg
 	if is_instance_valid(root):
-		setup_svg(svg_text, Vector2(root.width, root.height))
+		setup_svg(svg_text, root.width, root.height)
 	else:
 		hide()
 
-func setup_svg(svg_text: String, dimensions: Vector2) -> void:
+func setup_svg(svg_text: String, width: float, height: float) -> void:
 	if not is_node_ready():
 		await ready
-	var scaling_factor := size.x / maxf(dimensions.x, dimensions.y)
+	var scaling_factor := size.x / maxf(width, height)
 	var img := Image.new()
 	var err := img.load_svg_from_string(svg_text, scaling_factor)
 	if err == OK:

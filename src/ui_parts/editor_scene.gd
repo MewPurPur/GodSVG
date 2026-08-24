@@ -229,7 +229,7 @@ class LayoutPartContainer extends Container:
 					fit_child_in_rect(child, child_rect)
 	
 	func _get_minimum_size() -> Vector2:
-		var max_size := Vector2()
+		var max_size := Vector2.ZERO
 		for child in get_children():
 			if child is Control:
 				max_size = max_size.max(child.get_combined_minimum_size())

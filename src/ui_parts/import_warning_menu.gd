@@ -36,7 +36,7 @@ func _ready() -> void:
 		var preview_parse_result := SVGParser.markup_to_root(preview_text)
 		var preview := preview_parse_result.svg
 		if is_instance_valid(preview):
-			texture_preview.setup_svg(SVGParser.root_to_editor_markup(preview), Vector2(preview.width, preview.height))
+			texture_preview.setup_svg(SVGParser.root_to_editor_markup(preview), preview.width, preview.height)
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:
 		texture_preview.hide()
