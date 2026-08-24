@@ -37,7 +37,7 @@ func get_bounding_box() -> Rect2:
 func can_replace(new_element: String) -> bool:
 	if new_element == "rect":
 		var optimized_polygon := duplicate()
-		optimized_polygon.simplify()
+		optimized_polygon.merge_segments(5)
 		var list: PackedFloat64Array = optimized_polygon.get_attribute_list("points")
 		if list.size() != 8:
 			return false
@@ -56,7 +56,7 @@ func get_replacement(new_element: String) -> Element:
 	match new_element:
 		"rect":
 			dropped_attributes = PackedStringArray(["points", "rx", "ry", "x", "y", "width", "height"])
-			simplify()
+			merge_segments()
 			var list: PackedFloat64Array = get_attribute_list("points")
 			var x1 := list[0]
 			var y1 := list[1]
@@ -81,7 +81,8 @@ func get_replacement(new_element: String) -> Element:
 	return element
 
 
-func simplify() -> void:
+# max_output_vertices is useful for stopping early if an operation is guaranteed to fail if the vertices are too many.
+func merge_segments(max_output_vertices := -1) -> void:
 	var list := get_attribute_list("points")
 	var list_size := list.size()
 	if list_size < 6:
@@ -94,6 +95,9 @@ func simplify() -> void:
 		prev_point.angle_to_point(Vector2(list[i + 2], list[i + 3]))):
 			new_list_points.append(list[i])
 			new_list_points.append(list[i + 1])
+			if max_output_vertices != -1 and new_list_points.size() >= max_output_vertices * 2:
+				get_attribute("points").set_list(new_list_points)
+				return
 	
 	var second_to_last_point := Vector2(list[-4], list[-3])
 	if not is_equal_approx(second_to_last_point.angle_to_point(Vector2(list[-2], list[-1])),

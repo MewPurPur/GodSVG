@@ -39,7 +39,7 @@ func get_bounding_box() -> Rect2:
 func can_replace(new_element: String) -> bool:
 	if new_element == "line":
 		var optimized_polyline := duplicate()
-		optimized_polyline.simplify()
+		optimized_polyline.merge_segments(3)
 		return optimized_polyline.get_attribute_list("points").size() == 4
 	else:
 		return new_element == "path"
@@ -53,7 +53,7 @@ func get_replacement(new_element: String) -> Element:
 	match new_element:
 		"line":
 			dropped_attributes = PackedStringArray(["points", "x1", "y1", "x2", "y2", "fill", "fill-opacity", "stroke-linejoin"])
-			simplify()
+			merge_segments()
 			var list := get_attribute_list("points")
 			element.set_attribute("x1", list[0])
 			element.set_attribute("y1", list[1])
@@ -72,7 +72,8 @@ func get_replacement(new_element: String) -> Element:
 	return element
 
 
-func simplify() -> void:
+# max_output_vertices is useful for stopping early if an operation is guaranteed to fail if the vertices are too many.
+func merge_segments(max_output_vertices := -1) -> void:
 	var list := get_attribute_list("points")
 	var list_size := list.size()
 	if list_size < 6:
@@ -87,6 +88,9 @@ func simplify() -> void:
 		prev_point.angle_to_point(Vector2(list[i + 2], list[i + 3]))):
 			new_list_points.append(list[i])
 			new_list_points.append(list[i + 1])
+			if max_output_vertices != -1 and new_list_points.size() >= max_output_vertices * 2:
+				get_attribute("points").set_list(new_list_points)
+				return
 	new_list_points.append(list[-2])
 	new_list_points.append(list[-1])
 	get_attribute("points").set_list(new_list_points)
