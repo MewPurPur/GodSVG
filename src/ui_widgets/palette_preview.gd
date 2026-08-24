@@ -160,6 +160,7 @@ func _draw() -> void:
 		
 		var inner_rect := rect.grow(-2)
 		if fake_reserved_textures.has(index):
+			draw_texture_rect(checkerboard, inner_rect, false)
 			fake_reserved_textures[index].draw_rect(ci, inner_rect, false)
 		else:
 			var parsed_color: Color

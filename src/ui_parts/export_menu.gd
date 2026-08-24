@@ -148,7 +148,7 @@ func _on_edited_export_data_changed() -> void:
 		export_size = roundi(texture_preview.last_image_size * maxf(1.0, export_size_factor))
 		final_size_label.text = Translator.translate("Size") if export_size_factor <= 1.0 else Translator.translate("Estimated size")
 	else:
-		texture_preview.setup_svg(State.get_export_text(), Vector2(svg_width, svg_height))
+		texture_preview.setup_svg(State.get_export_text(), svg_width, svg_height)
 		export_size = State.get_export_text().length()
 		final_size_label.text = Translator.translate("Size")
 	
