@@ -3,8 +3,10 @@
 extends EditorScript
 
 const CREDITS := "FlooferLand"
+var rand := RandomNumberGenerator.new()
 
 func _run() -> void:
+	rand.seed = 1294921
 	var input := FileAccess.get_file_as_string("res://translations/en.po")
 	var output := ""
 	var last_id := ""
@@ -36,6 +38,12 @@ func _run() -> void:
 func _translate_str(input: String) -> String:
 	input = input.to_lower()
 	
+	# The smarts
+	if input.ends_with("."):
+		input = input.trim_suffix(".") + "!".repeat(rand.randi_range(0, 3))
+	if input.ends_with("!") and input.count(" ") < 4:
+		input = input.to_upper() + "!".repeat(rand.randi_range(0, 2))
+	
 	# Quick replaces (should be careful here)
 	input = input\
 		.replace("translation-credits", CREDITS)\
@@ -52,10 +60,6 @@ func _translate_str(input: String) -> String:
 		.replace("'t", "t")\
 		.replace(", ", " ")
 	
-	# The smarts
-	if input.ends_with("."):
-		input = input.trim_suffix(".")
-	
 	# Quick words (order matters)
 	var words := {
 		"quit": "kthxbye",
@@ -68,7 +72,12 @@ func _translate_str(input: String) -> String:
 		"graphic": "grafic",
 		"discarded": "boomed",
 		"zoom": "zoomie",
+		"scroll": "zoom",
+		"be": "b",
+		"and": "n",
+		"for": "4",
 		"ok": "okey",
+		"accept": "YIPPEE",
 		"close": "byebye",
 		"view": "look",
 		"path": "paf",
@@ -83,6 +92,7 @@ func _translate_str(input: String) -> String:
 		"files": "filez",
 		"godsvgs": "godsvg",
 		"debug": "antibug",
+		"other": "otter",
 		"bug": "buggy",
 		"v-sync": "input lag (vsync)"
 	}
@@ -95,10 +105,11 @@ func _translate_str(input: String) -> String:
 		
 		# Prevents a bug with trailing S being duplicated
 		input = input.replace("ss ", "s ")
-	return input
+	return input.capitalize()
 
 func _replace_word(input: String, what: String, forwhat: String) -> String:
 	return input\
+		.replace("%s " % what, "%s " % forwhat)\
 		.replace(" %s " % what, " %s " % forwhat)\
 		.replace(" %s." % what, " %s." % forwhat)\
 		.replace(" %s," % what, " %s," % forwhat)\
