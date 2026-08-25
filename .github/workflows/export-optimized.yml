@@ -40,7 +40,7 @@ jobs:
   build-linux:
     name: Export GodSVG for Linux
     # Stay one LTS before latest to increase portability of Linux artifacts.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       PLATFORM: "Linux"
     steps:
@@ -101,8 +101,7 @@ jobs:
       - name: Install FUSE
         run: |
           sudo add-apt-repository universe
-          # Note: libfuse2 is renamed to libfuse2t64 in Ubuntu 24.04.
-          sudo apt-get install appstream libfuse2
+          sudo apt-get install appstream libfuse2t64
 
       - name: Prepare AppDir for AppImage
         run: |
