@@ -169,12 +169,7 @@ func is_implied_S_control_on_segment(index: int, start_x: float, start_y: float,
 	return is_point_on_segment(implied[0], implied[1], start_x, start_y, end_x, end_y)
 
 func is_point_on_segment(point_x: float, point_y: float, start_x: float, start_y: float, end_x: float, end_y: float) -> bool:
-	var a := Vector2(start_x, start_y)
-	var ab := Vector2(end_x, end_y) - a
-	if is_zero_approx(ab.length_squared()):
-		return is_equal_approx(point_x, start_x) and is_equal_approx(point_y, start_y)
-	var ac := Vector2(point_x, point_y) - a
-	return is_zero_approx(ab.cross(ac)) and ac.dot(ab) >= 0.0 and ac.dot(ab) <= ab.length_squared()
+	return Utils.are_angles_to_points_equal(Vector2(start_x, start_y), Vector2(point_x, point_y), Vector2(end_x, end_y))
 
 func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subsequent_commands := false) -> bool:
 	var cmd := _commands[index]

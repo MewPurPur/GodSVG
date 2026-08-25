@@ -113,6 +113,11 @@ static func Et(r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
 	var yt := r.y * cos(t)
 	return Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)
 
+static func are_angles_to_points_equal(anchor: Vector2, point1: Vector2, point2: Vector2) -> bool:
+	if is_zero_approx((anchor - point1).length_squared()) or is_zero_approx((anchor - point2).length_squared()):
+		return true
+	return is_equal_approx(fposmod(anchor.angle_to_point(point1), TAU), fposmod(anchor.angle_to_point(point2), TAU))
+
 
 static func is_event_drag(event: InputEvent) -> bool:
 	return event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT

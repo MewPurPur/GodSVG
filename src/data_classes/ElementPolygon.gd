@@ -90,18 +90,14 @@ func merge_segments(max_output_vertices := -1) -> void:
 	var new_list_points := PackedFloat64Array()
 	
 	for i in range(0, list_size - 2, 2):
-		var prev_point := Vector2(list[i - 2], list[i - 1])
-		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[i], list[i + 1])),
-		prev_point.angle_to_point(Vector2(list[i + 2], list[i + 3]))):
+		if not Utils.are_angles_to_points_equal(Vector2(list[i - 2], list[i - 1]), Vector2(list[i], list[i + 1]), Vector2(list[i + 2], list[i + 3])):
 			new_list_points.append(list[i])
 			new_list_points.append(list[i + 1])
 			if max_output_vertices != -1 and new_list_points.size() >= max_output_vertices * 2:
 				get_attribute("points").set_list(new_list_points)
 				return
 	
-	var second_to_last_point := Vector2(list[-4], list[-3])
-	if not is_equal_approx(second_to_last_point.angle_to_point(Vector2(list[-2], list[-1])),
-	second_to_last_point.angle_to_point(Vector2(list[0], list[1]))):
+	if not Utils.are_angles_to_points_equal(Vector2(list[-4], list[-3]), Vector2(list[-2], list[-1]), Vector2(list[0], list[1])):
 		new_list_points.append(list[-2])
 		new_list_points.append(list[-1])
 	
