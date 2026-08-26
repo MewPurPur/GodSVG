@@ -1,0 +1,1693 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GodSVG\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: lolcat\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
+#. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
+msgid "translation-credits"
+msgstr "Floofer Land"
+
+#: src/autoload/HandlerGUI.gd
+msgid "Quit GodSVG"
+msgstr "Kthxbye Godsvg"
+
+#: src/autoload/HandlerGUI.gd
+msgid "Do you want to quit GodSVG?"
+msgstr "Does U Wants To Kthxbye Godsvg??"
+
+#: src/autoload/HandlerGUI.gd
+msgid "Quit"
+msgstr "Kthxbye"
+
+#: src/autoload/HandlerGUI.gd
+msgid "Check for updates?"
+msgstr "Check 4 Updates??"
+
+#: src/autoload/HandlerGUI.gd
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
+msgstr "Dis Will Connect To Github.com An Compare Version Numbers. No Spywarez.. Promis!!!"
+
+#: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
+msgid "OK"
+msgstr "Okey"
+
+#: src/autoload/HandlerGUI.gd
+msgid "Export SVG"
+msgstr "Export Svg"
+
+#: src/autoload/HandlerGUI.gd
+msgid "The graphic can only be exported as SVG because its size is undefined."
+msgstr "Da Grafic Can Only B Exported As Svg Because Its Size Is Undenfied!!"
+
+#: src/autoload/HandlerGUI.gd
+msgid "Do you want to proceed?"
+msgstr "Does U Wants To Proceed??"
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr "Export"
+
+#: src/autoload/State.gd
+msgid "The last edited state of this tab could not be found."
+msgstr "Da Last Edited State Of Dis Tab Cant B Found!"
+
+#: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
+msgid "Alert!"
+msgstr "Alert!!"
+
+#: src/autoload/State.gd src/utils/TranslationUtils.gd
+msgid "Close tab"
+msgstr "Byebye Tab"
+
+#: src/autoload/State.gd
+msgid "Restore"
+msgstr "Restore"
+
+#: src/autoload/State.gd
+msgid "View in Inspector"
+msgstr "Look In Inspector"
+
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
+msgid "Convert to"
+msgstr "Convert To"
+
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
+msgid "Insert after"
+msgstr "Insert After"
+
+#: src/autoload/State.gd
+msgid "Insert multiple after"
+msgstr "Insert Multiple After"
+
+#: src/autoload/State.gd
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
+msgstr "Da Tab Is Bound To Da File Paf {file Path}. Does U Wants To Restore Da Svg From Dis Paf??"
+
+#: src/config_classes/Formatter.gd
+msgid "Compact"
+msgstr "Compact"
+
+#: src/config_classes/Formatter.gd
+msgid "Pretty"
+msgstr "Pretty"
+
+#: src/config_classes/Formatter.gd
+msgid "Always"
+msgstr "Always"
+
+#: src/config_classes/Formatter.gd
+msgid "All except containers"
+msgstr "All Except Containers"
+
+#: src/config_classes/Formatter.gd
+msgid "Never"
+msgstr "Never"
+
+#: src/config_classes/Formatter.gd
+msgid "Spacious"
+msgstr "Spacious"
+
+#: src/config_classes/Formatter.gd
+msgid "When shorter or equal"
+msgstr "Wen Shorter Or Equal"
+
+#: src/config_classes/Formatter.gd
+msgid "When shorter"
+msgstr "Wen Shorter"
+
+#: src/config_classes/Formatter.gd
+msgid "3-digit or 6-digit hex"
+msgstr "3 Digit Or 6 Digit Hex"
+
+#: src/config_classes/Formatter.gd
+msgid "6-digit hex"
+msgstr "6 Digit Hex"
+
+#: src/config_classes/PreviewPresentationJPG.gd
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Quality"
+msgstr "Quality"
+
+#: src/config_classes/PreviewPresentationLossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Lossless"
+msgstr "Lossless"
+
+#: src/config_classes/PreviewPresentationLossyWEBP.gd
+msgid "Lossy"
+msgstr "Lossy"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd
+msgid "Dark"
+msgstr "Dark"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd
+msgid "Light"
+msgstr "Light"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd
+msgid "Black (OLED)"
+msgstr "Black (oled)"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd
+msgid "Gray"
+msgstr "Gray"
+
+#: src/config_classes/SaveData.gd
+msgid "Default Dark"
+msgstr "Default Dark"
+
+#: src/config_classes/SaveData.gd
+msgid "Default Light"
+msgstr "Default Light"
+
+#: src/config_classes/TabData.gd
+msgid "Empty"
+msgstr "Empty"
+
+#: src/config_classes/TabData.gd
+msgid "Unsaved"
+msgstr "Unsaved"
+
+#: src/data_classes/BasicXNode.gd
+msgid "Comment"
+msgstr "Comment"
+
+#: src/data_classes/BasicXNode.gd
+msgid "Text"
+msgstr "Text"
+
+#: src/data_classes/Element.gd
+msgid "{element} must be inside {allowed} to have any effect."
+msgstr "{element} Must B Inside {allowed} To Have Any Effect!"
+
+#: src/data_classes/ElementBaseGradient.gd
+msgid "No \"id\" attribute defined."
+msgstr "No \"id\" Attribute Defined"
+
+#: src/data_classes/ElementBaseGradient.gd
+msgid "No <stop> elements under this gradient."
+msgstr "No <stop> Elementz Under Dis Gradient"
+
+#: src/data_classes/ElementBaseGradient.gd
+msgid "This gradient is a solid color."
+msgstr "Dis Gradient Is A Solid Color!!!"
+
+#: src/data_classes/ElementG.gd
+msgid "This group has no elements."
+msgstr "Dis Group Has No Elementz!"
+
+#: src/data_classes/ElementG.gd
+msgid "This group has only one element."
+msgstr "Dis Group Has Only One Element!!"
+
+#: src/data_classes/SVGParser.gd
+msgid "Doesn’t describe an SVG."
+msgstr "Doesn’t Describe An Svg!!"
+
+#: src/data_classes/SVGParser.gd
+msgid "Improper nesting."
+msgstr "Improper Nesting!!!"
+
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
+#: src/ui_parts/about_authors.gd
+msgid "Project Founder and Manager"
+msgstr "Project Founder N Manager"
+
+#: src/ui_parts/about_authors.gd
+msgid "Developers"
+msgstr "Developers"
+
+#: src/ui_parts/about_authors.gd
+msgid "Translators"
+msgstr "Translators"
+
+#: src/ui_parts/about_donors.gd src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "Donors"
+
+#: src/ui_parts/about_donors.gd
+msgid "Golden donors"
+msgstr "Golden Donors"
+
+#: src/ui_parts/about_donors.gd
+msgid "Diamond donors"
+msgstr "Diamond Donors"
+
+#: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr "Authors"
+
+#: src/ui_parts/about_menu.gd
+msgid "License"
+msgstr "License"
+
+#: src/ui_parts/about_menu.gd
+msgid "Third-party licenses"
+msgstr "Third Party Licenses"
+
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
+msgid "Close"
+msgstr "Byebye"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Save SVG as…"
+msgstr "Save Svg As…"
+
+#: src/ui_parts/display.gd
+msgid "Visuals"
+msgstr "Visuals"
+
+#: src/ui_parts/display.gd
+msgid "Snap size"
+msgstr "Snap Size"
+
+#: src/ui_parts/display.gd
+msgid "Paste reference image"
+msgstr "Paste Reference Image"
+
+#: src/ui_parts/display.gd
+msgid "Clear reference image"
+msgstr "Clear Reference Image"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Links to donation platforms"
+msgstr "Links To Donation Platforms"
+
+#: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
+#: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
+msgid "Cancel"
+msgstr "Cancelz"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Hover a platform for details."
+msgstr "Hover A Platform 4 Details"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Low extra fees"
+msgstr "Low Extra Fees"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Can donate arbitrary amounts"
+msgstr "Can Donate Arbitrary Amounts"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Higher extra fees"
+msgstr "Higher Extra Fees"
+
+#: src/ui_parts/donate_menu.gd
+msgid "Can't donate arbitrary amounts"
+msgstr "Cant Donate Arbitrary Amounts"
+
+#: src/ui_parts/element_container.gd
+msgid "New element"
+msgstr "New Element"
+
+#: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr "Dimensions"
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
+msgstr "Prelook Image Size Is Limited To {dimensions}"
+
+#: src/ui_parts/export_menu.gd
+msgid "Export Configuration"
+msgstr "Export Configuration"
+
+#: src/ui_parts/export_menu.gd
+msgid "Format"
+msgstr "Fomat"
+
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "Copy"
+
+#: src/ui_parts/export_menu.gd src/ui_widgets/settings_content_generic.gd
+msgid "Size"
+msgstr "Size"
+
+#: src/ui_parts/export_menu.gd
+msgid "Estimated size"
+msgstr "Estimated Size"
+
+#: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
+msgstr "Layout"
+
+#: src/ui_parts/global_actions.gd
+msgid "View savedata"
+msgstr "Look Savedata"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Refresh files"
+msgstr "Refresh Files"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Toggle the visibility of hidden files"
+msgstr "Toggle Da Visibility Of Hidden Files"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Search files"
+msgstr "Search Files"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Go back"
+msgstr "Go Back"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Go forward"
+msgstr "Go Forward"
+
+#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
+msgid "Save"
+msgstr "Save"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select"
+msgstr "Select"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Replace"
+msgstr "Replace"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Create new folder"
+msgstr "Create New Folder"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Invalid name for a folder."
+msgstr "Invalid Name 4 A Folder!!"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "A folder with this name already exists."
+msgstr "A Folder With Dis Name Already Exist!!"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Failed to create a folder."
+msgstr "Failed To Create A Folder"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Open"
+msgstr "Open"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Copy path"
+msgstr "Copy Path"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Open in File Manager"
+msgstr "Open In File Manager"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr "A File Named \"{file Name}\" Already Exist. Replacing Will Overwrite Its Contents!"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Syntax error"
+msgstr "Syntax Error"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Unrecognized element"
+msgstr "Unrecognized Element"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Unrecognized attribute"
+msgstr "Unrecognized Attribute"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Import Problems"
+msgstr "Import Problems"
+
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Import"
+
+#: src/ui_parts/inspector.gd
+msgid "Add element"
+msgstr "Add Element"
+
+#. Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.
+#: src/ui_parts/layout_configuration.gd
+msgid "Excluded"
+msgstr "Excluded"
+
+#: src/ui_parts/layout_configuration.gd
+msgid "Drag and drop to change the layout"
+msgstr "Drag N Drop To Change Da Layout"
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "File"
+msgstr "File"
+
+#: src/ui_parts/mac_menu.gd src/ui_parts/previews.gd
+#: src/ui_widgets/color_picker_layout_popup.gd
+#: src/ui_widgets/settings_content_shortcuts.gd
+msgid "Edit"
+msgstr "Edit"
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "Tool"
+msgstr "Tool"
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "View"
+msgstr "Look"
+
+#: src/ui_parts/mac_menu.gd
+msgid "Window"
+msgstr "Window"
+
+#: src/ui_parts/mac_menu.gd src/ui_widgets/settings_content_shortcuts.gd
+msgid "Help"
+msgstr "Help"
+
+#: src/ui_parts/previews.gd
+msgid "Add preview"
+msgstr "Add Preview"
+
+#: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd
+#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
+#: src/utils/TranslationUtils.gd
+msgid "Delete"
+msgstr "Delete"
+
+#: src/ui_parts/previews.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Reset To Default"
+
+#: src/ui_parts/previews.gd
+msgid "Clear all"
+msgstr "Clear All"
+
+#: src/ui_parts/previews.gd
+msgid "Sort"
+msgstr "Sort"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Formatting"
+msgstr "Fomatting"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Optimizer"
+msgstr "Optimizer"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Palettes"
+msgstr "Palettes"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Shortcuts"
+msgstr "Shortcuts"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Theming"
+msgstr "Theming"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Tab bar"
+msgstr "Tab Bar"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Other"
+msgstr "Otter"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Language"
+msgstr "Language"
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal strip"
+msgstr "Horizontal Strip"
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Vertical strip"
+msgstr "Vertical Strip"
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal with two rows"
+msgstr "Horizontal With Two Rows"
+
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Configure Shortcut Panel"
+msgstr "Configure Shortcut Panel"
+
+#: src/ui_parts/tab_bar.gd
+msgid "Close multiple"
+msgstr "Byebye Multiple"
+
+#: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
+msgid "Create a new tab"
+msgstr "Create A New Tab"
+
+#: src/ui_parts/tab_bar.gd
+msgid "Scroll backwards"
+msgstr "Zoom Backwards"
+
+#: src/ui_parts/tab_bar.gd
+msgid "Scroll forwards"
+msgstr "Zoom Forwards"
+
+#: src/ui_parts/tab_bar.gd
+msgid "This SVG is not bound to a file location yet."
+msgstr "Dis Svg Is Not Bound To A File Location Yet!!"
+
+#: src/ui_parts/update_menu.gd src/utils/FileUtils.gd
+msgid "Retry"
+msgstr "Retry"
+
+#: src/ui_parts/update_menu.gd
+msgid "Show prereleases"
+msgstr "Show Prereleases"
+
+#: src/ui_parts/update_menu.gd
+msgid "Current Version"
+msgstr "Current Version"
+
+#: src/ui_parts/update_menu.gd
+msgid "Retrieving information..."
+msgstr "Retrieving Information..!!!"
+
+#. When checking for updates.
+#: src/ui_parts/update_menu.gd
+msgid "Update check failed"
+msgstr "Update Check Failed"
+
+#: src/ui_parts/update_menu.gd
+msgid "View all releases"
+msgstr "Look All Releases"
+
+#: src/ui_parts/update_menu.gd
+msgid "GodSVG is up-to-date."
+msgstr "Godsvg Is Up To Date!!"
+
+#: src/ui_parts/update_menu.gd
+msgid "New versions available!"
+msgstr "New Versions Available!!!"
+
+#: src/ui_widgets/PanelGrid.gd
+msgid "Copy email"
+msgstr "Copy Email"
+
+#: src/ui_widgets/choose_name_dialog.gd
+msgid "Create"
+msgstr "Create"
+
+#: src/ui_widgets/color_configuration_popup.gd
+msgid "Edit color name"
+msgstr "Edit Color Name"
+
+#: src/ui_widgets/color_configuration_popup.gd
+msgid "Delete color"
+msgstr "Delete Color"
+
+#: src/ui_widgets/color_configuration_popup.gd src/ui_widgets/palette_config.gd
+msgid "Unnamed"
+msgstr "Unnamed"
+
+#. Ways to represent colors, like RGB, HSV, HSL.
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Color models"
+msgstr "Color Models"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Move left"
+msgstr "Move Left"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Move right"
+msgstr "Move Right"
+
+#: src/ui_widgets/color_picker_layout_popup.gd
+msgid "Remove"
+msgstr "Remove"
+
+#: src/ui_widgets/color_popup.gd
+msgid "Color utilities"
+msgstr "Color Utilities"
+
+#: src/ui_widgets/color_popup.gd
+msgid "Back to color picker"
+msgstr "Back To Color Picker"
+
+#: src/ui_widgets/color_utilities_area.gd
+msgid "Search color"
+msgstr "Search Color"
+
+#: src/ui_widgets/export_properties_jpg.gd
+#: src/ui_widgets/export_properties_raster_lossless.gd
+#: src/ui_widgets/export_properties_webp.gd
+#: src/ui_widgets/preview_presentation_popup.gd
+msgid "Background"
+msgstr "Background"
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Scale"
+msgstr "Scale"
+
+#: src/ui_widgets/export_scale_config.gd
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Width"
+msgstr "Width"
+
+#: src/ui_widgets/export_scale_config.gd
+msgid "Height"
+msgstr "Height"
+
+#: src/ui_widgets/file_path_edit.gd
+msgid "No file path"
+msgstr "No File Path"
+
+#: src/ui_widgets/good_color_picker.gd
+msgid "Color keywords"
+msgstr "Color Keywords"
+
+#: src/ui_widgets/good_color_picker.gd
+msgid "Eyedropper"
+msgstr "Eyedropper"
+
+#: src/ui_widgets/handles_manager.gd
+msgid "New shape"
+msgstr "New Shape"
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
+msgstr "No Id"
+
+#. Refers to a number of points.
+#: src/ui_widgets/insert_multiple_points_popup.gd
+msgid "Points to insert"
+msgstr "Points To Insert"
+
+#: src/ui_widgets/invalid_syntax_warning.gd
+msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
+msgstr "Da Svg Has Invalid Syntax. Any Edit Not Made Through Da Code Editor Will Reset It"
+
+#: src/ui_widgets/optimizer_setting_info.gd
+msgid "Before"
+msgstr "Before"
+
+#: src/ui_widgets/optimizer_setting_info.gd
+msgid "After"
+msgstr "After"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Unnamed palettes won't be shown."
+msgstr "Unnamed Palettes Wont B Shown"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Multiple palettes can't have the same name."
+msgstr "Multiple Palettes Cant Have Da Same Name!"
+
+#: src/ui_widgets/palette_config.gd
+msgid "This palette has identically defined colors."
+msgstr "Dis Palette Has Identically Defined Colorz!!!"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Rename"
+msgstr "Rename"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Apply Preset"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Move Up"
+msgstr "Move Up"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Move Down"
+msgstr "Move Down"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Copy as XML"
+msgstr "Copy As Xml"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Save as XML"
+msgstr "Save As Xml"
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Exact conversions"
+msgstr "Exact Conversions"
+
+#: src/ui_widgets/path_convert_popup.gd
+msgid "Lossy conversions"
+msgstr "Lossy Conversions"
+
+#: src/ui_widgets/path_insert_popup.gd src/utils/TranslationUtils.gd
+msgid "Relative"
+msgstr "Relative"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "Keep open"
+msgstr "Keep Open"
+
+#: src/ui_widgets/path_insert_popup.gd
+msgid "If toggled off, you must hold {keys} when selecting a path command to keep the popup open."
+msgstr "If Toggled Off You Must Hold {keys} Wen Selecting A Paf Commn To Keep Da Popup Open!"
+
+#: src/ui_widgets/pathdata_field.gd
+msgid "No path data"
+msgstr "No Paf Data"
+
+#: src/ui_widgets/points_field.gd
+msgid "No points"
+msgstr "No Points"
+
+#: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
+msgid "Also used by"
+msgstr "Also Used By"
+
+#: src/ui_widgets/profile_frame.gd
+msgid "Apply"
+msgstr "Apply"
+
+#: src/ui_widgets/profile_frame.gd
+msgid "Apply all of this preset's defaults"
+msgstr "Apply All Of Dis Presets Defaults"
+
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "On"
+msgstr "On"
+
+#. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
+#: src/ui_widgets/setting_frame.gd
+msgid "Off"
+msgstr "Off"
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Clear"
+msgstr "Clear"
+
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Unused"
+msgstr "Unused"
+
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Add shortcut"
+msgstr "Add Shortcut"
+
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Press keys…"
+msgstr "Pres Keys…"
+
+#. Refers to the formatter used for GodSVG's code editor.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Editor formatter"
+msgstr "Editor Fomatter"
+
+#. Refers to the formatter used when exporting.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Export formatter"
+msgstr "Export Fomatter"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines how SVG attributes and content appear in the GodSVG interface."
+msgstr "Determines How Svg Attributez N Content Appear In Da Godsvg Interface!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines how SVG attributes and content are formatted when saving the file."
+msgstr "Determines How Svg Attributez N Content Are Fomatted Wen Saving Da File"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Preset"
+msgstr "Preset"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Add trailing newline"
+msgstr "Add Trailing Newline"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Use shorthand tag syntax"
+msgstr "Use Shorthn Tag Syntax"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Space out the slash of shorthand tags"
+msgstr "Space Out Da Slash Of Shorthn Tags"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Formatting style"
+msgstr "Fomatting Style"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Use spaces instead of tabs"
+msgstr "Use Spaces Instead Of Tabs"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Number of indentation spaces"
+msgstr "Number Of Indentation Spaces"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Numbers"
+msgstr "Numbers"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove leading zero"
+msgstr "Remove Leading Zero"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Use exponential when shorter"
+msgstr "Use Exponential Wen Shorter"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Colors"
+msgstr "Colorz"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Use named colors"
+msgstr "Use Named Colors"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Primary syntax"
+msgstr "Primary Syntax"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Capitalize hexadecimal letters"
+msgstr "Capitalize Hexadecimal Letters"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Pathdata"
+msgstr "Pathdata"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Compress numbers"
+msgstr "Compres Numbers"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Minimize spacing"
+msgstr "Minimize Spacing"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove spacing after flags"
+msgstr "Remove Spacing After Flags"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove consecutive commands"
+msgstr "Remove Consecutive Commands"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Transform lists"
+msgstr "Transform Lists"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove unnecessary parameters"
+msgstr "Remove Unnecessary Parameters"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
+msgstr "Determines Da Settings 4 Da Default Optimizer Used Wen Manually Running Da \"{optimize}\" Action!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove comments"
+msgstr "Remove Comments"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert shapes"
+msgstr "Convert Shapes"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Simplify paths"
+msgstr "Simplify Paths"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Theme preset"
+msgstr "Theme Preset"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Primary theme colors"
+msgstr "Primary Theme Colors"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Base color"
+msgstr "Base Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Accent color"
+msgstr "Accent Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Fonts"
+msgstr "Fonts"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Main font"
+msgstr "Main Font"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Bold font"
+msgstr "Bold Font"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Mono font"
+msgstr "Mono Font"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "SVG Text colors"
+msgstr "Svg Text Colors"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Highlighter preset"
+msgstr "Highlighter Preset"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the default values of SVG highlighter settings."
+msgstr "Determines Da Default Values Of Svg Highlighter Settings!!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Symbol color"
+msgstr "Symbol Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Element color"
+msgstr "Element Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Attribute color"
+msgstr "Attribute Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "String color"
+msgstr "String Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Comment color"
+msgstr "Comment Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Text color"
+msgstr "Text Color"
+
+#. XML entities (&quot;, &amp;, &apos;, &gt;, and &lt;) are strings representing certain symbols with syntax importance that would break a text section if typed out.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "XML entity color"
+msgstr "Xml Entity Color"
+
+#. CDATA shouldn't be translated. It's a type of XML section.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "CDATA color"
+msgstr "Cdata Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Error color"
+msgstr "Bad Color"
+
+#. Refers to the draggable gizmos.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Handles"
+msgstr "Handles"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Inside color"
+msgstr "Inside Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Normal color"
+msgstr "Normal Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Hovered color"
+msgstr "Hovered Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Selected color"
+msgstr "Selected Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Hovered selected color"
+msgstr "Hovered Selected Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Selection rectangle"
+msgstr "Selection Rectangle"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Speed"
+msgstr "Speed"
+
+#. Refers to the selection rectangle's animated dashed stroke.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Dash length"
+msgstr "Dash Length"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Color {index}"
+msgstr "Color {index}"
+
+#: src/ui_widgets/settings_content_generic.gd src/utils/TranslationUtils.gd
+msgid "Canvas"
+msgstr "Canvas"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Canvas color"
+msgstr "Canvas Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Grid color"
+msgstr "Grid Color"
+
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Grid tick interval"
+msgstr "Grid Tick Interval"
+
+#. Refers to the specially marked grid ticks, which are more distinct and have a coordinate.
+#: src/ui_widgets/settings_content_generic.gd
+msgid "No ticks"
+msgstr "No Ticks"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Basic colors"
+msgstr "Basic Colors"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Valid color"
+msgstr "Valid Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Warning color"
+msgstr "Warning Color"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Input"
+msgstr "Input"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Close tabs with middle mouse button"
+msgstr "Byebye Tabs With Middle Mouse Button"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Invert zoom direction"
+msgstr "Invert Zoomie Direction"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Pan with left mouse button"
+msgstr "Pan With Left Mouse Button"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Wrap-around panning"
+msgstr "Wrap Around Panning"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Panning speed"
+msgstr "Panning Speed"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Use CTRL for zooming"
+msgstr "Use Ctrl 4 Zooming"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Display"
+msgstr "Display"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "UI scale"
+msgstr "Ui Scale"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the scale factor for the interface."
+msgstr "Determines Da Scale Factor 4 Da Interface"
+
+#. Stands for "Vertical Synchronization".
+#: src/ui_widgets/settings_content_generic.gd
+msgid "V-Sync"
+msgstr "Input Lag (vsync)"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Maximum FPS"
+msgstr "Maximum Fps"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Unlimited"
+msgstr "Unlimited"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the maximum number of frames per second."
+msgstr "Determines Da Maximum Number Of Frames Per Second!!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Keep screen on"
+msgstr "Keep Screen On"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Miscellaneous"
+msgstr "Miscellaneous"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Use native file dialog"
+msgstr "Use Native File Dialog"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Sync window title to file name"
+msgstr "Sync Window Title To File Name"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "The setting has no effect in the current configuration."
+msgstr "Da Setting Has No Effect In Da Current Configuration!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "The setting can't be changed on this platform."
+msgstr "Da Setting Cant B Changed On Dis Platform!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, the left mouse button can be used to pan the canvas."
+msgstr "Wen Enabled Da Left Mouse Button Can B Used To Pan Da Canvas!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgstr "Fomatters Can Change Da Fomatting Of Da Svgs Content N Attributez. Deez Changes Dont Affect Its Structure Or Da Structure Of More Complex Attributez Such As Pathdata. Fomatters Can B Configured To Make Da Svg Pretty Or More Compact!!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the default values of the formatter configs."
+msgstr "Determines Da Default Values Of Da Fomatter Configs!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, uses spaces instead of a single tab for indentation."
+msgstr "Wen Enabled Uses Spaces Instead Of A Single Tab 4 Indentation!!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
+msgstr "Optimizers Can Change Da Structure Of Da Svg N Its Complex Attributez Such As Pathdata. Deez Changes Reduce Da Svgs Complexity Usually Leading To Reductions In File Size But Mayb Destructive N Disrupt Future Editing Compared To Optimizing Da Svg Manually!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
+msgstr "Convert Shapes Into Ones That Can B Defined Identically But Have A Shorter Representation If Possible!!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
+msgstr "Converts Or Simplifies Paf Commands Into Ones With Identical Definition But Shorter Representation If Possible"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr "Determines Da Default Values Of Theming Related Settings Including Da Highlighter Preset!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the base color of GodSVG's interface."
+msgstr "Determines Da Base Color Of Godsvg Interface!!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "Determines Da Accent Color Used 4 Highlighted Elementz In Godsvg Interface!!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Wen Enabled Clicking On A Tab With Da Middle Mouse Button Closes It Instead Of Simply Focusing It"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Swaps Da Zoom Directions 4 Zooming In N Zooming Out!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
+msgstr "Warps Da Cursor To Da Opposite Side Whenever It Reaches A Canvas Boundary While Panning"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr "Determines How Much Da Look Moves 4 Scroll Based Panning Inputs"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Wen Enabled Scrolling Pans Da Look Instead Of Zooming In. To Zoomie Hold Ctrl While Scrolling!!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr "Synchronizes Graphics Rendering With Display Refresh Rate To Prevent Screen Tearing Artifacts. May Increase Input Lag Slightly"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgstr "Keeps Da Screen On Even After Inactivity So Da Screensaver Does Not Take Over"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
+msgstr "Wen Enabled Uses Your Operating Systems Native File Dialog Instead Of Godsvg Built In One!"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr "Wen Enabled Adds Da Current File Name Before Da \"godsvg\" Window Title"
+
+#: src/ui_widgets/settings_content_palettes.gd
+msgid "New palette"
+msgstr "New Palette"
+
+#: src/ui_widgets/settings_content_palettes.gd
+msgid "New palette from XML"
+msgstr "New Palette From Xml"
+
+#: src/ui_widgets/settings_content_palettes.gd
+msgid "Import XML"
+msgstr "Import Xml"
+
+#: src/ui_widgets/settings_content_palettes.gd
+msgid "Paste XML"
+msgstr "Paste Xml"
+
+#: src/ui_widgets/transform_field.gd
+msgid "No transforms"
+msgstr "No Transforms"
+
+#: src/ui_widgets/transform_popup.gd
+msgid "Apply the matrix"
+msgstr "Apply Da Matrix"
+
+#: src/ui_widgets/transform_popup.gd
+msgid "Insert before"
+msgstr "Insert Before"
+
+#: src/ui_widgets/transform_popup.gd
+msgid "New transform"
+msgstr "New Transform"
+
+#: src/ui_widgets/unrecognized_field.gd
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr "Godsvg Doesn’t Recognize Dis Attribute"
+
+#: src/utils/FileUtils.gd
+msgid "The following files were discarded:"
+msgstr "Da Following Filez Were Discarded:"
+
+#: src/utils/FileUtils.gd
+msgid "{file_name} was discarded."
+msgstr "{file Name} Was Discarded!"
+
+#: src/utils/FileUtils.gd
+msgid "Discarded files"
+msgstr "Boomed Files"
+
+#: src/utils/FileUtils.gd
+msgid "Proceed"
+msgstr "Proceed"
+
+#: src/utils/FileUtils.gd
+msgid "{file_name} couldn't be opened."
+msgstr "{file Name} Couldn't Be Opened!!!!!"
+
+#: src/utils/FileUtils.gd
+msgid "Check if the file still exists in the selected file path."
+msgstr "Check If Da File Still Exist In Da Selected File Paf!!"
+
+#: src/utils/FileUtils.gd
+msgid "Proceed with importing the rest of the files?"
+msgstr "Proceed With Importing Da Rest Of Da Filez??"
+
+#: src/utils/FileUtils.gd
+msgid "Proceed for all files that can't be opened"
+msgstr "Proceed 4 All Filez That Cant B Opened"
+
+#: src/utils/FileUtils.gd
+msgid "Save the file?"
+msgstr "Save Da File??"
+
+#: src/utils/FileUtils.gd
+msgid "Do you want to save this file?"
+msgstr "Does U Wants To Save Dis File??"
+
+#: src/utils/FileUtils.gd
+msgid "Save the changes?"
+msgstr "Save Da Changes??"
+
+#: src/utils/FileUtils.gd
+msgid "Your changes will be lost if you don't save them."
+msgstr "Your Changes Will B Lost If You Dont Save Them!"
+
+#: src/utils/FileUtils.gd
+msgid "Don't save"
+msgstr "Dont Save"
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} is already being edited inside GodSVG."
+msgstr "{file Path} Is Already Being Edited Inside Godsvg"
+
+#: src/utils/FileUtils.gd
+msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
+msgstr "If You Wants To Discard Your Edits N Sync To Da Filez Current Content Use \"{reset Svg}\"!!!"
+
+#: src/utils/FileUtils.gd
+msgid "Do you want to save the changes made to {file_name}?"
+msgstr "Does U Wants To Save Da Changes Made To {file Name}??"
+
+#: src/utils/TranslationUtils.gd
+msgid "Save SVG"
+msgstr "Save Svg"
+
+#: src/utils/TranslationUtils.gd
+msgid "Save SVG as"
+msgstr "Save Svg As"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the left"
+msgstr "Byebye Tabs To Da Left"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the right"
+msgstr "Byebye Tabs To Da Right"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close all other tabs"
+msgstr "Byebye All Otter Tabs"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close empty tabs"
+msgstr "Byebye Empty Tabs"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close saved tabs"
+msgstr "Byebye Saved Tabs"
+
+#: src/utils/TranslationUtils.gd
+msgid "Create tab"
+msgstr "Create Tab"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select the next tab"
+msgstr "Select Da Next Tab"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select the previous tab"
+msgstr "Select Da Previus Tab"
+
+#: src/utils/TranslationUtils.gd
+msgid "Optimize"
+msgstr "Optimize"
+
+#: src/utils/TranslationUtils.gd
+msgid "Optimize SVG"
+msgstr "Optimize Svg"
+
+#: src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Copy All Text"
+
+#: src/utils/TranslationUtils.gd
+msgid "Copy the SVG text"
+msgstr "Copy Da Svg Text"
+
+#: src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "Reset Svg"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open externally"
+msgstr "Open Externally"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open SVG externally"
+msgstr "Open Svg Externally"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show in File Manager"
+msgstr "Show In File Manager"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show SVG in File Manager"
+msgstr "Show Svg In File Manager"
+
+#: src/utils/TranslationUtils.gd
+msgid "Undo"
+msgstr "Undo"
+
+#: src/utils/TranslationUtils.gd
+msgid "Redo"
+msgstr "Redo"
+
+#: src/utils/TranslationUtils.gd
+msgid "Paste"
+msgstr "Paste"
+
+#: src/utils/TranslationUtils.gd
+msgid "Cut"
+msgstr "Cut"
+
+#. Refers to evaluating an expression such as "sin(2*pi/5)".
+#: src/utils/TranslationUtils.gd
+msgid "Evaluate"
+msgstr "Evaluate"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select all"
+msgstr "Select All"
+
+#: src/utils/TranslationUtils.gd
+msgid "Duplicate"
+msgstr "Duplicate"
+
+#: src/utils/TranslationUtils.gd
+msgid "Duplicate the selection"
+msgstr "Duplicate Da Selection"
+
+#: src/utils/TranslationUtils.gd
+msgid "Delete the selection"
+msgstr "Delete Da Selection"
+
+#: src/utils/TranslationUtils.gd
+msgid "Move up"
+msgstr "Move Up"
+
+#: src/utils/TranslationUtils.gd
+msgid "Move the selection up"
+msgstr "Move Da Selection Up"
+
+#: src/utils/TranslationUtils.gd
+msgid "Move down"
+msgstr "Move Down"
+
+#: src/utils/TranslationUtils.gd
+msgid "Move the selection down"
+msgstr "Move Da Selection Down"
+
+#. Refers to, for example, changing which point in a polygon counts as "first".
+#: src/utils/TranslationUtils.gd
+msgid "Set as initial"
+msgstr "Set As Initial"
+
+#: src/utils/TranslationUtils.gd
+msgid "Set point as initial"
+msgstr "Set Point As Initial"
+
+#: src/utils/TranslationUtils.gd
+msgid "Reverse order"
+msgstr "Reverse Order"
+
+#: src/utils/TranslationUtils.gd
+msgid "Find"
+msgstr "Find"
+
+#: src/utils/TranslationUtils.gd
+msgid "Zoom in"
+msgstr "Zoomie In"
+
+#: src/utils/TranslationUtils.gd
+msgid "Zoom out"
+msgstr "Zoomie Out"
+
+#: src/utils/TranslationUtils.gd
+msgid "Zoom reset"
+msgstr "Zoomie Reset"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show grid"
+msgstr "Show Grid"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show handles"
+msgstr "Show Handles"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show rasterized SVG"
+msgstr "Show Rasterized Svg"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle snapping"
+msgstr "Toggle Snapping"
+
+#: src/utils/TranslationUtils.gd
+msgid "Load reference image"
+msgstr "Load Reference Image"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show reference image"
+msgstr "Show Reference Image"
+
+#: src/utils/TranslationUtils.gd
+msgid "Overlay reference image"
+msgstr "Overlay Reference Image"
+
+#: src/utils/TranslationUtils.gd
+msgid "View debug information"
+msgstr "Look Antibuggy Infomation"
+
+#: src/utils/TranslationUtils.gd
+msgid "View advanced debug information"
+msgstr "Look Advanced Antibuggy Infomation"
+
+#: src/utils/TranslationUtils.gd
+msgid "Settings"
+msgstr "Settings"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open Settings menu"
+msgstr "Open Settings Menu"
+
+#: src/utils/TranslationUtils.gd
+msgid "About…"
+msgstr "About…"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open About menu"
+msgstr "Open About Menu"
+
+#: src/utils/TranslationUtils.gd
+msgid "Donate…"
+msgstr "Donate…"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open Donate menu"
+msgstr "Open Donate Menu"
+
+#: src/utils/TranslationUtils.gd
+msgid "GodSVG repository"
+msgstr "Godsvg Repository"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open GodSVG repository"
+msgstr "Open Godsvg Repository"
+
+#: src/utils/TranslationUtils.gd
+msgid "GodSVG website"
+msgstr "Godsvg Website"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open GodSVG website"
+msgstr "Open Godsvg Website"
+
+#: src/utils/TranslationUtils.gd
+msgid "Check for updates"
+msgstr "Check 4 Updates"
+
+#: src/utils/TranslationUtils.gd
+msgid "Quit the application"
+msgstr "Kthxbye Da Application"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr "Toggle Fullscreen"
+
+#: src/utils/TranslationUtils.gd
+msgid "Move to"
+msgstr "Move To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Line to"
+msgstr "Line To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Horizontal Line to"
+msgstr "Horizontal Line To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Vertical Line to"
+msgstr "Vertical Line To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close Path"
+msgstr "Byebye Path"
+
+#: src/utils/TranslationUtils.gd
+msgid "Elliptical Arc to"
+msgstr "Elliptical Arc To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Quadratic Bezier to"
+msgstr "Quadratic Bezier To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Shorthand Quadratic Bezier to"
+msgstr "Shorthn Quadratic Bezier To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Cubic Bezier to"
+msgstr "Cubic Bezier To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Shorthand Cubic Bezier to"
+msgstr "Shorthn Cubic Bezier To"
+
+#: src/utils/TranslationUtils.gd
+msgid "Absolute"
+msgstr "Absolute"
+
+#: src/utils/TranslationUtils.gd
+msgid "Code Editor"
+msgstr "Code Editor"
+
+#: src/utils/TranslationUtils.gd
+msgid "Inspector"
+msgstr "Inspector"
+
+#. Refers to a part of the layout where icons are previewed at various sizes.
+#: src/utils/TranslationUtils.gd
+msgid "Previews"
+msgstr "Previews"
+
+#: src/utils/TranslationUtils.gd
+msgid "Only {extension_list} files are supported for this operation."
+msgstr "Only {extension List} Filez Are Supported 4 Dis Operation!"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select {format} files"
+msgstr "Select {fomat} Files"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr "Select An Image"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select a font"
+msgstr "Select A Font"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select an {format} file"
+msgstr "Select An {fomat} File"
+
+#: src/utils/TranslationUtils.gd
+msgid "Save the {format} file"
+msgstr "Save Da {fomat} File"
+
+#: no_export/scripts/update_desktop_file.gd
+msgid "Vector graphics editor"
+msgstr "Vector Graphics Editor"
+
+#: no_export/scripts/update_desktop_file.gd
+msgid "A vector graphics application for structured SVG editing"
+msgstr "A Vector Graphics Application 4 Structured Svg Editing"
+
+#. A list of keywords that should remain semicolon-separated. Doesn't need to be exactly translated. There can be more keywords or less, but they must remain similar to the English ones.
+#: no_export/scripts/update_desktop_file.gd
+msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
+msgstr "Svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2d;code;blue;fox"
+
