@@ -15,27 +15,27 @@ msgstr ""
 #. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
 #. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
 msgid "translation-credits"
-msgstr "Floofer Land"
+msgstr "FlooferLand, MewPurPur <mew.pur.pur@gmail.com>"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
-msgstr "Kthxbye Godsvg"
+msgstr "Kthxbai GodSVG"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to quit GodSVG?"
-msgstr "Does U Wants To Kthxbye Godsvg??"
+msgstr "U rly gonna kthxbai GodSVG??"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit"
-msgstr "Kthxbye"
+msgstr "Kthxbai"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Check for updates?"
-msgstr "Check 4 Updates??"
+msgstr "R ther new updatz??"
 
 #: src/autoload/HandlerGUI.gd
 msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
-msgstr "Dis Will Connect To Github.com An Compare Version Numbers. No Spywarez.. Promis!!!"
+msgstr "We go 2 github.com 2 see if ur GodSVG iz oldz. No spyin, no stealin, no spywarez.. Promis!!!"
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
@@ -43,15 +43,15 @@ msgstr "Okey"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
-msgstr "Export Svg"
+msgstr "Export teh SVG"
 
 #: src/autoload/HandlerGUI.gd
 msgid "The graphic can only be exported as SVG because its size is undefined."
-msgstr "Da Grafic Can Only B Exported As Svg Because Its Size Is Undenfied!!"
+msgstr "Teh grafic haz no size, so SVG iz teh only way 2 get it outta here!!"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
-msgstr "Does U Wants To Proceed??"
+msgstr "U sure u wants 2 do dis?"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -60,68 +60,68 @@ msgstr "Export"
 
 #: src/autoload/State.gd
 msgid "The last edited state of this tab could not be found."
-msgstr "Da Last Edited State Of Dis Tab Cant B Found!"
+msgstr "Oh noez! Da last editd state of dis tab haz gone missing!!"
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
-msgstr "Alert!!"
+msgstr "ALERT!!"
 
 #: src/autoload/State.gd src/utils/TranslationUtils.gd
 msgid "Close tab"
-msgstr "Byebye Tab"
+msgstr "Byebai tab"
 
 #: src/autoload/State.gd
 msgid "Restore"
-msgstr "Restore"
+msgstr "Bring it bak"
 
 #: src/autoload/State.gd
 msgid "View in Inspector"
-msgstr "Look In Inspector"
+msgstr "Stare at it in da inspector"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Convert to"
-msgstr "Convert To"
+msgstr "Convert 2"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert after"
-msgstr "Insert After"
+msgstr "Put it after dis"
 
 #: src/autoload/State.gd
 msgid "Insert multiple after"
-msgstr "Insert Multiple After"
+msgstr "Put few moar after dis"
 
 #: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
-msgstr "Da Tab Is Bound To Da File Paf {file Path}. Does U Wants To Restore Da Svg From Dis Paf??"
+msgstr "Dis tab belongz 2 {file_path}. Shud we go get teh SVG frum dere??"
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
-msgstr "Compact"
+msgstr "Smooshed"
 
 #: src/config_classes/Formatter.gd
 msgid "Pretty"
-msgstr "Pretty"
+msgstr "Purdy"
 
 #: src/config_classes/Formatter.gd
 msgid "Always"
-msgstr "Always"
+msgstr "ALL TEH TIME"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
-msgstr "All Except Containers"
+msgstr "All 'cept containerz"
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
-msgstr "Never"
+msgstr "NEVR"
 
 #: src/config_classes/Formatter.gd
 msgid "Spacious"
-msgstr "Spacious"
+msgstr "Giv it sum roomz"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
-msgstr "Wen Shorter Or Equal"
+msgstr "Wen shorter or teh same"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter"
@@ -129,11 +129,11 @@ msgstr "Wen Shorter"
 
 #: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
-msgstr "3 Digit Or 6 Digit Hex"
+msgstr "3-digit or 6-digit hex"
 
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
-msgstr "6 Digit Hex"
+msgstr "6-digit hex"
 
 #: src/config_classes/PreviewPresentationJPG.gd
 #: src/config_classes/PreviewPresentationLossyWEBP.gd
@@ -141,32 +141,32 @@ msgstr "6 Digit Hex"
 #: src/ui_widgets/export_properties_webp.gd
 #: src/ui_widgets/preview_presentation_popup.gd
 msgid "Quality"
-msgstr "Quality"
+msgstr "How purdy?"
 
 #: src/config_classes/PreviewPresentationLossless.gd
 #: src/ui_widgets/export_properties_webp.gd
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Lossless"
-msgstr "Lossless"
+msgstr "No losz!"
 
 #: src/config_classes/PreviewPresentationLossyWEBP.gd
 msgid "Lossy"
-msgstr "Lossy"
+msgstr "Yes losz!"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Dark"
-msgstr "Dark"
+msgstr "Darkz"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Light"
-msgstr "Light"
+msgstr "Lite"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
 msgid "Black (OLED)"
-msgstr "Black (oled)"
+msgstr "Black (OLED)"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
@@ -175,19 +175,19 @@ msgstr "Gray"
 
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
-msgstr "Default Dark"
+msgstr "Default Darkz"
 
 #: src/config_classes/SaveData.gd
 msgid "Default Light"
-msgstr "Default Light"
+msgstr "Default Lite"
 
 #: src/config_classes/TabData.gd
 msgid "Empty"
-msgstr "Empty"
+msgstr "Emptee"
 
 #: src/config_classes/TabData.gd
 msgid "Unsaved"
-msgstr "Unsaved"
+msgstr "Not savd"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Comment"
@@ -195,68 +195,68 @@ msgstr "Comment"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Text"
-msgstr "Text"
+msgstr "Tex"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
-msgstr "{element} Must B Inside {allowed} To Have Any Effect!"
+msgstr "{element} must b in {allowed} or it just sitz dere doin nuthin!"
 
 #: src/data_classes/ElementBaseGradient.gd
 msgid "No \"id\" attribute defined."
-msgstr "No \"id\" Attribute Defined"
+msgstr "No \"id\" defined, how we sposed 2 kno who dis kitteh iz?"
 
 #: src/data_classes/ElementBaseGradient.gd
 msgid "No <stop> elements under this gradient."
-msgstr "No <stop> Elementz Under Dis Gradient"
+msgstr "Gradient has no <stop> elementz. Gradient iz sad.."
 
 #: src/data_classes/ElementBaseGradient.gd
 msgid "This gradient is a solid color."
-msgstr "Dis Gradient Is A Solid Color!!!"
+msgstr "Dis gradient is just wun color. It forgot how 2 gradient LOL"
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr "Dis Group Has No Elementz!"
+msgstr "Dis gruup haz only empteenes."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
-msgstr "Dis Group Has Only One Element!!"
+msgstr "Dis group has wun element. Why u even groupin dis?"
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
-msgstr "Doesn’t Describe An Svg!!"
+msgstr "Iz not describin an SVG!!"
 
 #: src/data_classes/SVGParser.gd
 msgid "Improper nesting."
-msgstr "Improper Nesting!!!"
+msgstr "Nesting iz borkd!!! Kittehz in the wrong kittehz."
 
 #. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
 #: src/ui_parts/about_authors.gd
 msgid "Project Founder and Manager"
-msgstr "Project Founder N Manager"
+msgstr "Big boss kitteh"
 
 #: src/ui_parts/about_authors.gd
 msgid "Developers"
-msgstr "Developers"
+msgstr "Code kittehz"
 
 #: src/ui_parts/about_authors.gd
 msgid "Translators"
-msgstr "Translators"
+msgstr "Wordz magik kittehz"
 
 #: src/ui_parts/about_donors.gd src/ui_parts/about_menu.gd
 msgid "Donors"
-msgstr "Donors"
+msgstr "Generous kittehz"
 
 #: src/ui_parts/about_donors.gd
 msgid "Golden donors"
-msgstr "Golden Donors"
+msgstr "Golden kittehz"
 
 #: src/ui_parts/about_donors.gd
 msgid "Diamond donors"
-msgstr "Diamond Donors"
+msgstr "SHINY DEEMOND KITTEHZ"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
-msgstr "Authors"
+msgstr "Most helpful kittehz"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
@@ -264,17 +264,17 @@ msgstr "License"
 
 #: src/ui_parts/about_menu.gd
 msgid "Third-party licenses"
-msgstr "Third Party Licenses"
+msgstr "Third-party licenses"
 
 #: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
 #: src/ui_parts/update_menu.gd
 msgid "Close"
-msgstr "Byebye"
+msgstr "Byebai"
 
 #: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Save SVG as…"
-msgstr "Save Svg As…"
+msgstr "Saev SVG as…"
 
 #: src/ui_parts/display.gd
 msgid "Visuals"
@@ -282,57 +282,57 @@ msgstr "Visuals"
 
 #: src/ui_parts/display.gd
 msgid "Snap size"
-msgstr "Snap Size"
+msgstr "Snap size"
 
 #: src/ui_parts/display.gd
 msgid "Paste reference image"
-msgstr "Paste Reference Image"
+msgstr "Paste da reference pic"
 
 #: src/ui_parts/display.gd
 msgid "Clear reference image"
-msgstr "Clear Reference Image"
+msgstr "Clear da reference pic"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Links to donation platforms"
-msgstr "Links To Donation Platforms"
+msgstr "Linkz 2 placez 2 giv me treatz"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
 #: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
-msgstr "Cancelz"
+msgstr "NOPE"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Hover a platform for details."
-msgstr "Hover A Platform 4 Details"
+msgstr "Hover teh place 2 learn moar stuffz"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Low extra fees"
-msgstr "Low Extra Fees"
+msgstr "Low feez, moar treatz 4 me"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Can donate arbitrary amounts"
-msgstr "Can Donate Arbitrary Amounts"
+msgstr "Can giv us any numbr of treatz"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Higher extra fees"
-msgstr "Higher Extra Fees"
+msgstr "Moar feez. Sad kitteh.."
 
 #: src/ui_parts/donate_menu.gd
 msgid "Can't donate arbitrary amounts"
-msgstr "Cant Donate Arbitrary Amounts"
+msgstr "Cants giv random numbr of treatz"
 
 #: src/ui_parts/element_container.gd
 msgid "New element"
-msgstr "New Element"
+msgstr "New element"
 
 #: src/ui_parts/export_menu.gd
 msgid "Dimensions"
-msgstr "Dimensions"
+msgstr "How big?"
 
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
-msgstr "Prelook Image Size Is Limited To {dimensions}"
+msgstr "Prevew haz a size limit of {dimensions}. Big kitty no fit."
 
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
@@ -352,44 +352,44 @@ msgstr "Size"
 
 #: src/ui_parts/export_menu.gd
 msgid "Estimated size"
-msgstr "Estimated Size"
+msgstr "How big we fink itz gonna be"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/layout_configuration.gd
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
-msgstr "Layout"
+msgstr "Were fings go"
 
 #: src/ui_parts/global_actions.gd
 msgid "View savedata"
-msgstr "Look Savedata"
+msgstr "Look at teh save fings"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Refresh files"
-msgstr "Refresh Files"
+msgstr "Refresh files"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Toggle the visibility of hidden files"
-msgstr "Toggle Da Visibility Of Hidden Files"
+msgstr "Make sneaky filez visible"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Search files"
-msgstr "Search Files"
+msgstr "Hunt 4 filez"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go back"
-msgstr "Go Back"
+msgstr "GO BAK"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go forward"
-msgstr "Go Forward"
+msgstr "GO FORWARD"
 
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
-msgstr "Save"
+msgstr "Saev"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select"
-msgstr "Select"
+msgstr "Pick dis"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Replace"
@@ -397,19 +397,19 @@ msgstr "Replace"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
-msgstr "Create New Folder"
+msgstr "Make new folder"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
-msgstr "Invalid Name 4 A Folder!!"
+msgstr "Dat name iz not allowd for folder!!"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
-msgstr "A Folder With Dis Name Already Exist!!"
+msgstr "A folder alrdy took dis name. Ur 2 slow!!"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Failed to create a folder."
-msgstr "Failed To Create A Folder"
+msgstr "Folder makey faily."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Open"
@@ -417,27 +417,27 @@ msgstr "Open"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
-msgstr "Copy Path"
+msgstr "Copy teh path"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Open in File Manager"
-msgstr "Open In File Manager"
+msgstr "Open in teh File Manager"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
-msgstr "A File Named \"{file Name}\" Already Exist. Replacing Will Overwrite Its Contents!"
+msgstr "File named \"{file_name}\" already exists. Replasing will nomf teh old contentz!!1!"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
-msgstr "Syntax Error"
+msgstr "SYNTAXZ IZ BORKD!!1!"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
-msgstr "Unrecognized Element"
+msgstr "Wut iz dis element?!"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
-msgstr "Unrecognized Attribute"
+msgstr "Wut iz dis atribut?!"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
@@ -449,7 +449,7 @@ msgstr "Import"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
-msgstr "Add Element"
+msgstr "Add element"
 
 #. Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.
 #: src/ui_parts/layout_configuration.gd
