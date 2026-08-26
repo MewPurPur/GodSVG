@@ -821,7 +821,7 @@ func is_shortcut_valid(shortcut: InputEventKey) -> bool:
 		return true
 	return _shortcut_validities[shortcut_id]
 
-func get_actions_with_shortcut(shortcut: InputEventKey) -> PackedStringArray:
+func get_actions_with_shortcut(shortcut: InputEventKey, max_output_actions := -1) -> PackedStringArray:
 	var shortcut_id := shortcut.get_keycode_with_modifiers()
 	if not shortcut_id in _shortcut_validities:
 		return PackedStringArray()
@@ -834,6 +834,8 @@ func get_actions_with_shortcut(shortcut: InputEventKey) -> PackedStringArray:
 			if action_shortcut.get_keycode_with_modifiers() == shortcut_id:
 				actions_with_shortcut.append(action)
 				break
+		if max_output_actions != -1 and max_output_actions >= actions_with_shortcut.size():
+			return actions_with_shortcut
 	return actions_with_shortcut
 
 

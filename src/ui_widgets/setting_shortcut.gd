@@ -11,6 +11,7 @@ signal shortcuts_edited(new_shortcuts: Array[InputEvent])
 @onready var shortcut_buttons: Array[Button] = [%ShortcutContainer/Button, %ShortcutContainer/Button2, %ShortcutContainer/Button3]
 
 var action: String
+var scroll_to_callback: Callable
 
 var listening_index := -1
 var pending_event: InputEventKey
@@ -74,13 +75,12 @@ func sync_buttons() -> void:
 		var shortcut_btn := shortcut_buttons[i]
 		if not Configs.savedata.is_shortcut_valid(event):
 			_setup_shortcut_button_font_colors(shortcut_btn, Configs.savedata.basic_color_error)
-			var conflicts := Configs.savedata.get_actions_with_shortcut(event)
+			var conflicts := Configs.savedata.get_actions_with_shortcut(events[i], 8)
 			conflicts.erase(action)
-			if conflicts.size() > 8:
-				conflicts.resize(8)
-				conflicts.append("...")
 			for ii in conflicts.size():
 				conflicts[ii] = TranslationUtils.get_action_description(conflicts[ii])
+			if conflicts.size() == 8:
+				conflicts.append("...")
 			shortcut_btn.tooltip_text = Translator.translate("Also used by") + ":\n" + "\n".join(conflicts)
 		else:
 			var already_used := false

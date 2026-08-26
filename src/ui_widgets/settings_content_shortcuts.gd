@@ -47,10 +47,6 @@ func _ready() -> void:
 		if i == 0:
 			btn.button_pressed = true
 			btn.pressed.emit()
-	
-	var focus_sequence: Array[Control]
-	focus_sequence.assign(button_group.get_buttons())
-	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 func setup_undo_redo_utensils(new_undo_redo: UndoRedoRef, new_scroll_to_callback: Callable, new_settings_tab_change_callable: Callable) -> void:
 	undo_redo = new_undo_redo
@@ -63,11 +59,13 @@ func highlight_action(category: String, action: String) -> void:
 	if not category_button.button_pressed:
 		category_button.button_pressed = true
 		await get_tree().process_frame
+	action_configs[action]
 	scroll_to_callback.call(action_configs[action].get_global_rect(), 0.16)
 
 
 func show_shortcuts_from_category(category: String) -> void:
 	for child in shortcuts_container.get_children():
+		shortcuts_container.remove_child(child)
 		child.queue_free()
 	action_configs.clear()
 	
@@ -83,8 +81,14 @@ func show_shortcuts_from_category(category: String) -> void:
 			shortcut_config = ShortcutShowcaseWidgetScene.instantiate()
 		
 		shortcut_config.action = action
+		shortcut_config.scroll_to_callback = scroll_to_callback
 		shortcuts_container.add_child(shortcut_config)
 		action_configs[action] = shortcut_config
+	
+	var focus_sequence: Array[Control]
+	focus_sequence.assign(categories_container.get_children())
+	focus_sequence.append_array(shortcuts_container.get_children())
+	HandlerGUI.register_focus_sequence(self, focus_sequence)
 
 func _on_shortcuts_edited(action: String, new_shortcuts: Array[InputEvent], category: String) -> void:
 	undo_redo.create_action()

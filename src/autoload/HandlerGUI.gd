@@ -10,6 +10,9 @@ const UpdateMenuScene = preload("res://src/ui_parts/update_menu.tscn")
 const ExportMenuScene = preload("res://src/ui_parts/export_menu.tscn")
 const ShortcutPanelScene = preload("res://src/ui_parts/shortcut_panel.tscn")
 
+signal visible_focus_changed
+
+
 # The mobile display geometry is static, but gets modified based on UI scale.
 
 var _mobile_display_cutout_margins := PackedInt32Array([0, 0, 0, 0])
