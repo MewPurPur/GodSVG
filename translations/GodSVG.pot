@@ -732,15 +732,15 @@ msgid "Rename"
 msgstr ""
 
 #: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
+msgid "Apply preset"
 msgstr ""
 
-#: src/ui_widgets/palette_config.gd
-msgid "Move Up"
+#: src/ui_widgets/palette_config.gd src/utils/TranslationUtils.gd
+msgid "Move up"
 msgstr ""
 
-#: src/ui_widgets/palette_config.gd
-msgid "Move Down"
+#: src/ui_widgets/palette_config.gd src/utils/TranslationUtils.gd
+msgid "Move down"
 msgstr ""
 
 #: src/ui_widgets/palette_config.gd
@@ -1464,15 +1464,7 @@ msgid "Delete the selection"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
-msgid "Move up"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
-msgid "Move down"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

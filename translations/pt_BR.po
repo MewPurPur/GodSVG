@@ -747,15 +747,16 @@ msgid "Rename"
 msgstr "Renomear"
 
 #: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
+#, fuzzy
+msgid "Apply preset"
 msgstr "Aplicar Predefinição"
 
-#: src/ui_widgets/palette_config.gd
-msgid "Move Up"
+#: src/ui_widgets/palette_config.gd src/utils/TranslationUtils.gd
+msgid "Move up"
 msgstr "Mover para acima"
 
-#: src/ui_widgets/palette_config.gd
-msgid "Move Down"
+#: src/ui_widgets/palette_config.gd src/utils/TranslationUtils.gd
+msgid "Move down"
 msgstr "Mover para abaixo"
 
 #: src/ui_widgets/palette_config.gd
@@ -1491,16 +1492,8 @@ msgid "Delete the selection"
 msgstr "Excluir a seleção"
 
 #: src/utils/TranslationUtils.gd
-msgid "Move up"
-msgstr "Mover para acima"
-
-#: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
 msgstr "Mover a seleção para cima"
-
-#: src/utils/TranslationUtils.gd
-msgid "Move down"
-msgstr "Mover para abaixo"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
@@ -1717,6 +1710,12 @@ msgstr "Um aplicativo de gráficos vetoriais para edição estruturada de SVG"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vetor;gráficos;desenho;design;ilustração;imagem;arte;diagrama;ícone;logo;editor;arte;caminho;forma;2D;código;azul;raposa"
+
+#~ msgid "Move Up"
+#~ msgstr "Mover para acima"
+
+#~ msgid "Move Down"
+#~ msgstr "Mover para abaixo"
 
 #~ msgid "Viewport"
 #~ msgstr "Tela"

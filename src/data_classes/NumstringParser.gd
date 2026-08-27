@@ -44,7 +44,7 @@ static func evaluate(text: String) -> float:
 	text = text.trim_prefix("+")  # Expression can't handle unary plus.
 	
 	var expr := Expression.new()
-	var err := expr.parse(text.replace(",", "."))
+	var err := expr.parse(text.replace_char(ord(","), ord(".")))
 	if err == OK:
 		var result: Variant = expr.execute([], ExpressionScript, false, true)
 		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:

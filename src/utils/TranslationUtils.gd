@@ -7,6 +7,7 @@ static func _get_locale_name(locale: String) -> String:
 	match locale:
 		"pt_BR": return "Brazilian Portuguese"
 		"zh_CN": return "Simplified Chinese"
+		"lolcat": return "Lolcat"
 	return TranslationServer.get_locale_name(locale)
 
 ## Converts a locale string to a language-REGION format.
