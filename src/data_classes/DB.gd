@@ -7,7 +7,7 @@ enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
 const _RECOGNIZED_ELEMENTS: PackedStringArray = ["svg", "g", "circle", "ellipse", "rect", "path", "line", "polyline", "polygon",
-		"stop", "linearGradient", "radialGradient", "use"]
+		"stop", "linearGradient", "radialGradient", "use", "marker", "clipPath", "mask", "image", "text", "tspan"]
 
 const _ELEMENT_ICONS: Dictionary[String, Texture2D] = {
 	"circle": preload("res://assets/icons/element/circle.svg"),
@@ -22,7 +22,14 @@ const _ELEMENT_ICONS: Dictionary[String, Texture2D] = {
 	"linearGradient": preload("res://assets/icons/element/linearGradient.svg"),
 	"radialGradient": preload("res://assets/icons/element/radialGradient.svg"),
 	"stop": preload("res://assets/icons/element/stop.svg"),
+	# Not currently in GUI.
 	"use": preload("res://assets/icons/element/use.svg"),
+	#"marker": preload("res://assets/icons/element/unrecognized.svg"),
+	#"clipPath": preload("res://assets/icons/element/unrecognized.svg"),
+	#"mask": preload("res://assets/icons/element/mask.svg"),
+	#"image": preload("res://assets/icons/element/image.svg"),
+	#"text": preload("res://assets/icons/element/text.svg"),
+	#"tspan": preload("res://assets/icons/element/unrecognized.svg"),
 }
 const _UNRECOGNIZED_XNODE_ICON = preload("res://assets/icons/element/unrecognized.svg")
 
@@ -58,12 +65,19 @@ const _RECOGNIZED_ATTRIBUTES: Dictionary[String, Array] = {
 	"polyline": ["transform", "opacity", "fill", "fill-opacity", "stroke",
 			"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin", "points"],
 	"stop": ["offset", "stop-color", "stop-opacity"],
-	"use": ["href", "transform", "x", "y"]
+	"use": ["href", "transform", "x", "y"],
+	#"marker": ["id", "markerUnits"],
+	#"clipPath": ["id", "clipPathUnits"],
+	#"mask": ["id"],
+	#"image": ["x", "y", "width", "height", "href"],
+	#"text": ["x", "y"],
+	#"tspan": ["x", "y"],
 }
 
 const _VALID_CHILDREN: Dictionary[String, Array] = {
-	"svg": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline", "g", "linearGradient", "radialGradient", "use"],
-	"g": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline", "g", "linearGradient", "radialGradient", "use"],
+	"svg": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline", "g", "linearGradient", "radialGradient",
+			"use", "marker", "clipPath", "mask", "text", "tspan"],
+	"g": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline", "g", "linearGradient", "radialGradient", "use", "text", "tspan"],
 	"linearGradient": ["stop"],
 	"radialGradient": ["stop"],
 	"circle": [],
@@ -75,6 +89,12 @@ const _VALID_CHILDREN: Dictionary[String, Array] = {
 	"polyline": [],
 	"stop": [],
 	"use": [],
+	#"marker": ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline", "g"],
+	#"clipPath": ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline", "g"],
+	#"mask": ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline", "g"],
+	#"image": [],
+	#"text": ["tspan"],
+	#"tspan": [],
 }
 
 const PROPAGATED_ATTRIBUTES: PackedStringArray = ["fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin",
@@ -105,6 +125,8 @@ const _ATTRIBUTE_TYPES: Dictionary[String, AttributeType] = {
 	"stroke-width": AttributeType.NUMERIC,
 	"stroke-linecap": AttributeType.ENUM,
 	"stroke-linejoin": AttributeType.ENUM,
+	#"stroke-dashoffset": AttributeType.NUMERIC,
+	#"stroke-dasharray": AttributeType.LIST,  # TODO Should be of dasharray type eventually.
 	"color": AttributeType.COLOR,
 	"d": AttributeType.PATHDATA,
 	"points": AttributeType.LIST,
@@ -117,6 +139,8 @@ const _ATTRIBUTE_TYPES: Dictionary[String, AttributeType] = {
 	"gradientUnits": AttributeType.ENUM,
 	"spreadMethod": AttributeType.ENUM,
 	"href": AttributeType.HREF,
+	#"markerUnits": AttributeType.ENUM,
+	#"clipPathUnits": AttributeType.ENUM,
 }
 
 const ATTRIBUTE_ENUM_VALUES: Dictionary[String, Array] = {
@@ -124,6 +148,8 @@ const ATTRIBUTE_ENUM_VALUES: Dictionary[String, Array] = {
 	"stroke-linejoin": ["miter", "round", "bevel"],
 	"gradientUnits": ["userSpaceOnUse", "objectBoundingBox"],
 	"spreadMethod": ["pad", "reflect", "repeat"],
+	#"markerUnits": ["userSpaceOnUse", "strokeWidth"],
+	#"clipPathUnits": ["userSpaceOnUse", "objectBoundingBox"],
 }
 
 const ATTRIBUTE_NUMBER_RANGE: Dictionary[String, NumberRange] = {
@@ -194,22 +220,9 @@ static func get_attribute_type(attribute_name: String) -> AttributeType:
 ## Get default percentage handling behavior for numeric attributes.
 static func get_attribute_default_percentage_handling(attribute_name: String) -> PercentageHandling:
 	match attribute_name:
-		"width": return PercentageHandling.HORIZONTAL
-		"height": return PercentageHandling.VERTICAL
-		"x": return PercentageHandling.HORIZONTAL
-		"y": return PercentageHandling.VERTICAL
-		"rx": return PercentageHandling.HORIZONTAL
-		"ry": return PercentageHandling.VERTICAL
-		"stroke-width": return PercentageHandling.NORMALIZED
-		"x1": return PercentageHandling.HORIZONTAL
-		"y1": return PercentageHandling.VERTICAL
-		"x2": return PercentageHandling.HORIZONTAL
-		"y2": return PercentageHandling.VERTICAL
-		"cx": return PercentageHandling.HORIZONTAL
-		"cy": return PercentageHandling.VERTICAL
-		"fx": return PercentageHandling.HORIZONTAL
-		"fy": return PercentageHandling.VERTICAL
-		"r": return PercentageHandling.NORMALIZED
+		"stroke-width", "r": return PercentageHandling.NORMALIZED
+		"width", "x", "rx", "x1", "x2", "cx", "fx": return PercentageHandling.HORIZONTAL
+		"height", "y", "ry", "y1", "y2", "cy", "fy": return PercentageHandling.VERTICAL
 		_: return PercentageHandling.FRACTION
 
 ## Create an element with initial arbitrary setup values based on that element's user_setup() method.
