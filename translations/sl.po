@@ -223,7 +223,7 @@ msgid "This group has only one element."
 msgstr "Ta skupina ima samo en element."
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr "Ne opisuje SVG-ja."
 
 #: src/data_classes/SVGParser.gd
@@ -1288,7 +1288,7 @@ msgid "New transform"
 msgstr "Nova transformacija"
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
+msgid "GodSVG doesn't recognize this attribute"
 msgstr "GodSVG ne prepozna tega atributa"
 
 #: src/utils/FileUtils.gd
@@ -1686,12 +1686,3 @@ msgstr "Aplikacija za vektorsko grafiko za strukturirano urejanje SVG-jev"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vektor;grafika;risanje;oblikovanje;ilustracija;slika;umetnost;diagram;ikona;logotip;urejevalnik;pot;oblika;2D;koda;modra;lisica"
-
-#~ msgid "Move Up"
-#~ msgstr "Premakni navzgor"
-
-#~ msgid "Move Down"
-#~ msgstr "Premakni navzdol"
-
-#~ msgid "Viewport"
-#~ msgstr "Okno prikaza"

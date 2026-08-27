@@ -228,7 +228,7 @@ msgid "This group has only one element."
 msgstr "Diese Gruppe hat nur ein Element."
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr "Beschreibt kein SVG."
 
 #: src/data_classes/SVGParser.gd
@@ -1334,7 +1334,7 @@ msgid "New transform"
 msgstr "Neue Transformation"
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
+msgid "GodSVG doesn't recognize this attribute"
 msgstr "GodSVG erkennt diese Attribute nicht"
 
 #: src/utils/FileUtils.gd
@@ -1737,18 +1737,6 @@ msgstr ""
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr ""
 
-#~ msgid "Move Up"
-#~ msgstr "Nach oben"
-
-#~ msgid "Move Down"
-#~ msgstr "Nach unten"
-
-#~ msgid "Viewport"
-#~ msgstr "Ansichtsfenster"
-
-#~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-#~ msgstr "Die Grafik kann nur als SVG exportiert werden, da ihre Proportionen zu extrem sind."
-
 #, fuzzy
 #~ msgid "Add new preview"
 #~ msgstr "Farbe hinzufügen"
@@ -1899,19 +1887,8 @@ msgstr ""
 #~ msgid "Edit palette name"
 #~ msgstr "Palettennamen ändern"
 
-#~ msgid "Tag color"
-#~ msgstr "Tagfarbe"
-
-#, fuzzy
-#~ msgid "New tag"
-#~ msgstr "Neues Element hinzufügen"
-
 #~ msgid "Paths"
 #~ msgstr "Pfade"
-
-#, fuzzy
-#~ msgid "Unknown tag"
-#~ msgstr "Unbekanntes Element"
 
 #~ msgid "Documentation…"
 #~ msgstr "Dokumentation…"

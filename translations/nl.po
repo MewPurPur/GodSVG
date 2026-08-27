@@ -227,7 +227,7 @@ msgid "This group has only one element."
 msgstr "Deze groep bevat maar één element."
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr "Beschrijft geen SVG."
 
 #: src/data_classes/SVGParser.gd
@@ -1320,7 +1320,7 @@ msgid "New transform"
 msgstr "Nieuwe transformatie"
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
+msgid "GodSVG doesn't recognize this attribute"
 msgstr "GodSVG herkent deze attribuut niet"
 
 #: src/utils/FileUtils.gd
@@ -1722,18 +1722,6 @@ msgstr ""
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr ""
-
-#~ msgid "Move Up"
-#~ msgstr "Naar Boven"
-
-#~ msgid "Move Down"
-#~ msgstr "Naar Onder"
-
-#~ msgid "Viewport"
-#~ msgstr "Kijkvenster"
-
-#~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-#~ msgstr "De afbeelding kan alleen maar als SVG geëxporteerd worden door zijn extreme verhoudingen."
 
 #, fuzzy
 #~ msgid "Add new preview"

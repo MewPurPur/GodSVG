@@ -85,11 +85,11 @@ msgstr "Convert 2"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert after"
-msgstr "Put it after dis"
+msgstr "Put it aftr dis"
 
 #: src/autoload/State.gd
 msgid "Insert multiple after"
-msgstr "Put few moar after dis"
+msgstr "Put few moar aftr dis"
 
 #: src/autoload/State.gd
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -183,7 +183,7 @@ msgstr "Default Lite"
 
 #: src/config_classes/TabData.gd
 msgid "Empty"
-msgstr "Emptee"
+msgstr "Empteh"
 
 #: src/config_classes/TabData.gd
 msgid "Unsaved"
@@ -215,14 +215,14 @@ msgstr "Dis gradient is just wun color. It forgot how 2 gradient LOL"
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr "Dis gruup haz only empteenes."
+msgstr "Dis gruup haz only emptehnes."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
 msgstr "Dis group has wun element. Why u even groupin dis?"
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr "Iz not describin an SVG!!"
 
 #: src/data_classes/SVGParser.gd
@@ -401,7 +401,7 @@ msgstr "Make new folder"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
-msgstr "Dat name iz not allowd for folder!!"
+msgstr "Dat name iz not allowd 4 folder!!"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
@@ -425,7 +425,7 @@ msgstr "Open in teh File Manager"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
-msgstr "File named \"{file_name}\" already exists. Replasing will nomf teh old contentz!!1!"
+msgstr "File named \"{file_name}\" alrdy exists. Replasing will nomf teh old contentz!!1!"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
@@ -499,7 +499,7 @@ msgstr "Delet"
 #: src/ui_parts/previews.gd src/ui_widgets/setting_frame.gd
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
-msgstr "Reset To Default"
+msgstr "Reset to defolt"
 
 #: src/ui_parts/previews.gd
 msgid "Clear all"
@@ -515,7 +515,7 @@ msgstr "Fomatting"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Optimizer"
-msgstr "Optimizer"
+msgstr "Optimayzur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Palettes"
@@ -523,7 +523,7 @@ msgstr "Paletz"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Shortcuts"
-msgstr "Shortcuts"
+msgstr "Shortcutz"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Theming"
@@ -842,7 +842,7 @@ msgstr "Preset"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Add trailing newline"
-msgstr "Put emptee line aftur evrifing"
+msgstr "Put empteh line aftur evrifing"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use shorthand tag syntax"
@@ -934,7 +934,7 @@ msgstr "Convert shapez"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Simplify paths"
-msgstr "Make pafz simpler for kitteh brain"
+msgstr "Make pafz simpler 4 kitteh brain"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Theme preset"
@@ -1157,7 +1157,7 @@ msgstr "No nappies fur puter"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Miscellaneous"
-msgstr "Otter stoof"
+msgstr "Miscelanus"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Use native file dialog"
@@ -1181,215 +1181,215 @@ msgstr "Wen turnd on, teh left mouz buttun can scootch teh canvaz aronde. Wheee!
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
-msgstr ""
+msgstr "Da fancy edumacated kitteh wuz brought in 2 translate dis wun, but den it saw all teh big wurdz an runned away. Fomatterz can change how teh SVG content an attributz lookz wifout messing wif teh strukture or big scary pafdayta. Can mak SVG purdy or smol. I tink."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of the formatter configs."
-msgstr "Determines Da Default Values Of Da Fomatter Configs!!"
+msgstr "Deturminz how teh SVG fomatter workz by defolt!!"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses spaces instead of a single tab for indentation."
-msgstr "Wen Enabled Uses Spaces Instead Of A Single Tab 4 Indentation!!!"
+msgstr "Wen turnd on, put few small spaceyz insted of big tab. Liek \"mew mew mew mew\", instead of \"MEEOOWWW\"!!"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
-msgstr ""
+msgstr "Da real fancy smurt cat came bak 2 xplain dis one, dis wat it said: \"Ahem. Optimayzurz may alter teh underlyng SVG strukture an complex attrubyootz, includin teh vexatiously elaborate pafdayta. Such transmutashunz reduce teh overall structural complexity an oft result in smaller filez, which iz, by all reasonable metricz, quite delightfool. However, dis process may be destructiv, potentially compromisin future edityng in exchange 4 computational elegance. Manual optimayzashun, while more laborintensive, affords teh discerning kitteh greater control ova which semantic featurez remain intact.\" Teh cat sed dat then knocked over teh thesaurus from da table, but we tinks it sed evrifing importunt."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
-msgstr "Convert Shapes Into Ones That Can B Defined Identically But Have A Shorter Representation If Possible!!!"
+msgstr "Turnz shayps into otter shayps dat mean teh exact same fing, but takez less stuff 2 write!!"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
-msgstr "Converts Or Simplifies Paf Commands Into Ones With Identical Definition But Shorter Representation If Possible"
+msgstr "Maekz paf dayta stop talkin so much but it still says all teh important stoof."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr "Determines Da Default Values Of Theming Related Settings Including Da Highlighter Preset!!"
+msgstr "Deturminz teh defolt colrz an stoof liek dat, even da hiliter preset!!"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the base color of GodSVG's interface."
-msgstr "Determines Da Base Color Of Godsvg Interface!!!"
+msgstr "Deturminz da base colr of da GodSVG interface!"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
-msgstr "Determines Da Accent Color Used 4 Highlighted Elementz In Godsvg Interface!!!"
+msgstr "Deturminz da fancy accent colr used 4 hilited elementz in da GodSVG interface!!!"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Wen Enabled Clicking On A Tab With Da Middle Mouse Button Closes It Instead Of Simply Focusing It"
+msgstr "Wen turnd on, clickin teh middle mouz buttun on a tab makz it go byebai insted ov jus lookin at it."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Swaps Da Zoom Directions 4 Zooming In N Zooming Out!"
+msgstr "Swaps teh zoomie wayz round so zoom in goez out an zoom out goez in."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
-msgstr "Scootch off one side an come bak frum teh uther side, magik!!"
+msgstr "Wen teh cursur gets 2 teh edge ov teh canvaz, it teleportz 2 teh uther side. Canvaz bordr? NOPE"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr "Determines How Much Da Look Moves 4 Scroll Based Panning Inputs"
+msgstr "Deturminz how much teh look scootz fur scroll inpoots."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Wen Enabled Scrolling Pans Da Look Instead Of Zooming In. To Zoomie Hold Ctrl While Scrolling!!"
+msgstr "Wen enabled, scrollin makz teh look scootch insted ov doin teh zoomie. Hold CTRL 2 zoom like a normal kitteh!!"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr "Synchronizes Graphics Rendering With Display Refresh Rate To Prevent Screen Tearing Artifacts. May Increase Input Lag Slightly"
+msgstr "Maek teh grafix render at teh same rite as teh screen, so it dunt rip into little peeces. Might mak inputz lag a tiny bit tho."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
-msgstr "Keeps Da Screen On Even After Inactivity So Da Screensaver Does Not Take Over"
+msgstr "Keepz teh screen awake even wen nobody doez anythin. Teh screensaver shudnt steal teh job."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
-msgstr "Wen Enabled Uses Your Operating Systems Native File Dialog Instead Of Godsvg Built In One!"
+msgstr "Wen enabled, usez ur puters own file box insted ov teh GodSVG file box."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr "Wen Enabled Adds Da Current File Name Before Da \"godsvg\" Window Title"
+msgstr "Wen enabled, puts teh file naem in front ov teh \"GodSVG\" windo titl so u hav even moar wayz to kno wut file ur lookin at."
 
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "New palette"
-msgstr "New Palette"
+msgstr "New palet"
 
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "New palette from XML"
-msgstr "New Palette From Xml"
+msgstr "New palet frum XML"
 
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "Import XML"
-msgstr "Import Xml"
+msgstr "Import XML"
 
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "Paste XML"
-msgstr "Paste Xml"
+msgstr "Paste XML"
 
 #: src/ui_widgets/transform_field.gd
 msgid "No transforms"
-msgstr "No Transforms"
+msgstr "No transfurms"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "Apply the matrix"
-msgstr "Apply Da Matrix"
+msgstr "Do da matrix"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "Insert before"
-msgstr "Insert Before"
+msgstr "Put it befor dis"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "New transform"
-msgstr "New Transform"
+msgstr "New transfurm"
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
-msgstr "Godsvg Doesn’t Recognize Dis Attribute"
+msgid "GodSVG doesn't recognize this attribute"
+msgstr "GodSVG haz no idea wut is dis attribut"
 
 #: src/utils/FileUtils.gd
 msgid "The following files were discarded:"
-msgstr "Da Following Filez Were Discarded:"
+msgstr "Deez filez were boomed:"
 
 #: src/utils/FileUtils.gd
 msgid "{file_name} was discarded."
-msgstr "{file Name} Was Discarded!"
+msgstr "{file Name} waz boomed!"
 
 #: src/utils/FileUtils.gd
 msgid "Discarded files"
-msgstr "Boomed Files"
+msgstr "Boomed files"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed"
-msgstr "Proceed"
+msgstr "Do dis"
 
 #: src/utils/FileUtils.gd
 msgid "{file_name} couldn't be opened."
-msgstr "{file Name} Couldn't Be Opened!!!!!"
+msgstr "{file_name} sayz NO to bein opend.."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
-msgstr "Check If Da File Still Exist In Da Selected File Paf!!"
+msgstr "Check if teh file still existz at teh file paf u pickd."
 
 #: src/utils/FileUtils.gd
 msgid "Proceed with importing the rest of the files?"
-msgstr "Proceed With Importing Da Rest Of Da Filez??"
+msgstr "Shud i keep importin teh rest ov teh filez??"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed for all files that can't be opened"
-msgstr "Proceed 4 All Filez That Cant B Opened"
+msgstr "Keep goin 4 all teh filez dat dunt wanna open"
 
 #: src/utils/FileUtils.gd
 msgid "Save the file?"
-msgstr "Save Da File??"
+msgstr "Saev teh file??"
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save this file?"
-msgstr "Does U Wants To Save Dis File??"
+msgstr "Doez u want to saev dis file??"
 
 #: src/utils/FileUtils.gd
 msgid "Save the changes?"
-msgstr "Save Da Changes??"
+msgstr "Saev teh new stoof?"
 
 #: src/utils/FileUtils.gd
 msgid "Your changes will be lost if you don't save them."
-msgstr "Your Changes Will B Lost If You Dont Save Them!"
+msgstr "Saev or all ur hard wurk go POOF!!"
 
 #: src/utils/FileUtils.gd
 msgid "Don't save"
-msgstr "Dont Save"
+msgstr "Dunt saev"
 
 #: src/utils/FileUtils.gd
 msgid "{file_path} is already being edited inside GodSVG."
-msgstr "{file Path} Is Already Being Edited Inside Godsvg"
+msgstr "{file_path} is alrdy teh bein edited in GodSVG."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to discard your edits and sync to the file's current content, use \"{reset_svg}\"."
-msgstr "If You Wants To Discard Your Edits N Sync To Da Filez Current Content Use \"{reset Svg}\"!!!"
+msgstr "Wants 2 throw away ur editz? Use \"{reset_svg}\"!!1"
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
-msgstr "Does U Wants To Save Da Changes Made To {file Name}??"
+msgstr "U wants 2 saev teh changez made 2 {file_name}?"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
-msgstr "Save Svg"
+msgstr "Saev SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG as"
-msgstr "Save Svg As"
+msgstr "Saev SVG as"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
-msgstr "Byebye Tabs To Da Left"
+msgstr "Byebai tabz on teh left"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the right"
-msgstr "Byebye Tabs To Da Right"
+msgstr "Byebai tabz on teh rite"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
-msgstr "Byebye All Otter Tabs"
+msgstr "Byebai all teh otter tabz"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close empty tabs"
-msgstr "Byebye Empty Tabs"
+msgstr "Byebai empteh tabz"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close saved tabs"
-msgstr "Byebye Saved Tabs"
+msgstr "Byebye saevd tabz"
 
 #: src/utils/TranslationUtils.gd
 msgid "Create tab"
-msgstr "Create Tab"
+msgstr "Maek tab"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
-msgstr "Select Da Next Tab"
+msgstr "Pick teh next tab"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the previous tab"
-msgstr "Select Da Previus Tab"
+msgstr "Pick teh preevyus tab"
 
 #: src/utils/TranslationUtils.gd
 msgid "Optimize"
@@ -1397,43 +1397,43 @@ msgstr "Optimize"
 
 #: src/utils/TranslationUtils.gd
 msgid "Optimize SVG"
-msgstr "Optimize Svg"
+msgstr "Optimize teh SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy all text"
-msgstr "Copy All Text"
+msgstr "Copy all da tex"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy the SVG text"
-msgstr "Copy Da Svg Text"
+msgstr "Copy da SVG tex"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
-msgstr "Reset Svg"
+msgstr "Reset da SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open externally"
-msgstr "Open Externally"
+msgstr "Open wif outside stoof"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open SVG externally"
-msgstr "Open Svg Externally"
+msgstr "Open da SVG wif outside stoof"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show in File Manager"
-msgstr "Show In File Manager"
+msgstr "Look in teh File Manager"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
-msgstr "Show Svg In File Manager"
+msgstr "Look at da SVG in teh File Manager"
 
 #: src/utils/TranslationUtils.gd
 msgid "Undo"
-msgstr "Undo"
+msgstr "NOPE GO BAK"
 
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
-msgstr "Redo"
+msgstr "Ok do fing again"
 
 #: src/utils/TranslationUtils.gd
 msgid "Paste"
@@ -1441,101 +1441,101 @@ msgstr "Paste"
 
 #: src/utils/TranslationUtils.gd
 msgid "Cut"
-msgstr "Cut"
+msgstr "Snip snip"
 
 #. Refers to evaluating an expression such as "sin(2*pi/5)".
 #: src/utils/TranslationUtils.gd
 msgid "Evaluate"
-msgstr "Evaluate"
+msgstr "Do da maf"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all"
-msgstr "Select All"
+msgstr "Pick EVRIFING"
 
 #: src/utils/TranslationUtils.gd
 msgid "Duplicate"
-msgstr "Duplicate"
+msgstr "Maek clone"
 
 #: src/utils/TranslationUtils.gd
 msgid "Duplicate the selection"
-msgstr "Duplicate Da Selection"
+msgstr "Maek clone of da pickd stoof"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
-msgstr "Delete Da Selection"
+msgstr "DESTROY DA PICKD STOOF"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
-msgstr "Move Da Selection Up"
+msgstr "Shov da pickd stoof up"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
-msgstr "Move Da Selection Down"
+msgstr "Shov da pickd stoof down"
 
 #. Refers to, for example, changing which point in a polygon counts as "first".
 #: src/utils/TranslationUtils.gd
 msgid "Set as initial"
-msgstr "Set As Initial"
+msgstr "Say dis iz teh furst now"
 
 #: src/utils/TranslationUtils.gd
 msgid "Set point as initial"
-msgstr "Set Point As Initial"
+msgstr "Say dis dot iz teh furst now"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reverse order"
-msgstr "Reverse Order"
+msgstr "Do teh order bakwardz"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
-msgstr "Find"
+msgstr "Wher iz"
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom in"
-msgstr "Zoomie In"
+msgstr "Zoomie in"
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom out"
-msgstr "Zoomie Out"
+msgstr "Zoomie out"
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
-msgstr "Zoomie Reset"
+msgstr "Maek zoomie normal"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show grid"
-msgstr "Show Grid"
+msgstr "Show teh cat prison"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show handles"
-msgstr "Show Handles"
+msgstr "Show handlez"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
-msgstr "Show Rasterized Svg"
+msgstr "Show pixely SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle snapping"
-msgstr "Toggle Snapping"
+msgstr "Turn snaping on"
 
 #: src/utils/TranslationUtils.gd
 msgid "Load reference image"
-msgstr "Load Reference Image"
+msgstr "Load reference pic"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
-msgstr "Show Reference Image"
+msgstr "Show reference pic"
 
 #: src/utils/TranslationUtils.gd
 msgid "Overlay reference image"
-msgstr "Overlay Reference Image"
+msgstr "Overlay reference pic"
 
 #: src/utils/TranslationUtils.gd
 msgid "View debug information"
-msgstr "Look Antibuggy Infomation"
+msgstr "Look at antibuggy info"
 
 #: src/utils/TranslationUtils.gd
 msgid "View advanced debug information"
-msgstr "Look Advanced Antibuggy Infomation"
+msgstr "Look at antibuggy info 4 clevar cats"
 
 #: src/utils/TranslationUtils.gd
 msgid "Settings"
@@ -1551,83 +1551,83 @@ msgstr "About…"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open About menu"
-msgstr "Open About Menu"
+msgstr "Open About menu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Donate…"
-msgstr "Donate…"
+msgstr "Giv me treatz…"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
-msgstr "Open Donate Menu"
+msgstr "Open menu for givin treatz"
 
 #: src/utils/TranslationUtils.gd
 msgid "GodSVG repository"
-msgstr "Godsvg Repository"
+msgstr "GodSVG stufz storag"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open GodSVG repository"
-msgstr "Open Godsvg Repository"
+msgstr "Go look at teh GodSvg stufz storage place"
 
 #: src/utils/TranslationUtils.gd
 msgid "GodSVG website"
-msgstr "Godsvg Website"
+msgstr "GodSVG websiet"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open GodSVG website"
-msgstr "Open Godsvg Website"
+msgstr "Go look at teh GodSVG websiet"
 
 #: src/utils/TranslationUtils.gd
 msgid "Check for updates"
-msgstr "Check 4 Updates"
+msgstr "R ther new updatz?"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
-msgstr "Kthxbye Da Application"
+msgstr "Kthxbye teh app"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle fullscreen"
-msgstr "Toggle Fullscreen"
+msgstr "Eat teh whole screen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
-msgstr "Move To"
+msgstr "Move to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Line to"
-msgstr "Line To"
+msgstr "Line to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Horizontal Line to"
-msgstr "Horizontal Line To"
+msgstr "Horizontal line to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Vertical Line to"
-msgstr "Vertical Line To"
+msgstr "Vertical line to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close Path"
-msgstr "Byebye Path"
+msgstr "Shut teh path"
 
 #: src/utils/TranslationUtils.gd
 msgid "Elliptical Arc to"
-msgstr "Elliptical Arc To"
+msgstr "Eggy arc to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quadratic Bezier to"
-msgstr "Quadratic Bezier To"
+msgstr "Quadratic wiggle to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Quadratic Bezier to"
-msgstr "Shorthn Quadratic Bezier To"
+msgstr "Shorthnd quadratic wiggle to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Cubic Bezier to"
-msgstr "Cubic Bezier To"
+msgstr "Cubic wiggle to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
-msgstr "Shorthn Cubic Bezier To"
+msgstr "Shorthnd cubic wiggle to"
 
 #: src/utils/TranslationUtils.gd
 msgid "Absolute"
@@ -1644,47 +1644,41 @@ msgstr "Inspector"
 #. Refers to a part of the layout where icons are previewed at various sizes.
 #: src/utils/TranslationUtils.gd
 msgid "Previews"
-msgstr "Previews"
+msgstr "Purrviews"
 
 #: src/utils/TranslationUtils.gd
 msgid "Only {extension_list} files are supported for this operation."
-msgstr "Only {extension List} Filez Are Supported 4 Dis Operation!"
+msgstr "Only {extension_list} filez haz dis operation!"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select {format} files"
-msgstr "Select {fomat} Files"
+msgstr "Pick {format} filez"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
-msgstr "Select An Image"
+msgstr "Pick a pic"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select a font"
-msgstr "Select A Font"
+msgstr "Pick a font"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an {format} file"
-msgstr "Select An {fomat} File"
+msgstr "Pick an {format} file"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save the {format} file"
-msgstr "Save Da {fomat} File"
+msgstr "Save teh {format} file"
 
 #: no_export/scripts/update_desktop_file.gd
 msgid "Vector graphics editor"
-msgstr "Vector Graphics Editor"
+msgstr "Vector graficz editor"
 
 #: no_export/scripts/update_desktop_file.gd
 msgid "A vector graphics application for structured SVG editing"
-msgstr "A Vector Graphics Application 4 Structured Svg Editing"
+msgstr "A vector graficz app 4 pokin at structurd SVG filez til dey do wut u wants"
 
 #. A list of keywords that should remain semicolon-separated. Doesn't need to be exactly translated. There can be more keywords or less, but they must remain similar to the English ones.
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
-msgstr "Svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2d;code;blue;fox"
-
-#~ msgid "Move Up"
-#~ msgstr "Move Up"
-
-#~ msgid "Move Down"
-#~ msgstr "Move Down"
+msgstr "svg;vector;graficz;draw;design;illustreshun;picshur;art;dayagram;icon;logo;editur;paf;shayp;2D;code;blu;fop"

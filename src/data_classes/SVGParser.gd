@@ -162,7 +162,7 @@ class ParseResult:
 static func get_parsing_error_string(parse_error: ParseError) -> String:
 	match parse_error:
 		ParseError.ERR_NOT_SVG:
-			return Translator.translate("Doesn’t describe an SVG.")
+			return Translator.translate("Doesn't describe an SVG.")
 		ParseError.ERR_IMPROPER_NESTING:
 			return Translator.translate("Improper nesting.")
 		_: return ""

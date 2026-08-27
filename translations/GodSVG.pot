@@ -221,7 +221,7 @@ msgid "This group has only one element."
 msgstr ""
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr ""
 
 #: src/data_classes/SVGParser.gd
@@ -1283,7 +1283,7 @@ msgid "New transform"
 msgstr ""
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
+msgid "GodSVG doesn't recognize this attribute"
 msgstr ""
 
 #: src/utils/FileUtils.gd
