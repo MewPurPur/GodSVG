@@ -110,10 +110,17 @@ func set_preview(node: Control) -> void:
 
 
 func _on_language_pressed() -> void:
+	popup_language_options()
+
+func popup_language_options(no_jokes := true) -> void:
 	var strings_count := TranslationServer.find_translations("en", true)[0].get_message_count()
+	var loaded_locales := TranslationServer.get_loaded_locales()
 	
 	var btn_arr: Array[ContextButton] = []
-	for locale in TranslationServer.get_loaded_locales():
+	for locale in loaded_locales:
+		if no_jokes and locale == "lolcat":
+			continue
+		
 		var is_current_locale := (locale == TranslationServer.get_locale())
 		
 		var btn := ContextButton.create_custom(TranslationUtils.get_locale_display(locale),
@@ -125,7 +132,11 @@ func _on_language_pressed() -> void:
 			btn.add_custom_dim_text(Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%")
 		btn_arr.append(btn)
 	
-	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr), language_button.get_global_rect(), get_viewport())
+	if no_jokes:
+		btn_arr.append(ContextButton.create_custom("...", popup_language_options.bind(false)))
+	
+	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_arr, true, -1.0, PackedInt32Array([loaded_locales.size() - 1])),
+			language_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale
