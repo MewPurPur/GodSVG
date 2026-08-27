@@ -222,7 +222,7 @@ msgid "This group has only one element."
 msgstr "Тази група има само един елемент."
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr "Текстът не описва SVG."
 
 #: src/data_classes/SVGParser.gd
@@ -733,7 +733,6 @@ msgid "Rename"
 msgstr "Преименувай"
 
 #: src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Apply preset"
 msgstr "Приложи шаблон"
 
@@ -1285,7 +1284,7 @@ msgid "New transform"
 msgstr "Нова трансформация"
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
+msgid "GodSVG doesn't recognize this attribute"
 msgstr "GodSVG не разпознава този атрибут"
 
 #: src/utils/FileUtils.gd

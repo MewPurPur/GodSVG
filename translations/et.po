@@ -224,7 +224,7 @@ msgid "This group has only one element."
 msgstr "Grupis on ainult üks element."
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr "Ei kirjelda SVGd."
 
 #: src/data_classes/SVGParser.gd
@@ -1293,7 +1293,7 @@ msgid "New transform"
 msgstr "Uus teisendus"
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
+msgid "GodSVG doesn't recognize this attribute"
 msgstr "GodSVG ei tunne seda atribuuti"
 
 #: src/utils/FileUtils.gd
@@ -1691,18 +1691,6 @@ msgstr "Vektorkraafika rakendus SVG struktureeritud redigeerimiseks"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vektor;graafika;joonista;disain;illustratsioon;pilt;kunst;skeem;diagramm;logo;ikoon;redigeerija;kuju;2D;kood;sinine;rebane"
-
-#~ msgid "Move Up"
-#~ msgstr "Liiguta üles"
-
-#~ msgid "Move Down"
-#~ msgstr "Liiguta alla"
-
-#~ msgid "Viewport"
-#~ msgstr "Vaade"
-
-#~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-#~ msgstr "Graafika saab eksportida ainult SVG-na, sest selle proportsioonid on liiga ekstreemsed."
 
 #~ msgid "Add new preview"
 #~ msgstr "Lisa uus eelvaade"

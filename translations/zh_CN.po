@@ -222,7 +222,7 @@ msgid "This group has only one element."
 msgstr "此组内只有一个元素。"
 
 #: src/data_classes/SVGParser.gd
-msgid "Doesn’t describe an SVG."
+msgid "Doesn't describe an SVG."
 msgstr "文本不是 SVG 格式。"
 
 #: src/data_classes/SVGParser.gd
@@ -1285,7 +1285,7 @@ msgid "New transform"
 msgstr "新的变换"
 
 #: src/ui_widgets/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
+msgid "GodSVG doesn't recognize this attribute"
 msgstr "GodSVG 无法识别该属性"
 
 #: src/utils/FileUtils.gd
@@ -1684,18 +1684,6 @@ msgstr "结构化SVG编辑应用"
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标志;编辑器;路径;形狀;二维;代码;蓝色;狐狸"
 
-#~ msgid "Move Up"
-#~ msgstr "上移"
-
-#~ msgid "Move Down"
-#~ msgstr "下移"
-
-#~ msgid "Viewport"
-#~ msgstr "视图"
-
-#~ msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-#~ msgstr "此图像只能以 SVG 格式导出，因为其大小过于极端。"
-
 #~ msgid "Add new preview"
 #~ msgstr "添加新预览"
 
@@ -1846,14 +1834,8 @@ msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标�
 #~ msgid "Edit palette name"
 #~ msgstr "编辑调色盘名称"
 
-#~ msgid "Unknown tag"
-#~ msgstr "未知的元素"
-
 #~ msgid "Paths"
 #~ msgstr "文件路径"
-
-#~ msgid "Tag color"
-#~ msgstr "元素颜色"
 
 #~ msgid "Import Reference Image"
 #~ msgstr "导入参考图像"
