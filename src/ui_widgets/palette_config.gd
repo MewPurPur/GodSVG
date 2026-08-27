@@ -161,11 +161,11 @@ func _on_palette_button_pressed() -> void:
 	var palette_idx := find_palette_index()
 	var btn_arr: Array[ContextButton] = []
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Rename"), popup_edit_name, preload("res://assets/icons/Rename.svg")))
-	btn_arr.append(ContextButton.create_custom(Translator.translate("Apply Preset"), open_palette_options, preload("res://assets/icons/Import.svg")))
+	btn_arr.append(ContextButton.create_custom(Translator.translate("Apply preset"), open_palette_options, preload("res://assets/icons/Import.svg")))
 	if palette_idx >= 1:
-		btn_arr.append(ContextButton.create_custom(Translator.translate("Move Up"), move_up, preload("res://assets/icons/MoveUp.svg")))
+		btn_arr.append(ContextButton.create_custom(Translator.translate("Move up"), move_up, preload("res://assets/icons/MoveUp.svg")))
 	if palette_idx < Configs.savedata.get_palette_count() - 1:
-		btn_arr.append(ContextButton.create_custom(Translator.translate("Move Down"), move_down, preload("res://assets/icons/MoveDown.svg")))
+		btn_arr.append(ContextButton.create_custom(Translator.translate("Move down"), move_down, preload("res://assets/icons/MoveDown.svg")))
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Delete"), delete, preload("res://assets/icons/Delete.svg")))
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Copy as XML"), copy_palette.bind(palette_idx), preload("res://assets/icons/Copy.svg")))
 	btn_arr.append(ContextButton.create_custom(Translator.translate("Save as XML"), save_palette.bind(palette_idx), preload("res://assets/icons/Export.svg")))
