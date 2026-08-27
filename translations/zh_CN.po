@@ -733,7 +733,6 @@ msgid "Rename"
 msgstr "重命名"
 
 #: src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Apply preset"
 msgstr "应用预设"
 
