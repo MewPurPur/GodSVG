@@ -46,7 +46,6 @@ msgid "Export SVG"
 msgstr "Ekspordi SVG"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "The graphic can only be exported as SVG because its size is undefined."
 msgstr "Graafika saab eksportida ainult SVG-na, sest selle suurus pole defineeritud."
 
@@ -151,9 +150,8 @@ msgid "Lossless"
 msgstr "Kadudeta"
 
 #: src/config_classes/PreviewPresentationLossyWEBP.gd
-#, fuzzy
 msgid "Lossy"
-msgstr "Kadudeta"
+msgstr "Kadudega"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd
@@ -306,23 +304,23 @@ msgstr "Katkesta"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Hover a platform for details."
-msgstr ""
+msgstr "Viige hiir platvormi kohale detailide kuvamiseks."
 
 #: src/ui_parts/donate_menu.gd
 msgid "Low extra fees"
-msgstr ""
+msgstr "Madalad lisatasud"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Can donate arbitrary amounts"
-msgstr ""
+msgstr "Saab annetada mis tahes summasid"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Higher extra fees"
-msgstr ""
+msgstr "Suuremad lisatasud"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Can't donate arbitrary amounts"
-msgstr ""
+msgstr "Ei saa annetada mis tahes summasid"
 
 #: src/ui_parts/element_container.gd
 msgid "New element"
@@ -489,9 +487,8 @@ msgid "Help"
 msgstr "Abi"
 
 #: src/ui_parts/previews.gd
-#, fuzzy
 msgid "Add preview"
-msgstr "Lisa uus eelvaade"
+msgstr "Lisa eelvaade"
 
 #: src/ui_parts/previews.gd src/ui_widgets/palette_config.gd
 #: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
@@ -736,7 +733,6 @@ msgid "Rename"
 msgstr "Nimeta ümber"
 
 #: src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Apply preset"
 msgstr "Rakenda eelseadistus"
 
@@ -798,14 +794,13 @@ msgstr "Rakenda kõik selle eelseadistuse vaikeväärtused"
 
 #. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
 #: src/ui_widgets/setting_frame.gd
-#, fuzzy
 msgid "On"
-msgstr "Ava"
+msgstr "Sisse"
 
 #. This is not an answer to a Yes/No question, but a statement about a state. Translate according to the language's natural state labels (e.g. Activated/Deactivated, Active/Inactive, Enabled/Disabled). Prefer short translations; if a common abbreviation exists, use it.
 #: src/ui_widgets/setting_frame.gd
 msgid "Off"
-msgstr ""
+msgstr "Välja"
 
 #: src/ui_widgets/setting_frame.gd
 msgid "Clear"
@@ -938,9 +933,8 @@ msgid "Convert shapes"
 msgstr "Teisenda kujundeid"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Simplify paths"
-msgstr "Lihtsusta path parameetreid"
+msgstr "Lihtsusta path-e"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Theme preset"
@@ -1113,9 +1107,8 @@ msgid "Invert zoom direction"
 msgstr "Inverteeri suurendussuund"
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Pan with left mouse button"
-msgstr "Sulge vahekaarte keskmise hiireklahviga"
+msgstr "Liigu vasaku hiireklahviga"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Wrap-around panning"
@@ -1184,7 +1177,7 @@ msgstr "Sätet ei saa sellel platvormil muuta."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, the left mouse button can be used to pan the canvas."
-msgstr ""
+msgstr "Sisselülitamisel saab vasakut hiireklahvi kasutada lõuendi liigutamiseks."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
@@ -1207,9 +1200,8 @@ msgid "Convert shapes into ones that can be defined identically, but have a shor
 msgstr "Teisenda kujundeid, kui neid saab identseks määratleda lühema koodiga."
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Converts or simplifies path commands into ones with identical definition, but shorter representation, if possible."
-msgstr "Teisenda või lihtsusta path parameetreid, kui neid saab identseks määratleda lühema koodiga."
+msgstr "Teisendab või lihtsustab path parameetreid, kui neid saab identseks määratleda lühema koodiga."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
@@ -1232,9 +1224,8 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Vahetab kerimissuunad suurendamiseks ja vähendamiseks ümber."
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Warps the cursor to the opposite side whenever it reaches a canvas boundary while panning."
-msgstr "Viib kursori akna vastaspoolele, kui see jõuab vaate liigutamise ajal selle servani, et see liikumist ei takistaks."
+msgstr "Viib kursori lõuendi vastaspoolele kui see jõuab liigutamisel selle servani, et liikumist mitte takistada."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines how much the view moves for scroll-based panning inputs."
