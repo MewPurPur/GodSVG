@@ -73,23 +73,18 @@ func get_content(index: TabIndex) -> Control:
 	match index:
 		TabIndex.FORMATTING:
 			current_content = SettingsContentGeneric.instantiate()
-			current_content.setup_undo_redo_utensils(undo_redo, settings_tab_container.select_tab.bind(index))
 			current_content.setup([Configs.savedata.editor_formatter,
 					Configs.savedata.export_formatter] as Array[ConfigResource], current_content.setup_formatting_content)
 			current_content.preview_changed.connect(set_preview)
 		TabIndex.OPTIMIZER:
 			current_content = SettingsContentGeneric.instantiate()
-			current_content.setup_undo_redo_utensils(undo_redo, settings_tab_container.select_tab.bind(index))
 			current_content.setup([Configs.savedata.default_optimizer] as Array[ConfigResource], current_content.setup_optimizer_content)
 		TabIndex.PALETTES:
 			current_content = SettingsContentPalettes.instantiate()
 		TabIndex.SHORTCUTS:
 			current_content = SettingsContentShortcuts.instantiate()
-			current_content.setup_undo_redo_utensils(undo_redo, settings_tab_container.scroll_vertical_to,
-					settings_tab_container.select_tab.bind(TabIndex.SHORTCUTS))
 		TabIndex.THEMING, TabIndex.TAB_BAR, TabIndex.OTHER:
 			current_content = SettingsContentGeneric.instantiate()
-			current_content.setup_undo_redo_utensils(undo_redo, settings_tab_container.select_tab.bind(index))
 			var callback := Callable()
 			match index:
 				TabIndex.THEMING: callback = current_content.setup_theming_content
@@ -97,6 +92,9 @@ func get_content(index: TabIndex) -> Control:
 				TabIndex.OTHER: callback = current_content.setup_other_content
 			current_content.setup([Configs.savedata] as Array[ConfigResource], callback)
 			current_content.preview_changed.connect(set_preview)
+	current_content.setup_undo_redo_utensils(undo_redo, settings_tab_container.scroll_vertical_to,
+			settings_tab_container.select_tab.bind(index))
+	
 	# Update hover.
 	HandlerGUI.throw_mouse_motion_event()
 	return current_content

@@ -6,11 +6,15 @@ const CollapseableDescriptionScene = preload("res://src/ui_widgets/collapseable_
 const SettingFrameScene = preload("res://src/ui_widgets/setting_frame.tscn")
 const ProfileFrameScene = preload("res://src/ui_widgets/profile_frame.tscn")
 
+var frames: Dictionary[String, Control] = {}
+var button_group: ButtonGroup
+
 # If there are multiple setup resources, they will be added as tabs.
 var current_setup_resources: Array[ConfigResource]
 var setup_method: Callable
 
 var undo_redo: UndoRedoRef
+var scroll_to_callback: Callable
 var settings_tab_change_callable: Callable
 
 var current_setup_setting := ""
@@ -83,13 +87,23 @@ func _ready() -> void:
 	if current_setup_resources.size() > 1:
 		var categories := HFlowContainer.new()
 		categories.alignment = FlowContainer.ALIGNMENT_CENTER
-		var button_group := ButtonGroup.new()
+		button_group = ButtonGroup.new()
 		for idx in current_setup_resources.size():
 			var btn := Button.new()
 			btn.toggle_mode = true
+			if idx == 0:
+				btn.button_pressed = true
 			btn.button_group = button_group
-			btn.pressed.connect(_set_current_setup_resource_index.bind(idx))
-			btn.pressed.connect(setup_content)
+			btn.toggled.connect(
+				func(toggled_on: bool) -> void:
+					if toggled_on:
+						_set_current_setup_resource_index(idx)
+			)
+			btn.toggled.connect(
+				func(toggled_on: bool) -> void:
+					if toggled_on:
+						setup_content()
+			)
 			var update_category_button_text :=\
 				func() -> void:
 					btn.text = Translator.translate("Editor formatter") if idx == 0 else Translator.translate("Export formatter")
@@ -100,14 +114,14 @@ func _ready() -> void:
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 			categories.add_child(btn)
 		add_child(categories)
-		categories.get_child(0).button_pressed = true
 	setting_container = VBoxContainer.new()
 	setting_container.add_theme_constant_override("separation", 6)
 	add_child(setting_container)
 	setup_content()
 
-func setup_undo_redo_utensils(new_undo_redo: UndoRedoRef, new_settings_tab_change_callable: Callable) -> void:
+func setup_undo_redo_utensils(new_undo_redo: UndoRedoRef, new_scroll_to_callback: Callable, new_settings_tab_change_callable: Callable) -> void:
 	undo_redo = new_undo_redo
+	scroll_to_callback = new_scroll_to_callback
 	settings_tab_change_callable = new_settings_tab_change_callable
 
 
@@ -855,17 +869,22 @@ func setup_frame(frame: Control, has_default := true) -> void:
 				old_final_value = resource_ref.get(bind)
 			if old_final_value != p:
 				if is_final:
-					undo_redo.create_action(bind)
+					var a := current_setup_resource_index
+					undo_redo.create_action()
 					undo_redo.add_do_method(resource_ref.set.bind(bind, p))
 					undo_redo.add_do_method(settings_tab_change_callable)
+					undo_redo.add_do_method(highlight_setting.bind(bind, a))
 					undo_redo.add_undo_method(resource_ref.set.bind(bind, old_final_value))
 					undo_redo.add_undo_method(settings_tab_change_callable)
-					undo_redo.commit_action()
-				else:
-					resource_ref.set(bind, p)
+					undo_redo.add_undo_method(highlight_setting.bind(bind, a))
+					undo_redo.commit_action(false)
+				resource_ref.set(bind, p)
 	frame.getter = resource_ref.get.bind(bind)
 	if has_default:
 		frame.default = resource_ref.get_setting_default(current_setup_setting)
+	
+	frames[bind] = frame
+	
 	frame.mouse_entered.connect(set_preview.bind(current_setup_setting))
 	# Remove the preview when one of the following happens:
 	# 1. The mouse exits the setting frame and there's no popup.
@@ -877,6 +896,14 @@ func setup_frame(frame: Control, has_default := true) -> void:
 			else:
 				HandlerGUI.menus_or_popups_cleared.connect(_specific_use_remove_preview_if_no_popups.bind(bind))
 	)
+
+func highlight_setting(setting: String, config_resource_index := -1) -> void:
+	if config_resource_index != -1 and is_instance_valid(button_group):
+		button_group.get_buttons()[config_resource_index].button_pressed = true
+	await get_tree().process_frame
+	if setting in frames:
+		scroll_to_callback.call(frames[setting].get_global_rect(), 0.16)
+
 
 func _specific_use_remove_preview_if_no_popups(setting: String) -> void:
 	if HandlerGUI.popup_stack.is_empty():

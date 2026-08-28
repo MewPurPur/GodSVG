@@ -6,7 +6,9 @@ const PaletteConfigWidgetScene = preload("res://src/ui_widgets/palette_config.ts
 @onready var add_button: Button = $ButtonsContainer/AddButton
 @onready var import_button: Button = $ButtonsContainer/ImportButton
 
-var undo_redo := UndoRedoRef.new()
+var undo_redo: UndoRedoRef
+var scroll_to_callback: Callable
+var settings_tab_change_callable: Callable
 
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
@@ -18,6 +20,13 @@ func _ready() -> void:
 func sync_localization() -> void:
 	add_button.text = Translator.translate("New palette")
 	import_button.text = Translator.translate("New palette from XML")
+
+
+func setup_undo_redo_utensils(new_undo_redo: UndoRedoRef, new_scroll_to_callback: Callable, new_settings_tab_change_callable: Callable) -> void:
+	undo_redo = new_undo_redo
+	scroll_to_callback = new_scroll_to_callback
+	settings_tab_change_callable = new_settings_tab_change_callable
+
 
 func rebuild_palettes() -> void:
 	for palette_config in palette_container.get_children():
