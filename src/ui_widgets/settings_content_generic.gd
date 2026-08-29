@@ -27,6 +27,9 @@ var previews: Dictionary[String, RefCounted] = {}
 var current_previewed_setting := ""
 signal preview_changed(node: Control)
 
+
+# Preview type definitions.
+
 class SettingBasicColorPreview:
 	var setting_bind: String
 	var text: String
@@ -148,6 +151,7 @@ func _on_undo_redo_version_changed() -> void:
 	# Only rebuild if using undo/redo.
 	if not undo_redo.is_committing_action():
 		setup_content()
+
 
 func setup_formatting_content() -> void:
 	var current_setup_resource: Formatter = _get_current_setup_resource()
@@ -771,6 +775,8 @@ func setup_other_content() -> void:
 			"When enabled, adds the current file name before the \"GodSVG\" window title.")))
 
 
+# Setting frame setup
+
 func add_clarification_text(full_text: String, short_text: String) -> void:
 	var clarification := CollapseableDescriptionScene.instantiate()
 	current_setup_container.add_child(clarification)
@@ -873,10 +879,10 @@ func setup_frame(frame: Control, has_default := true) -> void:
 					undo_redo.create_action()
 					undo_redo.add_do_method(resource_ref.set.bind(bind, p))
 					undo_redo.add_do_method(settings_tab_change_callable)
-					undo_redo.add_do_method(highlight_setting.bind(bind, a))
+					undo_redo.add_do_method(_highlight_setting.bind(bind, a))
 					undo_redo.add_undo_method(resource_ref.set.bind(bind, old_final_value))
 					undo_redo.add_undo_method(settings_tab_change_callable)
-					undo_redo.add_undo_method(highlight_setting.bind(bind, a))
+					undo_redo.add_undo_method(_highlight_setting.bind(bind, a))
 					undo_redo.commit_action(false)
 				resource_ref.set(bind, p)
 	frame.getter = resource_ref.get.bind(bind)
@@ -897,19 +903,21 @@ func setup_frame(frame: Control, has_default := true) -> void:
 				HandlerGUI.menus_or_popups_cleared.connect(_specific_use_remove_preview_if_no_popups.bind(bind))
 	)
 
-func highlight_setting(setting: String, config_resource_index := -1) -> void:
+
+func _highlight_setting(setting: String, config_resource_index := -1) -> void:
 	if config_resource_index != -1 and is_instance_valid(button_group):
 		button_group.get_buttons()[config_resource_index].button_pressed = true
 	await get_tree().process_frame
 	if setting in frames:
 		scroll_to_callback.call(frames[setting].get_global_rect(), 0.16)
 
-
 func _specific_use_remove_preview_if_no_popups(setting: String) -> void:
 	if HandlerGUI.popup_stack.is_empty():
 		remove_preview(setting)
 		HandlerGUI.menus_or_popups_cleared.disconnect(_specific_use_remove_preview_if_no_popups)
 
+
+# Preview logic
 
 func add_preview(preview: RefCounted) -> void:
 	previews[current_setup_setting] = preview
