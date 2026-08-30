@@ -149,6 +149,7 @@ jobs:
         with:
           name: ${{ env.FULL_NAME }}.Linux.AppImage
           path: godsvg/dist/${{ env.FULL_NAME }}.Linux.AppImage.zip
+          archive: false
           if-no-files-found: error
           retention-days: 28
 
