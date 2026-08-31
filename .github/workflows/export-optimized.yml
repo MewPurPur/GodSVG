@@ -296,13 +296,14 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build
-          godot --headless --export-release "macOS" build/${{ env.FULL_NAME }}.zip
+          godot --headless --export-release "macOS" build/${{ env.FULL_NAME }}.MacOS.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
           name: ${{ env.FULL_NAME }}.MacOS
-          path: godsvg/build/${{ env.FULL_NAME }}.zip
+          path: godsvg/build/${{ env.FULL_NAME }}.MacOS.zip
+          archive: false
           if-no-files-found: error
           retention-days: 28
 
@@ -482,4 +483,3 @@ jobs:
           path: godsvg/build/android/${{ env.FULL_NAME }}.Android.apk
           if-no-files-found: ignore
           retention-days: 28
-
