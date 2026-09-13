@@ -384,7 +384,7 @@ func popup_submenu_to_right_or_left_side(submenu: Control, source: Control) -> v
 	var screen_transform := vp.get_screen_transform()
 	var screen_w := vp.get_visible_rect().size.x
 	var popup_pos := Vector2(rect.position.x, rect.position.y)
-	if rect.position.x + popup_submenu.size.x + popup_submenu.size.x > screen_w:
+	if rect.end.x + popup_submenu.size.x > screen_w:
 		popup_pos.x -= popup_submenu.size.x
 	else:
 		popup_pos.x += rect.size.x

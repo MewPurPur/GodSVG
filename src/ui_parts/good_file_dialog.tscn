@@ -72,14 +72,11 @@ icon = ExtResource("4_8ufx4")
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-focus_next = NodePath("../RefreshButton")
-focus_previous = NodePath("../ForwardButton")
 script = ExtResource("2_52puw")
 metadata/_custom_type_script = "uid://1hox6gd5pxku"
 
 [node name="RefreshButton" type="Button" parent="VBoxContainer/TopBar" unique_id=1288013129]
 layout_mode = 2
-focus_next = NodePath("../ShowHiddenButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_udwbh")
@@ -94,7 +91,6 @@ icon = ExtResource("5_2ggtv")
 
 [node name="SearchButton" type="Button" parent="VBoxContainer/TopBar" unique_id=2048350652]
 layout_mode = 2
-focus_previous = NodePath("../ShowHiddenButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true

@@ -116,8 +116,8 @@ msgid "Never"
 msgstr "从不"
 
 #: src/config_classes/Formatter.gd
-msgid "Spacious"
-msgstr "宽敞"
+msgid "Verbose"
+msgstr ""
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -1682,6 +1682,9 @@ msgstr "结构化SVG编辑应用"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;矢量;图形;绘制;设计;插画;图像;艺术;图表;图标;标志;编辑器;路径;形狀;二维;代码;蓝色;狐狸"
+
+#~ msgid "Spacious"
+#~ msgstr "宽敞"
 
 #~ msgid "Add new preview"
 #~ msgstr "添加新预览"

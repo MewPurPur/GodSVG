@@ -92,14 +92,9 @@ static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2
 	return Utils.get_cubic_bezier_points(cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
 
 # Calculate quadratic bezier point coordinate along an axis.
-static func quadratic_bezier_point(p0: float, p1: float, p2: float, t: float) -> float:
+static func quadratic_bezier_interpolate(p0: float, p1: float, p2: float, t: float) -> float:
 	var u := 1.0 - t
 	return u * u * p0 + 2 * u * t * p1 + t * t * p2
-
-# Calculate cubic bezier point coordinate along an axis.
-static func cubic_bezier_point(p0: float, p1: float, p2: float, p3: float, t: float) -> float:
-	var u := 1.0 - t
-	return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3
 
 # Ellipse parametric equation.
 static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
@@ -113,10 +108,20 @@ static func Et(r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
 	var yt := r.y * cos(t)
 	return Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)
 
-static func are_angles_to_points_equal(anchor: Vector2, point1: Vector2, point2: Vector2) -> bool:
-	if is_zero_approx((anchor - point1).length_squared()) or is_zero_approx((anchor - point2).length_squared()):
+static func is_point_on_segment(point_x: float, point_y: float, start_x: float, start_y: float, end_x: float, end_y: float) -> bool:
+	var point := Vector2(point_x, point_y)
+	var start := Vector2(start_x, start_y)
+	var end := Vector2(end_x, end_y)
+	var start_to_point_distance_squared := start.distance_squared_to(point)
+	if is_zero_approx(start_to_point_distance_squared):
 		return true
-	return is_equal_approx(fposmod(anchor.angle_to_point(point1), TAU), fposmod(anchor.angle_to_point(point2), TAU))
+	var end_to_point_distance_squared := end.distance_squared_to(point)
+	if is_zero_approx(end_to_point_distance_squared):
+		return true
+	var start_to_end_distance_squared := start.distance_squared_to(end)
+	if start_to_end_distance_squared < start_to_point_distance_squared or start_to_end_distance_squared < end_to_point_distance_squared:
+		return false
+	return is_equal_approx(fposmod(start.angle_to_point(point), TAU), fposmod(start.angle_to_point(end), TAU))
 
 
 static func is_event_drag(event: InputEvent) -> bool:

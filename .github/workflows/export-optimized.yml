@@ -11,27 +11,26 @@ env:
   PROJECT_NAME: GodSVG
   VERSION_NAME: 1.0-alpha17
   # Which Godot version to use for exporting (e.g., 4.4.1, 4.5)
-  GODOT_VERSION: 4.6
+  GODOT_VERSION: 4.8
   # Which Godot release to use for exporting (e.g., stable, dev5, rc2)
-  GODOT_RELEASE_TYPE: stable
+  GODOT_RELEASE_TYPE: dev5
   # Commit hash (found in Github releases)
-  GODOT_COMMIT_HASH: 89cea143987d564363e15d207438530651d943ac
+  GODOT_COMMIT_HASH: 9552dfb6859a1aaba1e570b8e0ef5c599b830f19
   # Emscripten version. Should normally be "latest", but if this causes problems, see what Godot itself is using.
-  EMSDK_VERSION: 4.0.11
+  EMSDK_VERSION: latest
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
-  # d3d12=no, vulkan=no, use_volk=no since we use Compatibility Renderer. TODO disable rendering_device too (Godot issue #103100).
   # disable_3d=yes since we don't use 3D features. This automatically disables 3D physics, 3D navigation, and XR.
-  # disable_physics_2d=yes since we don't use physics.
-  # disable_navigation_2d=yes since we don't use navigation.
-  # graphite=no I'm not sure why we have disabled, but it's a font-shaping engine.
+  # disable_2d=yes since we don't use 2D node features. This automatically disables 2D physics and 2D navigation.
+  # rendering_device=no since we use the Compatibility renderer.
+  # graphite=no I'm not sure why we have disabled this, but it's a font-shaping engine.
   # All modules are disabled by default, except for the following:
   # - gdscript, svg: Obvious.
   # - jpg, webp, dds: For exporting SVGs as different formats.
   # - mbedtls: needed for HTTP requests.
-  # - text_server_adv: Currently unneeded, but needed for languages like Arabic.
+  # - text_server_adv: Currently unneeded, but could be eventually needed for languages like Arabic.
   # - freetype: Something about font rendering.
   # build_profile disables a lot of unused classes.
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no d3d12=no vulkan=no use_volk=no disable_3d=yes disable_physics_2d=yes disable_navigation_2d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_webp_enabled=yes module_dds_enabled=yes module_text_server_adv_enabled=yes graphite=no module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.gdbuild
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no disable_2d=yes disable_3d=yes rendering_device=no minizip=no graphite=no modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_webp_enabled=yes module_dds_enabled=yes module_text_server_adv_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.gdbuild
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static

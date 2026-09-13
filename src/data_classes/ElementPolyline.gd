@@ -72,21 +72,19 @@ func get_replacement(new_element: String) -> Element:
 	return element
 
 
-# max_output_vertices is useful for stopping early if an operation is guaranteed to fail if the vertices are too many.
+# max_output_vertices is useful for stopping early if an operation is guaranteed to fail when the vertices are too many.
 func merge_segments(max_output_vertices := -1) -> void:
 	var list := get_attribute_list("points")
 	var list_size := list.size()
 	if list_size < 6:
 		return
-	var new_list_points := PackedFloat64Array()
 	
-	new_list_points.append(list[0])
-	new_list_points.append(list[1])
+	var new_list_points := PackedFloat64Array([list[0], list[1]])
 	for i in range(2, list_size - 2, 2):
-		if not Utils.are_angles_to_points_equal(Vector2(list[i - 2], list[i - 1]), Vector2(list[i], list[i + 1]), Vector2(list[i + 2], list[i + 3])):
+		if not Utils.is_point_on_segment(list[i], list[i + 1], list[i - 2], list[i - 1], list[i + 2], list[i + 3]):
 			new_list_points.append(list[i])
 			new_list_points.append(list[i + 1])
-			if max_output_vertices != -1 and new_list_points.size() >= max_output_vertices * 2:
+			if new_list_points.size() == max_output_vertices * 2:
 				get_attribute("points").set_list(new_list_points)
 				return
 	new_list_points.append(list[-2])

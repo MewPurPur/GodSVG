@@ -68,14 +68,14 @@ func get_bounding_box() -> Rect2:
 				var sol_x := _solve_quadratic(a.x, b.x, c.x)
 				for sol in sol_x:
 					if sol > 0 and sol < 1:
-						var pt := Utils.cubic_bezier_point(cmd.start_x, cp1[0], cmd.x2, cmd.x, sol)
+						var pt := bezier_interpolate(cmd.start_x, cp1[0], cmd.x2, cmd.x, sol)
 						min_x = minf(pt, min_x)
 						max_x = maxf(pt, max_x)
 				
 				var sol_y := _solve_quadratic(a.y, b.y, c.y)
 				for sol in sol_y:
 					if sol > 0 and sol < 1:
-						var pt := Utils.cubic_bezier_point(cmd.start_y, cp1[1], cmd.y2, cmd.y, sol)
+						var pt := bezier_interpolate(cmd.start_y, cp1[1], cmd.y2, cmd.y, sol)
 						min_y = minf(pt, min_y)
 						max_y = maxf(pt, max_y)
 			"Q", "T":
@@ -89,13 +89,13 @@ func get_bounding_box() -> Rect2:
 				
 				var t_x: float = (cmd.start_x - cp1[0]) / (cmd.start_x - 2 * cp1[0] + cmd.x)
 				if 0 <= t_x and t_x <= 1:
-					var x_extrema := Utils.quadratic_bezier_point(cmd.start_x, cp1[0], cmd.x, t_x)
+					var x_extrema := Utils.quadratic_bezier_interpolate(cmd.start_x, cp1[0], cmd.x, t_x)
 					min_x = minf(min_x, x_extrema)
 					max_x = maxf(max_x, x_extrema)
 				
 				var t_y: float = (cmd.start_y - cp1[1]) / (cmd.start_y - 2 * cp1[1] + cmd.y)
 				if 0 <= t_y and t_y <= 1:
-					var y_extrema := Utils.quadratic_bezier_point(cmd.start_y, cp1[1], cmd.y, t_y)
+					var y_extrema := Utils.quadratic_bezier_interpolate(cmd.start_y, cp1[1], cmd.y, t_y)
 					min_y = minf(min_y, y_extrema)
 					max_y = maxf(max_y, y_extrema)
 			"A":

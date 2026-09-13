@@ -166,10 +166,7 @@ func is_theming_default() -> bool:
 			return false
 	return true
 
-# TODO Typed Dictionary wonkiness Dictionary[ThemePreset, String]. This one was copied
-# from an earlier similar implementation, but I didn't bother to test if it's still
-# necessary because GodSVG was disheveled while I was implementing the feature.
-static func get_theme_preset_value_text_map() -> Dictionary:
+static func get_theme_preset_value_text_map() -> Dictionary[ThemePreset, String]:
 	return {
 		ThemePreset.DARK: Translator.translate("Dark"),
 		ThemePreset.LIGHT: Translator.translate("Light"),
@@ -195,10 +192,7 @@ func is_highlighting_default() -> bool:
 			return false
 	return true
 
-# TODO Typed Dictionary wonkiness  Dictionary[ThemePreset, String]. This one was copied
-# from an earlier similar implementation, but I didn't bother to test if it's still
-# necessary because GodSVG was disheveled while I was implementing the feature.
-static func get_highlighter_preset_value_text_map() -> Dictionary:
+static func get_highlighter_preset_value_text_map() -> Dictionary[HighlighterPreset, String]:
 	return {
 		HighlighterPreset.DEFAULT_DARK: Translator.translate("Default Dark"),
 		HighlighterPreset.DEFAULT_LIGHT: Translator.translate("Default Light"),

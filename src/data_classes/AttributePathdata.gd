@@ -162,14 +162,12 @@ func _has_following_shorthand_cubic(index: int) -> bool:
 
 func is_implied_T_control_on_segment(index: int, start_x: float, start_y: float, end_x: float, end_y: float) -> bool:
 	var implied := get_implied_T_control(index)
-	return is_point_on_segment(implied[0], implied[1], start_x, start_y, end_x, end_y)
+	return Utils.is_point_on_segment(implied[0], implied[1], start_x, start_y, end_x, end_y)
 
 func is_implied_S_control_on_segment(index: int, start_x: float, start_y: float, end_x: float, end_y: float) -> bool:
 	var implied := get_implied_S_control(index)
-	return is_point_on_segment(implied[0], implied[1], start_x, start_y, end_x, end_y)
+	return Utils.is_point_on_segment(implied[0], implied[1], start_x, start_y, end_x, end_y)
 
-func is_point_on_segment(point_x: float, point_y: float, start_x: float, start_y: float, end_x: float, end_y: float) -> bool:
-	return Utils.are_angles_to_points_equal(Vector2(start_x, start_y), Vector2(point_x, point_y), Vector2(end_x, end_y))
 
 func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subsequent_commands := false) -> bool:
 	var cmd := _commands[index]
@@ -226,13 +224,13 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 	elif cmd is PathCommand.QuadraticBezierCommand:
 		match conversion_method:
 			Conversion.ANY_TO_LINE:
-				return is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
+				return Utils.is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
 			Conversion.ANY_TO_HORIZONTAL_LINE:
-				return cmd.y == cmd.start_y and is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
+				return cmd.y == cmd.start_y and Utils.is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
 			Conversion.ANY_TO_VERTICAL_LINE:
-				return cmd.x == cmd.start_x and is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
+				return cmd.x == cmd.start_x and Utils.is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
 			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == cmd.x1 and cmd.start_y == cmd.y1
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: return true
@@ -273,16 +271,16 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 	elif cmd is PathCommand.CubicBezierCommand:
 		match conversion_method:
 			Conversion.ANY_TO_LINE:
-				return is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
-						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
+				return Utils.is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
+						Utils.is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
 			Conversion.ANY_TO_HORIZONTAL_LINE:
-				return cmd.y == cmd.start_y and is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
-						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
+				return cmd.y == cmd.start_y and Utils.is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
+						Utils.is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
 			Conversion.ANY_TO_VERTICAL_LINE:
-				return cmd.x == cmd.start_x and is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
-						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
+				return cmd.x == cmd.start_x and Utils.is_point_on_segment(cmd.x1, cmd.y1, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
+						Utils.is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
 			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == cmd.x2 and cmd.start_y == cmd.y2
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
@@ -303,18 +301,18 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 		match conversion_method:
 			Conversion.ANY_TO_LINE:
 				var implied := get_implied_S_control(index)
-				return is_point_on_segment(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
-						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
+				return Utils.is_point_on_segment(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
+						Utils.is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
 			Conversion.ANY_TO_HORIZONTAL_LINE:
 				var implied := get_implied_S_control(index)
-				return cmd.y == cmd.start_y and is_point_on_segment(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
-						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
+				return cmd.y == cmd.start_y and Utils.is_point_on_segment(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
+						Utils.is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.x, cmd.start_y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
 			Conversion.ANY_TO_VERTICAL_LINE:
 				var implied := get_implied_S_control(index)
-				return cmd.x == cmd.start_x and is_point_on_segment(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
-						is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
+				return cmd.x == cmd.start_x and Utils.is_point_on_segment(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
+						Utils.is_point_on_segment(cmd.x2, cmd.y2, cmd.start_x, cmd.start_y, cmd.start_x, cmd.y) and\
 						(ignore_subsequent_commands or not _has_following_shorthand_cubic(index))
 			Conversion.ANY_TO_ELLIPTICAL_ARC:
 				var implied := get_implied_S_control(index)

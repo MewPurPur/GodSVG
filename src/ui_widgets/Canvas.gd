@@ -205,8 +205,6 @@ func _texture_update() -> void:
 			Rect2(root_element.world_to_canvas(display_rect.position),
 			display_rect.size / root_element.canvas_transform.get_scale()), cached_inner_markup)
 	
-	# TODO Necessary workaround to Godot ignoring position changes below a treshold.
-	display_texture.position = Vector2(NAN, NAN)
 	display_texture.position = display_rect.position
 	display_texture.size = display_rect.size
 	display_texture.texture = DPITexture.create_from_string(svg_text, image_zoom)

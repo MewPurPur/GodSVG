@@ -120,7 +120,7 @@ msgid "Never"
 msgstr "Nunca"
 
 #: src/config_classes/Formatter.gd
-msgid "Spacious"
+msgid "Verbose"
 msgstr ""
 
 #: src/config_classes/Formatter.gd

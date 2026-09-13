@@ -12,10 +12,11 @@ func _init(new_element: Element, xref: String, yref: String) -> void:
 	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
-func set_position(new_position: PackedFloat64Array) -> void:
-	if precise_position != new_position:
-		element.set_attribute(x_name, new_position[0])
-		element.set_attribute(y_name, new_position[1])
+func set_position(new_position: Vector2, snap_size: float) -> void:
+	var final_position := apply_restrictions(new_position, snap_size)
+	if precise_position != final_position:
+		element.set_attribute(x_name, final_position[0])
+		element.set_attribute(y_name, final_position[1])
 		sync()
 
 func sync() -> void:

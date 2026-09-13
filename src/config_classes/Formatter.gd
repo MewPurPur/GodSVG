@@ -4,7 +4,7 @@ class_name Formatter extends ConfigResource
 
 enum Preset {COMPACT, PRETTY}
 enum ShorthandTags {ALWAYS, ALL_EXCEPT_CONTAINERS, NEVER}
-enum FormattingStyle {COMPACT, PRETTY, SPACIOUS}
+enum FormattingStyle {COMPACT, PRETTY, VERBOSE}
 enum NamedColorUse {ALWAYS, WHEN_SHORTER_OR_EQUAL, WHEN_SHORTER, NEVER}
 enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
 
@@ -28,7 +28,7 @@ static func get_formatting_style_value_text_map() -> Dictionary[FormattingStyle,
 	return {
 		FormattingStyle.COMPACT: Translator.translate("Compact"),
 		FormattingStyle.PRETTY: Translator.translate("Pretty"),
-		FormattingStyle.SPACIOUS: Translator.translate("Spacious"),
+		FormattingStyle.VERBOSE: Translator.translate("Verbose"),
 	}
 
 static func get_named_color_use_value_text_map() -> Dictionary[NamedColorUse, String]:
@@ -45,14 +45,6 @@ static func get_primary_color_syntax_value_text_map() -> Dictionary[PrimaryColor
 		PrimaryColorSyntax.SIX_DIGIT_HEX: Translator.translate("6-digit hex"),
 		PrimaryColorSyntax.RGB: "RGB",
 	}
-
-static func get_enum_value_text_map(property: String) -> Dictionary[Variant, String]:
-	match property:
-		"preset": return get_preset_value_text_map()
-		"xml_shorthand_tags": return get_shorthand_tags_value_text_map()
-		"color_use_named_colors": return get_named_color_use_value_text_map()
-		"color_primary_syntax": return get_primary_color_syntax_value_text_map()
-	return {}
 
 ## Returns the default of a settings based on the preset.
 func get_setting_default(setting: String) -> Variant:

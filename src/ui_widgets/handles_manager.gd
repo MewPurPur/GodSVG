@@ -10,8 +10,8 @@ const stroke_shader = preload("res://src/shaders/animated_stroke.gdshader")
 const stroke_shader_static = preload("res://src/shaders/animated_stroke_static.gdshader")
 
 const DEFAULT_GRAB_DISTANCE_SQUARED := 81.0
-const CONTOUR_WIDTH = 1.0
-const TANGENT_WIDTH = 0.65
+const CONTOUR_WIDTH = 2.0
+const TANGENT_WIDTH = 1.25
 const TANGENT_ALPHA = 0.8
 
 var _handles_update_pending := false
@@ -692,8 +692,8 @@ handles_array: Array[Handle], atlas_textures_dict: Dictionary) -> void:
 		color_array.fill(Color(color, TANGENT_ALPHA))
 		RenderingServer.canvas_item_add_multiline(surface, multiline, color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
-		atlas_textures_dict[handle.display_mode].draw(surface,
-				canvas.root_element.canvas_to_world(handle.transform * handle.position) * canvas.camera_zoom - Vector2(half_handle_size, half_handle_size))
+		atlas_textures_dict[handle.display_mode].draw(surface, canvas.root_element.canvas_to_world(
+				handle.cached_position_on_canvas) * canvas.camera_zoom - Vector2(half_handle_size, half_handle_size))
 
 
 var dragged_handle: Handle = null
@@ -734,15 +734,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		should_deselect_all = false
 		if visible and is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
-			var event_pos := get_event_pos(event)
-			var new_pos := Utils64Bit.transform_vector_mult(
-					Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-					canvas.root_element.world_to_canvas_64_bit(event_pos))
-			dragged_handle.set_position(new_pos)
+			dragged_handle.set_position(canvas.root_element.world_to_canvas(get_event_pos(event.position)), get_applied_snap_size())
 			was_handle_moved = true
 			accept_event()
 	elif event is InputEventMouseButton:
-		var event_pos := get_event_pos(event)
+		var event_pos := get_event_pos(event.position)
+		var applied_snap_size := get_applied_snap_size()
+		var snapped_event_pos := PackedFloat64Array([snappedf(event_pos.x, applied_snap_size), snappedf(event_pos.y, applied_snap_size)])
 		
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			# React to LMB actions.
@@ -782,10 +780,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					State.normal_select(dragged_xid, inner_idx)
 			elif visible and is_instance_valid(dragged_handle) and event.is_released():
 				if was_handle_moved:
-					var new_pos := Utils64Bit.transform_vector_mult(
-							Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-							canvas.root_element.world_to_canvas_64_bit(event_pos))
-					dragged_handle.set_position(new_pos)
+					dragged_handle.set_position(canvas.root_element.world_to_canvas(get_event_pos(event.position)), get_applied_snap_size())
 					State.save_svg()
 					was_handle_moved = false
 				dragged_handle = null
@@ -800,7 +795,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not is_instance_valid(hovered_handle):
 				State.clear_all_selections()
 				HandlerGUI.popup_under_position(create_element_context(
-						canvas.root_element.world_to_canvas_64_bit(event_pos)), popup_pos, vp)
+						canvas.root_element.world_to_canvas_64_bit(snapped_event_pos)), popup_pos, vp)
 			elif visible:
 				var hovered_xid := hovered_handle.element.xid
 				var inner_idx := -1
@@ -820,29 +815,26 @@ func find_nearest_handle(event_position: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED * (Configs.savedata.handle_size / canvas.camera_zoom) ** 2
 	for handle in handles:
-		var dist_to_handle_squared := event_position.distance_squared_to(canvas.root_element.canvas_to_world(handle.transform * handle.position))
+		var dist_to_handle_squared := event_position.distance_squared_to(canvas.root_element.canvas_to_world(handle.cached_position_on_canvas))
 		if dist_to_handle_squared < nearest_dist_squared:
 			nearest_dist_squared = dist_to_handle_squared
 			nearest_handle = handle
 	return nearest_handle
 
 # Two 64-bit coordinates instead of a Vector2.
-func get_event_pos(event: InputEvent) -> PackedFloat64Array:
-	return apply_snap(event.position / canvas.camera_zoom + canvas.get_camera_position())
+func get_event_pos(event_position: Vector2) -> Vector2:
+	return event_position / canvas.camera_zoom + canvas.get_camera_position()
 
-func apply_snap(position_to_snap: Vector2) -> PackedFloat64Array:
+func get_applied_snap_size() -> float:
 	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / canvas.camera_zoom) / log(10)), 0)
 	var configured_snap := absf(Configs.savedata.snap)
-	var snap_size: float  # To be used for the snap.
 	
 	# If the snap is disabled, or the precision snap is bigger than the configured snap
 	# and a multiple of it, use the precision snap. Otherwise use the user-configured snap.
 	if Configs.savedata.snap < 0.0 or (precision_snap > configured_snap and is_zero_approx(fmod(precision_snap, configured_snap))):
-		snap_size = precision_snap
+		return precision_snap
 	else:
-		snap_size = configured_snap
-	
-	return PackedFloat64Array([snappedf(position_to_snap.x, snap_size), snappedf(position_to_snap.y, snap_size)])
+		return configured_snap
 
 
 func _on_handle_added() -> void:
@@ -864,12 +856,10 @@ func _on_handle_added() -> void:
 			State.set_hovered(handle.element.xid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
-			var mouse_pos := apply_snap(get_global_mouse_position())
-			var new_pos := Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-					canvas.root_element.world_to_canvas_64_bit(mouse_pos))
-			dragged_handle.set_position(new_pos)
+			dragged_handle.set_position(canvas.root_element.world_to_canvas(get_event_pos(get_global_mouse_position())), get_applied_snap_size())
 			was_handle_moved = true
 			return
+
 
 # Creates a popup for adding a shape at a position.
 func create_element_context(precise_position: PackedFloat64Array) -> ContextPopup:
