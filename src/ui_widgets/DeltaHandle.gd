@@ -18,22 +18,20 @@ func _init(new_element: Element, xref: String, yref: String, dref: String, p_hor
 	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
-func set_position(new_position: PackedFloat64Array) -> void:
+func set_position(new_position: Vector2, snap_size: float) -> void:
+	var x_pos := element.get_attribute_num(x_name)
+	var y_pos := element.get_attribute_num(y_name)
 	if horizontal:
-		new_position[1] = element.get_attribute_num(y_name)
+		var final_position := apply_restrictions(new_position, snap_size, [PackedFloat64Array([x_pos, y_pos, x_pos + 1, y_pos])])
+		if precise_position != final_position:
+			element.set_attribute(d_name, absf(final_position[0] - element.get_attribute_num(x_name)))
 	else:
-		new_position[0] = element.get_attribute_num(x_name)
-	
-	if precise_position != new_position:
-		element.set_attribute(d_name, absf(new_position[0] - element.get_attribute_num(x_name) if\
-				horizontal else new_position[1] - element.get_attribute_num(y_name)))
-		sync()
+		var final_position := apply_restrictions(new_position, snap_size, [PackedFloat64Array([x_pos, y_pos, x_pos, y_pos + 1])])
+		if precise_position != final_position:
+			element.set_attribute(d_name, absf(final_position[1] - element.get_attribute_num(y_name)))
+	sync()
 
 func sync() -> void:
-	if horizontal:
-		precise_position[0] = element.get_attribute_num(x_name) + element.get_attribute_num(d_name)
-		precise_position[1] = element.get_attribute_num(y_name)
-	else:
-		precise_position[0] = element.get_attribute_num(x_name)
-		precise_position[1] = element.get_attribute_num(y_name) + element.get_attribute_num(d_name)
+	precise_position = [element.get_attribute_num(x_name), element.get_attribute_num(y_name)]
+	precise_position[0 if horizontal else 1] += element.get_attribute_num(d_name)
 	super()

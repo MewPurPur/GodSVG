@@ -120,13 +120,13 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 	for attribute: Attribute in attribute_array:
 		var value := attribute.get_formatted_value(formatter)
 		var quote := "'" if '"' in value else '"'
-		if formatter.xml_formatting_style == Formatter.FormattingStyle.SPACIOUS:
+		if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE:
 			markup += "\n" + formatter.get_indent_string().repeat(element.xid.size() + 1)
 		else:
 			markup += " "
 		markup += attribute.name + "=" + quote + value + quote
 	
-	if formatter.xml_formatting_style == Formatter.FormattingStyle.SPACIOUS and not attribute_array.is_empty():
+	if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE and not attribute_array.is_empty():
 		markup += "\n" + formatter.get_indent_string().repeat(element.xid.size())
 	
 	if not element.has_children() and (formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALWAYS or\

@@ -117,8 +117,8 @@ msgid "Never"
 msgstr "Nunca"
 
 #: src/config_classes/Formatter.gd
-msgid "Spacious"
-msgstr "Espacioso"
+msgid "Verbose"
+msgstr ""
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -1690,6 +1690,9 @@ msgstr "Una aplicación de gráficos vectoriales para edición SVG estructurada"
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "svg;vector;gráficos;dibujo;diseño;ilustración;imagen;arte;diagrama;icono;logo;editor;ruta;forma;2D;código;azul;zorro"
+
+#~ msgid "Spacious"
+#~ msgstr "Espacioso"
 
 #~ msgid "Add new preview"
 #~ msgstr "Añadir nueva vista previa"
