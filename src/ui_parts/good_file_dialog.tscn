@@ -34,16 +34,12 @@ theme_override_constants/separation = 6
 
 [node name="BackButton" type="Button" parent="VBoxContainer/TopBar" unique_id=1737544122]
 layout_mode = 2
-focus_next = NodePath("../ForwardButton")
-focus_previous = NodePath(".")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_dyt2g")
 
 [node name="ForwardButton" type="Button" parent="VBoxContainer/TopBar" unique_id=2035423985]
 layout_mode = 2
-focus_next = NodePath("../PathField")
-focus_previous = NodePath("../BackButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("3_8ufx4")
@@ -62,8 +58,6 @@ layout_mode = 2
 [node name="PathEditButton" type="Button" parent="VBoxContainer/TopBar/PathPanel/MainPathBox" unique_id=1874577377]
 layout_mode = 2
 size_flags_vertical = 4
-focus_next = NodePath("../../../RefreshButton")
-focus_previous = NodePath("../../../ForwardButton")
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("4_8ufx4")

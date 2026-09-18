@@ -27,7 +27,6 @@ theme_override_constants/separation = 6
 [node name="PaletteButton" type="Button" parent="MainContainer/HBoxContainer" unique_id=1392302702]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 

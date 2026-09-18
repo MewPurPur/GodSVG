@@ -20,14 +20,12 @@ alignment = 1
 
 [node name="AddButton" type="Button" parent="ButtonsContainer" unique_id=1741593505]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 icon = ExtResource("2_ywgeg")
 
 [node name="ImportButton" type="Button" parent="ButtonsContainer" unique_id=160490243]
 layout_mode = 2
-focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 icon = ExtResource("3_p0ru4")
