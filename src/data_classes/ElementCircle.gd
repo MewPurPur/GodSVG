@@ -22,24 +22,27 @@ func get_replacement(new_element: String) -> Element:
 	match new_element:
 		"ellipse":
 			dropped_attributes = PackedStringArray(["r", "rx", "ry"])
-			element.set_attribute("rx", get_attribute_value("r"))
-			element.set_attribute("ry", get_attribute_value("r"))
+			var r := get_attribute_value("r")
+			element.set_attribute("rx", r)
+			element.set_attribute("ry", r)
 		"rect":
 			dropped_attributes = PackedStringArray(["r", "cx", "cy", "rx", "ry", "width", "height"])
-			element.set_attribute("x", get_attribute_num("cx") - get_attribute_num("r"))
-			element.set_attribute("y", get_attribute_num("cy") - get_attribute_num("r"))
-			element.set_attribute("width", get_attribute_num("r") * 2)
-			element.set_attribute("height", get_attribute_num("r") * 2)
-			element.set_attribute("rx", get_attribute_value("r"))
-			element.set_attribute("ry", get_attribute_value("r"))
+			var r := get_attribute_num("r")
+			element.set_attribute("x", get_attribute_num("cx") - r)
+			element.set_attribute("y", get_attribute_num("cy") - r)
+			element.set_attribute("width", r * 2)
+			element.set_attribute("height", r * 2)
+			element.set_attribute("rx", r)
+			element.set_attribute("ry", r)
 		"path":
 			dropped_attributes = PackedStringArray(["r", "cx", "cy", "d"])
+			var cx := get_attribute_num("cx")
+			var cy := get_attribute_num("cy")
+			var r := get_attribute_num("r")
 			var commands: Array[PathCommand] = []
-			commands.append(PathCommand.MoveCommand.new(get_attribute_num("cx"), get_attribute_num("cy") - get_attribute_num("r"), true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_attribute_num("r"), get_attribute_num("r"), 0, 0, 0,
-					get_attribute_num("cx"), get_attribute_num("cy") + get_attribute_num("r"), true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_attribute_num("r"), get_attribute_num("r"), 0, 0, 0,
-					get_attribute_num("cx"), get_attribute_num("cy") - get_attribute_num("r"), true))
+			commands.append(PathCommand.MoveCommand.new(cx + r, cy, true))
+			commands.append(PathCommand.EllipticalArcCommand.new(r, r, 0, 0, 1, cx - r, cy, true))
+			commands.append(PathCommand.EllipticalArcCommand.new(r, r, 0, 0, 1, cx + r, cy, true))
 			commands.append(PathCommand.CloseCommand.new(true))
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
@@ -54,5 +57,5 @@ func _get_own_default(attribute_name: String) -> String:
 		_: return ""
 
 func get_bounding_box() -> Rect2:
-	var d := get_attribute_num("r") * 2.0
-	return Rect2(get_attribute_num("cx") - get_attribute_num("r"), get_attribute_num("cy") - get_attribute_num("r"), d, d)
+	var r := get_attribute_num("r")
+	return Rect2(get_attribute_num("cx") - r, get_attribute_num("cy") - r, r * 2, r * 2)
