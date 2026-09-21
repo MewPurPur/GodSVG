@@ -130,21 +130,21 @@ func update_handles() -> void:
 	for element in canvas.root_element.get_all_valid_element_descendants():
 		match element.name:
 			"circle":
-				handles.append(XYHandle.new(element, "cx", "cy"))
-				handles.append(DeltaHandle.new(element, "cx", "cy", "r", true))
+				handles.append(Handle.create_as_xy(element, "cx", "cy"))
+				handles.append(Handle.create_as_delta(element, "cx", "cy", "r", true))
 			"ellipse":
-				handles.append(XYHandle.new(element, "cx", "cy"))
-				handles.append(DeltaHandle.new(element, "cx", "cy", "rx", true))
-				handles.append(DeltaHandle.new(element, "cx", "cy", "ry", false))
+				handles.append(Handle.create_as_xy(element, "cx", "cy"))
+				handles.append(Handle.create_as_delta(element, "cx", "cy", "rx", true))
+				handles.append(Handle.create_as_delta(element, "cx", "cy", "ry", false))
 			"rect":
-				handles.append(XYHandle.new(element, "x", "y"))
-				handles.append(DeltaHandle.new(element, "x", "y", "width", true))
-				handles.append(DeltaHandle.new(element, "x", "y", "height", false))
+				handles.append(Handle.create_as_xy(element, "x", "y"))
+				handles.append(Handle.create_as_delta(element, "x", "y", "width", true))
+				handles.append(Handle.create_as_delta(element, "x", "y", "height", false))
 			"line":
-				handles.append(XYHandle.new(element, "x1", "y1"))
-				handles.append(XYHandle.new(element, "x2", "y2"))
+				handles.append(Handle.create_as_xy(element, "x1", "y1"))
+				handles.append(Handle.create_as_xy(element, "x2", "y2"))
 			"use":
-				handles.append(XYHandle.new(element, "x", "y"))
+				handles.append(Handle.create_as_xy(element, "x", "y"))
 			"polygon", "polyline":
 				handles += generate_polyhandles(element)
 			"path":
@@ -179,34 +179,23 @@ func generate_path_handles(element: Element) -> Array[Handle]:
 			continue
 		
 		if path_command_char in "cq":
-			var tangent_handle := PathHandle.new(element, idx, "x1", "y1")
-			tangent_handle.display_mode = Handle.Display.SMALL
-			path_handles.append(tangent_handle)
+			path_handles.append(Handle.create_as_path(element, idx, "x1", "y1"))
 		if path_command_char in "cs":
-			var tangent_handle := PathHandle.new(element, idx, "x2", "y2")
-			tangent_handle.display_mode = Handle.Display.SMALL
-			path_handles.append(tangent_handle)
+			path_handles.append(Handle.create_as_path(element, idx, "x2", "y2"))
 		
 		if path_command_char == "h":
-			path_handles.append(PathHandle.new(element, idx, "x", ""))
+			path_handles.append(Handle.create_as_path(element, idx, "x", ""))
 		elif path_command_char == "v":
-			path_handles.append(PathHandle.new(element, idx, "", "y"))
+			path_handles.append(Handle.create_as_path(element, idx, "", "y"))
 		else:
-			var main_handle := PathHandle.new(element, idx, "x", "y")
-			if path_command_char == "m":
-				main_handle.display_mode = Handle.Display.SQUARE
-			path_handles.append(main_handle)
+			path_handles.append(Handle.create_as_path(element, idx, "x", "y"))
 	return path_handles
 
 func generate_polyhandles(element: Element) -> Array[Handle]:
 	var polyhandles: Array[Handle] = []
 	var points_count: int = element.get_attribute("points").get_list_size() / 2
-	if points_count != 0:
-		var first_handle := PolyHandle.new(element, 0)
-		first_handle.display_mode = Handle.Display.SQUARE
-		polyhandles.append(first_handle)
-	for idx: int in range(1, points_count):
-		polyhandles.append(PolyHandle.new(element, idx))
+	for i in points_count:
+		polyhandles.append(Handle.create_as_poly(element, i))
 	return polyhandles
 
 
@@ -657,11 +646,7 @@ func _draw() -> void:
 	var hovered_handles: Array[Handle] = []
 	var hovered_selected_handles: Array[Handle] = []
 	for handle in handles:
-		var inner_idx := -1
-		if handle is PathHandle:
-			inner_idx = handle.command_index
-		elif handle is PolyHandle:
-			inner_idx = handle.point_index
+		var inner_idx := handle.inner_index
 		var is_hovered := canvas.is_hovered(handle.element.xid, inner_idx, true)
 		var is_selected := canvas.is_selected(handle.element.xid, inner_idx, true)
 		
@@ -728,12 +713,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var nearest_handle := find_nearest_handle(event.position / canvas.camera_zoom + canvas.get_camera_position())
 		if is_instance_valid(nearest_handle):
 			hovered_handle = nearest_handle
-			if hovered_handle is PathHandle:
-				State.set_hovered(hovered_handle.element.xid, hovered_handle.command_index)
-			elif hovered_handle is PolyHandle:
-				State.set_hovered(hovered_handle.element.xid, hovered_handle.point_index)
-			else:
-				State.set_hovered(hovered_handle.element.xid)
+			State.set_hovered(hovered_handle.element.xid, hovered_handle.inner_index)
 		else:
 			hovered_handle = null
 			State.clear_all_hovered()
@@ -758,16 +738,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			# React to LMB actions.
 			if visible and is_instance_valid(hovered_handle) and event.is_pressed():
 				dragged_handle = hovered_handle
-				var inner_idx := -1
 				var dragged_xid := dragged_handle.element.xid
-				if dragged_handle is PathHandle:
-					inner_idx = dragged_handle.command_index
-				if dragged_handle is PolyHandle:
-					inner_idx = dragged_handle.point_index
+				var inner_idx := dragged_handle.inner_index
 				
 				if event.double_click and inner_idx != -1:
-					if dragged_handle is PathHandle:
-						var subpath_range: Vector2i = dragged_handle.element.get_attribute("d").get_subpath(inner_idx)
+					var dragged_handle_element := dragged_handle.element
+					if dragged_handle_element is ElementPath:
+						var subpath_range: Vector2i = dragged_handle_element.get_attribute("d").get_subpath(inner_idx)
 						if event.is_command_or_control_pressed():
 							State.ctrl_select(dragged_xid, subpath_range.x)
 							# ctrl_select() can deselect the first command, so ensure it's selected.
@@ -776,14 +753,14 @@ func _unhandled_input(event: InputEvent) -> void:
 						else:
 							State.normal_select(dragged_xid, subpath_range.x)
 						State.shift_select(dragged_xid, subpath_range.y)
-					elif dragged_handle is PolyHandle:
+					elif dragged_handle_element is ElementPolygon or dragged_handle_element is ElementPolyline:
 						if event.is_command_or_control_pressed():
 							State.ctrl_select(dragged_xid, 0)
 							if not State.is_selected(dragged_xid, 0):
 								State.ctrl_select(dragged_xid, 0)
 						else:
 							State.normal_select(dragged_xid, 0)
-						State.shift_select(dragged_xid, dragged_handle.element.get_attribute("points").get_list_size() / 2 - 1)
+						State.shift_select(dragged_xid, dragged_handle_element.get_attribute("points").get_list_size() / 2 - 1)
 				elif event.is_command_or_control_pressed():
 					State.ctrl_select(dragged_xid, inner_idx)
 				elif event.shift_pressed:
@@ -810,11 +787,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						canvas.root_element.world_to_canvas_64_bit(snapped_event_pos)), popup_pos, vp)
 			elif visible:
 				var hovered_xid := hovered_handle.element.xid
-				var inner_idx := -1
-				if hovered_handle is PathHandle:
-					inner_idx = hovered_handle.command_index
-				if hovered_handle is PolyHandle:
-					inner_idx = hovered_handle.point_index
+				var inner_idx := hovered_handle.inner_index
 				
 				if not (State.semi_selected_xid == hovered_xid and inner_idx in State.inner_selections) and\
 				not (inner_idx == -1 and hovered_xid in State.selected_xids):
@@ -864,8 +837,8 @@ func _on_handle_added() -> void:
 		return
 	
 	for handle in handles:
-		if handle is PathHandle and handle.element.xid == State.semi_selected_xid and handle.command_index == first_inner_selection:
-			State.set_hovered(handle.element.xid, handle.command_index)
+		if handle.inner_index != -1 and handle.element.xid == State.semi_selected_xid and handle.inner_index == first_inner_selection:
+			State.set_hovered(handle.element.xid, handle.inner_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			dragged_handle.set_position(canvas.root_element.world_to_canvas(get_event_pos(get_global_mouse_position())), get_applied_snap_size())
