@@ -18,14 +18,18 @@ func _init(new_element: Element, new_command_index: int, x_name: String, y_name:
 
 func set_position(new_position: Vector2, snap_size: float) -> void:
 	var pathdata: AttributePathdata = element.get_attribute(pathdata_name)
+	var cmd := pathdata.get_command(command_index)
 	
 	# Batches of 4 coordinates representing lines: [x1, y1, x2, y2].
 	var constraining_axes: Array[PackedFloat64Array] = []
+	if x_param.is_empty():
+		constraining_axes.append(PackedFloat64Array([cmd.start_x, cmd.start_y, cmd.start_x, cmd.start_y + 1.0]))
+	elif y_param.is_empty():
+		constraining_axes.append(PackedFloat64Array([cmd.start_x, cmd.start_y, cmd.start_x + 1.0, cmd.start_y]))
 	
 	# Generate constraining axes Constrain to match the angle of the neighboring segment if Ctrl is pressed.
 	# Quadratic beziers can have two neighboring segments.
 	if Input.is_key_pressed(KEY_CTRL):
-		var cmd := pathdata.get_command(command_index)
 		var cmd_char := cmd.command_char.to_lower()
 		var subpath := pathdata.get_subpath(command_index)
 		

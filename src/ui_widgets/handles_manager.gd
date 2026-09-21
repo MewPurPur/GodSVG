@@ -174,22 +174,28 @@ func generate_path_handles(element: Element) -> Array[Handle]:
 	var data_attrib: AttributePathdata = element.get_attribute("d")
 	var path_handles: Array[Handle] = []
 	for idx in range(data_attrib.get_command_count() - 1, -1, -1):
-		var path_command := data_attrib.get_command(idx)
-		if path_command.command_char in "Zz":
+		var path_command_char := data_attrib.get_command(idx).command_char.to_lower()
+		if path_command_char == "z":
 			continue
 		
-		if path_command.command_char in "CcQq":
-			var tangent := PathHandle.new(element, idx, "x1", "y1")
-			tangent.display_mode = Handle.Display.SMALL
-			path_handles.append(tangent)
-		if path_command.command_char in "CcSs":
-			var tangent := PathHandle.new(element, idx, "x2", "y2")
-			tangent.display_mode = Handle.Display.SMALL
-			path_handles.append(tangent)
-		var main_handle := PathHandle.new(element, idx, "x", "y")
-		if path_command.command_char in "Mm":
-			main_handle.display_mode = Handle.Display.SQUARE
-		path_handles.append(main_handle)
+		if path_command_char in "cq":
+			var tangent_handle := PathHandle.new(element, idx, "x1", "y1")
+			tangent_handle.display_mode = Handle.Display.SMALL
+			path_handles.append(tangent_handle)
+		if path_command_char in "cs":
+			var tangent_handle := PathHandle.new(element, idx, "x2", "y2")
+			tangent_handle.display_mode = Handle.Display.SMALL
+			path_handles.append(tangent_handle)
+		
+		if path_command_char == "h":
+			path_handles.append(PathHandle.new(element, idx, "x", ""))
+		elif path_command_char == "v":
+			path_handles.append(PathHandle.new(element, idx, "", "y"))
+		else:
+			var main_handle := PathHandle.new(element, idx, "x", "y")
+			if path_command_char == "m":
+				main_handle.display_mode = Handle.Display.SQUARE
+			path_handles.append(main_handle)
 	return path_handles
 
 func generate_polyhandles(element: Element) -> Array[Handle]:
