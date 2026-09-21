@@ -117,7 +117,7 @@ msgstr "NEVR"
 
 #: src/config_classes/Formatter.gd
 msgid "Verbose"
-msgstr ""
+msgstr "Verbalose"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -201,9 +201,9 @@ msgstr "Tex"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} must b in {allowed} or it just sitz dere doin nuthin!"
 
-#: src/data_classes/ElementBaseGradient.gd
-msgid "No \"id\" attribute defined."
-msgstr "No \"id\" defined, how we sposed 2 kno who dis kitteh iz?"
+#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementEllipse.gd
+msgid "No \"{attribute_name}\" attribute defined."
+msgstr "No \"{attribute_name}\" defined, how we sposed 2 kno who dis kitteh iz?"
 
 #: src/data_classes/ElementBaseGradient.gd
 msgid "No <stop> elements under this gradient."
@@ -212,6 +212,14 @@ msgstr "Gradient has no <stop> elementz. Gradient iz sad.."
 #: src/data_classes/ElementBaseGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Dis gradient is just wun color. It forgot how 2 gradient LOL"
+
+#: src/data_classes/ElementEllipse.gd
+msgid "This may be interpreted differently by different SVG software."
+msgstr "Sum kittehz may see dis and go 'huh?'"
+
+#: src/data_classes/ElementEllipse.gd
+msgid "Invalid value for \"{attribute_name}\" attribute."
+msgstr "Da \"{attribute_name}\" kitteh hates dis value!"
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
