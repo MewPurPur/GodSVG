@@ -117,7 +117,7 @@ msgstr "从不"
 
 #: src/config_classes/Formatter.gd
 msgid "Verbose"
-msgstr ""
+msgstr "详细"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -203,9 +203,8 @@ msgstr "{element} 必须在 {allowed} 内才能产生作用。"
 
 #: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementCircle.gd
 #: src/data_classes/ElementEllipse.gd
-#, fuzzy
 msgid "No \"{attribute_name}\" attribute defined."
-msgstr "\"id\" 属性未定义。"
+msgstr "\"{attribute_name}\" 属性未定义。"
 
 #: src/data_classes/ElementBaseGradient.gd
 msgid "No <stop> elements under this gradient."
@@ -217,16 +216,15 @@ msgstr "此渐变为单一颜色。"
 
 #: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
 msgid "Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\"."
-msgstr ""
+msgstr "属性 \"{attribute_name}\" 包含无效值 \"{attribute_value}\"。"
 
 #: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
-#, fuzzy
 msgid "Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render."
-msgstr "\"id\" 属性未定义。"
+msgstr "属性 \"{attribute_name}\" 的值 \"{attribute_value}\" 无效，不会被渲染。"
 
 #: src/data_classes/ElementEllipse.gd
 msgid "This may be interpreted differently by different SVG software."
-msgstr ""
+msgstr "此可能会被其他SVG软件以不同方式解释。"
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
