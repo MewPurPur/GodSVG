@@ -8,7 +8,7 @@ func get_config_warnings() -> PackedStringArray:
 	var warnings := super()
 	
 	if not has_attribute("id"):
-		warnings.append(Translator.translate("No \"id\" attribute defined."))
+		warnings.append(Translator.translate("No \"{attribute_name}\" attribute defined.").format({"attribute_name": "id"}))
 	
 	var prev_offset := -1.0
 	var initial_color := ""

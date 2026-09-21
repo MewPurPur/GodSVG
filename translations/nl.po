@@ -206,8 +206,10 @@ msgstr "Tekst"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} moet aanwezig zijn in {allowed} om enig effect te hebben."
 
-#: src/data_classes/ElementBaseGradient.gd
-msgid "No \"id\" attribute defined."
+#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementCircle.gd
+#: src/data_classes/ElementEllipse.gd
+#, fuzzy
+msgid "No \"{attribute_name}\" attribute defined."
 msgstr "Geen \"id\" attribuut gedefineerd."
 
 #: src/data_classes/ElementBaseGradient.gd
@@ -217,6 +219,19 @@ msgstr "Geen <stop> elementen onder deze kleurovergang."
 #: src/data_classes/ElementBaseGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Deze kleurovergang is een vaste kleur."
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+msgid "Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\"."
+msgstr ""
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+#, fuzzy
+msgid "Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render."
+msgstr "Geen \"id\" attribuut gedefineerd."
+
+#: src/data_classes/ElementEllipse.gd
+msgid "This may be interpreted differently by different SVG software."
+msgstr ""
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."

@@ -117,7 +117,7 @@ msgstr "Никога"
 
 #: src/config_classes/Formatter.gd
 msgid "Verbose"
-msgstr ""
+msgstr "Разкрачен"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -201,9 +201,10 @@ msgstr "Текст"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} трябва да е във {allowed} за да има ефект."
 
-#: src/data_classes/ElementBaseGradient.gd
-msgid "No \"id\" attribute defined."
-msgstr "Не е дефиниран \"id\" атрибут."
+#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementCircle.gd
+#: src/data_classes/ElementEllipse.gd
+msgid "No \"{attribute_name}\" attribute defined."
+msgstr "Не е дефиниран \"{attribute_name}\" атрибут."
 
 #: src/data_classes/ElementBaseGradient.gd
 msgid "No <stop> elements under this gradient."
@@ -212,6 +213,18 @@ msgstr "Няма <stop> елементи под този градиент."
 #: src/data_classes/ElementBaseGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Този градиент е едноцветен."
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+msgid "Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\"."
+msgstr "Атрибутът \"{attribute_name}\" има невалидна стойност \"{attribute_value}\"."
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+msgid "Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render."
+msgstr "Атрибутът \"{attribute_name}\" има стойност \"{attribute_value}\" и няма да бъде рендиран."
+
+#: src/data_classes/ElementEllipse.gd
+msgid "This may be interpreted differently by different SVG software."
+msgstr "Това може да бъде интерпретирано по различни начини от различни SVG софтуери."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
@@ -922,7 +935,7 @@ msgstr "Премахни ненужните параметри"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
-msgstr "Определя настройките на оптимизатора по подразбиране, използвани когато ползваш \"{optimize}\""
+msgstr "Определя настройките на оптимизатора по подразбиране, използвани когато ползваш \"{optimize}\"."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Remove comments"
@@ -1682,6 +1695,3 @@ msgstr "Приложение за структурирано редактира�
 #: no_export/scripts/update_desktop_file.gd
 msgid "svg;vector;graphics;draw;design;illustration;image;art;diagram;icon;logo;editor;path;shape;2D;code;blue;fox"
 msgstr "свг;вектор;графика;рисуване;дизайн;илюстрация;изображение;изкуство;диаграма;иконка;лого;редактор;изкуство;пътека;фигура;2д;код;синя;лисица"
-
-#~ msgid "Spacious"
-#~ msgstr "Разреден"

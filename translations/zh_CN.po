@@ -201,8 +201,10 @@ msgstr "文本"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} 必须在 {allowed} 内才能产生作用。"
 
-#: src/data_classes/ElementBaseGradient.gd
-msgid "No \"id\" attribute defined."
+#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementCircle.gd
+#: src/data_classes/ElementEllipse.gd
+#, fuzzy
+msgid "No \"{attribute_name}\" attribute defined."
 msgstr "\"id\" 属性未定义。"
 
 #: src/data_classes/ElementBaseGradient.gd
@@ -212,6 +214,19 @@ msgstr "此渐变下没有 <stop> 元素。"
 #: src/data_classes/ElementBaseGradient.gd
 msgid "This gradient is a solid color."
 msgstr "此渐变为单一颜色。"
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+msgid "Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\"."
+msgstr ""
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+#, fuzzy
+msgid "Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render."
+msgstr "\"id\" 属性未定义。"
+
+#: src/data_classes/ElementEllipse.gd
+msgid "This may be interpreted differently by different SVG software."
+msgstr ""
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
