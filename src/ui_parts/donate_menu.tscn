@@ -85,9 +85,11 @@ theme_override_constants/margin_left = 4
 
 [node name="Clarifications" type="RichTextLabel" parent="VBoxContainer/MarginContainer2" unique_id=1266808477]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+custom_maximum_size = Vector2(-1, 60)
 layout_mode = 2
+size_flags_vertical = 0
 bbcode_enabled = true
-fit_content = true
 
 [node name="CloseButton" type="Button" parent="VBoxContainer" unique_id=402535635]
 layout_mode = 2
