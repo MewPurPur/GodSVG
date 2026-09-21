@@ -228,16 +228,18 @@ func _draw() -> void:
 			"circle":
 				var c := Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
 				var r := element.get_attribute_num("r")
+				var final_transform := element.get_transform()
 				
 				var points := PackedVector2Array()
-				points.resize(361)
-				for i in 360:
-					var d := i * TAU/360
-					points[i] = c + Vector2(cos(d), sin(d)) * r
-				points[360] = points[0]
-				var extras := PackedVector2Array([c, c + Vector2(r, 0)])
-				var final_transform := element.get_transform()
-				points = final_transform * points
+				if r > 0:
+					points.resize(361)
+					for i in 360:
+						var d := i * TAU/360
+						points[i] = c + Vector2(cos(d), sin(d)) * r
+					points[360] = points[0]
+					points = final_transform * points
+				
+				var extras := PackedVector2Array([c, c + Vector2(absf(r), 0)])
 				extras = final_transform * extras
 				
 				if element_hovered and element_selected:
@@ -268,16 +270,20 @@ func _draw() -> void:
 			
 			"ellipse":
 				var c := Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
+				var rx := element.get_attribute_num("rx")
+				var ry := element.get_attribute_num("ry")
+				var final_transform := element.get_transform()
 				# Squished circle.
 				var points := PackedVector2Array()
-				points.resize(361)
-				for i in 360:
-					var d := i * TAU/360
-					points[i] = c + Vector2(cos(d) * element.get_rx(), sin(d) * element.get_ry())
-				points[360] = points[0]
-				var extras := PackedVector2Array([c, c + Vector2(element.get_rx(), 0), c, c + Vector2(0, element.get_ry())])
-				var final_transform := element.get_transform()
-				points = final_transform * points
+				if rx > 0 and ry > 0:
+					points.resize(361)
+					for i in 360:
+						var d := i * TAU/360
+						points[i] = c + Vector2(cos(d) * absf(rx), sin(d) * absf(ry))
+					points[360] = points[0]
+					points = final_transform * points
+				
+				var extras := PackedVector2Array([c, c + Vector2(rx, 0), c, c + Vector2(0, ry)])
 				extras = final_transform * extras
 				
 				if element_hovered and element_selected:

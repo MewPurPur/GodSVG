@@ -72,7 +72,11 @@ func get_config_warnings() -> PackedStringArray:
 			warnings.append(warning)
 		else:
 			var r_attrib_value := get_attribute_num(r_attrib)
-			if r_attrib_value <= 0:
-				warnings.append(Translator.translate("Invalid value for \"{attribute_name}\" attribute.").format({"attribute_name": r_attrib}))
+			if is_nan(r_attrib_value) or r_attrib_value < 0:
+				warnings.append(Translator.translate("Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\".").format(
+						{"attribute_name": r_attrib, "attribute_value": r_attrib_value}))
+			elif r_attrib_value == 0:
+				warnings.append(Translator.translate("Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render.").format(
+						{"attribute_name": r_attrib, "attribute_value": r_attrib_value}))
 	
 	return warnings

@@ -59,3 +59,19 @@ func _get_own_default(attribute_name: String) -> String:
 func get_bounding_box() -> Rect2:
 	var r := get_attribute_num("r")
 	return Rect2(get_attribute_num("cx") - r, get_attribute_num("cy") - r, r * 2, r * 2)
+
+func get_config_warnings() -> PackedStringArray:
+	var warnings := super()
+	
+	if not has_attribute("r"):
+		warnings.append(Translator.translate("No \"{attribute_name}\" attribute defined.").format({"attribute_name": "r"}))
+	else:
+		var r_value := get_attribute_num("r")
+		if is_nan(r_value) or r_value < 0:
+			warnings.append(Translator.translate("Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\".").format(
+					{"attribute_name": "r", "attribute_value": r_value}))
+		elif r_value == 0:
+			warnings.append(Translator.translate("Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render.").format(
+					{"attribute_name": "r", "attribute_value": r_value}))
+	
+	return warnings

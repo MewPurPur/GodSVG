@@ -201,7 +201,8 @@ msgstr "Текст"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} трябва да е във {allowed} за да има ефект."
 
-#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementEllipse.gd
+#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementCircle.gd
+#: src/data_classes/ElementEllipse.gd
 msgid "No \"{attribute_name}\" attribute defined."
 msgstr "Не е дефиниран \"{attribute_name}\" атрибут."
 
@@ -213,13 +214,17 @@ msgstr "Няма <stop> елементи под този градиент."
 msgid "This gradient is a solid color."
 msgstr "Този градиент е едноцветен."
 
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+msgid "Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\"."
+msgstr "Атрибутът \"{attribute_name}\" има невалидна стойност \"{attribute_value}\"."
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+msgid "Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render."
+msgstr "Атрибутът \"{attribute_name}\" има стойност \"{attribute_value}\" и няма да бъде рендиран."
+
 #: src/data_classes/ElementEllipse.gd
 msgid "This may be interpreted differently by different SVG software."
 msgstr "Това може да бъде интерпретирано по различни начини от различни SVG софтуери."
-
-#: src/data_classes/ElementEllipse.gd
-msgid "Invalid value for \"{attribute_name}\" attribute."
-msgstr "Невалидна стойност за атрибута \"{attribute_name}\"."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."

@@ -207,7 +207,8 @@ msgstr "Text"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} muss sich innerhalb {allowed} befinden, um einen Effekt zu haben."
 
-#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementEllipse.gd
+#: src/data_classes/ElementBaseGradient.gd src/data_classes/ElementCircle.gd
+#: src/data_classes/ElementEllipse.gd
 #, fuzzy
 msgid "No \"{attribute_name}\" attribute defined."
 msgstr "Kein \"id\" Attribut definiert."
@@ -220,12 +221,17 @@ msgstr "Keine <stop> Elemente unter diesem Farbverlauf."
 msgid "This gradient is a solid color."
 msgstr "Dieser Farbverlauf ist einfarbig."
 
-#: src/data_classes/ElementEllipse.gd
-msgid "This may be interpreted differently by different SVG software."
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+msgid "Attribute \"{attribute_name}\" has invalid value \"{attribute_value}\"."
 msgstr ""
 
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+#, fuzzy
+msgid "Attribute \"{attribute_name}\" has value \"{attribute_value}\" and will not render."
+msgstr "Kein \"id\" Attribut definiert."
+
 #: src/data_classes/ElementEllipse.gd
-msgid "Invalid value for \"{attribute_name}\" attribute."
+msgid "This may be interpreted differently by different SVG software."
 msgstr ""
 
 #: src/data_classes/ElementG.gd
