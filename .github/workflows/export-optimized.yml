@@ -13,9 +13,9 @@ env:
   # Which Godot version to use for exporting (e.g., 4.4.1, 4.5)
   GODOT_VERSION: 4.8
   # Which Godot release to use for exporting (e.g., stable, dev5, rc2)
-  GODOT_RELEASE_TYPE: dev5
+  GODOT_RELEASE_TYPE: dev6
   # Commit hash (found in Github releases)
-  GODOT_COMMIT_HASH: 9552dfb6859a1aaba1e570b8e0ef5c599b830f19
+  GODOT_COMMIT_HASH: 8898c2b3db32adf6f92c694ffb6dac19af672e5f
   # Emscripten version. Should normally be "latest", but if this causes problems, see what Godot itself is using.
   EMSDK_VERSION: latest
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.

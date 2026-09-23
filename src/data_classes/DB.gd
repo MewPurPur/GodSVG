@@ -1,7 +1,7 @@
 ## A central database for SVG element and attribute definitions.
 @abstract class_name DB
 
-enum AttributeType {NUMERIC, COLOR, LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
+enum AttributeType {NUMERIC, COLOR, LIST, DASHARRAY, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
 enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
 enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
@@ -126,8 +126,9 @@ const _ATTRIBUTE_TYPES: Dictionary[String, AttributeType] = {
 	"stroke-width": AttributeType.NUMERIC,
 	"stroke-linecap": AttributeType.ENUM,
 	"stroke-linejoin": AttributeType.ENUM,
-	#"stroke-dashoffset": AttributeType.NUMERIC,
-	#"stroke-dasharray": AttributeType.LIST,  # TODO Should be of dasharray type eventually.
+	"stroke-miterlimit": AttributeType.NUMERIC,
+	"stroke-dashoffset": AttributeType.NUMERIC,
+	"stroke-dasharray": AttributeType.DASHARRAY,
 	"color": AttributeType.COLOR,
 	"d": AttributeType.PATHDATA,
 	"points": AttributeType.LIST,
@@ -173,6 +174,7 @@ const ATTRIBUTE_NUMBER_RANGE: Dictionary[String, NumberRange] = {
 	"fill-opacity": NumberRange.UNIT,
 	"stroke-opacity": NumberRange.UNIT,
 	"stroke-width": NumberRange.POSITIVE,
+	"stroke-miterlimit": NumberRange.POSITIVE,
 	"offset": NumberRange.UNIT,
 	"stop-opacity": NumberRange.UNIT,
 }

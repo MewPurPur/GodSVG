@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://i4scl07fwpo7"]
+
+[ext_resource type="Script" uid="uid://bws54nmwus6y6" path="res://src/ui_widgets/transformlist_field.gd" id="1_gj48o"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://assets/icons/Arrow.svg" id="2_3b2jo"]
+
+[node name="TransformField" type="Control" unique_id=636640374]
+custom_minimum_size = Vector2(162, 0)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_gj48o")
+icon = ExtResource("2_3b2jo")
+mono_font_tooltip = true
