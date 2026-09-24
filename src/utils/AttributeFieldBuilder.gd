@@ -1,6 +1,6 @@
 @abstract class_name AttributeFieldBuilder
 
-const TransformListFieldScene = preload("res://src/ui_widgets/transformlist_field.tscn")
+const TransformListFieldScene = preload("res://src/ui_widgets/transform_list_field.tscn")
 const NumberFieldScene = preload("res://src/ui_widgets/number_field.tscn")
 const NumberSliderScene = preload("res://src/ui_widgets/number_field_with_slider.tscn")
 const ColorFieldScene = preload("res://src/ui_widgets/color_field.tscn")
@@ -17,6 +17,7 @@ static func create(attribute_name: String, element: Element) -> Control:
 		DB.AttributeType.TRANSFORM_LIST: return _generate(TransformListFieldScene, element, attribute_name)
 		DB.AttributeType.COLOR: return _generate(ColorFieldScene, element, attribute_name)
 		DB.AttributeType.ENUM: return _generate(EnumFieldScene, element, attribute_name)
+		DB.AttributeType.DASHARRAY: return _generate_no_name(DashArrayFieldScene, element)
 		DB.AttributeType.NUMERIC:
 			match DB.ATTRIBUTE_NUMBER_RANGE[attribute_name]:
 				DB.NumberRange.UNIT: return _generate(NumberSliderScene, element, attribute_name)
