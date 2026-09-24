@@ -263,4 +263,5 @@ static func attribute(name: String, value: String) -> Attribute:
 		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, value)
 		DB.AttributeType.ID: return AttributeID.new(name, value)
 		DB.AttributeType.HREF: return AttributeHref.new(name, value)
+		DB.AttributeType.DASHARRAY: return AttributeDasharray.new(name, value)
 		_: return Attribute.new(name, value)

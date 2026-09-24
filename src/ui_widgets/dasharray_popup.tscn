@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://6jcprfmjmgw6"]
+
+[ext_resource type="Script" uid="uid://be4ytertj63vb" path="res://src/ui_widgets/dasharray_popup.gd" id="1_asoud"]
+
+[node name="DashArrayPopup" type="PanelContainer" unique_id=517963384]
+custom_minimum_size = Vector2(168, 0)
+offset_right = 4.0
+offset_bottom = 4.0
+script = ExtResource("1_asoud")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2009353375]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=1609892633]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 3
