@@ -13,10 +13,9 @@ static func add_hash_if_hex(color: String) -> String:
 ## If allow_url is true, "url(#id)" is considered valid.
 ## If allow_none is true, "none" is considered valid.
 ## If allow_current_color is true, "currentColor" is considered valid.
-static func is_valid(color: String, allow_alpha := false, allow_url := false, allow_none := false, allow_current_color := false) -> bool:
-	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha) or\
-			(allow_url and is_valid_url(color)) or (allow_none and color.strip_edges() == "none") or\
-			(allow_current_color and color.strip_edges() == "currentColor")
+static func is_valid(color: String, allow_alpha := false, allow_url := false, allowed_keywords := PackedStringArray()) -> bool:
+	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or is_valid_hsl(color, allow_alpha) or\
+			is_valid_named(color, allow_alpha) or (allow_url and is_valid_url(color)) or (color.strip_edges() in allowed_keywords)
 
 ## Validates if a color string is of #RRGGBB or #RGB format. If allow_alpha is true, also accepts #RRGGBBAA and #RGBA.
 static func is_valid_hex(color: String, allow_alpha := false) -> bool:

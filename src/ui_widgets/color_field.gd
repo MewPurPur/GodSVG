@@ -2,16 +2,7 @@
 extends LineEditButton
 
 var element: Element
-var attribute_name: String:  # May propagate.
-	set(new_value):
-		attribute_name = new_value
-		cached_allow_url = attribute_name in DB.COLOR_ATTRIBUTES_WITH_URL_ALLOWED
-		cached_allow_none = attribute_name in DB.COLOR_ATTRIBUTES_WITH_NONE_ALLOWED
-		cached_allow_current_color = attribute_name in DB.COLOR_ATTRIBUTES_WITH_CURRENT_COLOR_ALLOWED
-
-var cached_allow_url: bool
-var cached_allow_none: bool
-var cached_allow_current_color: bool
+var attribute_name: String  # May propagate.
 
 const ColorPopupScene = preload("res://src/ui_widgets/color_popup.tscn")
 const checkerboard = preload("res://assets/icons/CheckerboardColorButton.svg")
@@ -63,7 +54,8 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 
 # Redraw in case the gradient might have changed.
 func _on_svg_modified() -> void:
-	if cached_allow_url and ColorParser.is_valid_url(element.get_implied_attribute_value(attribute_name)):
+	if DB.get_attribute_type(attribute_name) == DB.AttributeType.PAINT and\
+	ColorParser.is_valid_url(element.get_implied_attribute_value(attribute_name)):
 		update_gradient_texture()
 		queue_redraw()
 	elif element.get_attribute_value(attribute_name) == "currentColor":
@@ -72,10 +64,10 @@ func _on_svg_modified() -> void:
 func _on_pressed() -> void:
 	var color_popup := ColorPopupScene.instantiate()
 	color_popup.setup(element.get_attribute_value(attribute_name), element.get_attribute_true_color(attribute_name))
-	color_popup.show_url = cached_allow_url
+	color_popup.show_url = (DB.get_attribute_type(attribute_name) == DB.AttributeType.PAINT)
 	# If it's a color attribute, or there's no color attribute children of this element,
 	# mark the current color keyword as uninteresting (won't be shown in palettes).
-	if not cached_allow_current_color:
+	if not "currentColor" in DB.ATTRIBUTE_KEYWORD_VALUES[attribute_name]:
 		color_popup.current_color_availability = color_popup.CurrentColorAvailability.UNAVAILABLE
 	else:
 		var has_color_attribute_parent := false
@@ -88,7 +80,7 @@ func _on_pressed() -> void:
 		color_popup.current_color_availability = color_popup.CurrentColorAvailability.INTERESTING\
 				if has_color_attribute_parent else color_popup.CurrentColorAvailability.UNINTERESTING
 	color_popup.current_color = element.get_default("color")
-	color_popup.is_none_keyword_available = cached_allow_none
+	color_popup.is_none_keyword_available = ("none" in DB.ATTRIBUTE_KEYWORD_VALUES[attribute_name])
 	color_popup.color_picked.connect(set_value)
 	HandlerGUI.popup_under_rect(color_popup, get_global_rect(), get_viewport())
 
@@ -100,7 +92,7 @@ func _draw() -> void:
 	# Draw the color or gradient.
 	var drawn := false
 	var color_value := element.get_implied_attribute_value(attribute_name)
-	if cached_allow_url and ColorParser.is_valid_url(color_value):
+	if DB.get_attribute_type(attribute_name) == DB.AttributeType.PAINT and ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)
 		if is_instance_valid(gradient_element) and gradient_element is ElementBaseGradient:
@@ -139,7 +131,8 @@ func _draw() -> void:
 
 
 func is_valid(color_text: String) -> bool:
-	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false, cached_allow_url, cached_allow_none, cached_allow_current_color)
+	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false,
+			(DB.get_attribute_type(attribute_name) == DB.AttributeType.PAINT), DB.ATTRIBUTE_KEYWORD_VALUES[attribute_name])
 
 
 func _on_text_changed(new_text: String) -> void:
@@ -151,7 +144,7 @@ func sync() -> void:
 	if ColorParser.add_hash_if_hex(new_value) == element.get_default(attribute_name):
 		font_color = Configs.savedata.basic_color_warning
 	text = new_value.trim_prefix("#")
-	if cached_allow_url:
+	if DB.get_attribute_type(attribute_name) == DB.AttributeType.PAINT:
 		update_gradient_texture()
 	queue_redraw()
 

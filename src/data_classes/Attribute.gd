@@ -11,6 +11,14 @@ var name: String
 var _value: String
 
 func set_value(new_value: String) -> void:
+	if name in DB.ATTRIBUTE_KEYWORD_VALUES and new_value in DB.ATTRIBUTE_KEYWORD_VALUES[name]:
+		if new_value != _value:
+			_value = new_value
+			value_changed.emit()
+	else:
+		format_value(new_value)
+
+func format_value(new_value: String) -> void:
 	# Formatting can be expensive, so do this cheap check first.
 	if new_value == _value:
 		return
@@ -36,9 +44,8 @@ func _init(new_name: String, init_value := "") -> void:
 	name = new_name
 	set_value(init_value)
 
-## Returns a NameValidityLevel value based on whether the id is valid.
-## If it's not a valid nametoken, it should be treated as a warning.
-## Nmtoken syntax source: https://www.w3.org/TR/REC-xml/#NT-Nmtoken
+## Returns a NameValidityLevel value based on whether the id is valid. If it's not a valid nametoken,
+## it should be treated as a warning. Nmtoken syntax source: https://www.w3.org/TR/REC-xml/#NT-Nmtoken
 static func get_id_validity(id: String) -> NameValidityLevel:
 	var validity_level := NameValidityLevel.VALID
 	for id_char in id:
