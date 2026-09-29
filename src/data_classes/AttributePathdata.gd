@@ -160,6 +160,9 @@ func _has_following_shorthand_quadratic(index: int) -> bool:
 func _has_following_shorthand_cubic(index: int) -> bool:
 	return index + 1 < _commands.size() and _commands[index + 1].command_char in "Ss"
 
+func _has_following_shorthand_curve(index: int) -> bool:
+	return index + 1 < _commands.size() and _commands[index + 1].command_char in "SsTt"
+
 func is_implied_T_control_on_segment(index: int, start_x: float, start_y: float, end_x: float, end_y: float) -> bool:
 	var implied := get_implied_T_control(index)
 	return Utils.is_point_on_segment(implied[0], implied[1], start_x, start_y, end_x, end_y)
@@ -238,13 +241,13 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 				var implied := get_implied_T_control(index)
 				return is_equal_approx(implied[0], cmd.x1) and is_equal_approx(implied[1], cmd.y1)
 			Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
-				return ignore_subsequent_commands or not (_has_following_shorthand_cubic(index) or _has_following_shorthand_quadratic(index))
+				return ignore_subsequent_commands or not _has_following_shorthand_curve(index)
 			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
 				var implied := get_implied_S_control(index)
 				var required_c1_x: float = cmd.start_x / 3 + cmd.x1 * 2/3.0
 				var required_c1_y: float = cmd.start_y / 3 + cmd.y1 * 2/3.0
 				return is_equal_approx(implied[0], required_c1_x) and is_equal_approx(implied[1], required_c1_y) and\
-						(ignore_subsequent_commands or not (_has_following_shorthand_cubic(index) or _has_following_shorthand_quadratic(index)))
+						(ignore_subsequent_commands or not _has_following_shorthand_curve(index))
 			_: return false
 	elif cmd is PathCommand.ShorthandQuadraticBezierCommand:
 		match conversion_method:
@@ -262,11 +265,11 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 				return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == implied[0] and cmd.start_y == implied[1]
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE, Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: return true
 			Conversion.ANY_TO_CUBIC_BEZIER_CURVE:
-				return ignore_subsequent_commands or not (_has_following_shorthand_cubic(index) or _has_following_shorthand_quadratic(index))
+				return ignore_subsequent_commands or not _has_following_shorthand_curve(index)
 			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
 				return is_implied_T_control_on_segment(index, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
 						is_implied_S_control_on_segment(index, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
-						(ignore_subsequent_commands or not (_has_following_shorthand_cubic(index) or _has_following_shorthand_quadratic(index)))
+						(ignore_subsequent_commands or not _has_following_shorthand_curve(index))
 			_: return false
 	elif cmd is PathCommand.CubicBezierCommand:
 		match conversion_method:
@@ -285,13 +288,13 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 			Conversion.ANY_TO_ELLIPTICAL_ARC: return cmd.start_x == cmd.x and cmd.start_y == cmd.y and cmd.start_x == cmd.x2 and cmd.start_y == cmd.y2
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
 				return is_equal_approx(3 * cmd.x1 - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * cmd.y1 - cmd.start_y, 3 * cmd.y2 - cmd.y) and\
-						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
+						(ignore_subsequent_commands or not _has_following_shorthand_curve(index))
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
 				if not (is_equal_approx(3 * cmd.x1 - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * cmd.y1 - cmd.start_y, 3 * cmd.y2 - cmd.y)):
 					return false
 				var implied := get_implied_T_control(index)
 				return is_equal_approx(implied[0], (3 * cmd.x1 - cmd.start_x) / 2) and is_equal_approx(implied[1], (3 * cmd.y1 - cmd.start_y) / 2) and\
-						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
+						(ignore_subsequent_commands or not _has_following_shorthand_curve(index))
 			Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
 			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE:
 				var implied_control := get_implied_S_control(index)
@@ -321,7 +324,7 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 			Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE:
 				var implied := get_implied_S_control(index)
 				return is_equal_approx(3 * implied[0] - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * implied[1] - cmd.start_y, 3 * cmd.y2 - cmd.y) and\
-						(ignore_subsequent_commands or not _has_following_shorthand_quadratic(index))
+						(ignore_subsequent_commands or not _has_following_shorthand_curve(index))
 			Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE:
 				var implied := get_implied_S_control(index)
 				if not (is_equal_approx(3 * implied[0] - cmd.start_x, 3 * cmd.x2 - cmd.x) and is_equal_approx(3 * implied[1] - cmd.start_y, 3 * cmd.y2 - cmd.y)):
@@ -330,7 +333,7 @@ func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subse
 				return is_equal_approx(implied_T[0], (3 * implied[0] - cmd.start_x) / 2) and is_equal_approx(implied_T[1], (3 * implied[1] - cmd.start_y) / 2) and\
 						is_implied_T_control_on_segment(index, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
 						is_implied_S_control_on_segment(index, cmd.start_x, cmd.start_y, cmd.x, cmd.y) and\
-						(ignore_subsequent_commands or not (_has_following_shorthand_cubic(index) or _has_following_shorthand_quadratic(index)))
+						(ignore_subsequent_commands or not (_has_following_shorthand_curve(index)))
 			Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE, Conversion.ANY_TO_CUBIC_BEZIER_CURVE: return true
 			_: return false
 	
