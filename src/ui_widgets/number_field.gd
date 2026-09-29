@@ -5,7 +5,7 @@ var element: Element
 var attribute_name: String:  # May propagate.
 	set(new_value):
 		attribute_name = new_value
-		cached_min_value = -INF if DB.ATTRIBUTE_NUMBER_RANGE[attribute_name] == DB.NumberRange.ARBITRARY else 0.0
+		cached_min_value = -INF if DB.get_attribute_type(attribute_name) == DB.AttributeType.NUMERIC_ARBITRARY else 0.0
 
 var cached_min_value: float
 

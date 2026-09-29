@@ -9,5 +9,4 @@ static func get_validity(id: String) -> NameValidityLevel:
 	if id.is_empty():
 		return NameValidityLevel.INVALID
 	
-	# Allow '#'.
 	return get_id_validity(id.trim_prefix("#"))

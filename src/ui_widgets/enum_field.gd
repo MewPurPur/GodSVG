@@ -48,7 +48,7 @@ func _get_dropdown_buttons() -> Array[ContextButton]:
 				element.get_attribute_value(attribute_name).is_empty())
 	]
 	# Add a button for each enum value.
-	for enum_constant in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]:
+	for enum_constant in DB.ATTRIBUTE_KEYWORD_VALUES[attribute_name]:
 		var btn := ContextButton.create_custom(enum_constant, set_value.bind(enum_constant, true), null,
 				enum_constant == element.get_attribute_value(attribute_name))
 		if enum_constant == element.get_default(attribute_name):
@@ -57,14 +57,14 @@ func _get_dropdown_buttons() -> Array[ContextButton]:
 	return btn_arr
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
-	if new_text.is_empty() or new_text in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]:
+	if new_text.is_empty() or new_text in DB.ATTRIBUTE_KEYWORD_VALUES[attribute_name]:
 		set_value(new_text, true)
 	else:
 		sync()
 	super(new_text)
 
 func _on_line_edit_text_changed(new_text: String) -> void:
-	line_edit.add_theme_color_override("font_color", Configs.savedata.get_validity_color(not new_text in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]))
+	line_edit.add_theme_color_override("font_color", Configs.savedata.get_validity_color(not new_text in DB.ATTRIBUTE_KEYWORD_VALUES[attribute_name]))
 	super(new_text)
 
 func _get_line_edit_activation_text() -> String:

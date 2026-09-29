@@ -5,8 +5,7 @@ class_name AttributeColor extends Attribute
 
 func set_value(new_value: String) -> void:
 	super(new_value if ColorParser.is_valid(new_value, false,
-			name in DB.COLOR_ATTRIBUTES_WITH_URL_ALLOWED, name in DB.COLOR_ATTRIBUTES_WITH_NONE_ALLOWED,
-			name in DB.COLOR_ATTRIBUTES_WITH_CURRENT_COLOR_ALLOWED) else "")
+			DB.get_attribute_type(name) == DB.AttributeType.PAINT, DB.ATTRIBUTE_KEYWORD_VALUES[name]) else "")
 
 func format(text: String, formatter: Formatter) -> String:
 	text = text.strip_edges()

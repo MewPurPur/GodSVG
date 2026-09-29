@@ -1,9 +1,9 @@
 ## A central database for SVG element and attribute definitions.
 @abstract class_name DB
 
-enum AttributeType {NUMERIC, COLOR, LIST, DASHARRAY, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
+enum AttributeType {NUMERIC_FRACTION, NUMERIC_ARBITRARY, NUMERIC_POSITIVE, PERCENTAGE,
+		COLOR, URL, PAINT, LIST, DASHARRAY, PATHDATA, TRANSFORM_LIST, ID, HREF, NONE}
 enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
-enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
 const _RECOGNIZED_ELEMENTS: PackedStringArray = ["svg", "g", "circle", "ellipse", "rect", "path", "line", "polyline", "polygon",
@@ -99,89 +99,22 @@ const _VALID_CHILDREN: Dictionary[String, Array] = {
 }
 
 const PROPAGATED_ATTRIBUTES: PackedStringArray = ["fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin",
-		"color"]
+		"stroke-miterlimit", "stroke-dasharray", "stroke-dashoffset", "color"]
 
-const _ATTRIBUTE_TYPES: Dictionary[String, AttributeType] = {
-	"viewBox": AttributeType.LIST,
-	"width": AttributeType.NUMERIC,
-	"height": AttributeType.NUMERIC,
-	"x": AttributeType.NUMERIC,
-	"y": AttributeType.NUMERIC,
-	"x1": AttributeType.NUMERIC,
-	"y1": AttributeType.NUMERIC,
-	"x2": AttributeType.NUMERIC,
-	"y2": AttributeType.NUMERIC,
-	"cx": AttributeType.NUMERIC,
-	"cy": AttributeType.NUMERIC,
-	"r": AttributeType.NUMERIC,
-	"rx": AttributeType.NUMERIC,
-	"ry": AttributeType.NUMERIC,
-	"fx": AttributeType.NUMERIC,
-	"fy": AttributeType.NUMERIC,
-	"opacity": AttributeType.NUMERIC,
-	"fill": AttributeType.COLOR,
-	"fill-opacity": AttributeType.NUMERIC,
-	"stroke": AttributeType.COLOR,
-	"stroke-opacity": AttributeType.NUMERIC,
-	"stroke-width": AttributeType.NUMERIC,
-	"stroke-linecap": AttributeType.ENUM,
-	"stroke-linejoin": AttributeType.ENUM,
-	"stroke-miterlimit": AttributeType.NUMERIC,
-	"stroke-dashoffset": AttributeType.NUMERIC,
-	"stroke-dasharray": AttributeType.DASHARRAY,
-	"color": AttributeType.COLOR,
-	"d": AttributeType.PATHDATA,
-	"points": AttributeType.LIST,
-	"transform": AttributeType.TRANSFORM_LIST,
-	"offset": AttributeType.NUMERIC,
-	"stop-color": AttributeType.COLOR,
-	"stop-opacity": AttributeType.NUMERIC,
-	"id": AttributeType.ID,
-	"gradientTransform": AttributeType.TRANSFORM_LIST,
-	"gradientUnits": AttributeType.ENUM,
-	"spreadMethod": AttributeType.ENUM,
-	"href": AttributeType.HREF,
-	#"markerUnits": AttributeType.ENUM,
-	#"clipPathUnits": AttributeType.ENUM,
-}
 
-const ATTRIBUTE_ENUM_VALUES: Dictionary[String, Array] = {
+const ATTRIBUTE_KEYWORD_VALUES: Dictionary[String, PackedStringArray] = {
+	"fill": ["none", "currentColor"],
+	"stroke": ["none", "currentColor"],
+	"stop-color": ["currentColor"],
 	"stroke-linecap": ["butt", "round", "square"],
 	"stroke-linejoin": ["miter", "round", "bevel"],
+	"stroke-dasharray": ["none"],
 	"gradientUnits": ["userSpaceOnUse", "objectBoundingBox"],
 	"spreadMethod": ["pad", "reflect", "repeat"],
 	#"markerUnits": ["userSpaceOnUse", "strokeWidth"],
 	#"clipPathUnits": ["userSpaceOnUse", "objectBoundingBox"],
 }
 
-const ATTRIBUTE_NUMBER_RANGE: Dictionary[String, NumberRange] = {
-	"width": NumberRange.POSITIVE,
-	"height": NumberRange.POSITIVE,
-	"x": NumberRange.ARBITRARY,
-	"y": NumberRange.ARBITRARY,
-	"x1": NumberRange.ARBITRARY,
-	"y1": NumberRange.ARBITRARY,
-	"x2": NumberRange.ARBITRARY,
-	"y2": NumberRange.ARBITRARY,
-	"cx": NumberRange.ARBITRARY,
-	"cy": NumberRange.ARBITRARY,
-	"r": NumberRange.POSITIVE,
-	"rx": NumberRange.POSITIVE,
-	"ry": NumberRange.POSITIVE,
-	"fx": NumberRange.ARBITRARY,
-	"fy": NumberRange.ARBITRARY,
-	"opacity": NumberRange.UNIT,
-	"fill-opacity": NumberRange.UNIT,
-	"stroke-opacity": NumberRange.UNIT,
-	"stroke-width": NumberRange.POSITIVE,
-	"stroke-miterlimit": NumberRange.POSITIVE,
-	"offset": NumberRange.UNIT,
-	"stop-opacity": NumberRange.UNIT,
-}
-
-const COLOR_ATTRIBUTES_WITH_URL_ALLOWED: PackedStringArray = ["fill", "stroke"]
-const COLOR_ATTRIBUTES_WITH_NONE_ALLOWED: PackedStringArray = ["fill", "stroke"]
-const COLOR_ATTRIBUTES_WITH_CURRENT_COLOR_ALLOWED: PackedStringArray = ["fill", "stroke", "stop-color"]
 
 static func is_element_recognized(element_name: String) -> bool:
 	return _RECOGNIZED_ELEMENTS.has(element_name)
@@ -218,7 +151,44 @@ static func get_xnode_icon(xnode_type: BasicXNode.NodeType) -> Texture2D:
 
 ## Get the data type for an attribute.
 static func get_attribute_type(attribute_name: String) -> AttributeType:
-	return _ATTRIBUTE_TYPES.get(attribute_name, AttributeType.UNKNOWN)
+	match attribute_name:
+		"viewBox": return AttributeType.LIST
+		"width": return AttributeType.NUMERIC_POSITIVE
+		"height": return AttributeType.NUMERIC_POSITIVE
+		"x": return AttributeType.NUMERIC_ARBITRARY
+		"y": return AttributeType.NUMERIC_ARBITRARY
+		"x1": return AttributeType.NUMERIC_ARBITRARY
+		"y1": return AttributeType.NUMERIC_ARBITRARY
+		"x2": return AttributeType.NUMERIC_ARBITRARY
+		"y2": return AttributeType.NUMERIC_ARBITRARY
+		"cx": return AttributeType.NUMERIC_ARBITRARY
+		"cy": return AttributeType.NUMERIC_ARBITRARY
+		"r": return AttributeType.NUMERIC_POSITIVE
+		"rx": return AttributeType.NUMERIC_POSITIVE
+		"ry": return AttributeType.NUMERIC_POSITIVE
+		"fx": return AttributeType.NUMERIC_ARBITRARY
+		"fy": return AttributeType.NUMERIC_ARBITRARY
+		"opacity": return AttributeType.NUMERIC_FRACTION
+		"fill": return AttributeType.PAINT
+		"fill-opacity": return AttributeType.NUMERIC_FRACTION
+		"stroke": return AttributeType.PAINT
+		"stroke-opacity": return AttributeType.NUMERIC_FRACTION
+		"stroke-width": return AttributeType.NUMERIC_POSITIVE
+		"stroke-miterlimit": return AttributeType.NUMERIC_POSITIVE
+		"stroke-dasharray": return AttributeType.DASHARRAY
+		"stroke-dashoffset": return AttributeType.NUMERIC_ARBITRARY
+		"color": return AttributeType.COLOR
+		"d": return AttributeType.PATHDATA
+		"points": return AttributeType.LIST
+		"transform": return AttributeType.TRANSFORM_LIST
+		"offset": return AttributeType.NUMERIC_ARBITRARY
+		"stop-color": return AttributeType.COLOR
+		"stop-opacity": return AttributeType.NUMERIC_ARBITRARY
+		"id": return AttributeType.ID
+		"gradientTransform": return AttributeType.TRANSFORM_LIST
+		"href": return AttributeType.HREF
+		"mask": return AttributeType.URL
+	return AttributeType.NONE
 
 ## Get default percentage handling behavior for numeric attributes.
 static func get_attribute_default_percentage_handling(attribute_name: String) -> PercentageHandling:
@@ -255,11 +225,10 @@ static func element(name: String) -> Element:
 ## Factory method to create typed attribute instances.
 static func attribute(name: String, value: String) -> Attribute:
 	match DB.get_attribute_type(name):
-		DB.AttributeType.NUMERIC: return AttributeNumeric.new(name, value)
+		DB.AttributeType.NUMERIC_FRACTION: return AttributeNumeric.new(name, value)
 		DB.AttributeType.COLOR: return AttributeColor.new(name, value)
 		DB.AttributeType.LIST: return AttributeList.new(name, value)
 		DB.AttributeType.PATHDATA: return AttributePathdata.new(name, value)
-		DB.AttributeType.ENUM: return AttributeEnum.new(name, value)
 		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, value)
 		DB.AttributeType.ID: return AttributeID.new(name, value)
 		DB.AttributeType.HREF: return AttributeHref.new(name, value)

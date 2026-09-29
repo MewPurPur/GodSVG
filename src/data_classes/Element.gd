@@ -171,7 +171,7 @@ func get_attribute_true_color(attribute_name: String) -> String:
 	return attrib_value
 
 func get_attribute_num(attribute_name: String) -> float:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
+	if not DB.get_attribute_type(attribute_name) in [DB.AttributeType.NUMERIC_FRACTION, DB.AttributeType.NUMERIC_POSITIVE, DB.AttributeType.NUMERIC_ARBITRARY]:
 		push_error("Attribute not the correct type.")
 	var num: float = _attributes[attribute_name].get_num() if has_attribute(attribute_name) else AttributeNumeric.text_to_num(get_default(attribute_name))
 	# Possibly adjust for percentage.
@@ -193,8 +193,6 @@ func get_attribute_num(attribute_name: String) -> float:
 	return num
 
 func is_attribute_percentage(attribute_name: String) -> bool:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
-		push_error("Attribute not the correct type.")
 	return _attributes[attribute_name].is_percentage() if has_attribute(attribute_name) else AttributeNumeric.text_check_percentage(get_default(attribute_name))
 
 func get_attribute_list(attribute_name: String) -> PackedFloat64Array:
@@ -222,7 +220,7 @@ func set_attribute(attrib_name: String, value: Variant) -> void:
 		attrib.set_value(value)
 	else:
 		match DB.get_attribute_type(attrib_name):
-			DB.AttributeType.NUMERIC:
+			DB.AttributeType.NUMERIC_FRACTION, DB.AttributeType.NUMERIC_POSITIVE, DB.AttributeType.NUMERIC_ARBITRARY:
 				if value_type in [TYPE_FLOAT, TYPE_INT]: attrib.set_num(value)
 				else: push_error("Invalid value set to attribute.")
 			DB.AttributeType.LIST:
