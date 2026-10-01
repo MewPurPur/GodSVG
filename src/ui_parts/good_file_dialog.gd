@@ -306,6 +306,7 @@ func _setup_file_images() -> void:
 	var visible_end := visible_start + file_list.size.y
 	for item_idx in file_list.item_count:
 		var file_rect := file_list.get_item_rect(item_idx)
+		file_rect.position.y += file_list.position.y
 		if not is_instance_valid(file_list.get_item_icon(item_idx)) and file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
 			match Utils.get_lowercase_extension(file):
