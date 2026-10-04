@@ -471,6 +471,7 @@ func _draw() -> void:
 				if pathdata.get_command_count() == 0 or not pathdata.get_command(0).command_char in "Mm":
 					continue  # Nothing to draw.
 				
+				var final_transform := element.get_transform()
 				var current_mode := Utils.InteractionType.NONE
 				
 				for cmd_idx in range(1, pathdata.get_command_count()):
@@ -487,34 +488,34 @@ func _draw() -> void:
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
-					match cmd.command_char.to_upper():
-						"L": # Line contour.
+					match cmd.command_char.to_lower():
+						"l": # Line contour.
 							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(cmd.x, cmd.y)])
-						"H": # Horizontal line contour.
+						"h": # Horizontal line contour.
 							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(cmd.x, cmd.start_y)])
-						"V": # Vertical line contour.
+						"v": # Vertical line contour.
 							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(cmd.start_x, cmd.y)])
-						"C": # Cubic Bezier curve contour.
+						"c": # Cubic Bezier curve contour.
 							var cp1 := Vector2(cmd.start_x, cmd.start_y)
 							var cp4 := Vector2(cmd.x, cmd.y)
 							var cp2 := Vector2(cmd.x1, cmd.y1)
 							var cp3 := Vector2(cmd.x2, cmd.y2)
 							points = Utils.get_cubic_bezier_points(cp1, cp2 - cp1, cp3 - cp4, cp4)
 							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp3, cp4]))
-						"S": # Shorthand cubic Bezier curve contour.
+						"s": # Shorthand cubic Bezier curve contour.
 							var cp1 := Vector2(cmd.start_x, cmd.start_y)
 							var cp4 := Vector2(cmd.x, cmd.y)
 							var cp2 := Utils64Bit.get_vector(pathdata.get_implied_S_control(cmd_idx))
 							var cp3 := Vector2(cmd.x2, cmd.y2)
 							points = Utils.get_cubic_bezier_points(cp1, cp2 - cp1, cp3 - cp4, cp4)
 							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp3, cp4]))
-						"Q": # Quadratic Bezier curve contour.
+						"q": # Quadratic Bezier curve contour.
 							var cp1 := Vector2(cmd.start_x, cmd.start_y)
 							var cp2 := Vector2(cmd.x1, cmd.y1)
 							var cp3 := Vector2(cmd.x, cmd.y)
 							points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
 							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
-						"T": # Shorthand quadratic Bezier curve contour.
+						"t": # Shorthand quadratic Bezier curve contour.
 							var cp1 := Vector2(cmd.start_x, cmd.start_y)
 							var cp2 := Utils64Bit.get_vector(pathdata.get_implied_T_control(cmd_idx))
 							var cp3 := Vector2(cmd.x, cmd.y)
@@ -523,7 +524,7 @@ func _draw() -> void:
 							else:
 								points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
 								tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
-						"A": # Elliptical arc contour.
+						"a": # Elliptical arc contour.
 							var start := Vector2(cmd.start_x, cmd.start_y)
 							var end := Vector2(cmd.x, cmd.y)
 							# Correct for out-of-range radii.
@@ -565,9 +566,8 @@ func _draw() -> void:
 								delta_theta = TAU - delta_theta
 							
 							# Now we have a center parametrization (r, c, theta1, delta_theta).
-							# We will approximate the elliptical arc with Bezier curves.
-							# Use the method described in https://www.blog.akhil.cc/ellipse
-							# (but with modifications because it wasn't working fully).
+							# Next, approximate the elliptical arc with Bezier curves using the method described
+							# in https://www.blog.akhil.cc/ellipse (with modifications as it didn't fully work).
 							var segments := delta_theta * 4/PI
 							var n := floori(segments)
 							var p1 := Utils.E(c, r, cosine, sine, theta1)
@@ -592,7 +592,7 @@ func _draw() -> void:
 							
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
-						"Z": # Path closure contour.
+						"z": # Path closure contour.
 							var prev_M_idx := cmd_idx - 1
 							var prev_M_cmd := pathdata.get_command(prev_M_idx)
 							while prev_M_idx >= 0:
@@ -604,10 +604,9 @@ func _draw() -> void:
 								break
 							
 							points = PackedVector2Array([Vector2(cmd.start_x, cmd.start_y), Vector2(prev_M_cmd.x, prev_M_cmd.y)])
-						"M":
+						"m":
 							continue
 					
-					var final_transform := element.get_transform()
 					points = final_transform * points
 					tangent_points = final_transform * tangent_points
 					match current_mode:
