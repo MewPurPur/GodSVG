@@ -10,5 +10,6 @@ body:
         Describe your limitation and how the feature will help to resolve it. Make sure you're addressing the newest version of GodSVG.
         Give as much detail about the exact implementation as you can, to make it more actionable. Feel free to attach drawings, diagrams, examples from other software.
         Please keep your proposal focused on a single thing.
+        Don't use automatic tools (like LLMs) to generate text. Only one-to-one translation is acceptable.
     validations:
       required: true
