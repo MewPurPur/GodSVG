@@ -20,6 +20,7 @@ body:
         Give a clear and concise description of what the bug is and what the expected behavior is.
         For non-trivial issues, provide reproduction steps, screenshots and video if relevant, and the platform you used GodSVG on.
         Use separate bug reports for unrelated bugs.
-        Tip: If you're posting a video, opening "Debug" inside GodSVG (F3 by default) visualizes the inputs GodSVG is getting.
+        Don't use automatic tools (like LLMs) to generate text. Only one-to-one translation is acceptable.
+        Tip: If you're posting a video, use Ctrl+F3 to open advanced debug and visualize the inputs GodSVG is getting.
     validations:
       required: true
