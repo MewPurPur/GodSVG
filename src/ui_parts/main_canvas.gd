@@ -45,7 +45,7 @@ var _current_svg_width: float
 var _current_svg_height: float
 
 func react_to_last_parsing() -> void:
-	if State.last_parse_error == SVGParser.ParseError.OK:
+	if State.last_parse_error == ParserSVG.ParseError.OK:
 		root_element = State.root_element
 	else:
 		if State.stable_editor_markup.is_empty():

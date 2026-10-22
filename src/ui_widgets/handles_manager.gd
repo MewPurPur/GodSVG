@@ -408,7 +408,7 @@ func _draw() -> void:
 						selection_rects.append(bounding_box.grow_individual(grow_amount_x, grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"polygon", "polyline":
-				var point_list := ListParser.list_to_points(element.get_attribute_list("points"))
+				var point_list := ParserList.list_to_points(element.get_attribute_list("points"))
 				
 				var current_mode := Utils.InteractionType.NONE
 				for idx in range(1, point_list.size()):

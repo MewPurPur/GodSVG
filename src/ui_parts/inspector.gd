@@ -64,6 +64,6 @@ func _on_add_button_pressed() -> void:
 
 
 func react_to_last_parsing() -> void:
-	var new_is_unstable := (State.last_parse_error != SVGParser.ParseError.OK and State.stable_editor_markup.is_empty())
+	var new_is_unstable := (State.last_parse_error != ParserSVG.ParseError.OK and State.stable_editor_markup.is_empty())
 	if is_unstable != new_is_unstable:
 		is_unstable = new_is_unstable

@@ -471,7 +471,7 @@ func parse_hslider_input(event: InputEvent, index: int) -> void:
 # When slider text is submitted, it should be clamped, used, and then the slider should
 # be updated again so the text reflects the new value even if the color didn't change.
 func _on_hslider_text_submitted(new_text: String, index: int) -> void:
-	var new_value := NumstringParser.evaluate(new_text)
+	var new_value := ParserNumstring.evaluate(new_text)
 	if is_nan(new_value):
 		sync_hslider(index)
 		return
@@ -484,7 +484,7 @@ func sync_hslider(index: int) -> void:
 	var num_value: float
 	if Configs.savedata.color_picker_current_model == ColorPickerUtils.ColorModel.RGB:
 		# In this case, it's better to use the hex value, as it benefits from paint calibration.
-		num_value = ColorParser.text_to_color(ColorParser.add_hash_if_hex(color_config.color.paint))[index]
+		num_value = ParserPaint.text_to_color(ParserPaint.add_hash_if_hex(color_config.color.paint))[index]
 	else:
 		num_value = ColorPickerUtils.get_channel_offset(color_config.color, index)
 	fields_arr[index].text = String.num_uint64(roundi(num_value * ColorPickerUtils.get_channel_fidelity(index)))
@@ -512,7 +512,7 @@ func _on_reset_color_button_pressed() -> void:
 func _on_start_color_rect_draw() -> void:
 	var rect_size := start_color_rect.size
 	var rect := Rect2(Vector2.ZERO, rect_size)
-	if ColorParser.is_valid_url(color_config.initial_literal_paint):
+	if ParserID.is_url_valid(color_config.initial_literal_paint):
 		var cross_color := Color(0.8, 0.8, 0.8)
 		start_color_rect.draw_rect(rect, Color(0.6, 0.6, 0.6))
 		start_color_rect.draw_line(Vector2.ZERO, rect_size, cross_color, 0.5, true)

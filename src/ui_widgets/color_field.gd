@@ -24,7 +24,7 @@ func set_value(new_value: String, save := false) -> void:
 		if not is_valid(new_value):
 			sync()
 			return
-	new_value = ColorParser.add_hash_if_hex(new_value)
+	new_value = ParserPaint.add_hash_if_hex(new_value)
 	element.set_attribute(attribute_name, new_value)
 	sync()
 	if save:
@@ -63,7 +63,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 
 # Redraw in case the gradient might have changed.
 func _on_svg_modified() -> void:
-	if cached_allow_url and ColorParser.is_valid_url(element.get_implied_attribute_value(attribute_name)):
+	if cached_allow_url and ParserID.is_url_valid(element.get_implied_attribute_value(attribute_name)):
 		update_gradient_texture()
 		queue_redraw()
 	elif element.get_attribute_value(attribute_name) == "currentColor":
@@ -100,7 +100,7 @@ func _draw() -> void:
 	# Draw the color or gradient.
 	var drawn := false
 	var color_value := element.get_implied_attribute_value(attribute_name)
-	if cached_allow_url and ColorParser.is_valid_url(color_value):
+	if cached_allow_url and ParserID.is_url_valid(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)
 		if is_instance_valid(gradient_element) and gradient_element is ElementBaseGradient:
@@ -127,7 +127,7 @@ func _draw() -> void:
 		var stylebox := StyleBoxFlat.new()
 		stylebox.corner_radius_top_right = r
 		stylebox.corner_radius_bottom_right = r
-		stylebox.bg_color = ColorParser.text_to_color(element.get_attribute_true_color(attribute_name), Color.TRANSPARENT)
+		stylebox.bg_color = ParserPaint.text_to_color(element.get_attribute_true_color(attribute_name), Color.TRANSPARENT)
 		stylebox.draw(ci, Rect2(h_offset, 1, button_width - 1, size.y - 2))
 	# Draw the button border.
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
@@ -139,7 +139,7 @@ func _draw() -> void:
 
 
 func is_valid(color_text: String) -> bool:
-	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false, cached_allow_url, cached_allow_none, cached_allow_current_color)
+	return ParserPaint.is_valid(ParserPaint.add_hash_if_hex(color_text), false, cached_allow_url, cached_allow_none, cached_allow_current_color)
 
 
 func _on_text_changed(new_text: String) -> void:
@@ -148,7 +148,7 @@ func _on_text_changed(new_text: String) -> void:
 func sync() -> void:
 	var new_value := element.get_attribute_value(attribute_name)
 	reset_font_color()
-	if ColorParser.add_hash_if_hex(new_value) == element.get_default(attribute_name):
+	if ParserPaint.add_hash_if_hex(new_value) == element.get_default(attribute_name):
 		font_color = Configs.savedata.basic_color_warning
 	text = new_value.trim_prefix("#")
 	if cached_allow_url:
@@ -159,7 +159,7 @@ func sync() -> void:
 # gradient_element.generate_texture() and this method and everything persistent can be removed.
 func update_gradient_texture() -> void:
 	var color_value := element.get_implied_attribute_value(attribute_name)
-	if ColorParser.is_valid_url(color_value):
+	if ParserID.is_url_valid(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)
 		if is_instance_valid(gradient_element) and gradient_element is ElementBaseGradient:

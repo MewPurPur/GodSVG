@@ -12,14 +12,14 @@ const MAX_VALUE := 1.0
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
 		if not AttributeNumeric.text_check_percentage(new_value):
-			var numeric_value := NumstringParser.evaluate(new_value)
+			var numeric_value := ParserNumstring.evaluate(new_value)
 			# Validate the value.
 			if not is_finite(numeric_value):
 				sync()
 				return
 			
 			numeric_value = clampf(numeric_value, MIN_VALUE, MAX_VALUE)
-			new_value = NumberParser.num_to_text(numeric_value, Configs.savedata.editor_formatter)
+			new_value = ParserNumber.num_to_text(numeric_value, Configs.savedata.editor_formatter)
 	
 	element.set_attribute(attribute_name, new_value)
 	sync()
@@ -27,7 +27,7 @@ func set_value(new_value: String, save := false) -> void:
 		State.save_svg()
 
 func set_num(new_number: float, save := false) -> void:
-	set_value(NumberParser.num_to_text(new_number, Configs.savedata.editor_formatter), save)
+	set_value(ParserNumber.num_to_text(new_number, Configs.savedata.editor_formatter), save)
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)

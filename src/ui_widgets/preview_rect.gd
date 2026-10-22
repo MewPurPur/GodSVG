@@ -9,7 +9,7 @@ const MAX_IMAGE_DIMENSION = 512
 var last_image_size: int
 
 func setup_svg_without_dimensions(svg_text: String) -> void:
-	var root := SVGParser.markup_to_root(svg_text).svg
+	var root := ParserSVG.markup_to_root(svg_text).svg
 	if is_instance_valid(root):
 		setup_svg(svg_text, root.width, root.height)
 	else:

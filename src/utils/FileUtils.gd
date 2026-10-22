@@ -35,14 +35,14 @@ static func compare_svg_to_disk_contents(index := -1) -> FileState:
 		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's contents into GodSVG would change the current SVG markup.
 	# Avoid the parsing if checking the active tab.
-	var parse_result := SVGParser.markup_to_root(tab.get_true_svg_text())
-	if parse_result.error == SVGParser.ParseError.OK:
-		var content_parse_result := SVGParser.markup_to_root(content)
-		if content_parse_result.error != SVGParser.ParseError.OK:
+	var parse_result := ParserSVG.markup_to_root(tab.get_true_svg_text())
+	if parse_result.error == ParserSVG.ParseError.OK:
+		var content_parse_result := ParserSVG.markup_to_root(content)
+		if content_parse_result.error != ParserSVG.ParseError.OK:
 			return FileState.DIFFERENT
 		else:
-			var state_svg_text := State.stable_editor_markup if index == -1 else SVGParser.root_to_editor_markup(parse_result.svg)
-			return FileState.SAME if state_svg_text == SVGParser.root_to_editor_markup(content_parse_result.svg) else FileState.DIFFERENT
+			var state_svg_text := State.stable_editor_markup if index == -1 else ParserSVG.root_to_editor_markup(parse_result.svg)
+			return FileState.SAME if state_svg_text == ParserSVG.root_to_editor_markup(content_parse_result.svg) else FileState.DIFFERENT
 	else:
 		var state_svg_text := State.unstable_markup if index == -1 else tab.get_true_svg_text()
 		return (FileState.SAME if state_svg_text == content else FileState.DIFFERENT)

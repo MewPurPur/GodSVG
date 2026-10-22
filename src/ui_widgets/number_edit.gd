@@ -47,7 +47,7 @@ func _ready() -> void:
 
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(NumstringParser.evaluate(submitted_text))
+	set_value(ParserNumstring.evaluate(submitted_text))
 
 func sync_text() -> void:
 	text = Utils.num_simple(_value, Utils.MAX_NUMERIC_PRECISION)

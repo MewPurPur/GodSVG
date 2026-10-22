@@ -2,12 +2,4 @@
 class_name AttributeHref extends Attribute
 
 func set_value(new_value: String) -> void:
-	super(new_value if get_validity(new_value) != NameValidityLevel.INVALID else "")
-
-
-static func get_validity(id: String) -> NameValidityLevel:
-	if id.is_empty():
-		return NameValidityLevel.INVALID
-	
-	# Allow '#'.
-	return get_id_validity(id.trim_prefix("#"))
+	super(new_value if ParserID.get_href_validity(new_value) != ParserID.NameValidityLevel.INVALID else "")

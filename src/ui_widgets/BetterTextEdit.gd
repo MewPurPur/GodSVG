@@ -161,7 +161,7 @@ func _input(event: InputEvent) -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("evaluate"):
-		var numstring_evaluation := NumstringParser.evaluate(get_selected_text() if has_selection() else text)
+		var numstring_evaluation := ParserNumstring.evaluate(get_selected_text() if has_selection() else text)
 		if not is_nan(numstring_evaluation):
 			if has_selection():
 				var selection_start_line := get_selection_from_line()
@@ -227,7 +227,7 @@ func _gui_input(event: InputEvent) -> void:
 			
 			if editable:
 				var text_to_evaluate := get_selected_text() if has_selection() else text
-				var selection_evaluation := NumstringParser.evaluate(text_to_evaluate)
+				var selection_evaluation := ParserNumstring.evaluate(text_to_evaluate)
 				if not is_nan(selection_evaluation) and Utils.num_simple(selection_evaluation, Utils.MAX_NUMERIC_PRECISION) != text_to_evaluate:
 					btn_arr.append(ContextButton.create_from_action("evaluate"))
 				

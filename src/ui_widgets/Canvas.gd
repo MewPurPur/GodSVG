@@ -198,10 +198,10 @@ func _texture_update() -> void:
 	# This is for performance, so if there really isn't inner markup, it's an empty SVG.
 	# Empty SVG means no performance issues, so recalculation in this case is fine.
 	if cached_inner_markup.is_empty():
-		cached_inner_markup = SVGParser.get_inner_markup_with_percentages_converted(root_element)
+		cached_inner_markup = ParserSVG.get_inner_markup_with_percentages_converted(root_element)
 	
 	# Translate to canvas coords.
-	var svg_text := SVGParser.root_cutout_to_markup(root_element, display_rect.size,
+	var svg_text := ParserSVG.root_cutout_to_markup(root_element, display_rect.size,
 			Rect2(root_element.world_to_canvas(display_rect.position),
 			display_rect.size / root_element.canvas_transform.get_scale()), cached_inner_markup)
 	

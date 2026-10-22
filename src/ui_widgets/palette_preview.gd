@@ -78,7 +78,7 @@ func _gui_input(event: InputEvent) -> void:
 				popup_add_color()
 				pressed_index = -1
 			elif event.is_released() and pressed_index != -1 and (configuration_mode or current_value.is_empty() or\
-			not ColorParser.are_colors_same(ColorParser.add_hash_if_hex(get_color(index)), current_value)):
+			not ParserPaint.are_colors_same(ParserPaint.add_hash_if_hex(get_color(index)), current_value)):
 				if index == pressed_index:
 					swatch_selected.emit(index)
 				pressed_index = -1
@@ -88,7 +88,7 @@ func _gui_input(event: InputEvent) -> void:
 		if event.button_mask == 0:
 			var index := get_index_at_pos(event.position)
 			if (get_index_at_pos(event.position) == -1 and not (configuration_mode and get_index_rect(get_color_count()).has_point(event.position))) or\
-			(not current_value.is_empty() and ColorParser.are_colors_same(ColorParser.add_hash_if_hex(get_color(index)), current_value)):
+			(not current_value.is_empty() and ParserPaint.are_colors_same(ParserPaint.add_hash_if_hex(get_color(index)), current_value)):
 				mouse_default_cursor_shape = Control.CURSOR_ARROW
 			else:
 				mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -145,7 +145,7 @@ func _draw() -> void:
 		var color := get_color(index)
 		
 		if not has_focus(true):
-			if not current_value.is_empty() and ColorParser.are_colors_same(ColorParser.add_hash_if_hex(color), current_value):
+			if not current_value.is_empty() and ParserPaint.are_colors_same(ParserPaint.add_hash_if_hex(color), current_value):
 				get_theme_stylebox("swatch_selected", "PalettePreview").draw(ci, rect)
 			elif hover_index == index:
 				if index == pressed_index:
@@ -167,7 +167,7 @@ func _draw() -> void:
 			if fake_reserved_paints.has(index):
 				parsed_color = fake_reserved_paints[index]
 			else:
-				parsed_color = ColorParser.text_to_color(color, Color.BLACK, true)
+				parsed_color = ParserPaint.text_to_color(color, Color.BLACK, true)
 			
 			if parsed_color.a != 1:
 				draw_texture_rect(checkerboard, inner_rect, false)

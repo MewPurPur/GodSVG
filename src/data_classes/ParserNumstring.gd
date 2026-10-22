@@ -1,6 +1,6 @@
 ## Parser for numeric text, including the compressed number arrays used in pathdata and transform lists.
 ## This parser has situational configuration options, so it's not abstract.
-class_name NumstringParser
+class_name ParserNumstring
 
 var compress_numbers: bool
 var minimize_spacing: bool

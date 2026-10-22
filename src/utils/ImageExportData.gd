@@ -22,5 +22,5 @@ func generate_image() -> Image:
 	var export_svg := State.root_element.duplicate()
 	inject_in_export_svg(export_svg)
 	var img := Image.new()
-	img.load_svg_from_string(SVGParser.root_to_export_markup(export_svg))
+	img.load_svg_from_string(ParserSVG.root_to_export_markup(export_svg))
 	return img

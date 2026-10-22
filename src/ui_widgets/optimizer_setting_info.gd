@@ -15,9 +15,9 @@ var after_text := ""
 
 func setup(example_root: ElementRoot, optimizer: Optimizer, new_main_text: String) -> void:
 	main_text = new_main_text
-	before_text = SVGParser.root_to_markup(example_root, formatter)
+	before_text = ParserSVG.root_to_markup(example_root, formatter)
 	example_root.optimize(optimizer)
-	after_text = SVGParser.root_to_markup(example_root, formatter)
+	after_text = ParserSVG.root_to_markup(example_root, formatter)
 
 func _ready() -> void:
 	before_label.add_theme_color_override("font_color", ThemeUtils.dim_text_color)
