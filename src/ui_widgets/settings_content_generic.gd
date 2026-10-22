@@ -1063,9 +1063,9 @@ func emit_preview_changed() -> void:
 		var update_text :=\
 			func() -> void:
 				if preview.show_only_children:
-					code_preview.text = SVGParser.root_children_to_markup(preview.root_element, preview.resource_bind)
+					code_preview.text = ParserSVG.root_children_to_markup(preview.root_element, preview.resource_bind)
 				else:
-					code_preview.text = SVGParser.root_to_markup(preview.root_element, preview.resource_bind)
+					code_preview.text = ParserSVG.root_to_markup(preview.root_element, preview.resource_bind)
 		
 		code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
 		var text_edit_default_stylebox := code_preview.get_theme_stylebox("normal")

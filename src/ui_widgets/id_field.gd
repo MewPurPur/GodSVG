@@ -42,16 +42,16 @@ func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
 func _on_text_submitted(new_text: String) -> void:
-	if new_text.is_empty() or AttributeID.get_validity(new_text) != Attribute.NameValidityLevel.INVALID:
+	if new_text.is_empty() or ParserID.get_id_validity(new_text) != ParserID.NameValidityLevel.INVALID:
 		set_value(new_text, true)
 	else:
 		sync()
 
 func _on_text_changed(new_text: String) -> void:
-	var validity_level := AttributeID.get_validity(new_text)
+	var validity_level := ParserID.get_id_validity(new_text)
 	var font_color := Configs.savedata.get_validity_color(
-			validity_level == Attribute.NameValidityLevel.INVALID,
-			validity_level == Attribute.NameValidityLevel.INVALID_XML_NAMETOKEN)
+			validity_level == ParserID.NameValidityLevel.INVALID,
+			validity_level == ParserID.NameValidityLevel.INVALID_XML_NAMETOKEN)
 	add_theme_color_override("font_color", font_color)
 	setup_font()
 

@@ -22,7 +22,7 @@ func set_value(new_value: float, emit_changed := true) -> void:
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
-	var new_value := NumstringParser.evaluate(new_text)
+	var new_value := ParserNumstring.evaluate(new_text)
 	if new_value == special_value_exception:
 		set_value(new_value)
 	else:

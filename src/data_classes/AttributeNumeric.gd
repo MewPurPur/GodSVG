@@ -28,7 +28,7 @@ func format(text: String, formatter: Formatter) -> String:
 		return num_to_text(num, formatter)
 
 func num_to_text(number: float, formatter := Configs.savedata.editor_formatter) -> String:
-	return NumberParser.num_to_text(number, formatter)
+	return ParserNumber.num_to_text(number, formatter)
 
 static func text_to_num(text: String) -> float:
 	text = text.strip_edges(false, true)

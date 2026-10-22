@@ -1,5 +1,5 @@
 ## A parser that converts between AttributeList's list and other representations of it.
-@abstract class_name ListParser
+@abstract class_name ParserList
 
 ## Converts a rect (probably a viewbox) into a list of floats.
 static func rect_to_list(rect: Rect2) -> PackedFloat64Array:

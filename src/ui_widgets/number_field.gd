@@ -12,7 +12,7 @@ var cached_min_value: float
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
 		if not AttributeNumeric.text_check_percentage(new_value):
-			var numeric_value := NumstringParser.evaluate(new_value)
+			var numeric_value := ParserNumstring.evaluate(new_value)
 			# Validate the value.
 			if not is_finite(numeric_value):
 				sync()

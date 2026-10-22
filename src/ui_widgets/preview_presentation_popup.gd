@@ -70,13 +70,13 @@ func _on_quality_edit_value_changed(new_value: float) -> void:
 
 
 func _on_background_edit_color_picked(new_color: String, is_final: bool, old_final_value: String) -> void:
-	var parsed_new_color := ColorParser.text_to_color(new_color, Color.BLACK, true)
+	var parsed_new_color := ParserPaint.text_to_color(new_color, Color.BLACK, true)
 	
 	if not is_final:
 		_set_background_color(parsed_new_color)
 		return
 	
-	var parsed_old_color := ColorParser.text_to_color(old_final_value, Color.BLACK, true)
+	var parsed_old_color := ParserPaint.text_to_color(old_final_value, Color.BLACK, true)
 	undo_redo.create_action()
 	undo_redo.add_do_method(_set_background_color.bind(parsed_new_color))
 	undo_redo.add_undo_method(_set_background_color.bind(parsed_old_color))

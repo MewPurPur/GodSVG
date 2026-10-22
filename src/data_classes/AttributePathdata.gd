@@ -687,7 +687,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 		var nums := []
 		
 		if key == "A":
-			var result := NumstringParser.text_to_number_arr(text, idx, 3)
+			var result := ParserNumstring.text_to_number_arr(text, idx, 3)
 			if result.is_empty():
 				return commands
 			var arr: PackedFloat64Array = result[0]
@@ -714,14 +714,14 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 					nums.append(text[idx].to_int())
 					idx += 1
 			
-			result = NumstringParser.text_to_number_arr(text, idx, 2, true)
+			result = ParserNumstring.text_to_number_arr(text, idx, 2, true)
 			if result.is_empty():
 				return commands
 			arr = result[0]
 			idx = result[1]
 			nums.append_array(arr)
 		elif arg_count > 0:
-			var result := NumstringParser.text_to_number_arr(text, idx, arg_count)
+			var result := ParserNumstring.text_to_number_arr(text, idx, arg_count)
 			if result.is_empty():
 				return commands
 			
@@ -821,7 +821,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 
 func path_commands_to_text(commands_arr: Array[PathCommand], formatter := Configs.savedata.editor_formatter) -> String:
 	var output := ""
-	var num_parser := NumstringParser.new()
+	var num_parser := ParserNumstring.new()
 	num_parser.compress_numbers = formatter.pathdata_compress_numbers
 	num_parser.minimize_spacing = formatter.pathdata_minimize_spacing
 	

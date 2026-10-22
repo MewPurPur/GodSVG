@@ -25,8 +25,8 @@ var current_color_availability := CurrentColorAvailability.UNAVAILABLE
 
 func setup(new_current_value: String, new_effective_value: String) -> void:
 	color_config = ColorPickerUtils.ColorConfig.new()
-	color_config.color = ColorPickerUtils.PreciseColor.from_color(ColorParser.text_to_color(
-			new_current_value, ColorParser.text_to_color(new_effective_value), alpha_enabled))
+	color_config.color = ColorPickerUtils.PreciseColor.from_color(ParserPaint.text_to_color(
+			new_current_value, ParserPaint.text_to_color(new_effective_value), alpha_enabled))
 	color_config.color.shift_hsv()
 	if not alpha_enabled:
 		color_config.color.a = 1.0

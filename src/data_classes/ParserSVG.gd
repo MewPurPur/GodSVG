@@ -1,5 +1,5 @@
 ## Parser for SVG markup.
-@abstract class_name SVGParser
+@abstract class_name ParserSVG
 
 ## Checks if the SVG markup describes an SVG element without child elements.
 static func markup_check_is_root_empty(markup: String) -> bool:
@@ -30,7 +30,7 @@ static func markup_check_is_root_empty(markup: String) -> bool:
 static func root_cutout_to_markup(root_element: ElementRoot, custom_dimensions: Vector2, custom_viewbox: Rect2, inner_markup: String = "") -> String:
 	# Build a new root element, set it up, and convert it to markup.
 	var new_root_element: ElementRoot = root_element.duplicate(false)
-	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
+	new_root_element.set_attribute("viewBox", ParserList.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_dimensions.x)
 	new_root_element.set_attribute("height", custom_dimensions.y)
 	
@@ -151,10 +151,10 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 enum ParseError {OK, ERR_NOT_SVG, ERR_IMPROPER_NESTING}
 
 class ParseResult:
-	var error: SVGParser.ParseError
+	var error: ParserSVG.ParseError
 	var svg: ElementRoot
 	
-	func _init(err_id: SVGParser.ParseError, result: ElementSVG = null) -> void:
+	func _init(err_id: ParserSVG.ParseError, result: ElementSVG = null) -> void:
 		error = err_id
 		svg = result
 

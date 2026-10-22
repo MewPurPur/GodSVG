@@ -117,7 +117,7 @@ func is_same_as_preset(preset: Preset) -> bool:
 func has_unique_definitions() -> bool:
 	var dict: Dictionary[Color, Array] = {}
 	for i in _color_names.size():
-		var color := ColorParser.text_to_color(_colors[i])
+		var color := ParserPaint.text_to_color(_colors[i])
 		if dict.has(color) and dict[color].has(_color_names[i]):
 			return false
 		elif dict.has(color):
@@ -138,7 +138,7 @@ func get_as_markup() -> String:
 
 func _validate() -> void:
 	for i in range(_colors.size() - 1, -1, -1):
-		if not ColorParser.is_valid(_colors[i]):
+		if not ParserPaint.is_valid(_colors[i]):
 			_colors[i] = "#000"
 	_color_names.resize(_colors.size())
 
@@ -158,7 +158,7 @@ static func text_to_palettes(text: String) -> Array[Palette]:
 				elif parser.get_node_name() == "color":
 					var invalid_color := Color(255, 255, 255)
 					var col_str := parser.get_named_attribute_value_safe("value").strip_edges()
-					if ColorParser.text_to_color(col_str, invalid_color) != invalid_color:
+					if ParserPaint.text_to_color(col_str, invalid_color) != invalid_color:
 						parsed_color_names.append(parser.get_named_attribute_value_safe("name").strip_edges())
 						parsed_colors.append(col_str)
 			XMLParser.NODE_ELEMENT_END:

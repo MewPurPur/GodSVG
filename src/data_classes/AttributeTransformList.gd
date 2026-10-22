@@ -62,7 +62,7 @@ func insert_transform(index: int, type: String) -> void:
 
 func transform_list_to_text(transform_list: Array[Transform], formatter := Configs.savedata.editor_formatter) -> String:
 	var output := ""
-	var num_parser := NumstringParser.new()
+	var num_parser := ParserNumstring.new()
 	num_parser.compress_numbers = formatter.transform_list_compress_numbers
 	num_parser.minimize_spacing = formatter.transform_list_minimize_spacing
 	
@@ -124,15 +124,15 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 		
 		match transform_name.strip_edges(true, false).trim_prefix(",").strip_edges(true, false):
 			"matrix":
-				var result := NumstringParser.text_to_number_arr(transform_params, 0, 6)
+				var result := ParserNumstring.text_to_number_arr(transform_params, 0, 6)
 				if result.is_empty() or result[1] < transform_params.length():
 					return []
 				output.append(Transform.TransformMatrix.new(result[0][0], result[0][1], result[0][2], result[0][3], result[0][4], result[0][5]))
 			"translate":
-				var result1 := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				var result1 := ParserNumstring.text_to_number_arr(transform_params, 0, 1)
 				if result1.is_empty():
 					return []
-				var result2 := NumstringParser.text_to_number_arr(transform_params, result1[1], 1, true)
+				var result2 := ParserNumstring.text_to_number_arr(transform_params, result1[1], 1, true)
 				if result2.is_empty():
 					if result1[1] >= transform_params.length():
 						output.append(Transform.TransformTranslate.new(result1[0][0], 0.0))
@@ -143,10 +143,10 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 				else:
 					return []
 			"rotate":
-				var result1 := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				var result1 := ParserNumstring.text_to_number_arr(transform_params, 0, 1)
 				if result1.is_empty():
 					return []
-				var result2 := NumstringParser.text_to_number_arr(transform_params, result1[1], 2, true)
+				var result2 := ParserNumstring.text_to_number_arr(transform_params, result1[1], 2, true)
 				if result2.is_empty():
 					if result1[1] >= transform_params.length():
 						output.append(Transform.TransformRotate.new(result1[0][0], 0.0, 0.0))
@@ -157,10 +157,10 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 				else:
 					return []
 			"scale":
-				var result1 := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				var result1 := ParserNumstring.text_to_number_arr(transform_params, 0, 1)
 				if result1.is_empty():
 					return []
-				var result2 := NumstringParser.text_to_number_arr(transform_params, result1[1], 1, true)
+				var result2 := ParserNumstring.text_to_number_arr(transform_params, result1[1], 1, true)
 				if result2.is_empty():
 					if result1[1] >= transform_params.length():
 						output.append(Transform.TransformScale.new(result1[0][0], result1[0][0]))
@@ -171,12 +171,12 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 				else:
 					return []
 			"skewX":
-				var result := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				var result := ParserNumstring.text_to_number_arr(transform_params, 0, 1)
 				if result.is_empty() or result[1] < transform_params.length():
 					return []
 				output.append(Transform.TransformSkewX.new(result[0][0]))
 			"skewY":
-				var result := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				var result := ParserNumstring.text_to_number_arr(transform_params, 0, 1)
 				if result.is_empty() or result[1] < transform_params.length():
 					return []
 				output.append(Transform.TransformSkewY.new(result[0][0]))

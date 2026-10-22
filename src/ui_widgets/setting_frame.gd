@@ -187,7 +187,7 @@ func _checkbox_modification() -> void:
 	post_modification()
 
 func _color_modification(value: String, is_final: bool, old_final_value: String, alpha_enabled: bool) -> void:
-	setter.call(ColorParser.text_to_color(value, Color.BLACK, alpha_enabled), is_final, ColorParser.text_to_color(old_final_value, Color.BLACK, alpha_enabled))
+	setter.call(ParserPaint.text_to_color(value, Color.BLACK, alpha_enabled), is_final, ParserPaint.text_to_color(old_final_value, Color.BLACK, alpha_enabled))
 	post_modification()
 
 func _generic_modification(value: Variant) -> void:

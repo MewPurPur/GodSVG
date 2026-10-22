@@ -353,12 +353,12 @@ func _commands_draw() -> void:
 
 func draw_angle_numfield(rect: Rect2, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), NumstringParser.basic_num_to_text(path_command.get("rot"), true),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumstring.basic_num_to_text(path_command.get("rot"), true),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 func draw_numfield(rect: Rect2, property: String, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), NumstringParser.basic_num_to_text(get_presented_num(path_command, property)),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumstring.basic_num_to_text(get_presented_num(path_command, property)),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: PackedStringArray, path_command: PathCommand) -> void:

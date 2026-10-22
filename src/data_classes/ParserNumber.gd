@@ -1,5 +1,5 @@
 ## Parser for AttributeNumeric and individual elements in AttributeList
-@abstract class_name NumberParser
+@abstract class_name ParserNumber
 
 ## Converts a single number into a string based on a formatter.
 static func num_to_text(number: float, formatter: Formatter) -> String:

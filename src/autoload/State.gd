@@ -23,7 +23,7 @@ var color_popup_on_picker_page := true
 # "stable_markup" is the last state without errors, and is what the editor is synced to.
 # These both differ from the TabData svg_text, which is the state as saved to file,
 # which doesn't happen while dragging handles or typing in the code editor for example.
-var last_parse_error: SVGParser.ParseError
+var last_parse_error: ParserSVG.ParseError
 var unstable_markup := ""
 var stable_editor_markup := ""
 var stable_export_markup := ""
@@ -50,8 +50,8 @@ func _enter_tree() -> void:
 
 
 func _on_svg_edited() -> void:
-	stable_editor_markup = SVGParser.root_to_editor_markup(root_element)
-	stable_export_markup = SVGParser.root_to_export_markup(root_element)
+	stable_editor_markup = ParserSVG.root_to_editor_markup(root_element)
+	stable_export_markup = ParserSVG.root_to_export_markup(root_element)
 	svg_edited.emit()
 
 func save_svg() -> void:
@@ -71,13 +71,13 @@ func sync_stable_export_markup() -> void:
 		apply_markup(stable_export_markup, true)
 
 func apply_markup(markup: String, is_edit: bool) -> void:
-	var svg_parse_result := SVGParser.markup_to_root(markup)
+	var svg_parse_result := ParserSVG.markup_to_root(markup)
 	last_parse_error = svg_parse_result.error
 	
-	if last_parse_error == SVGParser.ParseError.OK:
+	if last_parse_error == ParserSVG.ParseError.OK:
 		root_element = svg_parse_result.svg
-		stable_editor_markup = SVGParser.root_to_editor_markup(root_element)
-		stable_export_markup = SVGParser.root_to_export_markup(root_element)
+		stable_editor_markup = ParserSVG.root_to_editor_markup(root_element)
+		stable_export_markup = ParserSVG.root_to_export_markup(root_element)
 		parsing_finished.emit()
 		
 		root_element.xnodes_added.connect(_on_xnodes_added)

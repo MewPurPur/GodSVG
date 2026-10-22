@@ -34,7 +34,7 @@ func setup(new_export_data_object: ImageExportDataJPG, new_undo_redo: UndoRedoRe
 	background_edit.setup(true, export_data_object.background_color)
 	background_edit.color_picked.connect(
 		func(new_value: String, is_final: bool, old_final_value: String) -> void:
-			var new_background_color := ColorParser.text_to_color(new_value, Color.BLACK, true)
+			var new_background_color := ParserPaint.text_to_color(new_value, Color.BLACK, true)
 			if is_final:
 				undo_redo.create_action()
 				undo_redo.add_do_property(export_data_object, "background_color", new_background_color)

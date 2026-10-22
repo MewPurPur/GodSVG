@@ -37,7 +37,7 @@ func sync_text_from_svg() -> void:
 		code_edit.clear_undo_history()
 
 func react_to_last_parsing() -> void:
-	if State.last_parse_error == SVGParser.ParseError.OK:
+	if State.last_parse_error == ParserSVG.ParseError.OK:
 		if error_bar.visible:
 			error_bar.hide()
 			sync_theming()
@@ -48,7 +48,7 @@ func react_to_last_parsing() -> void:
 		code_edit.grab_focus()
 	if not error_bar.visible:
 		error_bar.show()
-		error_label.text = SVGParser.get_parsing_error_string(State.last_parse_error)
+		error_label.text = ParserSVG.get_parsing_error_string(State.last_parse_error)
 		sync_theming()
 
 func sync_theming() -> void:

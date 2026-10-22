@@ -271,7 +271,7 @@ func _points_draw() -> void:
 
 func draw_numfield(rect: Rect2, num: float) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), NumstringParser.basic_num_to_text(num),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumstring.basic_num_to_text(num),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 

@@ -93,5 +93,5 @@ func dash_array_to_text(list: PackedFloat64Array, formatter := Configs.savedata.
 	var params := PackedStringArray()
 	for element in list:
 		# It's fine to use this parser, AttributeList is just a list of numbers.
-		params.append(NumberParser.num_to_text(element, formatter))
+		params.append(ParserNumber.num_to_text(element, formatter))
 	return " ".join(params)

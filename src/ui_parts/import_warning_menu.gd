@@ -30,20 +30,20 @@ func _ready() -> void:
 	cancel_button.pressed.connect(queue_free)
 	
 	# Convert forward and backward to show how GodSVG would display the given SVG.
-	var imported_text_parse_result := SVGParser.markup_to_root(imported_text)
+	var imported_text_parse_result := ParserSVG.markup_to_root(imported_text)
 	if is_instance_valid(imported_text_parse_result.svg):
-		var preview_text := SVGParser.root_to_editor_markup(imported_text_parse_result.svg)
-		var preview_parse_result := SVGParser.markup_to_root(preview_text)
+		var preview_text := ParserSVG.root_to_editor_markup(imported_text_parse_result.svg)
+		var preview_parse_result := ParserSVG.markup_to_root(preview_text)
 		var preview := preview_parse_result.svg
 		if is_instance_valid(preview):
-			texture_preview.setup_svg(SVGParser.root_to_editor_markup(preview), preview.width, preview.height)
+			texture_preview.setup_svg(ParserSVG.root_to_editor_markup(preview), preview.width, preview.height)
 	
-	if imported_text_parse_result.error != SVGParser.ParseError.OK:
+	if imported_text_parse_result.error != ParserSVG.ParseError.OK:
 		texture_preview.hide()
 		margin_container.custom_minimum_size.y = 48
 		size.y = 0
 		warnings_label.add_theme_color_override("default_color", Configs.savedata.basic_color_error)
-		warnings_label.text = "[center]%s: %s" % [Translator.translate("Syntax error"), SVGParser.get_parsing_error_string(imported_text_parse_result.error)]
+		warnings_label.text = "[center]%s: %s" % [Translator.translate("Syntax error"), ParserSVG.get_parsing_error_string(imported_text_parse_result.error)]
 	else:
 		var unrecognized_elements := PackedStringArray()
 		var unrecognized_attributes := PackedStringArray()
