@@ -512,7 +512,7 @@ func _on_reset_color_button_pressed() -> void:
 func _on_start_color_rect_draw() -> void:
 	var rect_size := start_color_rect.size
 	var rect := Rect2(Vector2.ZERO, rect_size)
-	if ParserID.is_url_valid(color_config.initial_literal_paint):
+	if ParserID.is_valid_url(color_config.initial_literal_paint):
 		var cross_color := Color(0.8, 0.8, 0.8)
 		start_color_rect.draw_rect(rect, Color(0.6, 0.6, 0.6))
 		start_color_rect.draw_line(Vector2.ZERO, rect_size, cross_color, 0.5, true)
