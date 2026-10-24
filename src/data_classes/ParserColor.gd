@@ -11,7 +11,8 @@ static func add_hash_if_hex(color: String) -> String:
 ## Validates if a color string is in any supported format: "#RRGGBB", "#RGB", named color, rgb(r, g, b), hsl(h, s, l%).
 ## If allow_alpha is true, #RRGGBBAA, #RGBA, rgba(r, g, b, a(%?)), hsla(h, s, l%, a(%?)) are considered valid.
 static func is_valid(color: String, allow_alpha := false) -> bool:
-	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha)
+	return (allow_alpha and color.strip_edges() == "transparent") or is_valid_hex(color, allow_alpha) or\
+			is_valid_rgb(color, allow_alpha) or is_valid_hsl(color, allow_alpha) or is_valid_named(color)
 
 ## Validates if a color string is of #RRGGBB or #RGB format. If allow_alpha is true, also accepts #RRGGBBAA and #RGBA.
 static func is_valid_hex(color: String, allow_alpha := false) -> bool:
@@ -69,8 +70,8 @@ static func is_valid_hsl(color: String, allow_alpha := false) -> bool:
 
 ## Validates if the color is in the list of SVG color keywords at https://www.w3.org/TR/SVG11/types.html#ColorKeywords.
 ## If allow_alpha is true, also accepts "transparent"
-static func is_valid_named(color: String, allow_alpha := false) -> bool:
-	return get_named_colors(allow_alpha).has(color.strip_edges())
+static func is_valid_named(color: String) -> bool:
+	return NAMED_COLORS.has(color.strip_edges())
 
 
 ## Converts a color string into a Color if its format can be represented by a color.
@@ -78,10 +79,8 @@ static func is_valid_named(color: String, allow_alpha := false) -> bool:
 ## If the text describes a format that's not accepted, returns the backup color.
 static func text_to_color(color: String, backup := Color.BLACK, allow_alpha := false) -> Color:
 	color = color.strip_edges()
-	if color == "none":
-		return Color(0, 0, 0, 0)
-	elif is_valid_named(color):
-		return Color(get_named_colors(allow_alpha)[color])
+	if is_valid_named(color):
+		return Color(NAMED_COLORS[color])
 	elif is_valid_rgb(color, allow_alpha):
 		var args_start_pos := color.find("(") + 1
 		var inside_brackets := color.substr(args_start_pos, color.length() - args_start_pos - 1)
@@ -119,25 +118,25 @@ static func text_to_color(color: String, backup := Color.BLACK, allow_alpha := f
 			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l), clampi(a, 0, 255))
 	elif is_valid_hex(color, allow_alpha):
 		return Color.from_string(color, backup)
-	else:
-		return backup
+	return backup
 
 
 static func hsl_get_r(h: int, s: float, l: float) -> int:
-	return decompose_hsl(0, h, s, l)
+	return _decompose_hsl(0, h, s, l)
 
 static func hsl_get_g(h: int, s: float, l: float) -> int:
-	return decompose_hsl(8, h, s, l)
+	return _decompose_hsl(8, h, s, l)
 
 static func hsl_get_b(h: int, s: float, l: float) -> int:
-	return decompose_hsl(4, h, s, l)
+	return _decompose_hsl(4, h, s, l)
 
-static func decompose_hsl(n: int, h: int, s: float, l: float) -> int:
+static func _decompose_hsl(n: int, h: int, s: float, l: float) -> int:
 	var k := fmod(n + h/30.0, 12)
 	return roundi((l - s * minf(l, 1 - l) * maxf(-1, minf(minf(k - 3, 9 - k), 1))) * 255)
 
 
 # Helpers
+
 static func _is_valid_number_or_percentage(numstr: String) -> bool:
 	numstr = numstr.strip_edges()
 	return numstr.is_valid_float() or (not numstr.is_empty() and numstr[-1] == "%" and numstr.left(-1).is_valid_float())
@@ -150,16 +149,7 @@ static func _is_valid_percentage(numstr: String) -> bool:
 	return not numstr.is_empty() and numstr[-1] == "%" and numstr.left(-1).is_valid_float()
 
 
-## Source: https://www.w3.org/TR/SVG11/types.html#ColorKeywords
-static func get_named_colors(include_alpha := false) -> Dictionary:
-	if include_alpha:
-		var extended_named_colors := _NAMED_COLORS.duplicate()
-		extended_named_colors["transparent"] = "#00000000"
-		return extended_named_colors
-	else:
-		return _NAMED_COLORS
-
-const _NAMED_COLORS: Dictionary[String, String] = {
+const NAMED_COLORS: Dictionary[String, String] = {
 	"aliceblue": "#f0f8ff",
 	"antiquewhite": "#faebd7",
 	"aqua": "#00ffff",

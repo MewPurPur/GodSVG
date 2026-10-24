@@ -70,8 +70,7 @@ func _draw() -> void:
 	draw_style_box(stylebox, Rect2(size.x - button_width, 1, button_width - 1, size.y - 2))
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
 		draw_button_border("pressed")
-	elif is_instance_valid(temp_button) and temp_button.get_global_rect().has_point(
-	get_viewport().get_mouse_position()):
+	elif is_instance_valid(temp_button) and temp_button.get_global_rect().has_point(get_viewport().get_mouse_position()):
 		draw_button_border("hover")
 	else:
 		draw_button_border("normal")

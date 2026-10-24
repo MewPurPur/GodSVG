@@ -11,9 +11,9 @@ func set_value(new_value: String) -> void:
 func format(text: String, formatter: Formatter) -> String:
 	text = text.strip_edges()
 	
-	if text.is_empty() or text in ["none", "currentColor"]:
+	if text.is_empty() or text in ["none", "currentColor", "transparent"]:
 		return text
-	elif ParserID.is_url_valid(text):
+	elif ParserID.is_valid_url(text):
 		return "url(" + text.substr(4, text.length() - 5).strip_edges() + ")"
 	
 	var named_colors_usage := formatter.color_use_named_colors
@@ -37,8 +37,8 @@ func format(text: String, formatter: Formatter) -> String:
 		var g := String.num_uint64(ParserColor.hsl_get_g(h, s, l), 16)
 		var b := String.num_uint64(ParserColor.hsl_get_b(h, s, l), 16)
 		text = "#" + (r if r.length() == 2 else "0" + r) + (g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
-	if text in ParserColor.get_named_colors():
-		text = ParserColor.get_named_colors()[text]
+	if text in ParserColor.NAMED_COLORS:
+		text = ParserColor.NAMED_COLORS[text]
 	if ParserColor.is_valid_hex(text) and text.length() == 4:
 		text = "#" + text[1] + text[1] + text[2] + text[2] + text[3] + text[3]
 	
@@ -58,11 +58,11 @@ func format(text: String, formatter: Formatter) -> String:
 		if ParserColor.is_valid_hex(hex) and hex.length() == 4:
 			hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
 		
-		if hex in ParserColor.get_named_colors().values():
+		if hex in ParserColor.NAMED_COLORS.values():
 			if named_colors_usage == Formatter.NamedColorUse.ALWAYS:
-				text = ParserColor.get_named_colors().find_key(hex)
+				text = ParserColor.NAMED_COLORS.find_key(hex)
 			else:
-				var named_color_text: String = ParserColor.get_named_colors().find_key(hex)
+				var named_color_text: String = ParserColor.NAMED_COLORS.find_key(hex)
 				if named_color_text.length() < text.length() or\
 				(named_colors_usage == Formatter.NamedColorUse.WHEN_SHORTER_OR_EQUAL and named_color_text.length() == text.length()):
 					text = named_color_text

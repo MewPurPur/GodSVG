@@ -34,7 +34,7 @@ static func get_href_validity(id: String) -> NameValidityLevel:
 		return NameValidityLevel.INVALID
 	return _basic_get_id_validity(id.trim_prefix("#"))
 
-static func is_url_valid(url: String) -> bool:
+static func is_valid_url(url: String) -> bool:
 	url = url.strip_edges()
 	if not url.begins_with("url(") or not url.ends_with(")"):
 		return false

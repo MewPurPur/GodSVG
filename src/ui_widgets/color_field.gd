@@ -63,7 +63,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 
 # Redraw in case the gradient might have changed.
 func _on_svg_modified() -> void:
-	if cached_allow_url and ParserID.is_url_valid(element.get_implied_attribute_value(attribute_name)):
+	if cached_allow_url and ParserID.is_valid_url(element.get_implied_attribute_value(attribute_name)):
 		update_gradient_texture()
 		queue_redraw()
 	elif element.get_attribute_value(attribute_name) == "currentColor":
@@ -100,7 +100,7 @@ func _draw() -> void:
 	# Draw the color or gradient.
 	var drawn := false
 	var color_value := element.get_implied_attribute_value(attribute_name)
-	if cached_allow_url and ParserID.is_url_valid(color_value):
+	if cached_allow_url and ParserID.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)
 		if is_instance_valid(gradient_element) and gradient_element is ElementBaseGradient:
@@ -159,7 +159,7 @@ func sync() -> void:
 # gradient_element.generate_texture() and this method and everything persistent can be removed.
 func update_gradient_texture() -> void:
 	var color_value := element.get_implied_attribute_value(attribute_name)
-	if ParserID.is_url_valid(color_value):
+	if ParserID.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)
 		if is_instance_valid(gradient_element) and gradient_element is ElementBaseGradient:
