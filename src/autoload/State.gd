@@ -461,11 +461,11 @@ func is_selection_subpaths_only() -> bool:
 	if semi_selected_xid.is_empty() or inner_selections.is_empty():
 		return false
 	
-	var element_ref := root_element.get_xnode(semi_selected_xid)
-	if not element_ref is ElementPath:
+	var element := root_element.get_xnode(semi_selected_xid)
+	if not element is ElementPath:
 		return false
 	
-	var pathdata: AttributePathdata = element_ref.get_attribute("d")
+	var pathdata: AttributeMetaPathdata = element.get_attribute_meta("d")
 	var selection := inner_selections.duplicate()
 	selection.sort()
 	

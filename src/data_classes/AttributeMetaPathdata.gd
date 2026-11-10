@@ -1,5 +1,5 @@
 ## The "d" attribute of ElementPath.
-class_name AttributePathdata extends Attribute
+class_name AttributeMetaPathdata extends AttributeMeta
 
 # Every conversion method should be supported by every path command.
 enum Conversion {

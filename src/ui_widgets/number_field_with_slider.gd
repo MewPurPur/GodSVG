@@ -19,7 +19,7 @@ func set_value(new_value: String, save := false) -> void:
 				return
 			
 			numeric_value = clampf(numeric_value, MIN_VALUE, MAX_VALUE)
-			new_value = ParserNumber.num_to_text(numeric_value, Configs.savedata.editor_formatter)
+			new_value = Configs.savedata.editor_formatter.number_to_text(numeric_value)
 	
 	element.set_attribute(attribute_name, new_value)
 	sync()
@@ -27,7 +27,7 @@ func set_value(new_value: String, save := false) -> void:
 		State.save_svg()
 
 func set_num(new_number: float, save := false) -> void:
-	set_value(ParserNumber.num_to_text(new_number, Configs.savedata.editor_formatter), save)
+	set_value(Configs.savedata.editor_formatter.number_to_text(new_number), save)
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)

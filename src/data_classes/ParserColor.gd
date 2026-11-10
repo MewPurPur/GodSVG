@@ -1,6 +1,61 @@
 ## Parser for SVG colors, URLs, and paints.
 @abstract class_name ParserColor
 
+static func format(text: String, formatter: Formatter) -> String:
+	text = text.strip_edges()
+	var named_colors_usage := formatter.color_use_named_colors
+	# First make sure we have a 6-digit hex.
+	if ParserColor.is_valid_rgb(text):
+		var args_start_pos := text.find("(") + 1
+		var inside_brackets := text.substr(args_start_pos, text.length() - args_start_pos - 1)
+		var args := inside_brackets.split(",", false)
+		var r := String.num_uint64(args[0].strip_edges(false, true).to_int(), 16)
+		var g := String.num_uint64(args[1].strip_edges(false, true).to_int(), 16)
+		var b := String.num_uint64(args[2].strip_edges(false, true).to_int(), 16)
+		text = "#" + (r if r.length() == 2 else "0" + r) + (g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
+	elif ParserColor.is_valid_hsl(text):
+		var args_start_pos := text.find("(") + 1
+		var inside_brackets := text.substr(args_start_pos, text.length() - args_start_pos - 1)
+		var args := inside_brackets.split(",", false)
+		var h := posmod(args[0].to_int(), 360)
+		var s := clampf(int(args[1].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
+		var l := clampf(int(args[2].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
+		var r := String.num_uint64(ParserColor.hsl_get_r(h, s, l), 16)
+		var g := String.num_uint64(ParserColor.hsl_get_g(h, s, l), 16)
+		var b := String.num_uint64(ParserColor.hsl_get_b(h, s, l), 16)
+		text = "#" + (r if r.length() == 2 else "0" + r) + (g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
+	if text in ParserColor.NAMED_COLORS:
+		text = ParserColor.NAMED_COLORS[text]
+	if ParserColor.is_valid_hex(text) and text.length() == 4:
+		text = "#" + text[1] + text[1] + text[2] + text[2] + text[3] + text[3]
+	
+	text = text.to_upper() if formatter.color_capital_hex else text.to_lower()
+	match formatter.color_primary_syntax:
+		Formatter.PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
+			if text.length() == 7 and text[0] == "#" and\
+			text[1] == text[2] and text[3] == text[4] and text[5] == text[6]:
+				text = "#" + text[1] + text[3] + text[5]
+		Formatter.PrimaryColorSyntax.RGB:
+			text = "rgb(" + String.num_uint64(text.substr(1, 2).hex_to_int()) + ", " +\
+					String.num_uint64(text.substr(3, 2).hex_to_int()) + ", " +\
+					String.num_uint64(text.substr(5, 2).hex_to_int()) + ")"
+	
+	if named_colors_usage != Formatter.NamedColorUse.NEVER:
+		var hex := text.to_lower()
+		if ParserColor.is_valid_hex(hex) and hex.length() == 4:
+			hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
+		
+		if hex in ParserColor.NAMED_COLORS.values():
+			if named_colors_usage == Formatter.NamedColorUse.ALWAYS:
+				text = ParserColor.NAMED_COLORS.find_key(hex)
+			else:
+				var named_color_text: String = ParserColor.NAMED_COLORS.find_key(hex)
+				if named_color_text.length() < text.length() or\
+				(named_colors_usage == Formatter.NamedColorUse.WHEN_SHORTER_OR_EQUAL and named_color_text.length() == text.length()):
+					text = named_color_text
+	return text
+
+
 ## Adds a hash prefix to hex color strings if they don't already have one
 static func add_hash_if_hex(color: String) -> String:
 	color = color.strip_edges()
@@ -77,13 +132,13 @@ static func is_valid_named(color: String) -> bool:
 ## Converts a color string into a Color if its format can be represented by a color.
 ## If allow_alpha is true, accepts formats with an alpha channel.
 ## If the text describes a format that's not accepted, returns the backup color.
-static func text_to_color(color: String, backup := Color.BLACK, allow_alpha := false) -> Color:
-	color = color.strip_edges()
-	if is_valid_named(color):
-		return Color(NAMED_COLORS[color])
-	elif is_valid_rgb(color, allow_alpha):
-		var args_start_pos := color.find("(") + 1
-		var inside_brackets := color.substr(args_start_pos, color.length() - args_start_pos - 1)
+static func text_to_color(color_text: String, backup := Color.BLACK, allow_alpha := false) -> Color:
+	color_text = color_text.strip_edges()
+	if is_valid_named(color_text):
+		return Color(NAMED_COLORS[color_text])
+	elif is_valid_rgb(color_text, allow_alpha):
+		var args_start_pos := color_text.find("(") + 1
+		var inside_brackets := color_text.substr(args_start_pos, color_text.length() - args_start_pos - 1)
 		var args := inside_brackets.split(",", false)
 		if not (args.size() == 3 or (args.size() == 4 and allow_alpha)):
 			return backup
@@ -100,9 +155,9 @@ static func text_to_color(color: String, backup := Color.BLACK, allow_alpha := f
 			var a3 := args[3].strip_edges(false, true)
 			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else int(a3.left(-1).to_float() * 2.55)
 			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255), clampi(a, 0, 255))
-	elif is_valid_hsl(color, allow_alpha):
-		var args_start_pos := color.find("(") + 1
-		var inside_brackets := color.substr(args_start_pos, color.length() - args_start_pos - 1)
+	elif is_valid_hsl(color_text, allow_alpha):
+		var args_start_pos := color_text.find("(") + 1
+		var inside_brackets := color_text.substr(args_start_pos, color_text.length() - args_start_pos - 1)
 		var args := inside_brackets.split(",", false)
 		if not (args.size() == 3 or (args.size() == 4 and allow_alpha)):
 			return backup
@@ -116,8 +171,8 @@ static func text_to_color(color: String, backup := Color.BLACK, allow_alpha := f
 			var a3 := args[3].strip_edges(false, true)
 			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else int(a3.left(-1).to_float() * 2.55)
 			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l), clampi(a, 0, 255))
-	elif is_valid_hex(color, allow_alpha):
-		return Color.from_string(color, backup)
+	elif is_valid_hex(color_text, allow_alpha):
+		return Color.from_string(color_text, backup)
 	return backup
 
 

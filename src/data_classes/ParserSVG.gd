@@ -50,7 +50,7 @@ static func get_inner_markup_with_percentages_converted(root_element: ElementRoo
 ## Converts the child elements of a root element into markup, excluding the root tag itself.
 static func root_children_to_markup(root_element: ElementRoot, formatter: Formatter) -> String:
 	var markup := ""
-	for child in root_element.get_children():
+	for child in root_element.get_child_xnodes():
 		var new_markup := _xnode_to_markup(child, formatter)
 		# Remove one level of indentation from each line to maintain proper formatting.
 		var lines := new_markup.split('\n')
@@ -118,7 +118,7 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 	
 	markup += '<' + element.name
 	for attribute: Attribute in attribute_array:
-		var value := attribute.get_formatted_value(formatter)
+		var value := attribute.format(attribute.get_value(), formatter)
 		var quote := "'" if '"' in value else '"'
 		if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE:
 			markup += "\n" + formatter.get_indent_string().repeat(element.xid.size() + 1)
@@ -138,7 +138,7 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 		markup += '>'
 		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += '\n'
-		for child in element.get_children():
+		for child in element.get_child_xnodes():
 			markup += _xnode_to_markup(child, formatter, make_attributes_absolute)
 		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += formatter.get_indent_string().repeat(element.xid.size())

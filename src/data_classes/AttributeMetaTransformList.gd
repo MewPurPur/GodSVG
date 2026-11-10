@@ -1,5 +1,5 @@
 ## An attribute representing a list of transformations.
-class_name AttributeTransformList extends Attribute
+class_name AttributeMetaTransformList extends AttributeMeta
 
 var _transform_list: Array[Transform] = []
 var _final_precise_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])

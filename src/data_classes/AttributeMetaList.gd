@@ -1,21 +1,14 @@
 ## An attribute representing a list of numbers.
-class_name AttributeList extends Attribute
+class_name AttributeMetaList extends AttributeMeta
 
 var _list: PackedFloat64Array
 
-func _sync() -> void:
-	_list = text_to_list(get_value())
+func sync(new_value: String) -> void:
+	_list = text_to_list(new_value)
 
-func format(text: String, formatter: Formatter) -> String:
-	return list_to_text(text_to_list(text), formatter)
-
-
-func set_list(new_list: PackedFloat64Array) -> void:
+func set_list(new_list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
 	_list = new_list
-	_sync_after_list_change()
-
-func _sync_after_list_change() -> void:
-	set_value(list_to_text(_list))
+	return list_to_text(_list, formatter)
 
 func get_list() -> PackedFloat64Array:
 	return _list
@@ -89,9 +82,9 @@ static func text_to_list(string: String) -> PackedFloat64Array:
 	
 	return nums_parsed
 
-func list_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
+static func list_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
 	var params := PackedStringArray()
 	for element in list:
 		# It's fine to use this parser, AttributeList is just a list of numbers.
-		params.append(ParserNumber.num_to_text(element, formatter))
+		params.append(formatter.number_to_text(element))
 	return " ".join(params)
