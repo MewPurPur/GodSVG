@@ -11,11 +11,8 @@ func _get_own_default(attribute_name: String) -> String:
 		"spreadMethod": return "pad"
 		_: return ""
 
-func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
-	if get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and attribute_name in ["x1", "y1", "x2", "y2"]:
-		return DB.PercentageHandling.FRACTION
-	else:
-		return super(attribute_name)
+func _force_use_basic_attribute_handling(attribute_name: String) -> bool:
+	return not (get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and attribute_name in ["x1", "y1", "x2", "y2"])
 
 func generate_texture() -> DPITexture:
 	var svg_texture_text := """<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" """
@@ -50,17 +47,18 @@ func generate_texture() -> DPITexture:
 	
 	svg_texture_text += ">"
 	
-	for child in get_children():
+	for child in get_child_xnodes():
 		if not child is ElementStop:
 			continue
 		
 		svg_texture_text += "<stop "
-		for attribute: Attribute in child.get_all_attributes():
-			var value := attribute.get_value()
+		var child_attribute_name_value_pairs: Dictionary[String, String] = child.get_attribute_name_value_pairs()
+		for attribute_name in child_attribute_name_value_pairs:
+			var value := child_attribute_name_value_pairs[attribute_name]
 			if not '"' in value:
-				svg_texture_text += ' %s="%s"' % [attribute.name, value]
+				svg_texture_text += ' %s="%s"' % [attribute_name, value]
 			else:
-				svg_texture_text += " %s='%s'" % [attribute.name, value]
+				svg_texture_text += " %s='%s'" % [attribute_name, value]
 		svg_texture_text += "/>"
 	
 	svg_texture_text += """</linearGradient><rect fill="url(#a)" width="100%%" height="100%%"/></svg>"""

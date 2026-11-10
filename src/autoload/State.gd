@@ -461,11 +461,11 @@ func is_selection_subpaths_only() -> bool:
 	if semi_selected_xid.is_empty() or inner_selections.is_empty():
 		return false
 	
-	var element_ref := root_element.get_xnode(semi_selected_xid)
-	if not element_ref is ElementPath:
+	var element := root_element.get_xnode(semi_selected_xid)
+	if not element is ElementPath:
 		return false
 	
-	var pathdata: AttributePathdata = element_ref.get_attribute("d")
+	var pathdata: AttributeMetaPathdata = element.get_attribute_meta("d")
 	var selection := inner_selections.duplicate()
 	selection.sort()
 	
@@ -485,12 +485,12 @@ func are_selections_from_different_closed_subpaths() -> bool:
 	var element_ref := root_element.get_xnode(semi_selected_xid)
 	if not element_ref is ElementPath:
 		return false
-	var pathdata: AttributePathdata = element_ref.get_attribute("d")
+	var pathdata_meta: AttributeMetaPathdata = element_ref.get_attribute_meta("d")
 	
 	var inner_selection_passed_subpath_starts := PackedInt32Array()
 	for i in inner_selections:
-		var subpath := pathdata.get_subpath(i)
-		if subpath.x in inner_selection_passed_subpath_starts or not pathdata.get_command(subpath.y) is PathCommand.CloseCommand:
+		var subpath := pathdata_meta.get_subpath(i)
+		if subpath.x in inner_selection_passed_subpath_starts or not pathdata_meta.get_command(subpath.y) is PathCommand.CloseCommand:
 			return false
 		inner_selection_passed_subpath_starts.append(subpath.x)
 	return true
@@ -577,26 +577,26 @@ func add_path_command(path_cmd_char: String) -> void:
 		if selected_xids.size() == 1:
 			var xnode_ref := root_element.get_xnode(selected_xids[0])
 			if xnode_ref is ElementPath:
-				var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
-				var path_cmd_count := path_attrib.get_command_count()
+				var pathdata_meta: AttributeMetaPathdata = xnode_ref.get_attribute_meta("d")
+				var path_cmd_count := pathdata_meta.get_command_count()
 				# Z after a Z is syntactically invalid.
 				if (path_cmd_count == 0 and not path_cmd_char in "Mm") or (path_cmd_char in "Zz" and path_cmd_count > 0 and\
-				path_attrib.get_command(path_cmd_count - 1) is PathCommand.CloseCommand):
+				pathdata_meta.get_command(path_cmd_count - 1) is PathCommand.CloseCommand):
 					return
-				path_attrib.insert_command(path_cmd_count, path_cmd_char)
+				pathdata_meta.insert_command(path_cmd_count, path_cmd_char)
 				normal_select(selected_xids[0], path_cmd_count, true)
 				handle_added.emit()
 	else:
 		# If path commands are selected, insert after the last one.
 		var xnode_ref := root_element.get_xnode(semi_selected_xid)
 		if xnode_ref is ElementPath:
-			var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
+			var pathdata_meta: AttributeMetaPathdata = xnode_ref.get_attribute_meta("d")
 			var last_selection: int = inner_selections.max()
 			# Z after a Z is syntactically invalid.
-			if path_cmd_char in "Zz" and (path_attrib.get_command(last_selection) is PathCommand.CloseCommand or\
-			(path_attrib.get_command_count() > last_selection + 1 and path_attrib.get_command(last_selection + 1) is PathCommand.CloseCommand)):
+			if path_cmd_char in "Zz" and (pathdata_meta.get_command(last_selection) is PathCommand.CloseCommand or\
+			(pathdata_meta.get_command_count() > last_selection + 1 and pathdata_meta.get_command(last_selection + 1) is PathCommand.CloseCommand)):
 				return
-			path_attrib.insert_command(last_selection + 1, path_cmd_char)
+			pathdata_meta.insert_command(last_selection + 1, path_cmd_char)
 			normal_select(semi_selected_xid, last_selection + 1, true)
 			handle_added.emit()
 
@@ -634,20 +634,20 @@ func _move_selected(down: bool) -> void:
 		root_element.move_xnodes_in_parent(selected_xids, down)
 	elif not semi_selected_xid.is_empty() and is_selection_subpaths_only():
 		# Move subpaths and modify selections.
-		var pathdata: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
-		var commands := pathdata.get_commands()
+		var pathdata_meta: AttributeMetaPathdata = root_element.get_xnode(semi_selected_xid).get_attribute_meta("d")
+		var commands := pathdata_meta.get_commands()
 			
 		var lengths := PackedInt32Array()
 		var selected := PackedInt32Array()
-		for i in pathdata.subpath_start_indices.size():
-			var start := pathdata.subpath_start_indices[i]
-			lengths.append((commands.size() if i == pathdata.subpath_start_indices.size() - 1 else pathdata.subpath_start_indices[i + 1]) - start)
+		for i in pathdata_meta.subpath_start_indices.size():
+			var start := pathdata_meta.get_subpath_starts()[i]
+			lengths.append((commands.size() if i == pathdata_meta.subpath_start_indices.size() - 1 else pathdata_meta.subpath_start_indices[i + 1]) - start)
 			if start in inner_selections:
 				selected.append(i)
 		
 		# FIXME range() should really be returning Array[int]. #72762
 		var order: Array[int]
-		order.assign(range(pathdata.subpath_start_indices.size()))
+		order.assign(range(pathdata_meta.get_subpath_starts().size()))
 		if down:
 			for i in range(selected.size() - 1, -1, -1):
 				var pos := order.find(selected[i])
@@ -669,7 +669,7 @@ func _move_selected(down: bool) -> void:
 		
 		var previous_original := -1
 		for subpath in order:
-			var start := pathdata.subpath_start_indices[subpath]
+			var start := pathdata_meta.get_subpath_starts()[subpath]
 			var end := start + lengths[subpath] - 1
 			var first_cmd: PathCommand = commands[start]
 			
@@ -693,7 +693,7 @@ func _move_selected(down: bool) -> void:
 			previous_original = subpath
 		
 		if commands != new_commands:
-			pathdata.set_commands(new_commands)
+			pathdata_meta.set_commands(new_commands)
 			set_inner_selection(new_selections, new_pivot)
 	save_svg()
 
@@ -707,18 +707,18 @@ func set_as_origin_selected() -> void:
 		xnode.get_attribute("points").rotate_start(inner_selections[0] * 2)
 		normal_select(semi_selected_xid, 0)
 	elif are_selections_from_different_closed_subpaths():
-		var pathdata: AttributePathdata = xnode.get_attribute("d")
-		var commands := pathdata.get_commands()
+		var pathdata_meta: AttributeMetaPathdata = xnode.get_attribute_meta("d")
+		var commands := pathdata_meta.get_commands()
 		
 		var new_commands: Array[PathCommand] = []
 		var new_inner_selections: Array[int] = []
 		var new_inner_selection_pivot := -1
 		
 		var start_indices_operated_on := PackedInt32Array()
-		for start_index in pathdata.subpath_start_indices.size():
-			var start := pathdata.subpath_start_indices[start_index]
+		for start_index in pathdata_meta.get_subpath_starts().size():
+			var start := pathdata_meta.get_subpath_starts()[start_index]
 			var start_cmd := commands[start]
-			var end := pathdata.get_subpath(start).y
+			var end := pathdata_meta.get_subpath(start).y
 			
 			if (start_index - 1) in start_indices_operated_on and not start_cmd is PathCommand.MoveCommand:
 				new_commands.append(PathCommand.MoveCommand.new(start_cmd.start_x, start_cmd.start_y))
@@ -755,12 +755,12 @@ func set_as_origin_selected() -> void:
 			var first_cmd := commands[selected_index + 1]
 			if first_cmd is PathCommand.ShorthandCubicBezierCommand and (selected_cmd is PathCommand.CubicBezierCommand or\
 			selected_cmd is PathCommand.ShorthandCubicBezierCommand):
-				var implied := pathdata.get_implied_S_control(first_cmd_idx)
+				var implied := pathdata_meta.get_implied_S_control(first_cmd_idx)
 				new_commands.append(PathCommand.CubicBezierCommand.new(
 						implied[0], implied[1], first_cmd.x2, first_cmd.y2, first_cmd.x, first_cmd.y, first_cmd.relative))
 			elif first_cmd is PathCommand.ShorthandQuadraticBezierCommand and (selected_cmd is PathCommand.QuadraticBezierCommand or\
 			selected_cmd is PathCommand.ShorthandQuadraticBezierCommand):
-				var implied := pathdata.get_implied_T_control(first_cmd_idx)
+				var implied := pathdata_meta.get_implied_T_control(first_cmd_idx)
 				new_commands.append(PathCommand.QuadraticBezierCommand.new(
 						implied[0], implied[1], first_cmd.x, first_cmd.y, first_cmd.relative))
 			elif first_cmd_idx != end:
@@ -782,7 +782,7 @@ func set_as_origin_selected() -> void:
 				new_commands.append(selected_cmd)
 			new_commands.append(PathCommand.CloseCommand.new(true))
 		
-		pathdata.set_commands(new_commands)
+		pathdata_meta.set_commands(new_commands)
 		set_inner_selection(new_inner_selections, new_inner_selection_pivot)
 	save_svg()
 
@@ -792,8 +792,8 @@ func reverse_order_selected() -> void:
 	
 	var xnode := root_element.get_xnode(semi_selected_xid)
 	if xnode is ElementPolygon or xnode is ElementPolyline:
-		var points: AttributeList = xnode.get_attribute("points")
-		var data: PackedFloat64Array = points.get_list()
+		var points_meta: AttributeMetaList = xnode.get_attribute_meta("points")
+		var data: PackedFloat64Array = points_meta.get_list()
 		# This operation currently only works for full selections.
 		var is_everything_selected := true
 		for i in data.size() / 2:
@@ -813,16 +813,16 @@ func reverse_order_selected() -> void:
 				data[a * 2 + 1] = data[b * 2 + 1]
 				data[b * 2] = temp_x
 				data[b * 2 + 1] = temp_y
-			points.set_list(data)
+			points_meta.set_list(data)
 	elif xnode is ElementPath:
-		var pathdata: AttributePathdata = xnode.get_attribute("d")
-		var commands := pathdata.get_commands()
+		var pathdata_meta: AttributeMetaPathdata = xnode.get_attribute_meta("d")
+		var commands := pathdata_meta.get_commands()
 		# The subpaths would be reversed individually.
 		if is_selection_subpaths_only():
 			var new_commands: Array[PathCommand] = []
 			var new_selection_indices: Array[int] = []
-			for start in pathdata.subpath_start_indices:
-				var subpath := pathdata.get_subpath(start)
+			for start in pathdata_meta.get_subpath_starts():
+				var subpath := pathdata_meta.get_subpath(start)
 				if not start in inner_selections:
 					new_commands += commands.slice(start, subpath.y + 1)
 					continue
@@ -928,7 +928,7 @@ func reverse_order_selected() -> void:
 								cmd.y = cmd.start_y
 								subpath_commands.append(cmd)
 							else:
-								var implied := pathdata.get_implied_T_control(reversed_command_index)
+								var implied := pathdata_meta.get_implied_T_control(reversed_command_index)
 								subpath_commands.append(PathCommand.QuadraticBezierCommand.new(implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.relative))
 						"C":
 							if use_shorthand:
@@ -945,14 +945,14 @@ func reverse_order_selected() -> void:
 								subpath_commands.append(cmd)
 						"S":
 							if use_shorthand:
-								var implied := pathdata.get_implied_S_control(reversed_command_index)
+								var implied := pathdata_meta.get_implied_S_control(reversed_command_index)
 								cmd.x = cmd.start_x
 								cmd.y = cmd.start_y
 								cmd.x2 = implied[0]
 								cmd.y2 = implied[1]
 								subpath_commands.append(cmd)
 							else:
-								var implied := pathdata.get_implied_S_control(reversed_command_index)
+								var implied := pathdata_meta.get_implied_S_control(reversed_command_index)
 								subpath_commands.append(PathCommand.CubicBezierCommand.new(
 										cmd.x2, cmd.y2, implied[0], implied[1], cmd.start_x, cmd.start_y, cmd.relative))
 					reversed_command_index -= 1
@@ -965,7 +965,7 @@ func reverse_order_selected() -> void:
 					new_selection_indices.append(output_start + i)
 				new_commands += subpath_commands
 			
-			pathdata.set_commands(new_commands)
+			pathdata_meta.set_commands(new_commands)
 			set_inner_selection(new_selection_indices)
 	save_svg()
 
@@ -980,13 +980,13 @@ func duplicate_selected() -> void:
 	save_svg()
 
 func insert_path_command_after_selection(new_command: String) -> void:
-	var path_attrib: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
+	var pathdata_meta: AttributeMetaPathdata = root_element.get_xnode(semi_selected_xid).get_attribute_meta("d")
 	var last_selection_index: int = inner_selections.max()
 	# Z after a Z is syntactically invalid.
-	if path_attrib.get_command(last_selection_index) is PathCommand.CloseCommand and new_command in "Zz":
+	if pathdata_meta.get_command(last_selection_index) is PathCommand.CloseCommand and new_command in "Zz":
 		return
 	var new_selection_index := last_selection_index + 1
-	path_attrib.insert_command(new_selection_index, new_command)
+	pathdata_meta.insert_command(new_selection_index, new_command)
 	normal_select(semi_selected_xid, new_selection_index, true)
 	save_svg()
 
@@ -1092,7 +1092,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 		btn_arr.append(ContextButton.create_from_action("delete"))
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
-		var element_ref := root_element.get_xnode(semi_selected_xid)
+		var element := root_element.get_xnode(semi_selected_xid)
 		
 		if context == Utils.LayoutPart.CANVAS:
 			var inner_idx := inner_selections[0]
@@ -1101,9 +1101,9 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					inner_idx = idx
 			btn_arr.append(ContextButton.create_custom(Translator.translate("View in Inspector"),
 					view_in_inspector.bind(semi_selected_xid, inner_idx), preload("res://assets/icons/Inspector.svg")))
-		match element_ref.name:
+		match element.name:
 			"path":
-				var pathdata: AttributePathdata = element_ref.get_attribute("d")
+				var pathdata: AttributeMetaPathdata = element.get_attribute_meta("d")
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
 							popup_insert_command_after_context.bind(popup_method), preload("res://assets/icons/Plus.svg")))
@@ -1162,18 +1162,18 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					if is_movable_selected:
 						btn_arr.append(ContextButton.create_from_action("set_as_origin", not is_point_that_would_move_selected))
 			"polygon", "polyline":
-				var points: AttributeList = element_ref.get_attribute("points")
+				var points_meta: AttributeMetaList = element.get_attribute_meta("points")
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
 							insert_points_after_selection.bind(1), preload("res://assets/icons/Plus.svg")))
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert multiple after"),
 							popup_insert_multiple_points_context.bind(popup_method), preload("res://assets/icons/Pluses.svg")))
-				if points.get_list_size() >= 4:
-					if element_ref.name == "polygon":
+				if points_meta.get_list_size() >= 4:
+					if element.name == "polygon":
 						btn_arr.append(ContextButton.create_from_action("set_as_origin", inner_selections[0] == 0))
 					else:
 						var is_everything_selected := true
-						for i in element_ref.get_attribute("points").get_list_size() / 2:
+						for i in element.get_attribute("points").get_list_size() / 2:
 							if not i in inner_selections:
 								is_everything_selected = false
 								break
@@ -1251,7 +1251,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
 	var command_picker := PathInsertPopupScene.instantiate()
-	command_picker.setup(root_element.get_xnode(semi_selected_xid).get_attribute("d"))
+	command_picker.setup(root_element.get_xnode(semi_selected_xid), "d")
 	popup_method.call(command_picker)
 	command_picker.path_command_picked.connect(insert_path_command_after_selection)
 
@@ -1274,6 +1274,6 @@ func convert_selected_xnodes_to(xnode_type: BasicXNode.NodeType) -> void:
 	root_element.replace_xnodes(selected_xids, replacing_xnodes)
 	save_svg()
 
-func convert_selected_commands(conversion_method: AttributePathdata.Conversion) -> void:
-	root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_commands_single_method(inner_selections, conversion_method)
+func convert_selected_commands(conversion_method: AttributeMetaPathdata.Conversion) -> void:
+	root_element.get_xnode(semi_selected_xid).get_attribute_meta("d").convert_commands_single_method(inner_selections, conversion_method)
 	save_svg()

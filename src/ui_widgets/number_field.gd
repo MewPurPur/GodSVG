@@ -5,21 +5,21 @@ var element: Element
 var attribute_name: String:  # May propagate.
 	set(new_value):
 		attribute_name = new_value
-		cached_min_value = -INF if DB.ATTRIBUTE_NUMBER_RANGE[attribute_name] == DB.NumberRange.ARBITRARY else 0.0
+		cached_min_value = -INF if element.get_attribute_current_syntax(attribute_name) == DB.AttributeSyntax.ARBITRARY_NUMERIC else 0.0
 
 var cached_min_value: float
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
-		if not AttributeNumeric.text_check_percentage(new_value):
-			var numeric_value := ParserNumstring.evaluate(new_value)
+		if not new_value.ends_with("%"):
+			var numeric_value := ParserNumeric.evaluate(new_value)
 			# Validate the value.
 			if not is_finite(numeric_value):
 				sync()
 				return
 			
 			numeric_value = maxf(numeric_value, cached_min_value)
-			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
+			new_value = Configs.savedata.editor_formatter.number_to_text(numeric_value)
 	element.set_attribute(attribute_name, new_value)
 	sync()
 	if save:
