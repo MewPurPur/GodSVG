@@ -11,11 +11,8 @@ func _get_own_default(attribute_name: String) -> String:
 		"spreadMethod": return "pad"
 		_: return ""
 
-func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
-	if get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and attribute_name in ["x1", "y1", "x2", "y2"]:
-		return DB.PercentageHandling.FRACTION
-	else:
-		return super(attribute_name)
+func _force_use_basic_attribute_handling(attribute_name: String) -> bool:
+	return not (get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and attribute_name in ["x1", "y1", "x2", "y2"])
 
 func generate_texture() -> DPITexture:
 	var svg_texture_text := """<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" """
@@ -50,7 +47,7 @@ func generate_texture() -> DPITexture:
 	
 	svg_texture_text += ">"
 	
-	for child in get_children():
+	for child in get_child_xnodes():
 		if not child is ElementStop:
 			continue
 		

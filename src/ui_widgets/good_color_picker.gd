@@ -484,7 +484,7 @@ func sync_hslider(index: int) -> void:
 	var num_value: float
 	if Configs.savedata.color_picker_current_model == ColorPickerUtils.ColorModel.RGB:
 		# In this case, it's better to use the hex value, as it benefits from paint calibration.
-		num_value = ParserPaint.text_to_color(ParserPaint.add_hash_if_hex(color_config.color.paint))[index]
+		num_value = ParserPaint.text_to_color(ParserColor.add_hash_if_hex(color_config.color.paint))[index]
 	else:
 		num_value = ColorPickerUtils.get_channel_offset(color_config.color, index)
 	fields_arr[index].text = String.num_uint64(roundi(num_value * ColorPickerUtils.get_channel_fidelity(index)))

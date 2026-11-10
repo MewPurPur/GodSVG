@@ -5,8 +5,8 @@ signal attribute_changed(name: String)
 signal ancestor_attribute_changed(name: String)
 signal descendant_attribute_changed(name: String)
 
-var _child_elements: Array[XNode]
-var _attributes: Dictionary[String, Attribute]
+var _child_elements: Array[XNode] = []
+var _attributes: Dictionary[String, Array]  # Arrays are [Value (String), Current syntax (DB.AttributeSyntax), Meta (AttributeMeta)]
 
 func _init() -> void:
 	attribute_changed.connect(_on_attribute_changed)
@@ -14,7 +14,7 @@ func _init() -> void:
 	descendant_attribute_changed.connect(_on_descendant_attribute_changed)
 
 func _on_attribute_changed(attribute_name: String) -> void:
-	for child in get_children():
+	for child in get_child_xnodes():
 		if child.is_element():
 			child.ancestor_attribute_changed.emit(attribute_name)
 	if parent != null:
@@ -23,7 +23,7 @@ func _on_attribute_changed(attribute_name: String) -> void:
 		root.any_attribute_changed.emit(xid)
 
 func _on_ancestor_attribute_changed(attribute_name: String) -> void:
-	for child in get_children():
+	for child in get_child_xnodes():
 		if child.is_element():
 			child.ancestor_attribute_changed.emit(attribute_name)
 
@@ -31,16 +31,8 @@ func _on_descendant_attribute_changed(attribute_name: String) -> void:
 	if parent != null:
 		parent.descendant_attribute_changed.emit(attribute_name)
 
-func _on_attribute_value_changed(attribute: Attribute) -> void:
-	var has_attrib := has_attribute(attribute.name)
-	if has_attrib and _attributes[attribute.name].get_value().is_empty():
-		_attributes.erase(attribute.name)
-	elif not has_attrib:
-		_attributes[attribute.name] = attribute
-	attribute_changed.emit(attribute.name)
 
-
-func get_children() -> Array[XNode]:
+func get_child_xnodes() -> Array[XNode]:
 	return _child_elements.duplicate()
 
 func get_child(index: int) -> XNode:
@@ -54,7 +46,7 @@ func get_child_count() -> int:
 
 func get_all_element_descendants() -> Array[Element]:
 	var elements: Array[Element] = []
-	for child in get_children():
+	for child in get_child_xnodes():
 		if child.is_element():
 			elements.append(child)
 			elements += child.get_all_element_descendants()
@@ -62,7 +54,7 @@ func get_all_element_descendants() -> Array[Element]:
 
 func get_all_valid_element_descendants() -> Array[Element]:
 	var elements: Array[Element] = []
-	for child in get_children():
+	for child in get_child_xnodes():
 		if child.is_element() and DB.is_child_element_valid(self.name, child.name):
 			elements.append(child)
 			elements += child.get_all_valid_element_descendants()
@@ -71,7 +63,7 @@ func get_all_valid_element_descendants() -> Array[Element]:
 # Gets the basic XML nodes too.
 func get_all_xnode_descendants() -> Array[XNode]:
 	var xnodes: Array[XNode] = []
-	for child in get_children():
+	for child in get_child_xnodes():
 		xnodes.append(child)
 		if child.is_element():
 			xnodes += child.get_all_xnode_descendants()
@@ -85,7 +77,7 @@ func replace_child(index: int, new_xnode: XNode) -> void:
 	var old_xnode := get_child(index)
 	_child_elements[index] = new_xnode
 	if new_xnode.is_element():
-		for grandchild_element in new_xnode.get_children():
+		for grandchild_element in new_xnode.get_child_xnodes():
 			grandchild_element.parent = new_xnode
 			if new_xnode is ElementSVG:
 				grandchild_element.svg = new_xnode
@@ -142,42 +134,48 @@ func propagate_xid_correction() -> void:
 
 
 func has_attribute(attribute_name: String) -> bool:
-	return _attributes.has(attribute_name)
-
-# If the attribute exists, gets that attribute. If it doesn't, generates it.
-func get_attribute(attribute_name: String) -> Attribute:
-	if has_attribute(attribute_name):
-		return _attributes[attribute_name]
-	return new_attribute(attribute_name)
-
+	return attribute_name in _attributes
 
 func get_attribute_value(attribute_name: String) -> String:
 	if has_attribute(attribute_name):
-		return _attributes[attribute_name].get_value()
+		return _attributes[attribute_name][0]
 	return ""
 
-func get_implied_attribute_value(attribute_name: String) -> String:
+func get_attribute_current_syntax(attribute_name: String) -> DB.AttributeSyntax:
 	if has_attribute(attribute_name):
-		return _attributes[attribute_name].get_value()
+		return _attributes[attribute_name][1]
+	return DB.AttributeSyntax.INVALID
+
+func get_attribute_meta(attribute_name: String) -> AttributeMeta:
+	if has_attribute(attribute_name):
+		return _attributes[attribute_name][2]
+	return null
+
+func get_attribute_implied_value(attribute_name: String) -> String:
+	if has_attribute(attribute_name):
+		return _attributes[attribute_name][0]
 	return get_default(attribute_name)
 
-
-func get_attribute_true_color(attribute_name: String) -> String:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.COLOR:
+func get_attribute_implied_color(attribute_name: String) -> String:
+	if get_attribute_current_syntax(attribute_name) != DB.AttributeSyntax.COLOR:
 		push_error("Attribute not the correct type.")
-	var attrib_value := get_implied_attribute_value(attribute_name)
+		return ""
+	var attrib_value := get_attribute_implied_value(attribute_name)
 	if attrib_value == "currentColor":
 		return get_default("color")
 	return attrib_value
 
 func get_attribute_num(attribute_name: String) -> float:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
+	var meta := get_attribute_meta(attribute_name)
+	if not meta is AttributeMetaNumeric:
 		push_error("Attribute not the correct type.")
-	var num: float = _attributes[attribute_name].get_num() if has_attribute(attribute_name) else AttributeNumeric.text_to_num(get_default(attribute_name))
+		return 0.0
+	var meta_numeric: AttributeMetaNumeric = meta
+	var num := meta_numeric.get_number()
 	# Possibly adjust for percentage.
 	if is_attribute_percentage(attribute_name):
 		var percentage_handling := get_percentage_handling(attribute_name)
-		if percentage_handling == DB.PercentageHandling.FRACTION:
+		if percentage_handling == DB.PercentageHandling.BASIC:
 			return num
 		elif root == self:
 			# TODO Implement this properly.
@@ -193,60 +191,91 @@ func get_attribute_num(attribute_name: String) -> float:
 	return num
 
 func is_attribute_percentage(attribute_name: String) -> bool:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
-		push_error("Attribute not the correct type.")
-	return _attributes[attribute_name].is_percentage() if has_attribute(attribute_name) else AttributeNumeric.text_check_percentage(get_default(attribute_name))
+	return get_attribute_current_syntax(attribute_name) == DB.AttributeSyntax.ARBITRARY_PERCENTAGE
 
 func get_attribute_list(attribute_name: String) -> PackedFloat64Array:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.LIST:
+	var meta := get_attribute_meta(attribute_name)
+	if not meta is AttributeMetaList:
 		push_error("Attribute not the correct type.")
-	return _attributes[attribute_name].get_list() if has_attribute(attribute_name) else AttributeList.text_to_list(get_default(attribute_name))
+		return PackedFloat64Array()
+	var meta_list: AttributeMetaList = meta
+	return meta_list.get_list()
 
 func get_attribute_final_precise_transform(attribute_name: String) -> PackedFloat64Array:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
+	var meta := get_attribute_meta(attribute_name)
+	if not meta is AttributeMetaTransformList:
 		push_error("Attribute not the correct type.")
-	var attrib: AttributeTransformList = _attributes[attribute_name] if has_attribute(attribute_name) else new_default_attribute(attribute_name)
-	return attrib.get_final_precise_transform()
+		return PackedFloat64Array()
+	var meta_transform_list: AttributeMetaTransformList = meta
+	return meta_transform_list.get_final_precise_transform()
 
 
-func set_attribute(attrib_name: String, value: Variant) -> void:
-	var value_type := typeof(value)
-	
-	var has_attrib := has_attribute(attrib_name)
-	if not has_attrib and value_type == TYPE_STRING and value.is_empty():
-		return
-	
-	var attrib := _attributes[attrib_name] if has_attrib else new_attribute(attrib_name)
+# It's up to attribute fields and other specialized editing modes to give valid values here.
+# Wrong values don't get discarded, only trimmed and not formatted.
+func set_attribute(attribute_name: String, new_value: Variant) -> void:
+	var value_type := typeof(new_value)
 	
 	if value_type == TYPE_STRING:
-		attrib.set_value(value)
+		new_value = new_value.strip_edges()  # Always strip edges before further processing.
+		
+		# Deal with situations where the attribute data should be cleared or added.
+		var has_attrib := has_attribute(attribute_name)
+		if has_attrib:
+			if new_value.is_empty():
+				_attributes.erase(attribute_name)
+				return
+		else:
+			if new_value.is_empty():
+				return
+			else:
+				# Create an initial array to be updated later in this method.
+				_attributes[attribute_name] = ["", DB.AttributeSyntax.INVALID, null]
+		
+		var current_value := get_attribute_value(attribute_name)
+		
+		# Formatting can be expensive, so do this cheap check first.
+		# TODO Check why this condition is true so often to begin with.
+		if new_value == current_value:
+			return
+		
+		# If matching a keyword, set to it.
+		if (attribute_name in DB.ATTRIBUTE_KEYWORDS and new_value in DB.ATTRIBUTE_KEYWORDS[attribute_name]):
+			if new_value != current_value:
+				_attributes[attribute_name] = [new_value, DB.AttributeSyntax.INVALID, null]
+			return
+		
+		var format_result := Configs.savedata.editor_formatter.format_attribute(attribute_name, new_value)
+		var formatted_value: String = format_result[0]
+		var new_syntax: DB.AttributeSyntax = format_result[1]
+		_attributes[attribute_name][0] = formatted_value
+		_attributes[attribute_name][1] = new_syntax
+		if is_instance_valid(_attributes[attribute_name][2]):
+			_attributes[attribute_name][2].sync(formatted_value)
+		else:
+			_attributes[attribute_name][2] = _create_attribute_meta(new_syntax, formatted_value)
 	else:
-		match DB.get_attribute_type(attrib_name):
-			DB.AttributeType.NUMERIC:
-				if value_type in [TYPE_FLOAT, TYPE_INT]: attrib.set_num(value)
-				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.LIST:
-				if value_type == TYPE_PACKED_FLOAT64_ARRAY: attrib.set_list(value)
-				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.PATHDATA:
-				if value_type == TYPE_ARRAY: attrib.set_commands(value)
-				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.TRANSFORM_LIST:
-				if value_type == TYPE_ARRAY: attrib.set_transform_list(value)
-				else: push_error("Invalid value set to attribute.")
-			_:
-				push_error("Invalid value set to attribute.")
+		var available_syntaxes := DB.get_attribute_syntaxes(attribute_name)
+		var meta := get_attribute_meta(attribute_name)
+		if value_type in [TYPE_INT, TYPE_FLOAT]:
+			if meta is AttributeMetaNumeric:
+				var meta_numeric: AttributeMetaNumeric = meta
+				var new_value_string := meta_numeric.set_number(new_value)
+				_attributes[attribute_name][0] = new_value_string
+			elif not is_instance_valid(meta):
+				for syntax_attempt in [DB.AttributeSyntax.FRACTION, DB.AttributeSyntax.ARBITRARY_NUMERIC, DB.AttributeSyntax.POSITIVE_NUMERIC]:
+					if syntax_attempt in available_syntaxes:
+						var new_meta: AttributeMetaNumeric = _create_attribute_meta(syntax_attempt, "")
+						var new_value_string := new_meta.set_number(new_value)
+						_attributes[attribute_name][2] = new_meta
+						_attributes[attribute_name][0] = new_value_string
 
 func get_default(attribute_name: String) -> String:
 	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
 		if is_parent_g():
-			return parent.get_implied_attribute_value(attribute_name)
+			return parent.get_attribute_implied_value(attribute_name)
 		elif svg != null:
-			return svg.get_implied_attribute_value(attribute_name)
+			return svg.get_attribute_implied_value(attribute_name)
 	return _get_own_default(attribute_name)
-
-func get_all_attributes() -> Array:
-	return _attributes.values()
 
 
 func duplicate(include_children := true) -> Element:
@@ -258,7 +287,7 @@ func duplicate(include_children := true) -> Element:
 		new_element = type.new()
 	
 	for attribute_name in _attributes:
-		new_element.set_attribute(attribute_name, _attributes[attribute_name].get_value())
+		new_element.set_attribute(attribute_name, get_attribute_value(attribute_name))
 	
 	if include_children:
 		for i in get_child_count():
@@ -270,23 +299,19 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 	element._child_elements = _child_elements
 	for attribute_name in _attributes:
 		if not attribute_name in dropped_attributes:
-			element.set_attribute(attribute_name, _attributes[attribute_name].get_value())
-
-# Converts a percentage numeric attribute to absolute.
-# TODO this is no longer used, but might become useful again in the future.
-func make_attribute_absolute(attrib_name: String) -> void:
-	if is_attribute_percentage(attrib_name):
-		var new_attrib := new_attribute(attrib_name)
-		new_attrib.set_num(get_attribute_num(attrib_name))
-		_attributes[attrib_name] = new_attrib
+			element.set_attribute(attribute_name, get_attribute_value(attribute_name))
 
 
-# To be overridden in extending classes.
+func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
+	if _force_use_basic_attribute_handling(attribute_name):
+		return DB.PercentageHandling.BASIC
+	return DB.get_attribute_default_percentage_handling(attribute_name)
+
 func _get_own_default(_attribute_name: String) -> String:
 	return ""
 
-func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
-	return DB.get_attribute_default_percentage_handling(attribute_name)
+func _force_use_basic_attribute_handling(_attribute_name: String) -> bool:
+	return false
 
 func can_replace(_new_element: String) -> bool:
 	return false
@@ -307,6 +332,7 @@ func user_setup(_what = null) -> void:
 
 
 # Helpers
+
 func is_parent_g() -> bool:
 	return parent != null and parent is ElementG
 
@@ -322,13 +348,11 @@ func get_precise_transform() -> PackedFloat64Array:
 func get_transform() -> Transform2D:
 	return Utils64Bit.get_transform(get_precise_transform())
 
-func new_attribute(name: String, value := "") -> Attribute:
-	var attrib := _create_attribute(name, value)
-	attrib.value_changed.connect(_on_attribute_value_changed.bind(attrib))
-	return attrib
-
-func new_default_attribute(name: String) -> Attribute:
-	return _create_attribute(name, get_default(name))
-
-func _create_attribute(name: String, value := "") -> Attribute:
-	return DB.attribute(name, value)
+func _create_attribute_meta(syntax: DB.AttributeSyntax, attribute_value: String) -> AttributeMeta:
+	match syntax:
+		DB.AttributeSyntax.FRACTION, DB.AttributeSyntax.ARBITRARY_NUMERIC, DB.AttributeSyntax.POSITIVE_NUMERIC: return AttributeMetaNumeric.new(attribute_value)
+		DB.AttributeSyntax.LIST: return AttributeMetaList.new(attribute_value)
+		DB.AttributeSyntax.DASHARRAY: return AttributeMetaDasharray.new(attribute_value)
+		DB.AttributeSyntax.PATHDATA: return AttributeMetaPathdata.new(attribute_value)
+		DB.AttributeSyntax.TRANSFORM_LIST: return AttributeMetaTransformList.new(attribute_value)
+	return null

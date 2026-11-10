@@ -6,17 +6,14 @@ const name = "radialGradient"
 func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"cx", "cy", "r": return "50%"
-		"fx": return get_implied_attribute_value("cx")
-		"fy": return get_implied_attribute_value("cy")
+		"fx": return get_attribute_implied_value("cx")
+		"fy": return get_attribute_implied_value("cy")
 		"gradientUnits": return "objectBoundingBox"
 		"spreadMethod": return "pad"
 		_: return ""
 
-func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
-	if get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and attribute_name in ["cx", "cy", "r", "fx", "fy"]:
-		return DB.PercentageHandling.FRACTION
-	else:
-		return super(attribute_name)
+func _force_use_basic_attribute_handling(attribute_name: String) -> bool:
+	return not (get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and attribute_name in ["cx", "cy", "r", "fx", "fy"])
 
 func generate_texture() -> DPITexture:
 	var svg_texture_text := """<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg"><radialGradient id="a" """
@@ -57,7 +54,7 @@ func generate_texture() -> DPITexture:
 	
 	svg_texture_text += ">"
 	
-	for child in get_children():
+	for child in get_child_xnodes():
 		if not child is ElementStop:
 			continue
 		

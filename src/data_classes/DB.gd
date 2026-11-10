@@ -1,9 +1,12 @@
 ## A central database for SVG element and attribute definitions.
 @abstract class_name DB
 
-enum AttributeType {NUMERIC, COLOR, LIST, DASHARRAY, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
-enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
-enum NumberRange {ARBITRARY, POSITIVE, UNIT}
+# Each attribute has an array of valid syntaxes. INVALID is used for other things.
+enum AttributeSyntax {FRACTION, ARBITRARY_NUMERIC, POSITIVE_NUMERIC, ARBITRARY_PERCENTAGE,
+		COLOR, LIST, DASHARRAY, PATHDATA, TRANSFORM_LIST, ID, URL, HREF, INVALID}
+
+# The element may also reset to the basic percentage handling.
+enum PercentageHandling {BASIC, HORIZONTAL, VERTICAL, NORMALIZED}
 
 
 const _RECOGNIZED_ELEMENTS: PackedStringArray = ["svg", "g", "circle", "ellipse", "rect", "path", "line", "polyline", "polygon",
@@ -98,90 +101,22 @@ const _VALID_CHILDREN: Dictionary[String, Array] = {
 	#"tspan": [],
 }
 
-const PROPAGATED_ATTRIBUTES: PackedStringArray = ["fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin",
-		"color"]
+const PROPAGATED_ATTRIBUTES: PackedStringArray = ["fill", "fill-opacity", "color", "mask",
+		"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin", "stroke-dasharray", "stroke-dashoffset"]
 
-const _ATTRIBUTE_TYPES: Dictionary[String, AttributeType] = {
-	"viewBox": AttributeType.LIST,
-	"width": AttributeType.NUMERIC,
-	"height": AttributeType.NUMERIC,
-	"x": AttributeType.NUMERIC,
-	"y": AttributeType.NUMERIC,
-	"x1": AttributeType.NUMERIC,
-	"y1": AttributeType.NUMERIC,
-	"x2": AttributeType.NUMERIC,
-	"y2": AttributeType.NUMERIC,
-	"cx": AttributeType.NUMERIC,
-	"cy": AttributeType.NUMERIC,
-	"r": AttributeType.NUMERIC,
-	"rx": AttributeType.NUMERIC,
-	"ry": AttributeType.NUMERIC,
-	"fx": AttributeType.NUMERIC,
-	"fy": AttributeType.NUMERIC,
-	"opacity": AttributeType.NUMERIC,
-	"fill": AttributeType.COLOR,
-	"fill-opacity": AttributeType.NUMERIC,
-	"stroke": AttributeType.COLOR,
-	"stroke-opacity": AttributeType.NUMERIC,
-	"stroke-width": AttributeType.NUMERIC,
-	"stroke-linecap": AttributeType.ENUM,
-	"stroke-linejoin": AttributeType.ENUM,
-	"stroke-miterlimit": AttributeType.NUMERIC,
-	"stroke-dashoffset": AttributeType.NUMERIC,
-	"stroke-dasharray": AttributeType.DASHARRAY,
-	"color": AttributeType.COLOR,
-	"d": AttributeType.PATHDATA,
-	"points": AttributeType.LIST,
-	"transform": AttributeType.TRANSFORM_LIST,
-	"offset": AttributeType.NUMERIC,
-	"stop-color": AttributeType.COLOR,
-	"stop-opacity": AttributeType.NUMERIC,
-	"id": AttributeType.ID,
-	"gradientTransform": AttributeType.TRANSFORM_LIST,
-	"gradientUnits": AttributeType.ENUM,
-	"spreadMethod": AttributeType.ENUM,
-	"href": AttributeType.HREF,
-	#"markerUnits": AttributeType.ENUM,
-	#"clipPathUnits": AttributeType.ENUM,
-}
-
-const ATTRIBUTE_ENUM_VALUES: Dictionary[String, Array] = {
+const ATTRIBUTE_KEYWORDS: Dictionary[String, PackedStringArray] = {
+	"fill": ["none", "currentColor"],
+	"stroke": ["none", "currentColor"],
+	"stop-color": ["currentColor"],
 	"stroke-linecap": ["butt", "round", "square"],
 	"stroke-linejoin": ["miter", "round", "bevel"],
+	"stroke-dasharray": ["none"],
 	"gradientUnits": ["userSpaceOnUse", "objectBoundingBox"],
 	"spreadMethod": ["pad", "reflect", "repeat"],
 	#"markerUnits": ["userSpaceOnUse", "strokeWidth"],
 	#"clipPathUnits": ["userSpaceOnUse", "objectBoundingBox"],
 }
 
-const ATTRIBUTE_NUMBER_RANGE: Dictionary[String, NumberRange] = {
-	"width": NumberRange.POSITIVE,
-	"height": NumberRange.POSITIVE,
-	"x": NumberRange.ARBITRARY,
-	"y": NumberRange.ARBITRARY,
-	"x1": NumberRange.ARBITRARY,
-	"y1": NumberRange.ARBITRARY,
-	"x2": NumberRange.ARBITRARY,
-	"y2": NumberRange.ARBITRARY,
-	"cx": NumberRange.ARBITRARY,
-	"cy": NumberRange.ARBITRARY,
-	"r": NumberRange.POSITIVE,
-	"rx": NumberRange.POSITIVE,
-	"ry": NumberRange.POSITIVE,
-	"fx": NumberRange.ARBITRARY,
-	"fy": NumberRange.ARBITRARY,
-	"opacity": NumberRange.UNIT,
-	"fill-opacity": NumberRange.UNIT,
-	"stroke-opacity": NumberRange.UNIT,
-	"stroke-width": NumberRange.POSITIVE,
-	"stroke-miterlimit": NumberRange.POSITIVE,
-	"offset": NumberRange.UNIT,
-	"stop-opacity": NumberRange.UNIT,
-}
-
-const COLOR_ATTRIBUTES_WITH_URL_ALLOWED: PackedStringArray = ["fill", "stroke"]
-const COLOR_ATTRIBUTES_WITH_NONE_ALLOWED: PackedStringArray = ["fill", "stroke"]
-const COLOR_ATTRIBUTES_WITH_CURRENT_COLOR_ALLOWED: PackedStringArray = ["fill", "stroke", "stop-color"]
 
 static func is_element_recognized(element_name: String) -> bool:
 	return _RECOGNIZED_ELEMENTS.has(element_name)
@@ -217,8 +152,22 @@ static func get_xnode_icon(xnode_type: BasicXNode.NodeType) -> Texture2D:
 	return _XNODE_ICONS.get(xnode_type, _UNRECOGNIZED_XNODE_ICON)
 
 ## Get the data type for an attribute.
-static func get_attribute_type(attribute_name: String) -> AttributeType:
-	return _ATTRIBUTE_TYPES.get(attribute_name, AttributeType.UNKNOWN)
+static func get_attribute_syntaxes(attribute_name: String) -> Array[AttributeSyntax]:
+	match attribute_name:
+		"x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "fx", "fy", "stroke-dashoffset": return [AttributeSyntax.ARBITRARY_NUMERIC]
+		"width", "height", "stroke-width", "stroke-miterlimit": return [AttributeSyntax.POSITIVE_NUMERIC]
+		"offset", "opacity", "fill-opacity", "stroke-opacity", "stop-opacity": return [AttributeSyntax.FRACTION]
+		"transform", "gradientTransform": return [AttributeSyntax.TRANSFORM_LIST]
+		"stroke-dasharray": return [AttributeSyntax.DASHARRAY]
+		"viewBox", "points": return [AttributeSyntax.LIST]
+		"d": return [AttributeSyntax.PATHDATA]
+		"fill", "stroke": return [AttributeSyntax.COLOR, AttributeSyntax.URL]
+		"color", "stop-color": return [AttributeSyntax.COLOR]
+		"mask": return [AttributeSyntax.URL]
+		"id": return [AttributeSyntax.ID]
+		"href": return [AttributeSyntax.HREF]
+	return []
+
 
 ## Get default percentage handling behavior for numeric attributes.
 static func get_attribute_default_percentage_handling(attribute_name: String) -> PercentageHandling:
@@ -226,7 +175,7 @@ static func get_attribute_default_percentage_handling(attribute_name: String) ->
 		"stroke-width", "r": return PercentageHandling.NORMALIZED
 		"width", "x", "rx", "x1", "x2", "cx", "fx": return PercentageHandling.HORIZONTAL
 		"height", "y", "ry", "y1", "y2", "cy", "fy": return PercentageHandling.VERTICAL
-		_: return PercentageHandling.FRACTION
+		_: return PercentageHandling.BASIC
 
 ## Create an element with initial arbitrary setup values based on that element's user_setup() method.
 static func element_with_setup(name: String, user_setup_values: Array) -> Element:
@@ -251,17 +200,3 @@ static func element(name: String) -> Element:
 		"stop": return ElementStop.new()
 		"use": return ElementUse.new()
 		_: return ElementUnrecognized.new(name)
-
-## Factory method to create typed attribute instances.
-static func attribute(name: String, value: String) -> Attribute:
-	match DB.get_attribute_type(name):
-		DB.AttributeType.NUMERIC: return AttributeNumeric.new(name, value)
-		DB.AttributeType.COLOR: return AttributeColor.new(name, value)
-		DB.AttributeType.LIST: return AttributeList.new(name, value)
-		DB.AttributeType.PATHDATA: return AttributePathdata.new(name, value)
-		DB.AttributeType.ENUM: return AttributeEnum.new(name, value)
-		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, value)
-		DB.AttributeType.ID: return AttributeID.new(name, value)
-		DB.AttributeType.HREF: return AttributeHref.new(name, value)
-		DB.AttributeType.DASHARRAY: return AttributeDasharray.new(name, value)
-		_: return Attribute.new(name, value)
