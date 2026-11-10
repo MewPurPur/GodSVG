@@ -6,7 +6,7 @@ const possible_conversions: PackedStringArray = ["polygon", "polyline"]
 
 func user_setup(precise_position := PackedFloat64Array([0.0, 0.0])) -> void:
 	if precise_position != PackedFloat64Array([0.0, 0.0]):
-		var attrib := get_attribute("d")
+		var attrib := get_attribute_meta("d")
 		attrib.insert_command(0, "M")
 		attrib.set_command_property(0, "x", precise_position[0])
 		attrib.set_command_property(0, "y", precise_position[1])
@@ -20,7 +20,7 @@ func get_bounding_box() -> Rect2:
 	if not has_attribute("d"):
 		return Rect2()
 	
-	var pathdata: AttributePathdata = get_attribute("d")
+	var pathdata: AttributeMetaPathdata = get_attribute_meta("d")
 	var min_x := INF
 	var min_y := INF
 	var max_x := -INF
@@ -171,7 +171,7 @@ func _solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 
 
 func can_replace(new_element: String) -> bool:
-	var pathdata: AttributePathdata = get_attribute("d")
+	var pathdata: AttributeMetaPathdata = get_attribute_meta("d")
 	var command_count := pathdata.get_command_count()
 	
 	match new_element:
@@ -182,7 +182,7 @@ func can_replace(new_element: String) -> bool:
 				return false
 			
 			for i in range(1, command_count - 1):
-				if not pathdata.is_conversion_exact(i, AttributePathdata.Conversion.ANY_TO_LINE, true):
+				if not pathdata.is_conversion_exact(i, AttributeMetaPathdata.Conversion.ANY_TO_LINE, true):
 					return false
 			if command_count >= 2 and not pathdata.get_command(command_count - 1) is PathCommand.CloseCommand:
 				return false
@@ -194,7 +194,7 @@ func can_replace(new_element: String) -> bool:
 				return false
 			
 			for i in range(1, command_count):
-				if not pathdata.is_conversion_exact(i, AttributePathdata.Conversion.ANY_TO_LINE, true):
+				if not pathdata.is_conversion_exact(i, AttributeMetaPathdata.Conversion.ANY_TO_LINE, true):
 					return false
 			return true
 	return false
@@ -204,7 +204,7 @@ func get_replacement(new_element: String) -> Element:
 		return null
 	
 	var element := DB.element(new_element)
-	var pathdata: AttributePathdata = get_attribute("d")
+	var pathdata: AttributeMetaPathdata = get_attribute_meta("d")
 	var command_count := pathdata.get_command_count()
 	var dropped_attributes: PackedStringArray
 	match new_element:

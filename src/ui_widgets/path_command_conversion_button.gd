@@ -3,9 +3,9 @@ extends Button
 
 var warned := false
 
-signal pressed_custom(conversion: AttributePathdata.Conversion)
+signal pressed_custom(conversion: AttributeMetaPathdata.Conversion)
 
-var conversion: AttributePathdata.Conversion
+var conversion: AttributeMetaPathdata.Conversion
 var original_commands_char: String
 
 func _ready() -> void:
@@ -16,7 +16,7 @@ func _ready() -> void:
 			pressed_custom.emit(conversion)
 	)
 
-func setup(new_conversion: AttributePathdata.Conversion, new_original_commands_char: String, is_invalid: bool, is_warned: bool) -> void:
+func setup(new_conversion: AttributeMetaPathdata.Conversion, new_original_commands_char: String, is_invalid: bool, is_warned: bool) -> void:
 	conversion = new_conversion
 	original_commands_char = new_original_commands_char
 	if is_invalid:
@@ -40,16 +40,16 @@ func _draw() -> void:
 	
 	var conversion_char := ""
 	match conversion:
-		AttributePathdata.Conversion.ANY_TO_MOVEMENT: conversion_char = "M"
-		AttributePathdata.Conversion.ANY_TO_LINE: conversion_char = "L"
-		AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE: conversion_char = "H"
-		AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE: conversion_char = "V"
-		AttributePathdata.Conversion.ANY_TO_CLOSURE: conversion_char = "Z"
-		AttributePathdata.Conversion.ANY_TO_ELLIPTICAL_ARC: conversion_char = "A"
-		AttributePathdata.Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: conversion_char = "Q"
-		AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: conversion_char = "T"
-		AttributePathdata.Conversion.ANY_TO_CUBIC_BEZIER_CURVE: conversion_char = "C"
-		AttributePathdata.Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: conversion_char = "S"
+		AttributeMetaPathdata.Conversion.ANY_TO_MOVEMENT: conversion_char = "M"
+		AttributeMetaPathdata.Conversion.ANY_TO_LINE: conversion_char = "L"
+		AttributeMetaPathdata.Conversion.ANY_TO_HORIZONTAL_LINE: conversion_char = "H"
+		AttributeMetaPathdata.Conversion.ANY_TO_VERTICAL_LINE: conversion_char = "V"
+		AttributeMetaPathdata.Conversion.ANY_TO_CLOSURE: conversion_char = "Z"
+		AttributeMetaPathdata.Conversion.ANY_TO_ELLIPTICAL_ARC: conversion_char = "A"
+		AttributeMetaPathdata.Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE: conversion_char = "Q"
+		AttributeMetaPathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE: conversion_char = "T"
+		AttributeMetaPathdata.Conversion.ANY_TO_CUBIC_BEZIER_CURVE: conversion_char = "C"
+		AttributeMetaPathdata.Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE: conversion_char = "S"
 	
 	var bold_text := "%s→%s:" % [original_commands_char, conversion_char]
 	var normal_text := " " + TranslationUtils.get_path_command_description(conversion_char)

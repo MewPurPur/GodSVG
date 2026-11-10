@@ -5,7 +5,15 @@ const PathCommandButton = preload("res://src/ui_widgets/path_command_button.tscn
 
 signal path_command_picked(new_command: String)
 
-var path_attribute: AttributePathdata
+var element: Element
+var attribute_name: String
+
+func get_attribute_meta() -> AttributeMetaPathdata:
+	return element.get_attribute_meta(attribute_name)
+
+func setup(new_element: Element, new_attribute_name: String) -> void:
+	element = new_element
+	attribute_name = new_attribute_name
 
 @onready var command_container: VBoxContainer = %CommandContainer
 @onready var toggles_container: HBoxContainer = %TogglesContainer
@@ -24,32 +32,29 @@ func _ready() -> void:
 			{"keys": "Shift/Ctrl"})
 	keep_open_toggle.toggled.connect(_on_keep_open_toggle_toggled)
 	keep_open_toggle.button_pressed = Configs.savedata.path_command_insert_keep_open
+	sync()
 
 
-func setup(new_path_attribute: AttributePathdata) -> void:
-	path_attribute = new_path_attribute
-	if not is_node_ready():
-		await ready
-	reset()
-
-func reset() -> void:
+func sync() -> void:
 	for child in command_container.get_children():
 		command_container.remove_child(child)
 		child.queue_free()
 	
+	var pathdata_meta := get_attribute_meta()
+	
 	var index: int = State.inner_selections.max()
-	var prev_command_char := path_attribute.get_command(index).command_char
+	var prev_command_char := pathdata_meta.get_command(index).command_char
 	# Warn against invalid commands. Z can be syntactically invalid, so completely disallow it.
 	# S commands are deliberately warned against in most cases, even though there is some sense in using them without a C or S command before them.
 	# Same for T commands in most cases, even though there is a notion of letting them determine the next shorthand quadratic curve.
 	# And M or Z commands after M commands are warned, there's no useful notion of using those.
-	add_path_command_button("M", false, prev_command_char in "Mm" or (path_attribute.get_command_count() > index + 1 and\
-			path_attribute.get_command(index + 1).command_char in "Zz"))
+	add_path_command_button("M", false, prev_command_char in "Mm" or (pathdata_meta.get_command_count() > index + 1 and\
+			pathdata_meta.get_command(index + 1).command_char in "Zz"))
 	add_path_command_button("L")
 	add_path_command_button("H")
 	add_path_command_button("V")
-	add_path_command_button("Z", prev_command_char in "Zz" or (path_attribute.get_command_count() > index + 1 and\
-			path_attribute.get_command(index + 1).command_char in "Zz"), prev_command_char in "Mm")
+	add_path_command_button("Z", prev_command_char in "Zz" or (pathdata_meta.get_command_count() > index + 1 and\
+			pathdata_meta.get_command(index + 1).command_char in "Zz"), prev_command_char in "Mm")
 	add_path_command_button("A")
 	add_path_command_button("Q")
 	add_path_command_button("T", false, not prev_command_char in "QqTt")
@@ -126,6 +131,6 @@ func _resize_toggles(font_size: int) -> void:
 
 func _on_path_command_picked() -> void:
 	if Configs.savedata.path_command_insert_keep_open or Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_SHIFT):
-		reset()
+		sync()
 	else:
 		queue_free()

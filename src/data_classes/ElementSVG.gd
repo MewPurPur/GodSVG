@@ -48,21 +48,21 @@ func update_cache() -> void:
 	if has_valid_width:
 		width = get_attribute_num("width")
 		if not has_valid_height:
-			height = width / get_attribute("viewBox").get_list_element(2) * get_attribute("viewBox").get_list_element(3)
+			height = width / get_attribute_meta("viewBox").get_list_element(2) * get_attribute_meta("viewBox").get_list_element(3)
 		else:
 			height = get_attribute_num("height")
 	elif has_valid_height:
 		height = get_attribute_num("height")
-		width = height / get_attribute("viewBox").get_list_element(3) * get_attribute("viewBox").get_list_element(2)
+		width = height / get_attribute_meta("viewBox").get_list_element(3) * get_attribute_meta("viewBox").get_list_element(2)
 	else:
-		width = get_attribute("viewBox").get_list_element(2)
-		height = get_attribute("viewBox").get_list_element(3)
+		width = get_attribute_meta("viewBox").get_list_element(2)
+		height = get_attribute_meta("viewBox").get_list_element(3)
 	
 	# Cache viewbox.
-	if has_valid_viewbox and get_attribute("viewBox").get_list_size() >= 4:
-		var viewbox_attrib: AttributeList = get_attribute("viewBox")
-		_set_cached_viewbox(viewbox_attrib.get_list_element(0), viewbox_attrib.get_list_element(1),
-				viewbox_attrib.get_list_element(2), viewbox_attrib.get_list_element(3))
+	if has_valid_viewbox and get_attribute_meta("viewBox").get_list_size() >= 4:
+		var viewbox_meta: AttributeMetaList = get_attribute_meta("viewBox")
+		_set_cached_viewbox(viewbox_meta.get_list_element(0), viewbox_meta.get_list_element(1),
+				viewbox_meta.get_list_element(2), viewbox_meta.get_list_element(3))
 	else:
 		_set_cached_viewbox(0, 0, get_attribute_num("width"), get_attribute_num("height"))
 	# Cache canvas transform.

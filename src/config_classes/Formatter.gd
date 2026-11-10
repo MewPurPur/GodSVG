@@ -230,8 +230,258 @@ const INDENTS_MAX = 16
 			emit_changed()
 
 
+# Formatting
+
 func get_indent_string() -> String:
 	if xml_indentation_use_spaces:
 		return " ".repeat(xml_indentation_spaces)
 	else:
 		return "\t"
+
+## Returns an array consisting of a string for the new value and a DB.AttributeSyntax.
+func format_attribute(attribute_name: String, value: String, helpful_meta: Variant = null) -> Array:
+	value = value.strip_edges()
+	
+	for syntax in DB.get_attribute_syntaxes(attribute_name):
+		match syntax:
+			DB.AttributeSyntax.URL:
+				if ParserID.is_valid_url(value):
+					return ["url(" + value.substr(4, value.length() - 5).strip_edges() + ")", syntax]
+			
+			DB.AttributeSyntax.COLOR:
+				value = value.strip_edges()
+				if ParserID.is_valid_url(value):
+					return ["url(" + value.substr(4, value.length() - 5).strip_edges() + ")", syntax]
+				
+				var named_colors_usage := color_use_named_colors
+				
+				# First make sure we have a 6-digit hex.
+				if ParserColor.is_valid_rgb(value):
+					var args_start_pos := value.find("(") + 1
+					var inside_brackets := value.substr(args_start_pos, value.length() - args_start_pos - 1)
+					var args := inside_brackets.split(",", false)
+					var r := String.num_uint64(args[0].strip_edges(false, true).to_int(), 16)
+					var g := String.num_uint64(args[1].strip_edges(false, true).to_int(), 16)
+					var b := String.num_uint64(args[2].strip_edges(false, true).to_int(), 16)
+					value = "#" + (r if r.length() == 2 else "0" + r) + (g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
+				elif ParserColor.is_valid_hsl(value):
+					var args_start_pos := value.find("(") + 1
+					var inside_brackets := value.substr(args_start_pos, value.length() - args_start_pos - 1)
+					var args := inside_brackets.split(",", false)
+					var h := posmod(args[0].to_int(), 360)
+					var s := clampf(int(args[1].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
+					var l := clampf(int(args[2].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
+					var r := String.num_uint64(ParserColor.hsl_get_r(h, s, l), 16)
+					var g := String.num_uint64(ParserColor.hsl_get_g(h, s, l), 16)
+					var b := String.num_uint64(ParserColor.hsl_get_b(h, s, l), 16)
+					value = "#" + (r if r.length() == 2 else "0" + r) + (g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
+				if value in ParserColor.NAMED_COLORS:
+					value = ParserColor.NAMED_COLORS[value]
+				if ParserColor.is_valid_hex(value) and value.length() == 4:
+					value = "#" + value[1] + value[1] + value[2] + value[2] + value[3] + value[3]
+				
+				value = value.to_upper() if color_capital_hex else value.to_lower()
+				match color_primary_syntax:
+					Formatter.PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
+						if value.length() == 7 and value[0] == "#" and value[1] == value[2] and value[3] == value[4] and value[5] == value[6]:
+							value = "#" + value[1] + value[3] + value[5]
+					Formatter.PrimaryColorSyntax.RGB:
+						value = "rgb(" + String.num_uint64(value.substr(1, 2).hex_to_int()) + ", " +\
+								String.num_uint64(value.substr(3, 2).hex_to_int()) + ", " +\
+								String.num_uint64(value.substr(5, 2).hex_to_int()) + ")"
+				
+				if named_colors_usage != Formatter.NamedColorUse.NEVER:
+					var hex := value.to_lower()
+					if ParserColor.is_valid_hex(hex) and hex.length() == 4:
+						hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
+					
+					if hex in ParserColor.NAMED_COLORS.values():
+						if named_colors_usage == Formatter.NamedColorUse.ALWAYS:
+							value = ParserColor.NAMED_COLORS.find_key(hex)
+						else:
+							var named_color_text: String = ParserColor.NAMED_COLORS.find_key(hex)
+							if named_color_text.length() < value.length() or\
+							(named_colors_usage == Formatter.NamedColorUse.WHEN_SHORTER_OR_EQUAL and named_color_text.length() == value.length()):
+								value = named_color_text
+				return [value, syntax]
+			
+			DB.AttributeSyntax.LIST:
+				if value.is_empty():
+					if typeof(helpful_meta) == TYPE_PACKED_FLOAT64_ARRAY:
+						value = list_to_text(helpful_meta)
+				return [value, syntax]
+			
+			DB.AttributeSyntax.FRACTION, DB.AttributeSyntax.ARBITRARY_NUMERIC, DB.AttributeSyntax.POSITIVE_NUMERIC:
+				if value.is_empty():
+					if typeof(helpful_meta) in [TYPE_INT, TYPE_FLOAT]:
+						value = number_to_text(helpful_meta)
+				return [value, syntax]
+	
+	return ["", DB.AttributeSyntax.INVALID]
+
+
+func number_to_text(number: float) -> String:
+	if not is_finite(number):
+		return ""
+	
+	if number == -0.0:
+		number = absf(number)
+	
+	var numstr := Utils.num_simple(number, Utils.MAX_NUMERIC_PRECISION)
+	
+	if number_use_exponent_if_shorter:
+		if numstr.ends_with("000"):
+			var e := 3
+			while numstr[-e - 1] == "0":
+				e += 1
+			return numstr.left(-e) + "e" + String.num_uint64(e)
+		else:
+			var numstr_abs := numstr.trim_prefix("-")
+			# Leading zeros aren't removed yet.
+			if numstr_abs.begins_with("0.00") and (not number_remove_leading_zero or numstr_abs.begins_with("0.000")):
+				var is_num_negative := numstr.begins_with("-")
+				var e := 3
+				while e + 1 < numstr.length() and numstr_abs[e + 1] == "0":
+					e += 1
+				
+				var output := "-" if is_num_negative else ""
+				return output + numstr_abs.right(-e - 1) + "e-" + String.num_uint64(e)
+	
+	if number_remove_leading_zero and not is_zero_approx(fmod(number, 1)):
+		if numstr.begins_with("0"):
+			numstr = numstr.right(-1)
+		elif numstr.begins_with("-0"):
+			numstr = numstr.erase(1)
+	
+	return numstr
+
+func list_to_text(list: PackedFloat64Array) -> String:
+	var params := PackedStringArray()
+	for element in list:
+		# It's fine to use this parser, lists are just lists of numbers.
+		params.append(number_to_text(element))
+	return " ".join(params)
+
+func dash_array_to_text(dash_array: PackedFloat64Array) -> String:
+	return list_to_text(dash_array)
+
+func transform_list_to_text(transform_list: Array[Transform]) -> String:
+	var output := ""
+	var num_parser := ParserNumstring.new()
+	num_parser.compress_numbers = transform_list_compress_numbers
+	num_parser.minimize_spacing = transform_list_minimize_spacing
+	
+	for t in transform_list:
+		if t is Transform.TransformMatrix:
+			output += "matrix(%s) " % num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(t.x1), num_parser.num_to_text(t.x2),
+					num_parser.num_to_text(t.y1), num_parser.num_to_text(t.y2),
+					num_parser.num_to_text(t.o1), num_parser.num_to_text(t.o2)])
+		elif t is Transform.TransformTranslate:
+			if t.y == 0 and transform_list_remove_unnecessary_params:
+				output += "translate(%s) " % num_parser.num_to_text(t.x)
+			else:
+				output += "translate(%s) " % num_parser.numstr_arr_to_text([num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
+		elif t is Transform.TransformRotate:
+			if t.x == 0 and t.y == 0 and transform_list_remove_unnecessary_params:
+				output += "rotate(%s) " % num_parser.num_to_text(t.deg, true)
+			else:
+				output += "rotate(%s) " % num_parser.numstr_arr_to_text([num_parser.num_to_text(t.deg, true),
+						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
+		elif t is Transform.TransformScale:
+			if t.x == t.y and transform_list_remove_unnecessary_params:
+				output += "scale(%s) " % num_parser.num_to_text(t.x)
+			else:
+				output += "scale(%s) " % num_parser.numstr_arr_to_text([num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
+		elif t is Transform.TransformSkewX:
+			output += "skewX(%s) " % num_parser.num_to_text(t.x, true)
+		elif t is Transform.TransformSkewY:
+			output += "skewY(%s) " % num_parser.num_to_text(t.y, true)
+	return output.trim_suffix(" ")
+
+func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
+	var output := ""
+	var num_parser := ParserNumstring.new()
+	num_parser.compress_numbers = pathdata_compress_numbers
+	num_parser.minimize_spacing = pathdata_minimize_spacing
+	
+	var last_command := ""
+	for i in commands_arr.size():
+		var cmd := commands_arr[i]
+		var cmd_char_capitalized := cmd.command_char.to_upper()
+		if not (pathdata_remove_consecutive_commands and ((cmd_char_capitalized != "M" and last_command == cmd.command_char) or\
+		(last_command == "m" and cmd.command_char == "l") or (last_command == "M" and cmd.command_char == "L"))):
+			output += cmd.command_char
+			if not pathdata_minimize_spacing:
+				output += " "
+		elif i > 0 and pathdata_minimize_spacing:
+			var current_char := ""
+			var prev_numstr := ""
+			var prev_cmd := commands_arr[i - 1]
+			match cmd_char_capitalized:
+				"A":
+					current_char = num_parser.num_to_text(cmd.rx)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
+				"C", "Q":
+					current_char = num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
+				"S":
+					current_char = num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
+				"L", "M", "T":
+					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
+				"H":
+					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.x - prev_cmd.start_x if cmd.relative else prev_cmd.x)
+				"V":
+					current_char = num_parser.num_to_text(cmd.y - cmd.start_x if cmd.relative else cmd.y)[0]
+					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
+			if not pathdata_minimize_spacing or not (("." in prev_numstr and current_char == ".") or current_char in "-+"):
+				output += " "
+		
+		last_command = cmd.command_char
+		match cmd_char_capitalized:
+			"A":
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx), num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, true)])
+				if pathdata_remove_spacing_after_flags:
+					output += (" 0" if cmd.large_arc_flag == 0 else " 1") + ("0" if cmd.sweep_flag == 0 else "1")
+				else:
+					output += " 0 " if cmd.large_arc_flag == 0 else " 1 "
+					if num_parser.num_to_text(cmd.x)[0] == "-":
+						output += "0" if cmd.sweep_flag == 0 else "1"
+					else:
+						output += "0 " if cmd.sweep_flag == 0 else "1 "
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
+			"C":
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
+					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
+			"Q":
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
+			"S":
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
+			"L", "M", "T":
+				output += num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+				])
+			"H":
+				output += num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)
+			"V":
+				output += num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
+			_: continue
+		if not pathdata_minimize_spacing:
+			output += " "
+	
+	output = output.rstrip(" ")
+	return output
