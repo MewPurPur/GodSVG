@@ -239,8 +239,8 @@ func _on_points_gui_input(event: InputEvent) -> void:
 
 func _points_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
-	var points_attribute: AttributeList = element.get_attribute(attribute_name)
-	var point_count := points_attribute.get_list_size() / 2
+	var points_meta: AttributeMetaNumberList = element.get_attribute_meta(attribute_name)
+	var point_count := points_meta.get_list_size() / 2
 	
 	for i in point_count:
 		var v_offset := STRIP_HEIGHT * i
@@ -271,7 +271,7 @@ func _points_draw() -> void:
 
 func draw_numfield(rect: Rect2, num: float) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumstring.basic_num_to_text(num),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumeric.basic_num_to_text(num),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 

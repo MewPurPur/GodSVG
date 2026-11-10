@@ -6,7 +6,7 @@ const possible_conversions: PackedStringArray = ["path", "line"]
 
 func user_setup(precise_position := PackedFloat64Array([0.0, 0.0])) -> void:
 	if precise_position != PackedFloat64Array([0.0, 0.0]):
-		get_attribute("points").set_list(precise_position)
+		get_attribute_meta("points").set_list(precise_position)
 	set_attribute("fill", "none")
 	set_attribute("stroke", "black")
 
@@ -19,7 +19,7 @@ func get_bounding_box() -> Rect2:
 	if not has_attribute("points"):
 		return Rect2()
 	
-	var list: AttributeList = get_attribute("points")
+	var list: AttributeMetaNumberList = get_attribute_meta("points")
 	var min_x := INF
 	var min_y := INF
 	var max_x := -INF
@@ -85,8 +85,8 @@ func merge_segments(max_output_vertices := -1) -> void:
 			new_list_points.append(list[i])
 			new_list_points.append(list[i + 1])
 			if new_list_points.size() == max_output_vertices * 2:
-				get_attribute("points").set_list(new_list_points)
+				get_attribute_meta("points").set_list(new_list_points)
 				return
 	new_list_points.append(list[-2])
 	new_list_points.append(list[-1])
-	get_attribute("points").set_list(new_list_points)
+	get_attribute_meta("points").set_list(new_list_points)

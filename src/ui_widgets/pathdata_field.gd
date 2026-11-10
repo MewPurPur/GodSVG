@@ -172,13 +172,13 @@ func sync_to_new_value_and_selection() -> void:
 
 
 func update_parameter(new_value: float, property: String, index: int) -> void:
-	var attrib: AttributePathdata = element.get_attribute(attribute_name)
-	var cmd := attrib.get_command(index)
+	var pathdata_meta: AttributeMetaPathdata = element.get_attribute_meta(attribute_name)
+	var cmd := pathdata_meta.get_command(index)
 	if cmd.relative:
 		match property:
 			"x", "x1", "x2": new_value += cmd.start_x
 			"y", "y1", "y2": new_value += cmd.start_y
-	attrib.set_command_property(index, property, new_value)
+	pathdata_meta.set_command_property(index, property, new_value)
 	State.save_svg()
 
 func _on_relativity_button_pressed() -> void:
@@ -262,8 +262,8 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 
 func _commands_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
-	var path_attribute: AttributePathdata = element.get_attribute(attribute_name)
-	var cmd_count := path_attribute.get_command_count()
+	var pathdata_meta: AttributeMetaPathdata = element.get_attribute(attribute_name)
+	var cmd_count := pathdata_meta.get_command_count()
 	
 	for i in cmd_count:
 		var v_offset := STRIP_HEIGHT * i
@@ -286,7 +286,7 @@ func _commands_draw() -> void:
 		if i in real_strips.keys():
 			continue
 		
-		var cmd := path_attribute.get_command(i)
+		var cmd := pathdata_meta.get_command(i)
 		var cmd_char := cmd.command_char
 		# Draw the action button.
 		more_icon.draw(ci, Vector2(commands_container.size.x - 19, 4 + v_offset), ThemeUtils.context_icon_normal_color)
@@ -330,12 +330,12 @@ func _commands_draw() -> void:
 			"V": draw_numfield(rect, "y", cmd)
 	
 	# Draw subpath indicators.
-	for start_idx in path_attribute.subpath_start_indices:
+	for start_idx in pathdata_meta.subpath_start_indices:
 		var subpath_polyline_positions := PackedVector2Array()
-		var current_subpath := path_attribute.get_subpath(start_idx)
+		var current_subpath := pathdata_meta.get_subpath(start_idx)
 		var subpath_start := current_subpath.x
 		
-		if subpath_start == current_subpath.y and path_attribute.get_command(subpath_start) is PathCommand.MoveCommand:
+		if subpath_start == current_subpath.y and pathdata_meta.get_command(subpath_start) is PathCommand.MoveCommand:
 			continue
 		
 		var subpath_end_shifted := current_subpath.y + 1
@@ -353,12 +353,12 @@ func _commands_draw() -> void:
 
 func draw_angle_numfield(rect: Rect2, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumstring.basic_num_to_text(path_command.get("rot"), true),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumeric.basic_num_to_text(path_command.get("rot"), true),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 func draw_numfield(rect: Rect2, property: String, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumstring.basic_num_to_text(get_presented_num(path_command, property)),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), ParserNumeric.basic_num_to_text(get_presented_num(path_command, property)),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: PackedStringArray, path_command: PathCommand) -> void:

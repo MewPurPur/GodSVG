@@ -1,0 +1,153 @@
+## Attribute meta that holds a list of Transforms and the precise combined transform.
+class_name AttributeMetaTransformList extends AttributeMeta
+
+var _transform_list: Array[Transform] = []
+var _precise_combined_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+
+func sync(new_value: String) -> void:
+	_transform_list = text_to_transform_list(new_value)
+	_precise_combined_transform = _compute_precise_combined_transform(_transform_list)
+
+func _sync_text() -> void:
+	meta_changed.emit(to_text())
+
+func to_text(formatter := Configs.savedata.editor_formatter) -> String:
+	return formatter.transform_list_to_text(_transform_list)
+
+func set_transform_list(new_transform_list: Array[Transform]) -> void:
+	_transform_list = new_transform_list
+	_precise_combined_transform = _compute_precise_combined_transform(new_transform_list)
+	_sync_text()
+
+func set_transform_property(index: int, property: String, new_value: float) -> void:
+	if _transform_list[index].get(property) != new_value:
+		_transform_list[index].set(property, new_value)
+	_precise_combined_transform = _compute_precise_combined_transform(_transform_list)
+	_sync_text()
+
+func delete_transform(index: int) -> void:
+	_transform_list.remove_at(index)
+	_precise_combined_transform = _compute_precise_combined_transform(_transform_list)
+	_sync_text()
+
+func insert_transform(index: int, type: String) -> void:
+	match type:
+		"matrix": _transform_list.insert(index, Transform.TransformMatrix.new(1, 0, 0, 1, 0, 0))
+		"translate": _transform_list.insert(index, Transform.TransformTranslate.new(0, 0))
+		"rotate": _transform_list.insert(index, Transform.TransformRotate.new(0, 0, 0))
+		"scale": _transform_list.insert(index, Transform.TransformScale.new(1, 1))
+		"skewX": _transform_list.insert(index, Transform.TransformSkewX.new(0))
+		"skewY": _transform_list.insert(index, Transform.TransformSkewY.new(0))
+	_precise_combined_transform = _compute_precise_combined_transform(_transform_list)
+	_sync_text()
+
+func get_transforms() -> Array[Transform]:
+	return _transform_list.duplicate()
+
+func get_transform_count() -> int:
+	return _transform_list.size()
+
+func get_transform(index: int) -> Transform:
+	return _transform_list[index]
+
+func get_precise_combined_transform() -> PackedFloat64Array:
+	return _precise_combined_transform
+
+
+func _compute_precise_combined_transform(transform_list: Array[Transform]) -> PackedFloat64Array:
+	var combined_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+	for t in transform_list:
+		combined_transform = Utils64Bit.transforms_mult(combined_transform, t.compute_precise_transform())
+	return combined_transform
+
+
+static func text_to_transform_list(text: String) -> Array[Transform]:
+	text = text.strip_edges()
+	if text.is_empty() or not text.ends_with(")"):
+		return []
+	
+	var output: Array[Transform] = []
+	var transforms := text.split(")", false)
+	for idx in transforms.size():
+		var transform := transforms[idx]
+		var transform_info := transform.split("(")
+		if transform_info.size() != 2:
+			return []
+		
+		var transform_params := transform_info[1].strip_edges()
+		var transform_name := transform_info[0]
+		
+		var has_at_least_one_comma_or_whitespace_before := (idx == 0)
+		while true:
+			if not transform_name.is_empty() and transform_name[0] in ", \t\n\r":
+				transform_name = transform_name.right(-1)
+				has_at_least_one_comma_or_whitespace_before = true
+			else:
+				break
+		transform_name = transform_name.strip_edges(false, true)
+		
+		if transform_name.is_empty() or not has_at_least_one_comma_or_whitespace_before:
+			return []
+		
+		match transform_name.strip_edges(true, false).trim_prefix(",").strip_edges(true, false):
+			"matrix":
+				var result := ParserNumeric.text_to_number_arr(transform_params, 0, 6)
+				if result.is_empty() or result[1] < transform_params.length():
+					return []
+				output.append(Transform.TransformMatrix.new(result[0][0], result[0][1], result[0][2], result[0][3], result[0][4], result[0][5]))
+			"translate":
+				var result1 := ParserNumeric.text_to_number_arr(transform_params, 0, 1)
+				if result1.is_empty():
+					return []
+				var result2 := ParserNumeric.text_to_number_arr(transform_params, result1[1], 1, true)
+				if result2.is_empty():
+					if result1[1] >= transform_params.length():
+						output.append(Transform.TransformTranslate.new(result1[0][0], 0.0))
+					else:
+						return []
+				elif result2[1] >= transform_params.length():
+					output.append(Transform.TransformTranslate.new(result1[0][0], result2[0][0]))
+				else:
+					return []
+			"rotate":
+				var result1 := ParserNumeric.text_to_number_arr(transform_params, 0, 1)
+				if result1.is_empty():
+					return []
+				var result2 := ParserNumeric.text_to_number_arr(transform_params, result1[1], 2, true)
+				if result2.is_empty():
+					if result1[1] >= transform_params.length():
+						output.append(Transform.TransformRotate.new(result1[0][0], 0.0, 0.0))
+					else:
+						return []
+				elif result2[1] >= transform_params.length():
+					output.append(Transform.TransformRotate.new(result1[0][0], result2[0][0], result2[0][1]))
+				else:
+					return []
+			"scale":
+				var result1 := ParserNumeric.text_to_number_arr(transform_params, 0, 1)
+				if result1.is_empty():
+					return []
+				var result2 := ParserNumeric.text_to_number_arr(transform_params, result1[1], 1, true)
+				if result2.is_empty():
+					if result1[1] >= transform_params.length():
+						output.append(Transform.TransformScale.new(result1[0][0], result1[0][0]))
+					else:
+						return []
+				elif result2[1] >= transform_params.length():
+					output.append(Transform.TransformScale.new(result1[0][0], result2[0][0]))
+				else:
+					return []
+			"skewX":
+				var result := ParserNumeric.text_to_number_arr(transform_params, 0, 1)
+				if result.is_empty() or result[1] < transform_params.length():
+					return []
+				output.append(Transform.TransformSkewX.new(result[0][0]))
+			"skewY":
+				var result := ParserNumeric.text_to_number_arr(transform_params, 0, 1)
+				if result.is_empty() or result[1] < transform_params.length():
+					return []
+				output.append(Transform.TransformSkewY.new(result[0][0]))
+			_:
+				return []
+	
+	return output

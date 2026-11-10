@@ -48,9 +48,9 @@ func update_attributes() -> void:
 		for child in unknown_container.get_children():
 			child.queue_free()
 	var has_unrecognized_attributes := false
-	for attribute in State.root_element.get_all_attributes():
+	for attribute_name in State.root_element.get_attribute_name_value_pairs():
 		# TODO separate unrecognized attributes from global defaults.
-		if not attribute.name in ["width", "height", "viewBox", "xmlns"]:
+		if not attribute_name in ["width", "height", "viewBox", "xmlns"]:
 			if not has_unrecognized_attributes:
 				has_unrecognized_attributes = true
 				if is_instance_valid(unknown_container):
@@ -65,7 +65,7 @@ func update_attributes() -> void:
 				add_child(unknown_container)
 				move_child(unknown_container, 0)
 			
-			var input_field := AttributeFieldBuilder.create(attribute.name, State.root_element)
+			var input_field := AttributeFieldBuilder.create(attribute_name, State.root_element)
 			input_field.focus_entered.connect(State.clear_all_selections)
 			unknown_container.get_child(0).add_child(input_field)
 	if not has_unrecognized_attributes and is_instance_valid(unknown_container):
