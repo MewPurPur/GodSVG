@@ -1,29 +1,18 @@
 ## Parser for SVG colors.
 @abstract class_name ParserPaint
 
-## Adds a hash prefix to hex color strings if they don't already have one
-static func add_hash_if_hex(color: String) -> String:
-	color = color.strip_edges()
-	if color.is_valid_html_color() and not color.begins_with("#"):
-		color = "#" + color
-	return color
+## See ParserColor.is_valid() for details. This method also considers URLs valid.
+static func is_valid(color: String, allow_alpha := false) -> bool:
+	return ParserColor.is_valid(color, allow_alpha) or ParserID.is_valid_url(color)
 
-## See ParserColor.is_valid() for details.
-## If allow_url is true, "url(#id)" is considered valid.
-## If allow_none is true, "none" is considered valid.
-## If allow_current_color is true, "currentColor" is considered valid.
-static func is_valid(color: String, allow_alpha := false, allow_url := false, allow_none := false, allow_current_color := false) -> bool:
-	return ParserColor.is_valid(color, allow_alpha) or (allow_url and ParserID.is_valid_url(color)) or\
-			(allow_none and color.strip_edges() == "none") or (allow_current_color and color.strip_edges() == "currentColor")
-
-## Converts a color string into a Color if its format can be represented by a color.
+## Converts a paint string into a Color if its format can be represented by a color.
 ## If allow_alpha is true, accepts formats with an alpha channel.
 ## If the text describes a format that's not accepted, returns the backup color.
-static func text_to_color(color: String, backup := Color.BLACK, allow_alpha := false) -> Color:
-	color = color.strip_edges()
-	if color in ["none", "transparent"]:
+static func text_to_color(color_text: String, backup := Color.BLACK, allow_alpha := false) -> Color:
+	color_text = color_text.strip_edges()
+	if color_text in ["none", "transparent"]:
 		return Color(0, 0, 0, 0)
-	return ParserColor.text_to_color(color, backup, allow_alpha)
+	return ParserColor.text_to_color(color_text, backup, allow_alpha)
 
 ## Compares two color strings by whether they represent the same color.
 static func are_colors_same(col1: String, col2: String, allow_alpha := false) -> bool:

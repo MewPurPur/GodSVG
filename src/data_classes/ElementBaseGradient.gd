@@ -15,13 +15,13 @@ func get_config_warnings() -> PackedStringArray:
 	var initial_opacity := -1.0
 	var has_effective_transition := false
 	
-	for child in get_children():
+	for child in get_child_xnodes():
 		if not child is ElementStop:
 			continue
 		
 		var stop_offset := clampf(child.get_attribute_num("offset"), 0.0, 1.0)
 		var stop_opacity := clampf(child.get_attribute_num("stop-opacity"), 0.0, 1.0)
-		var stop_color: String = child.get_attribute_true_color("stop-color")
+		var stop_color: String = child.get_attribute_implied_color("stop-color")
 		
 		if initial_color.is_empty():
 			prev_offset = stop_offset

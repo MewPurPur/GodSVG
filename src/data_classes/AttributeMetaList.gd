@@ -1,21 +1,14 @@
-## An attribute representing a list of numbers.
-class_name AttributeList extends Attribute
+## Attribute meta that holds a list of floats.
+class_name AttributeMetaList extends AttributeMeta
 
 var _list: PackedFloat64Array
 
-func _sync() -> void:
-	_list = text_to_list(get_value())
-
-func format(text: String, formatter: Formatter) -> String:
-	return list_to_text(text_to_list(text), formatter)
-
+func sync(new_value: String) -> void:
+	_list = text_to_list(new_value)
 
 func set_list(new_list: PackedFloat64Array) -> void:
 	_list = new_list
-	_sync_after_list_change()
-
-func _sync_after_list_change() -> void:
-	set_value(list_to_text(_list))
+	_sync_text()
 
 func get_list() -> PackedFloat64Array:
 	return _list
@@ -26,7 +19,6 @@ func get_list_size() -> int:
 
 func set_list_element(index: int, new_value: float) -> void:
 	_list[index] = new_value
-	_sync_after_list_change()
 
 func get_list_element(index: int) -> float:
 	return _list[index] if index < _list.size() else NAN
@@ -40,12 +32,12 @@ func delete_elements(indices: PackedInt64Array) -> void:
 	indices.reverse()
 	for i in indices:
 		_list.remove_at(i)
-	_sync_after_list_change()
+	_sync_text()
 
 func insert_zeros(index: int, zeros_count: int) -> void:
 	for i in zeros_count:
 		_list.insert(index, 0.0)
-	_sync_after_list_change()
+	_sync_text()
 
 func rotate_start(start_index: int) -> void:
 	if _list.is_empty() or start_index == 0:
@@ -53,7 +45,7 @@ func rotate_start(start_index: int) -> void:
 	var size := _list.size()
 	start_index = posmod(start_index, size)
 	_list = _list.slice(start_index) + _list.slice(0, start_index)
-	_sync_after_list_change()
+	_sync_text()
 
 
 static func text_to_list(string: String) -> PackedFloat64Array:
@@ -89,9 +81,9 @@ static func text_to_list(string: String) -> PackedFloat64Array:
 	
 	return nums_parsed
 
-func list_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
-	var params := PackedStringArray()
-	for element in list:
-		# It's fine to use this parser, AttributeList is just a list of numbers.
-		params.append(ParserNumber.num_to_text(element, formatter))
-	return " ".join(params)
+
+func to_text(formatter := Configs.savedata.editor_formatter) -> String:
+	return formatter.list_to_text(_list)
+
+func _sync_text() -> void:
+	meta_changed.emit(to_text())

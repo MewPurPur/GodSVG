@@ -1,23 +1,22 @@
-## The "stroke-dasharray" attribute.
-class_name AttributeDasharray extends Attribute
+## Attribute meta that holds a list of floats or percentages.
+class_name AttributeMetaDashArray extends AttributeMeta
 
 var _dash_array: PackedFloat64Array
 
-func _sync() -> void:
-	_dash_array = text_to_dash_array(get_value())
+func sync(new_value: String) -> void:
+	_dash_array = text_to_dash_array(new_value)
 
-func format(text: String, formatter: Formatter) -> String:
-	return dash_array_to_text(text_to_dash_array(text), formatter)
+func to_text(formatter := Configs.savedata.editor_formatter) -> String:
+	return formatter.dash_array_to_text(_dash_array)
 
+func _sync_text() -> void:
+	meta_changed.emit(to_text())
 
-func set_list(new_list: PackedFloat64Array) -> void:
-	_dash_array = new_list
-	_sync_after_list_change()
+func set_dash_array(new_dash_array: PackedFloat64Array) -> void:
+	_dash_array = new_dash_array
+	_sync_text()
 
-func _sync_after_list_change() -> void:
-	set_value(dash_array_to_text(_dash_array))
-
-func get_list() -> PackedFloat64Array:
+func get_dash_array() -> PackedFloat64Array:
 	return _dash_array
 
 func get_dash_array_size() -> int:
@@ -26,7 +25,6 @@ func get_dash_array_size() -> int:
 
 func set_dash_array_element(index: int, new_value: float) -> void:
 	_dash_array[index] = new_value
-	_sync_after_list_change()
 
 func get_dash_array_element(index: int) -> float:
 	return _dash_array[index] if index < _dash_array.size() else NAN
@@ -40,12 +38,12 @@ func delete_elements(indices: PackedInt64Array) -> void:
 	indices.reverse()
 	for i in indices:
 		_dash_array.remove_at(i)
-	_sync_after_list_change()
+	_sync_text()
 
 func insert_zeros(index: int, zeros_count: int) -> void:
 	for i in zeros_count:
 		_dash_array.insert(index, 0.0)
-	_sync_after_list_change()
+	_sync_text()
 
 func rotate_start(start_index: int) -> void:
 	if _dash_array.is_empty() or start_index == 0:
@@ -53,7 +51,7 @@ func rotate_start(start_index: int) -> void:
 	var size := _dash_array.size()
 	start_index = posmod(start_index, size)
 	_dash_array = _dash_array.slice(start_index) + _dash_array.slice(0, start_index)
-	_sync_after_list_change()
+	_sync_text()
 
 
 static func text_to_dash_array(string: String) -> PackedFloat64Array:
@@ -88,10 +86,3 @@ static func text_to_dash_array(string: String) -> PackedFloat64Array:
 		nums_parsed.append(current_num_string.to_float())
 	
 	return nums_parsed
-
-func dash_array_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
-	var params := PackedStringArray()
-	for element in list:
-		# It's fine to use this parser, AttributeList is just a list of numbers.
-		params.append(ParserNumber.num_to_text(element, formatter))
-	return " ".join(params)

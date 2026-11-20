@@ -1,5 +1,5 @@
-## The "d" attribute of ElementPath.
-class_name AttributePathdata extends Attribute
+## Attribute meta for the "d" attribute.
+class_name AttributeMetaPathdata extends AttributeMeta
 
 # Every conversion method should be supported by every path command.
 enum Conversion {
@@ -16,29 +16,28 @@ enum Conversion {
 }
 
 var _commands: Array[PathCommand]
-var subpath_start_indices: PackedInt32Array
+var _subpath_starts: PackedInt32Array
 
-func _sync() -> void:
-	_commands = parse_pathdata(get_value())
+func sync(new_value: String) -> void:
+	_commands = parse_pathdata(new_value)
 	# Sync all related data.
-	subpath_start_indices.clear()
-	subpath_start_indices.append(0)
+	_subpath_starts.clear()
+	_subpath_starts.append(0)
 	for idx in range(1, _commands.size()):
 		if _commands[idx] is PathCommand.MoveCommand or _commands[idx - 1] is PathCommand.CloseCommand:
-			subpath_start_indices.append(idx)
+			_subpath_starts.append(idx)
 
-func format(text: String, formatter: Formatter) -> String:
-	return path_commands_to_text(parse_pathdata(text), formatter)
+func _sync_text() -> void:
+	meta_changed.emit(to_text())
 
+func to_text(formatter := Configs.savedata.editor_formatter) -> String:
+	return formatter.path_commands_to_text(_commands)
 
 func get_commands() -> Array[PathCommand]:
 	return _commands
 
-func sync_after_commands_change(apply_start_positions_sync := true) -> void:
-	if apply_start_positions_sync:
-		sync_start_positions()
-	set_value(path_commands_to_text(_commands))
-
+func get_subpath_starts() -> PackedInt32Array:
+	return _subpath_starts
 
 func get_command_count() -> int:
 	return _commands.size()
@@ -48,9 +47,9 @@ func get_command(index: int) -> PathCommand:
 
 # Return the start and end indices of the subpath.
 func get_subpath(index: int) -> Vector2i:
-	for i in range(subpath_start_indices.size() - 1, -1, -1):
-		if subpath_start_indices[i] <= index:
-			return Vector2i(subpath_start_indices[i], (subpath_start_indices[i + 1] if i < subpath_start_indices.size() - 1 else get_command_count()) - 1)
+	for i in range(_subpath_starts.size() - 1, -1, -1):
+		if _subpath_starts[i] <= index:
+			return Vector2i(_subpath_starts[i], (_subpath_starts[i + 1] if i < _subpath_starts.size() - 1 else get_command_count()) - 1)
 	return Vector2i(-1, -1)
 
 # Check if a command is zero-length.
@@ -117,17 +116,16 @@ func get_implied_T_control(index: int) -> PackedFloat64Array:
 	
 	return PackedFloat64Array([control_x, control_y])
 
-
 func set_commands(new_commands: Array[PathCommand]) -> void:
 	_commands = new_commands
-	sync_after_commands_change()
+	_sync_start_positions()
 
 # Takes in absolute coordinates.
 func set_command_property(index: int, property: String, new_value: float) -> void:
 	var cmd := get_command(index)
 	if cmd.get(property) != new_value:
 		cmd.set(property, new_value)
-		sync_after_commands_change(false)
+		_sync_start_positions()
 
 func insert_command(index: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_char.to_upper()].new()
@@ -150,7 +148,33 @@ func insert_command(index: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 			new_cmd.y1 = lerpf(new_cmd.start_y, vec.y, 1/3.0)
 			new_cmd.x2 = lerpf(new_cmd.start_x, vec.x, 2/3.0)
 			new_cmd.y2 = lerpf(new_cmd.start_y, vec.y, 2/3.0)
-	sync_after_commands_change()
+	_sync_start_positions()
+
+func convert_commands_single_method(indices: PackedInt32Array, conversion_method: Conversion) -> void:
+	var conversion_methods: Array[Conversion] = []
+	conversion_methods.resize(indices.size())
+	conversion_methods.fill(conversion_method)
+	_convert_commands(indices, conversion_methods)
+	_sync_start_positions()
+
+func convert_commands_multi_method(indices: PackedInt32Array, conversion_methods: Array[Conversion]) -> void:
+	_convert_commands(indices, conversion_methods)
+	_sync_start_positions()
+
+func delete_commands(indices: Array[int]) -> void:
+	if indices.is_empty():
+		return
+	
+	indices = indices.duplicate()
+	indices.sort()
+	indices.reverse()
+	for idx in indices:
+		_commands.remove_at(idx)
+	_sync_start_positions()
+
+func toggle_relative_command(idx: int) -> void:
+	_commands[idx].toggle_relative()
+	_sync_start_positions()
 
 
 # Check if a conversion would affect or be affected by adjacent curves.
@@ -170,7 +194,6 @@ func is_implied_T_control_on_segment(index: int, start_x: float, start_y: float,
 func is_implied_S_control_on_segment(index: int, start_x: float, start_y: float, end_x: float, end_y: float) -> bool:
 	var implied := get_implied_S_control(index)
 	return Utils.is_point_on_segment(implied[0], implied[1], start_x, start_y, end_x, end_y)
-
 
 func is_conversion_exact(index: int, conversion_method: Conversion, ignore_subsequent_commands := false) -> bool:
 	var cmd := _commands[index]
@@ -591,35 +614,8 @@ func _convert_commands(indices: PackedInt32Array, conversion_methods: Array[Conv
 		_commands.remove_at(cmd_index)
 		_commands.insert(cmd_index, new_cmd)
 
-func convert_commands_single_method(indices: PackedInt32Array, conversion_method: Conversion) -> void:
-	var conversion_methods: Array[Conversion] = []
-	conversion_methods.resize(indices.size())
-	conversion_methods.fill(conversion_method)
-	_convert_commands(indices, conversion_methods)
-	sync_after_commands_change()
 
-func convert_commands_multi_method(indices: PackedInt32Array, conversion_methods: Array[Conversion]) -> void:
-	_convert_commands(indices, conversion_methods)
-	sync_after_commands_change()
-
-
-func delete_commands(indices: Array[int]) -> void:
-	if indices.is_empty():
-		return
-	
-	indices = indices.duplicate()
-	indices.sort()
-	indices.reverse()
-	for idx in indices:
-		_commands.remove_at(idx)
-	sync_after_commands_change()
-
-func toggle_relative_command(idx: int) -> void:
-	_commands[idx].toggle_relative()
-	sync_after_commands_change()
-
-
-func sync_start_positions() -> void:
+func _sync_start_positions() -> void:
 	var current_x := 0.0
 	var current_y := 0.0
 	var last_move_command_start_x := 0.0
@@ -687,7 +683,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 		var nums := []
 		
 		if key == "A":
-			var result := ParserNumstring.text_to_number_arr(text, idx, 3)
+			var result := ParserNumeric.text_to_number_arr(text, idx, 3)
 			if result.is_empty():
 				return commands
 			var arr: PackedFloat64Array = result[0]
@@ -714,14 +710,14 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 					nums.append(text[idx].to_int())
 					idx += 1
 			
-			result = ParserNumstring.text_to_number_arr(text, idx, 2, true)
+			result = ParserNumeric.text_to_number_arr(text, idx, 2, true)
 			if result.is_empty():
 				return commands
 			arr = result[0]
 			idx = result[1]
 			nums.append_array(arr)
 		elif arg_count > 0:
-			var result := ParserNumstring.text_to_number_arr(text, idx, arg_count)
+			var result := ParserNumeric.text_to_number_arr(text, idx, arg_count)
 			if result.is_empty():
 				return commands
 			
@@ -817,91 +813,3 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 			else:
 				break
 	return commands
-
-
-func path_commands_to_text(commands_arr: Array[PathCommand], formatter := Configs.savedata.editor_formatter) -> String:
-	var output := ""
-	var num_parser := ParserNumstring.new()
-	num_parser.compress_numbers = formatter.pathdata_compress_numbers
-	num_parser.minimize_spacing = formatter.pathdata_minimize_spacing
-	
-	var last_command := ""
-	for i in commands_arr.size():
-		var cmd := commands_arr[i]
-		var cmd_char_capitalized := cmd.command_char.to_upper()
-		if not (formatter.pathdata_remove_consecutive_commands and ((cmd_char_capitalized != "M" and last_command == cmd.command_char) or\
-		(last_command == "m" and cmd.command_char == "l") or (last_command == "M" and cmd.command_char == "L"))):
-			output += cmd.command_char
-			if not formatter.pathdata_minimize_spacing:
-				output += " "
-		elif i > 0 and formatter.pathdata_minimize_spacing:
-			var current_char := ""
-			var prev_numstr := ""
-			var prev_cmd := commands_arr[i - 1]
-			match cmd_char_capitalized:
-				"A":
-					current_char = num_parser.num_to_text(cmd.rx)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"C", "Q":
-					current_char = num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"S":
-					current_char = num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"L", "M", "T":
-					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"H":
-					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.x - prev_cmd.start_x if cmd.relative else prev_cmd.x)
-				"V":
-					current_char = num_parser.num_to_text(cmd.y - cmd.start_x if cmd.relative else cmd.y)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-			if not formatter.pathdata_minimize_spacing or not (("." in prev_numstr and current_char == ".") or current_char in "-+"):
-				output += " "
-		
-		last_command = cmd.command_char
-		match cmd_char_capitalized:
-			"A":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx), num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, true)])
-				if formatter.pathdata_remove_spacing_after_flags:
-					output += (" 0" if cmd.large_arc_flag == 0 else " 1") + ("0" if cmd.sweep_flag == 0 else "1")
-				else:
-					output += " 0 " if cmd.large_arc_flag == 0 else " 1 "
-					if num_parser.num_to_text(cmd.x)[0] == "-":
-						output += "0" if cmd.sweep_flag == 0 else "1"
-					else:
-						output += "0 " if cmd.sweep_flag == 0 else "1 "
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"C":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
-					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"Q":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"S":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"L", "M", "T":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"H":
-				output += num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)
-			"V":
-				output += num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-			_: continue
-		if not formatter.pathdata_minimize_spacing:
-			output += " "
-	
-	output = output.rstrip(" ")
-	return output

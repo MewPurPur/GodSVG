@@ -50,8 +50,8 @@ func _ready() -> void:
 	# If there are unrecognized attributes, they would always be on top.
 	var has_unrecognized_attributes := false
 	var unknown_container: HFlowContainer
-	for attribute in element.get_all_attributes():
-		if DB.is_attribute_recognized(element.name, attribute.name):
+	for attribute_name in element.get_attribute_name_value_pairs():
+		if DB.is_attribute_recognized(element.name, attribute_name):
 			continue
 		
 		if not has_unrecognized_attributes:
@@ -59,7 +59,7 @@ func _ready() -> void:
 			unknown_container = HFlowContainer.new()
 			main_container.add_child(unknown_container)
 			main_container.move_child(unknown_container, 0)
-		var unknown_field := AttributeFieldBuilder.create(attribute.name, element)
+		var unknown_field := AttributeFieldBuilder.create(attribute_name, element)
 		unknown_field.focus_entered.connect(State.normal_select.bind(element.xid))
 		unknown_container.add_child(unknown_field)
 	
