@@ -11,7 +11,7 @@ func _run() -> void:
 	pathdata_tests()
 	transform_list_tests()
 	if report.is_empty():
-		print_rich("[rainbow sat=0.4 val=1.0]All tests successful[/rainbow]")
+		print_rich("[rainbow sat=0.4 val=1.0][b]All tests successful[/b][/rainbow]")
 	else:
 		for report_line in report:
 			print_rich(report_line)
