@@ -111,7 +111,7 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 		# Turn percentages into numbers.
 		for attrib_idx in attribute_array.size():
 			var attrib: Attribute = attribute_array[attrib_idx]
-			if attrib is AttributeNumeric and element.is_attribute_percentage(attrib.name):
+			if attrib is AttributeNumber and element.is_attribute_percentage(attrib.name):
 				var new_attrib := element._create_attribute(attrib.name)
 				new_attrib.set_num(element.get_attribute_num(attrib.name))
 				attribute_array[attrib_idx] = new_attrib

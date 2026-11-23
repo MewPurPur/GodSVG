@@ -1,35 +1,35 @@
-## An attribute representing a list of numbers.
-class_name AttributeList extends Attribute
+## An attribute representing a list of lengths.
+class_name AttributeLengthList extends Attribute
 
-var _list: PackedFloat64Array
+var _dash_array: PackedFloat64Array
 
 func _sync() -> void:
-	_list = text_to_list(get_value())
+	_dash_array = text_to_dash_array(get_value())
 
 func format(text: String, formatter: Formatter) -> String:
-	return list_to_text(text_to_list(text), formatter)
+	return dash_array_to_text(text_to_dash_array(text), formatter)
 
 
 func set_list(new_list: PackedFloat64Array) -> void:
-	_list = new_list
+	_dash_array = new_list
 	_sync_after_list_change()
 
 func _sync_after_list_change() -> void:
-	set_value(list_to_text(_list))
+	set_value(dash_array_to_text(_dash_array))
 
 func get_list() -> PackedFloat64Array:
-	return _list
+	return _dash_array
 
-func get_list_size() -> int:
-	return _list.size()
+func get_dash_array_size() -> int:
+	return _dash_array.size()
 
 
-func set_list_element(index: int, new_value: float) -> void:
-	_list[index] = new_value
+func set_dash_array_element(index: int, new_value: float) -> void:
+	_dash_array[index] = new_value
 	_sync_after_list_change()
 
-func get_list_element(index: int) -> float:
-	return _list[index] if index < _list.size() else NAN
+func get_dash_array_element(index: int) -> float:
+	return _dash_array[index] if index < _dash_array.size() else NAN
 
 func delete_elements(indices: PackedInt64Array) -> void:
 	if indices.is_empty():
@@ -39,24 +39,24 @@ func delete_elements(indices: PackedInt64Array) -> void:
 	indices.sort()
 	indices.reverse()
 	for i in indices:
-		_list.remove_at(i)
+		_dash_array.remove_at(i)
 	_sync_after_list_change()
 
 func insert_zeros(index: int, zeros_count: int) -> void:
 	for i in zeros_count:
-		_list.insert(index, 0.0)
+		_dash_array.insert(index, 0.0)
 	_sync_after_list_change()
 
 func rotate_start(start_index: int) -> void:
-	if _list.is_empty() or start_index == 0:
+	if _dash_array.is_empty() or start_index == 0:
 		return
-	var size := _list.size()
+	var size := _dash_array.size()
 	start_index = posmod(start_index, size)
-	_list = _list.slice(start_index) + _list.slice(0, start_index)
+	_dash_array = _dash_array.slice(start_index) + _dash_array.slice(0, start_index)
 	_sync_after_list_change()
 
 
-static func text_to_list(string: String) -> PackedFloat64Array:
+static func text_to_dash_array(string: String) -> PackedFloat64Array:
 	var nums_parsed := PackedFloat64Array()
 	var current_num_string := ""
 	var comma_exhausted := false
@@ -89,7 +89,7 @@ static func text_to_list(string: String) -> PackedFloat64Array:
 	
 	return nums_parsed
 
-func list_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
+func dash_array_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
 	var params := PackedStringArray()
 	for element in list:
 		# It's fine to use this parser, AttributeList is just a list of numbers.

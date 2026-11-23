@@ -19,7 +19,7 @@ func get_bounding_box() -> Rect2:
 	if not has_attribute("points"):
 		return Rect2()
 	
-	var list: AttributeList = get_attribute("points")
+	var list: AttributeNumberList = get_attribute("points")
 	var min_x := INF
 	var min_y := INF
 	var max_x := -INF

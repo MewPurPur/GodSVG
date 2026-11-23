@@ -2,7 +2,7 @@ extends PanelContainer
 
 @onready var grid_container: GridContainer = %GridContainer
 
-var attribute: AttributeDasharray
+var attribute: AttributeLengthList
 
 func _ready() -> void:
 	sync()
