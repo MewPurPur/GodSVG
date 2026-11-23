@@ -792,7 +792,7 @@ func reverse_order_selected() -> void:
 	
 	var xnode := root_element.get_xnode(semi_selected_xid)
 	if xnode is ElementPolygon or xnode is ElementPolyline:
-		var points: AttributeList = xnode.get_attribute("points")
+		var points: AttributeNumberList = xnode.get_attribute("points")
 		var data: PackedFloat64Array = points.get_list()
 		# This operation currently only works for full selections.
 		var is_everything_selected := true
@@ -1162,7 +1162,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					if is_movable_selected:
 						btn_arr.append(ContextButton.create_from_action("set_as_origin", not is_point_that_would_move_selected))
 			"polygon", "polyline":
-				var points: AttributeList = element_ref.get_attribute("points")
+				var points: AttributeNumberList = element_ref.get_attribute("points")
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextButton.create_custom(Translator.translate("Insert after"),
 							insert_points_after_selection.bind(1), preload("res://assets/icons/Plus.svg")))

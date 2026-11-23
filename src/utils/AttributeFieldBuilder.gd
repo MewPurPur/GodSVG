@@ -17,8 +17,8 @@ static func create(attribute_name: String, element: Element) -> Control:
 		DB.AttributeType.TRANSFORM_LIST: return _generate(TransformListFieldScene, element, attribute_name)
 		DB.AttributeType.COLOR: return _generate(ColorFieldScene, element, attribute_name)
 		DB.AttributeType.ENUM: return _generate(EnumFieldScene, element, attribute_name)
-		DB.AttributeType.DASHARRAY: return _generate_no_name(DashArrayFieldScene, element)
-		DB.AttributeType.NUMERIC:
+		DB.AttributeType.LENGTH_LIST: return _generate_no_name(DashArrayFieldScene, element)
+		DB.AttributeType.NUMBER:
 			match DB.ATTRIBUTE_NUMBER_RANGE[attribute_name]:
 				DB.NumberRange.UNIT: return _generate(NumberSliderScene, element, attribute_name)
 				_: return _generate(NumberFieldScene, element, attribute_name)

@@ -1,8 +1,8 @@
 ## A central database for SVG element and attribute definitions.
 @abstract class_name DB
 
-enum AttributeType {NUMERIC, COLOR, LIST, DASHARRAY, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
-enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
+enum AttributeType {NUMBER, COLOR, NUMBER_LIST, LENGTH_LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
+enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED_DIAGONAL}
 enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
@@ -102,40 +102,40 @@ const PROPAGATED_ATTRIBUTES: PackedStringArray = ["fill", "fill-opacity", "strok
 		"color"]
 
 const _ATTRIBUTE_TYPES: Dictionary[String, AttributeType] = {
-	"viewBox": AttributeType.LIST,
-	"width": AttributeType.NUMERIC,
-	"height": AttributeType.NUMERIC,
-	"x": AttributeType.NUMERIC,
-	"y": AttributeType.NUMERIC,
-	"x1": AttributeType.NUMERIC,
-	"y1": AttributeType.NUMERIC,
-	"x2": AttributeType.NUMERIC,
-	"y2": AttributeType.NUMERIC,
-	"cx": AttributeType.NUMERIC,
-	"cy": AttributeType.NUMERIC,
-	"r": AttributeType.NUMERIC,
-	"rx": AttributeType.NUMERIC,
-	"ry": AttributeType.NUMERIC,
-	"fx": AttributeType.NUMERIC,
-	"fy": AttributeType.NUMERIC,
-	"opacity": AttributeType.NUMERIC,
+	"viewBox": AttributeType.NUMBER_LIST,
+	"width": AttributeType.NUMBER,
+	"height": AttributeType.NUMBER,
+	"x": AttributeType.NUMBER,
+	"y": AttributeType.NUMBER,
+	"x1": AttributeType.NUMBER,
+	"y1": AttributeType.NUMBER,
+	"x2": AttributeType.NUMBER,
+	"y2": AttributeType.NUMBER,
+	"cx": AttributeType.NUMBER,
+	"cy": AttributeType.NUMBER,
+	"r": AttributeType.NUMBER,
+	"rx": AttributeType.NUMBER,
+	"ry": AttributeType.NUMBER,
+	"fx": AttributeType.NUMBER,
+	"fy": AttributeType.NUMBER,
+	"opacity": AttributeType.NUMBER,
 	"fill": AttributeType.COLOR,
-	"fill-opacity": AttributeType.NUMERIC,
+	"fill-opacity": AttributeType.NUMBER,
 	"stroke": AttributeType.COLOR,
-	"stroke-opacity": AttributeType.NUMERIC,
-	"stroke-width": AttributeType.NUMERIC,
+	"stroke-opacity": AttributeType.NUMBER,
+	"stroke-width": AttributeType.NUMBER,
 	"stroke-linecap": AttributeType.ENUM,
 	"stroke-linejoin": AttributeType.ENUM,
-	"stroke-miterlimit": AttributeType.NUMERIC,
-	"stroke-dashoffset": AttributeType.NUMERIC,
-	"stroke-dasharray": AttributeType.DASHARRAY,
+	"stroke-miterlimit": AttributeType.NUMBER,
+	"stroke-dashoffset": AttributeType.NUMBER,
+	"stroke-dasharray": AttributeType.LENGTH_LIST,
 	"color": AttributeType.COLOR,
 	"d": AttributeType.PATHDATA,
-	"points": AttributeType.LIST,
+	"points": AttributeType.NUMBER_LIST,
 	"transform": AttributeType.TRANSFORM_LIST,
-	"offset": AttributeType.NUMERIC,
+	"offset": AttributeType.NUMBER,
 	"stop-color": AttributeType.COLOR,
-	"stop-opacity": AttributeType.NUMERIC,
+	"stop-opacity": AttributeType.NUMBER,
 	"id": AttributeType.ID,
 	"gradientTransform": AttributeType.TRANSFORM_LIST,
 	"gradientUnits": AttributeType.ENUM,
@@ -223,7 +223,7 @@ static func get_attribute_type(attribute_name: String) -> AttributeType:
 ## Get default percentage handling behavior for numeric attributes.
 static func get_attribute_default_percentage_handling(attribute_name: String) -> PercentageHandling:
 	match attribute_name:
-		"stroke-width", "r": return PercentageHandling.NORMALIZED
+		"stroke-width", "r": return PercentageHandling.NORMALIZED_DIAGONAL
 		"width", "x", "rx", "x1", "x2", "cx", "fx": return PercentageHandling.HORIZONTAL
 		"height", "y", "ry", "y1", "y2", "cy", "fy": return PercentageHandling.VERTICAL
 		_: return PercentageHandling.FRACTION
@@ -255,13 +255,13 @@ static func element(name: String) -> Element:
 ## Factory method to create typed attribute instances.
 static func attribute(name: String, value: String) -> Attribute:
 	match DB.get_attribute_type(name):
-		DB.AttributeType.NUMERIC: return AttributeNumeric.new(name, value)
+		DB.AttributeType.NUMBER: return AttributeNumber.new(name, value)
 		DB.AttributeType.COLOR: return AttributeColor.new(name, value)
-		DB.AttributeType.LIST: return AttributeList.new(name, value)
+		DB.AttributeType.NUMBER_LIST: return AttributeNumberList.new(name, value)
 		DB.AttributeType.PATHDATA: return AttributePathdata.new(name, value)
 		DB.AttributeType.ENUM: return AttributeEnum.new(name, value)
 		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, value)
 		DB.AttributeType.ID: return AttributeID.new(name, value)
 		DB.AttributeType.HREF: return AttributeHref.new(name, value)
-		DB.AttributeType.DASHARRAY: return AttributeDasharray.new(name, value)
+		DB.AttributeType.LENGTH_LIST: return AttributeLengthList.new(name, value)
 		_: return Attribute.new(name, value)

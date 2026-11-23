@@ -239,7 +239,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 
 func _points_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
-	var points_attribute: AttributeList = element.get_attribute(attribute_name)
+	var points_attribute: AttributeNumberList = element.get_attribute(attribute_name)
 	var point_count := points_attribute.get_list_size() / 2
 	
 	for i in point_count:

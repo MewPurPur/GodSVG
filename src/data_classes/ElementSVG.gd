@@ -60,7 +60,7 @@ func update_cache() -> void:
 	
 	# Cache viewbox.
 	if has_valid_viewbox and get_attribute("viewBox").get_list_size() >= 4:
-		var viewbox_attrib: AttributeList = get_attribute("viewBox")
+		var viewbox_attrib: AttributeNumberList = get_attribute("viewBox")
 		_set_cached_viewbox(viewbox_attrib.get_list_element(0), viewbox_attrib.get_list_element(1),
 				viewbox_attrib.get_list_element(2), viewbox_attrib.get_list_element(3))
 	else:

@@ -171,9 +171,9 @@ func get_attribute_true_color(attribute_name: String) -> String:
 	return attrib_value
 
 func get_attribute_num(attribute_name: String) -> float:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMBER:
 		push_error("Attribute not the correct type.")
-	var num: float = _attributes[attribute_name].get_num() if has_attribute(attribute_name) else AttributeNumeric.text_to_num(get_default(attribute_name))
+	var num: float = _attributes[attribute_name].get_num() if has_attribute(attribute_name) else AttributeNumber.text_to_num(get_default(attribute_name))
 	# Possibly adjust for percentage.
 	if is_attribute_percentage(attribute_name):
 		var percentage_handling := get_percentage_handling(attribute_name)
@@ -184,23 +184,23 @@ func get_attribute_num(attribute_name: String) -> float:
 			match percentage_handling:
 				DB.PercentageHandling.HORIZONTAL: return 1024 * num
 				DB.PercentageHandling.VERTICAL: return 1024 * num
-				DB.PercentageHandling.NORMALIZED: return 1024 * num
+				DB.PercentageHandling.NORMALIZED_DIAGONAL: return 1024 * num
 		else:
 			match percentage_handling:
 				DB.PercentageHandling.HORIZONTAL: return svg.viewbox.size.x * num
 				DB.PercentageHandling.VERTICAL: return svg.viewbox.size.y * num
-				DB.PercentageHandling.NORMALIZED: return svg.viewbox_normalized_diagonal * num
+				DB.PercentageHandling.NORMALIZED_DIAGONAL: return svg.viewbox_normalized_diagonal * num
 	return num
 
 func is_attribute_percentage(attribute_name: String) -> bool:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMBER:
 		push_error("Attribute not the correct type.")
-	return _attributes[attribute_name].is_percentage() if has_attribute(attribute_name) else AttributeNumeric.text_check_percentage(get_default(attribute_name))
+	return _attributes[attribute_name].is_percentage() if has_attribute(attribute_name) else AttributeNumber.text_check_percentage(get_default(attribute_name))
 
 func get_attribute_list(attribute_name: String) -> PackedFloat64Array:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.LIST:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMBER_LIST:
 		push_error("Attribute not the correct type.")
-	return _attributes[attribute_name].get_list() if has_attribute(attribute_name) else AttributeList.text_to_list(get_default(attribute_name))
+	return _attributes[attribute_name].get_list() if has_attribute(attribute_name) else AttributeNumberList.text_to_list(get_default(attribute_name))
 
 func get_attribute_final_precise_transform(attribute_name: String) -> PackedFloat64Array:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
@@ -222,10 +222,10 @@ func set_attribute(attrib_name: String, value: Variant) -> void:
 		attrib.set_value(value)
 	else:
 		match DB.get_attribute_type(attrib_name):
-			DB.AttributeType.NUMERIC:
+			DB.AttributeType.NUMBER:
 				if value_type in [TYPE_FLOAT, TYPE_INT]: attrib.set_num(value)
 				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.LIST:
+			DB.AttributeType.NUMBER_LIST:
 				if value_type == TYPE_PACKED_FLOAT64_ARRAY: attrib.set_list(value)
 				else: push_error("Invalid value set to attribute.")
 			DB.AttributeType.PATHDATA:

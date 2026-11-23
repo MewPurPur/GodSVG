@@ -1,5 +1,5 @@
 ## An attribute representing a number.
-class_name AttributeNumeric extends Attribute
+class_name AttributeNumber extends Attribute
 
 var _percentage := false
 var _number := NAN
