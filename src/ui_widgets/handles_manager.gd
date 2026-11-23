@@ -171,10 +171,10 @@ func sync_handles(xid: PackedInt32Array) -> void:
 	queue_redraw()
 
 func generate_path_handles(element: Element) -> Array[Handle]:
-	var data_attrib: AttributePathdata = element.get_attribute("d")
+	var pathdata_meta: AttributeMetaPathdata = element.get_attribute_meta("d")
 	var path_handles: Array[Handle] = []
-	for idx in range(data_attrib.get_command_count() - 1, -1, -1):
-		var path_command_char := data_attrib.get_command(idx).command_char.to_lower()
+	for idx in range(pathdata_meta.get_command_count() - 1, -1, -1):
+		var path_command_char := pathdata_meta.get_command(idx).command_char.to_lower()
 		if path_command_char == "z":
 			continue
 		
@@ -467,18 +467,18 @@ func _draw() -> void:
 						selection_rects.append(bounding_box.grow_individual(grow_amount_x, grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"path":
-				var pathdata: AttributePathdata = element.get_attribute("d")
-				if pathdata.get_command_count() == 0 or not pathdata.get_command(0).command_char in "Mm":
+				var pathdata_meta: AttributeMetaPathdata = element.get_attribute_meta("d")
+				if pathdata_meta.get_command_count() == 0 or not pathdata_meta.get_command(0).command_char in "Mm":
 					continue  # Nothing to draw.
 				
 				var final_transform := element.get_transform()
 				var current_mode := Utils.InteractionType.NONE
 				
-				for cmd_idx in range(1, pathdata.get_command_count()):
+				for cmd_idx in range(1, pathdata_meta.get_command_count()):
 					# Drawing logic.
 					var points := PackedVector2Array()
 					var tangent_points := PackedVector2Array()
-					var cmd := pathdata.get_command(cmd_idx)
+					var cmd := pathdata_meta.get_command(cmd_idx)
 					
 					current_mode = Utils.InteractionType.NONE
 					if canvas.is_hovered(element.xid, cmd_idx, true):
@@ -505,7 +505,7 @@ func _draw() -> void:
 						"s": # Shorthand cubic Bezier curve contour.
 							var cp1 := Vector2(cmd.start_x, cmd.start_y)
 							var cp4 := Vector2(cmd.x, cmd.y)
-							var cp2 := Utils64Bit.get_vector(pathdata.get_implied_S_control(cmd_idx))
+							var cp2 := Utils64Bit.get_vector(pathdata_meta.get_implied_S_control(cmd_idx))
 							var cp3 := Vector2(cmd.x2, cmd.y2)
 							points = Utils.get_cubic_bezier_points(cp1, cp2 - cp1, cp3 - cp4, cp4)
 							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp3, cp4]))
@@ -517,7 +517,7 @@ func _draw() -> void:
 							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
 						"t": # Shorthand quadratic Bezier curve contour.
 							var cp1 := Vector2(cmd.start_x, cmd.start_y)
-							var cp2 := Utils64Bit.get_vector(pathdata.get_implied_T_control(cmd_idx))
+							var cp2 := Utils64Bit.get_vector(pathdata_meta.get_implied_T_control(cmd_idx))
 							var cp3 := Vector2(cmd.x, cmd.y)
 							if is_nan(cp2.x) and is_nan(cp2.y):
 								points = PackedVector2Array([cp1, cp3])
@@ -594,12 +594,12 @@ func _draw() -> void:
 								points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
 						"z": # Path closure contour.
 							var prev_M_idx := cmd_idx - 1
-							var prev_M_cmd := pathdata.get_command(prev_M_idx)
+							var prev_M_cmd := pathdata_meta.get_command(prev_M_idx)
 							while prev_M_idx >= 0:
 								if prev_M_cmd.command_char in "Mm":
 									break
 								prev_M_idx -= 1
-								prev_M_cmd = pathdata.get_command(prev_M_idx)
+								prev_M_cmd = pathdata_meta.get_command(prev_M_idx)
 							if prev_M_idx == -1:
 								break
 							

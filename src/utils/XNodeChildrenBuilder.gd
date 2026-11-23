@@ -5,7 +5,7 @@ const BasicXNodeFrameScene = preload("res://src/ui_widgets/basic_xnode_frame.tsc
 
 static func create(element: Element) -> Array[Control]:
 	var arr: Array[Control] = []
-	for xnode in element.get_children():
+	for xnode in element.get_child_xnodes():
 		if xnode.is_element():
 			var element_editor := ElementFrameScene.instantiate()
 			element_editor.element = xnode

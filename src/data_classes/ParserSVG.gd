@@ -50,7 +50,7 @@ static func get_inner_markup_with_percentages_converted(root_element: ElementRoo
 ## Converts the child elements of a root element into markup, excluding the root tag itself.
 static func root_children_to_markup(root_element: ElementRoot, formatter: Formatter) -> String:
 	var markup := ""
-	for child in root_element.get_children():
+	for child in root_element.get_child_xnodes():
 		var new_markup := _xnode_to_markup(child, formatter)
 		# Remove one level of indentation from each line to maintain proper formatting.
 		var lines := new_markup.split('\n')
@@ -91,42 +91,41 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 		return markup
 	
 	var element := xnode as Element
-	var attribute_array := element.get_all_attributes()
+	var attribute_name_value_pairs: Dictionary[String, String] = element.get_attribute_name_value_pairs()
 	if make_attributes_absolute:
 		# Add known default value attributes if they are percentage-based.
-		for attrib_name in DB.get_recognized_attributes(element.name):
-			if element.get_percentage_handling(attrib_name) == DB.PercentageHandling.FRACTION:
+		for recognized_attribute_name in DB.get_recognized_attributes(element.name):
+			if element.get_percentage_handling(recognized_attribute_name) == DB.PercentageHandling.BASIC:
 				continue
 			
 			var already_exists := false
-			for attrib in attribute_array:
-				if attrib.name == attrib_name:
+			for attribute_name in attribute_name_value_pairs:
+				if attribute_name == recognized_attribute_name:
 					already_exists = true
 					break
 			if already_exists:
 				continue
 			
-			if element.is_attribute_percentage(attrib_name):
-				attribute_array.append(element._create_attribute(attrib_name))
+			var attribute_meta := element.get_attribute_meta(recognized_attribute_name)
+			if attribute_meta is AttributeMetaLength and attribute_meta.get_unit() == "%":
+				attribute_name_value_pairs[recognized_attribute_name] = formatter.number_to_text(element.get_attribute_num(recognized_attribute_name))
 		# Turn percentages into numbers.
-		for attrib_idx in attribute_array.size():
-			var attrib: Attribute = attribute_array[attrib_idx]
-			if attrib is AttributeNumeric and element.is_attribute_percentage(attrib.name):
-				var new_attrib := element._create_attribute(attrib.name)
-				new_attrib.set_num(element.get_attribute_num(attrib.name))
-				attribute_array[attrib_idx] = new_attrib
+		for attribute_name in attribute_name_value_pairs:
+			var attribute_meta := element.get_attribute_meta(attribute_name)
+			if attribute_meta is AttributeMetaLength and attribute_meta.get_unit() == "%":
+				attribute_name_value_pairs[attribute_name] = formatter.number_to_text(element.get_attribute_num(attribute_name))
 	
 	markup += '<' + element.name
-	for attribute: Attribute in attribute_array:
-		var value := attribute.get_formatted_value(formatter)
+	for attribute_name in attribute_name_value_pairs:
+		var value := formatter.format_attribute(attribute_name, element.get_attribute_value(attribute_name))
 		var quote := "'" if '"' in value else '"'
 		if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE:
 			markup += "\n" + formatter.get_indent_string().repeat(element.xid.size() + 1)
 		else:
 			markup += " "
-		markup += attribute.name + "=" + quote + value + quote
+		markup += attribute_name + "=" + quote + value + quote
 	
-	if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE and not attribute_array.is_empty():
+	if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE and not attribute_name_value_pairs.is_empty():
 		markup += "\n" + formatter.get_indent_string().repeat(element.xid.size())
 	
 	if not element.has_children() and (formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALWAYS or\
@@ -138,7 +137,7 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 		markup += '>'
 		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += '\n'
-		for child in element.get_children():
+		for child in element.get_child_xnodes():
 			markup += _xnode_to_markup(child, formatter, make_attributes_absolute)
 		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
 			markup += formatter.get_indent_string().repeat(element.xid.size())

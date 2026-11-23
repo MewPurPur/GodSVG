@@ -67,8 +67,7 @@ func pathdata_tests() -> void:
 	}
 	
 	for test in tests:
-		var pathdata := AttributePathdata.new("d")
-		var result := pathdata.path_commands_to_text(AttributePathdata.parse_pathdata(test), spacious_formatter)
+		var result := spacious_formatter.path_commands_to_text(AttributeMetaPathdata.parse_pathdata(test))
 		if result != tests[test]:
 			add_to_report("Pathdata parser", test, result, tests[test])
 
@@ -101,6 +100,6 @@ func transform_list_tests() -> void:
 	}
 	
 	for test in tests:
-		var result := AttributeTransformList.new("transform").format(test, spacious_formatter)
+		var result := spacious_formatter.transform_list_to_text(AttributeMetaTransformList.text_to_transform_list(test))
 		if result != tests[test]:
 			add_to_report("Transform list parser", test, result, tests[test])

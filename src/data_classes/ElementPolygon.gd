@@ -6,7 +6,7 @@ const possible_conversions: PackedStringArray = ["path", "rect"]
 
 func user_setup(precise_position := PackedFloat64Array([0.0, 0.0])) -> void:
 	if precise_position != PackedFloat64Array([0.0, 0.0]):
-		get_attribute("points").set_list(precise_position)
+		get_attribute_meta("points").set_list(precise_position)
 
 func _get_own_default(attribute_name: String) -> String:
 	if attribute_name == "opacity":
@@ -17,7 +17,7 @@ func get_bounding_box() -> Rect2:
 	if not has_attribute("points"):
 		return Rect2()
 	
-	var list: AttributeList = get_attribute("points")
+	var list: AttributeMetaNumberList = get_attribute_meta("points")
 	var min_x := INF
 	var min_y := INF
 	var max_x := -INF
@@ -90,7 +90,7 @@ func merge_segments(max_output_vertices := -1) -> void:
 	
 	var new_list_points := PackedFloat64Array([list[0], list[1]])
 	if max_output_vertices == 1:
-		get_attribute("points").set_list(new_list_points)
+		get_attribute_meta("points").set_list(new_list_points)
 		return
 	
 	for i in range(2, list_size - 2, 2):
@@ -98,11 +98,11 @@ func merge_segments(max_output_vertices := -1) -> void:
 			new_list_points.append(list[i])
 			new_list_points.append(list[i + 1])
 			if new_list_points.size() == max_output_vertices * 2:
-				get_attribute("points").set_list(new_list_points)
+				get_attribute_meta("points").set_list(new_list_points)
 				return
 	
 	if not Utils.is_point_on_segment(list[-2], list[-1], new_list_points[-2], new_list_points[-1], list[0], list[1]):
 		new_list_points.append(list[-2])
 		new_list_points.append(list[-1])
 	
-	get_attribute("points").set_list(new_list_points)
+	get_attribute_meta("points").set_list(new_list_points)

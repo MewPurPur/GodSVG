@@ -243,17 +243,17 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 	for element in get_all_element_descendants():
 		if optimizer.simplify_paths and element.name == "path":
 			var conversion_indices := PackedInt32Array()
-			var conversion_methods: Array[AttributePathdata.Conversion] =[]
+			var conversion_methods: Array[AttributeMetaPathdata.Conversion] = []
 			
-			var pathdata: AttributePathdata = element.get_attribute("d")
-			for cmd_idx in pathdata.get_command_count():
-				var command := pathdata.get_command(cmd_idx)
+			var pathdata_meta: AttributeMetaPathdata = element.get_attribute_meta("d")
+			for cmd_idx in pathdata_meta.get_command_count():
+				var command := pathdata_meta.get_command(cmd_idx)
 				
 				if command is PathCommand.EllipticalArcCommand:
 					var converted := false
-					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-					AttributePathdata.Conversion.ANY_TO_LINE]:
-						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+					for conversion_method in [AttributeMetaPathdata.Conversion.ANY_TO_HORIZONTAL_LINE,
+					AttributeMetaPathdata.Conversion.ANY_TO_VERTICAL_LINE, AttributeMetaPathdata.Conversion.ANY_TO_LINE]:
+						if pathdata_meta.is_conversion_exact(cmd_idx, conversion_method):
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
@@ -265,11 +265,11 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 						# Simplify arc rotation for circles.
 						if not_applied:
 							return true
-						pathdata.set_command_property(cmd_idx, "rot", 0.0)
+						pathdata_meta.set_command_property(cmd_idx, "rot", 0.0)
 				elif command is PathCommand.LineCommand:
 					# Change LineTo to horizontal or vertical if possible.
-					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE]:
-						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+					for conversion_method in [AttributeMetaPathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributeMetaPathdata.Conversion.ANY_TO_VERTICAL_LINE]:
+						if pathdata_meta.is_conversion_exact(cmd_idx, conversion_method):
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
@@ -277,9 +277,9 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 							break
 				elif command is PathCommand.QuadraticBezierCommand:
 					# Try flattening first, then try shorthand curve.
-					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-					AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
-						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+					for conversion_method in [AttributeMetaPathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributeMetaPathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributeMetaPathdata.Conversion.ANY_TO_LINE, AttributeMetaPathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
+						if pathdata_meta.is_conversion_exact(cmd_idx, conversion_method):
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
@@ -287,9 +287,9 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 							break
 				elif command is PathCommand.ShorthandQuadraticBezierCommand:
 					# Try flattening.
-					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-					AttributePathdata.Conversion.ANY_TO_LINE]:
-						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+					for conversion_method in [AttributeMetaPathdata.Conversion.ANY_TO_HORIZONTAL_LINE,
+					AttributeMetaPathdata.Conversion.ANY_TO_VERTICAL_LINE, AttributeMetaPathdata.Conversion.ANY_TO_LINE]:
+						if pathdata_meta.is_conversion_exact(cmd_idx, conversion_method):
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
@@ -297,10 +297,10 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 							break
 				elif command is PathCommand.CubicBezierCommand:
 					# Try flattening, then try shorthand curve, then try quadratic collapse.
-					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-					AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE,
-					AttributePathdata.Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE, AttributePathdata.Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE]:
-						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+					for conversion_method in [AttributeMetaPathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributeMetaPathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributeMetaPathdata.Conversion.ANY_TO_LINE, AttributeMetaPathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE,
+					AttributeMetaPathdata.Conversion.ANY_TO_SHORTHAND_CUBIC_BEZIER_CURVE, AttributeMetaPathdata.Conversion.ANY_TO_QUADRATIC_BEZIER_CURVE]:
+						if pathdata_meta.is_conversion_exact(cmd_idx, conversion_method):
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
@@ -308,9 +308,9 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 							break
 				elif command is PathCommand.ShorthandCubicBezierCommand:
 					# Try flattening, then try shorthand quadratic collapse.
-					for conversion_method in [AttributePathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributePathdata.Conversion.ANY_TO_VERTICAL_LINE,
-					AttributePathdata.Conversion.ANY_TO_LINE, AttributePathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
-						if pathdata.is_conversion_exact(cmd_idx, conversion_method):
+					for conversion_method in [AttributeMetaPathdata.Conversion.ANY_TO_HORIZONTAL_LINE, AttributeMetaPathdata.Conversion.ANY_TO_VERTICAL_LINE,
+					AttributeMetaPathdata.Conversion.ANY_TO_LINE, AttributeMetaPathdata.Conversion.ANY_TO_SHORTHAND_QUADRATIC_BEZIER_CURVE]:
+						if pathdata_meta.is_conversion_exact(cmd_idx, conversion_method):
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
@@ -318,6 +318,6 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 							break
 			
 			if not conversion_indices.is_empty():
-				pathdata.convert_commands_multi_method(conversion_indices, conversion_methods)
+				pathdata_meta.convert_commands_multi_method(conversion_indices, conversion_methods)
 	
 	return false
