@@ -32,11 +32,11 @@ func _ready() -> void:
 	# Convert forward and backward to show how GodSVG would display the given SVG.
 	var imported_text_parse_result := ParserSVG.markup_to_root(imported_text)
 	if is_instance_valid(imported_text_parse_result.svg):
-		var preview_text := ParserSVG.root_to_editor_markup(imported_text_parse_result.svg)
+		var preview_text := Configs.savedata.editor_formatter.svg_root_to_markup(imported_text_parse_result.svg)
 		var preview_parse_result := ParserSVG.markup_to_root(preview_text)
 		var preview := preview_parse_result.svg
 		if is_instance_valid(preview):
-			texture_preview.setup_svg(ParserSVG.root_to_editor_markup(preview), preview.width, preview.height)
+			texture_preview.setup_svg(Configs.savedata.editor_formatter.svg_root_to_markup(preview), preview.width, preview.height)
 	
 	if imported_text_parse_result.error != ParserSVG.ParseError.OK:
 		texture_preview.hide()

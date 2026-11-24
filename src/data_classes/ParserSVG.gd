@@ -34,7 +34,7 @@ static func root_cutout_to_markup(root_element: ElementRoot, custom_dimensions: 
 	new_root_element.set_attribute("width", custom_dimensions.x)
 	new_root_element.set_attribute("height", custom_dimensions.y)
 	
-	var root_markup := _xnode_to_markup(new_root_element, Configs.savedata.editor_formatter).strip_edges(false, true)
+	var root_markup := Configs.savedata.editor_formatter.xnode_to_markup(new_root_element).strip_edges(false, true)
 	if root_markup.ends_with("/>"):
 		root_markup = root_markup.erase(root_markup.length() - 2)
 	else:
@@ -44,108 +44,8 @@ static func root_cutout_to_markup(root_element: ElementRoot, custom_dimensions: 
 static func get_inner_markup_with_percentages_converted(root_element: ElementRoot) -> String:
 	var inner_markup := ""
 	for child_idx in root_element.get_child_count():
-		inner_markup += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
+		inner_markup += Configs.savedata.editor_formatter.xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), true)
 	return inner_markup
-
-## Converts the child elements of a root element into markup, excluding the root tag itself.
-static func root_children_to_markup(root_element: ElementRoot, formatter: Formatter) -> String:
-	var markup := ""
-	for child in root_element.get_children():
-		var new_markup := _xnode_to_markup(child, formatter)
-		# Remove one level of indentation from each line to maintain proper formatting.
-		var lines := new_markup.split('\n')
-		for i in lines.size():
-			lines[i] = lines[i].trim_prefix(formatter.get_indent_string())
-		markup += '\n'.join(lines)
-	return markup.trim_suffix('\n')
-
-## Converts a root element into markup using the editor formatter.
-static func root_to_editor_markup(root_element: ElementRoot) -> String:
-	return root_to_markup(root_element, Configs.savedata.editor_formatter)
-
-## Converts a root element into markup using the export formatter.
-static func root_to_export_markup(root_element: ElementRoot) -> String:
-	return root_to_markup(root_element, Configs.savedata.export_formatter)
-
-## Converts a root element into markup using an arbitrary formatter.
-static func root_to_markup(root_element: ElementRoot, formatter: Formatter) -> String:
-	var markup := _xnode_to_markup(root_element, formatter).trim_suffix('\n')
-	if formatter.xml_add_trailing_newline:
-		markup += "\n"
-	return markup
-
-# The main entry point for converting any XML node and its descendants into markup.
-# If make_attributes_absolute is true, converts percentage-based attributes into absolute values so cutouts can be safely made.
-static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes_absolute := false) -> String:
-	var markup := ""
-	if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
-		markup = formatter.get_indent_string().repeat(xnode.xid.size())
-	
-	if not xnode.is_element():
-		match xnode.get_type():
-			BasicXNode.NodeType.COMMENT: markup += "<!--%s-->" % xnode.get_text()
-			BasicXNode.NodeType.CDATA: markup += "<![CDATA[%s]]>" % xnode.get_text()
-			_: markup += xnode.get_text()
-		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
-			markup += "\n"
-		return markup
-	
-	var element := xnode as Element
-	var attribute_array := element.get_all_attributes()
-	if make_attributes_absolute:
-		# Add known default value attributes if they are percentage-based.
-		for attrib_name in DB.get_recognized_attributes(element.name):
-			if element.get_percentage_handling(attrib_name) == DB.PercentageHandling.FRACTION:
-				continue
-			
-			var already_exists := false
-			for attrib in attribute_array:
-				if attrib.name == attrib_name:
-					already_exists = true
-					break
-			if already_exists:
-				continue
-			
-			if element.is_attribute_percentage(attrib_name):
-				attribute_array.append(element._create_attribute(attrib_name))
-		# Turn percentages into numbers.
-		for attrib_idx in attribute_array.size():
-			var attrib: Attribute = attribute_array[attrib_idx]
-			if attrib is AttributeNumber and element.is_attribute_percentage(attrib.name):
-				var new_attrib := element._create_attribute(attrib.name)
-				new_attrib.set_num(element.get_attribute_num(attrib.name))
-				attribute_array[attrib_idx] = new_attrib
-	
-	markup += '<' + element.name
-	for attribute: Attribute in attribute_array:
-		var value := attribute.get_formatted_value(formatter)
-		var quote := "'" if '"' in value else '"'
-		if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE:
-			markup += "\n" + formatter.get_indent_string().repeat(element.xid.size() + 1)
-		else:
-			markup += " "
-		markup += attribute.name + "=" + quote + value + quote
-	
-	if formatter.xml_formatting_style == Formatter.FormattingStyle.VERBOSE and not attribute_array.is_empty():
-		markup += "\n" + formatter.get_indent_string().repeat(element.xid.size())
-	
-	if not element.has_children() and (formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALWAYS or\
-	(formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and not element.name in Formatter.CONTAINER_ELEMENTS)):
-		markup += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
-		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
-			markup += '\n'
-	else:
-		markup += '>'
-		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
-			markup += '\n'
-		for child in element.get_children():
-			markup += _xnode_to_markup(child, formatter, make_attributes_absolute)
-		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
-			markup += formatter.get_indent_string().repeat(element.xid.size())
-		markup += '</%s>' % element.name
-		if formatter.xml_formatting_style != Formatter.FormattingStyle.COMPACT:
-			markup += '\n'
-	return markup
 
 
 enum ParseError {OK, ERR_NOT_SVG, ERR_IMPROPER_NESTING}

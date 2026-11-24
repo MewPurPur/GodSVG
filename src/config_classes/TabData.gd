@@ -60,7 +60,7 @@ func _save_svg_text() -> void:
 	else:
 		var edited_text_parse_result := ParserSVG.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
 		if edited_text_parse_result.error == ParserSVG.ParseError.OK:
-			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(ParserSVG.root_to_export_markup(edited_text_parse_result.svg))
+			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(Configs.savedata.export_formatter.svg_root_to_markup(edited_text_parse_result.svg))
 		else:
 			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(_svg_text)
 	queue_sync()
@@ -147,7 +147,7 @@ func _sync() -> void:
 			marked_unsaved = false
 		else:
 			var edited_text_parse_result := ParserSVG.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
-			var text_to_compare := ParserSVG.root_to_export_markup(edited_text_parse_result.svg) if\
+			var text_to_compare := Configs.savedata.export_formatter.svg_root_to_markup(edited_text_parse_result.svg) if\
 					(edited_text_parse_result.error == ParserSVG.ParseError.OK) else FileAccess.get_file_as_string(get_edited_file_path())
 			marked_unsaved = (FileAccess.get_file_as_string(svg_file_path) != text_to_compare)
 	

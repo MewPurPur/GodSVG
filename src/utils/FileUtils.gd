@@ -41,8 +41,8 @@ static func compare_svg_to_disk_contents(index := -1) -> FileState:
 		if content_parse_result.error != ParserSVG.ParseError.OK:
 			return FileState.DIFFERENT
 		else:
-			var state_svg_text := State.stable_editor_markup if index == -1 else ParserSVG.root_to_editor_markup(parse_result.svg)
-			return FileState.SAME if state_svg_text == ParserSVG.root_to_editor_markup(content_parse_result.svg) else FileState.DIFFERENT
+			var state_svg_text := State.stable_editor_markup if index == -1 else Configs.savedata.editor_formatter.svg_root_to_markup(parse_result.svg)
+			return FileState.SAME if state_svg_text == Configs.savedata.editor_formatter.svg_root_to_markup(content_parse_result.svg) else FileState.DIFFERENT
 	else:
 		var state_svg_text := State.unstable_markup if index == -1 else tab.get_true_svg_text()
 		return (FileState.SAME if state_svg_text == content else FileState.DIFFERENT)
