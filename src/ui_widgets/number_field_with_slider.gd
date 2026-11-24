@@ -12,14 +12,14 @@ const MAX_VALUE := 1.0
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
 		if not AttributeNumber.text_check_percentage(new_value):
-			var numeric_value := ParserNumstring.evaluate(new_value)
+			var numeric_value := ParserNumeric.evaluate(new_value)
 			# Validate the value.
 			if not is_finite(numeric_value):
 				sync()
 				return
 			
 			numeric_value = clampf(numeric_value, MIN_VALUE, MAX_VALUE)
-			new_value = ParserNumber.num_to_text(numeric_value, Configs.savedata.editor_formatter)
+			new_value = Configs.savedata.editor_formatter.number_to_text(numeric_value)
 	
 	element.set_attribute(attribute_name, new_value)
 	sync()
@@ -27,7 +27,7 @@ func set_value(new_value: String, save := false) -> void:
 		State.save_svg()
 
 func set_num(new_number: float, save := false) -> void:
-	set_value(ParserNumber.num_to_text(new_number, Configs.savedata.editor_formatter), save)
+	set_value(Configs.savedata.editor_formatter.number_to_text(new_number), save)
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
@@ -133,7 +133,7 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 		elif Utils.is_event_drag_end(event):
 			slider_dragged = false
 			var final_slider_value := get_slider_value_at_y(event.position.y)
-			if initial_slider_value != element.get_attribute(attribute_name).num_to_text(final_slider_value):
+			if initial_slider_value != Configs.savedata.editor_formatter.number_to_text(final_slider_value):
 				set_num(final_slider_value, true)
 
 func _unhandled_input(event: InputEvent) -> void:

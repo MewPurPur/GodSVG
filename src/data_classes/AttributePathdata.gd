@@ -28,7 +28,7 @@ func _sync() -> void:
 			subpath_start_indices.append(idx)
 
 func format(text: String, formatter: Formatter) -> String:
-	return path_commands_to_text(parse_pathdata(text), formatter)
+	return formatter.path_commands_to_text(parse_pathdata(text))
 
 
 func get_commands() -> Array[PathCommand]:
@@ -37,7 +37,7 @@ func get_commands() -> Array[PathCommand]:
 func sync_after_commands_change(apply_start_positions_sync := true) -> void:
 	if apply_start_positions_sync:
 		sync_start_positions()
-	set_value(path_commands_to_text(_commands))
+	set_value(Configs.savedata.editor_formatter.path_commands_to_text(_commands))
 
 
 func get_command_count() -> int:
@@ -687,7 +687,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 		var nums := []
 		
 		if key == "A":
-			var result := ParserNumstring.text_to_number_arr(text, idx, 3)
+			var result := ParserNumeric.text_to_number_array(text, idx, 3)
 			if result.is_empty():
 				return commands
 			var arr: PackedFloat64Array = result[0]
@@ -714,14 +714,14 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 					nums.append(text[idx].to_int())
 					idx += 1
 			
-			result = ParserNumstring.text_to_number_arr(text, idx, 2, true)
+			result = ParserNumeric.text_to_number_array(text, idx, 2, true)
 			if result.is_empty():
 				return commands
 			arr = result[0]
 			idx = result[1]
 			nums.append_array(arr)
 		elif arg_count > 0:
-			var result := ParserNumstring.text_to_number_arr(text, idx, arg_count)
+			var result := ParserNumeric.text_to_number_array(text, idx, arg_count)
 			if result.is_empty():
 				return commands
 			
@@ -817,91 +817,3 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 			else:
 				break
 	return commands
-
-
-func path_commands_to_text(commands_arr: Array[PathCommand], formatter := Configs.savedata.editor_formatter) -> String:
-	var output := ""
-	var num_parser := ParserNumstring.new()
-	num_parser.compress_numbers = formatter.pathdata_compress_numbers
-	num_parser.minimize_spacing = formatter.pathdata_minimize_spacing
-	
-	var last_command := ""
-	for i in commands_arr.size():
-		var cmd := commands_arr[i]
-		var cmd_char_capitalized := cmd.command_char.to_upper()
-		if not (formatter.pathdata_remove_consecutive_commands and ((cmd_char_capitalized != "M" and last_command == cmd.command_char) or\
-		(last_command == "m" and cmd.command_char == "l") or (last_command == "M" and cmd.command_char == "L"))):
-			output += cmd.command_char
-			if not formatter.pathdata_minimize_spacing:
-				output += " "
-		elif i > 0 and formatter.pathdata_minimize_spacing:
-			var current_char := ""
-			var prev_numstr := ""
-			var prev_cmd := commands_arr[i - 1]
-			match cmd_char_capitalized:
-				"A":
-					current_char = num_parser.num_to_text(cmd.rx)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"C", "Q":
-					current_char = num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"S":
-					current_char = num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"L", "M", "T":
-					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-				"H":
-					current_char = num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.x - prev_cmd.start_x if cmd.relative else prev_cmd.x)
-				"V":
-					current_char = num_parser.num_to_text(cmd.y - cmd.start_x if cmd.relative else cmd.y)[0]
-					prev_numstr = num_parser.num_to_text(prev_cmd.y - prev_cmd.start_y if cmd.relative else prev_cmd.y)
-			if not formatter.pathdata_minimize_spacing or not (("." in prev_numstr and current_char == ".") or current_char in "-+"):
-				output += " "
-		
-		last_command = cmd.command_char
-		match cmd_char_capitalized:
-			"A":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx), num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, true)])
-				if formatter.pathdata_remove_spacing_after_flags:
-					output += (" 0" if cmd.large_arc_flag == 0 else " 1") + ("0" if cmd.sweep_flag == 0 else "1")
-				else:
-					output += " 0 " if cmd.large_arc_flag == 0 else " 1 "
-					if num_parser.num_to_text(cmd.x)[0] == "-":
-						output += "0" if cmd.sweep_flag == 0 else "1"
-					else:
-						output += "0 " if cmd.sweep_flag == 0 else "1 "
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"C":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
-					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"Q":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x1 - cmd.start_x if cmd.relative else cmd.x1), num_parser.num_to_text(cmd.y1 - cmd.start_y if cmd.relative else cmd.y1),
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"S":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x2 - cmd.start_x if cmd.relative else cmd.x2), num_parser.num_to_text(cmd.y2 - cmd.start_y if cmd.relative else cmd.y2),
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"L", "M", "T":
-				output += num_parser.numstr_arr_to_text([
-					num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x), num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-				])
-			"H":
-				output += num_parser.num_to_text(cmd.x - cmd.start_x if cmd.relative else cmd.x)
-			"V":
-				output += num_parser.num_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
-			_: continue
-		if not formatter.pathdata_minimize_spacing:
-			output += " "
-	
-	output = output.rstrip(" ")
-	return output

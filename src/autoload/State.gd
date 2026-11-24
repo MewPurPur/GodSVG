@@ -50,8 +50,8 @@ func _enter_tree() -> void:
 
 
 func _on_svg_edited() -> void:
-	stable_editor_markup = ParserSVG.root_to_editor_markup(root_element)
-	stable_export_markup = ParserSVG.root_to_export_markup(root_element)
+	stable_editor_markup = Configs.savedata.editor_formatter.svg_root_to_markup(root_element)
+	stable_export_markup = Configs.savedata.export_formatter.svg_root_to_markup(root_element)
 	svg_edited.emit()
 
 func save_svg() -> void:
@@ -76,8 +76,8 @@ func apply_markup(markup: String, is_edit: bool) -> void:
 	
 	if last_parse_error == ParserSVG.ParseError.OK:
 		root_element = svg_parse_result.svg
-		stable_editor_markup = ParserSVG.root_to_editor_markup(root_element)
-		stable_export_markup = ParserSVG.root_to_export_markup(root_element)
+		stable_editor_markup = Configs.savedata.editor_formatter.svg_root_to_markup(root_element)
+		stable_export_markup = Configs.savedata.export_formatter.svg_root_to_markup(root_element)
 		parsing_finished.emit()
 		
 		root_element.xnodes_added.connect(_on_xnodes_added)

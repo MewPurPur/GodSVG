@@ -471,7 +471,7 @@ func parse_hslider_input(event: InputEvent, index: int) -> void:
 # When slider text is submitted, it should be clamped, used, and then the slider should
 # be updated again so the text reflects the new value even if the color didn't change.
 func _on_hslider_text_submitted(new_text: String, index: int) -> void:
-	var new_value := ParserNumstring.evaluate(new_text)
+	var new_value := ParserNumeric.evaluate(new_text)
 	if is_nan(new_value):
 		sync_hslider(index)
 		return

@@ -1,20 +1,20 @@
 ## Parser for numeric text, including the compressed number arrays used in pathdata and transform lists.
 ## This parser has situational configuration options, so it's not abstract.
-class_name ParserNumstring
+class_name ParserNumeric
 
 var compress_numbers: bool
 var minimize_spacing: bool
 
 ## Converts a number into text for the individual fields representing path parameters.
 ## Those don't represent anything directly, so they are free to be made readable and not care about formatters.
-static func basic_num_to_text(num: float, is_angle := false) -> String:
+static func basic_number_to_text(num: float, is_angle := false) -> String:
 	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle else Utils.MAX_NUMERIC_PRECISION)
 	if text == "-0":
 		text = "0"
 	return text
 
 ## Converts a number into text based on the parser configuration.
-func num_to_text(num: float, is_angle := false) -> String:
+func number_to_text(num: float, is_angle := false) -> String:
 	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle else Utils.MAX_NUMERIC_PRECISION)
 	if compress_numbers:
 		if text.begins_with("0."):
@@ -26,15 +26,15 @@ func num_to_text(num: float, is_angle := false) -> String:
 	return text
 
 ## Combines an array of numeric strings based on the parser configuration.
-func numstr_arr_to_text(numstr_arr: PackedStringArray) -> String:
+func numstring_array_to_text(numstring_array: PackedStringArray) -> String:
 	var output := ""
-	for i in numstr_arr.size() - 1:
-		var current_numstr := numstr_arr[i]
-		var next_char := numstr_arr[i + 1][0]
+	for i in numstring_array.size() - 1:
+		var current_numstr := numstring_array[i]
+		var next_char := numstring_array[i + 1][0]
 		output += current_numstr
 		if not minimize_spacing or not (("." in current_numstr and next_char == ".") or next_char in "-+"):
 			output += " "
-	return output + numstr_arr[-1]
+	return output + numstring_array[-1]
 
 
 ## Evaluates expressions, so that when the user types "-2.2 + 4" or "sqrt(2)" it can be evaluated by GodSVG.
@@ -72,7 +72,7 @@ enum NumberJumbleParseState {
 
 # TODO In 4.5, I had to avoid the match keyword in this parser for performance: #75682.
 ## Returns an array with a PackedFloat64Array and an int for the final current index. Returns an empty array if there's a parsing error.
-static func text_to_number_arr(text: String, current_index: int, expected_count: int, allow_starting_comma := false) -> Array:
+static func text_to_number_array(text: String, current_index: int, expected_count: int, allow_starting_comma := false) -> Array:
 	var text_length := text.length()
 	if current_index >= text_length:
 		return []

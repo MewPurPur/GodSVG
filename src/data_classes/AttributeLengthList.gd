@@ -4,10 +4,10 @@ class_name AttributeLengthList extends Attribute
 var _dash_array: PackedFloat64Array
 
 func _sync() -> void:
-	_dash_array = text_to_dash_array(get_value())
+	_dash_array = text_to_length_list(get_value())
 
 func format(text: String, formatter: Formatter) -> String:
-	return dash_array_to_text(text_to_dash_array(text), formatter)
+	return formatter.length_list_to_text(text_to_length_list(text))
 
 
 func set_list(new_list: PackedFloat64Array) -> void:
@@ -15,7 +15,7 @@ func set_list(new_list: PackedFloat64Array) -> void:
 	_sync_after_list_change()
 
 func _sync_after_list_change() -> void:
-	set_value(dash_array_to_text(_dash_array))
+	set_value(Configs.savedata.editor_formatter.length_list_to_text(_dash_array))
 
 func get_list() -> PackedFloat64Array:
 	return _dash_array
@@ -56,7 +56,7 @@ func rotate_start(start_index: int) -> void:
 	_sync_after_list_change()
 
 
-static func text_to_dash_array(string: String) -> PackedFloat64Array:
+static func text_to_length_list(string: String) -> PackedFloat64Array:
 	var nums_parsed := PackedFloat64Array()
 	var current_num_string := ""
 	var comma_exhausted := false
@@ -88,10 +88,3 @@ static func text_to_dash_array(string: String) -> PackedFloat64Array:
 		nums_parsed.append(current_num_string.to_float())
 	
 	return nums_parsed
-
-func dash_array_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
-	var params := PackedStringArray()
-	for element in list:
-		# It's fine to use this parser, AttributeList is just a list of numbers.
-		params.append(ParserNumber.num_to_text(element, formatter))
-	return " ".join(params)
