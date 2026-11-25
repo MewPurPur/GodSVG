@@ -16,16 +16,16 @@ enum Conversion {
 }
 
 var _commands: Array[PathCommand]
-var subpath_start_indices: PackedInt32Array
+var subpath_starts: PackedInt32Array
 
 func _sync() -> void:
 	_commands = parse_pathdata(get_value())
 	# Sync all related data.
-	subpath_start_indices.clear()
-	subpath_start_indices.append(0)
+	subpath_starts.clear()
+	subpath_starts.append(0)
 	for idx in range(1, _commands.size()):
 		if _commands[idx] is PathCommand.MoveCommand or _commands[idx - 1] is PathCommand.CloseCommand:
-			subpath_start_indices.append(idx)
+			subpath_starts.append(idx)
 
 func format(text: String, formatter: Formatter) -> String:
 	return formatter.path_commands_to_text(parse_pathdata(text))
@@ -48,9 +48,9 @@ func get_command(index: int) -> PathCommand:
 
 # Return the start and end indices of the subpath.
 func get_subpath(index: int) -> Vector2i:
-	for i in range(subpath_start_indices.size() - 1, -1, -1):
-		if subpath_start_indices[i] <= index:
-			return Vector2i(subpath_start_indices[i], (subpath_start_indices[i + 1] if i < subpath_start_indices.size() - 1 else get_command_count()) - 1)
+	for i in range(subpath_starts.size() - 1, -1, -1):
+		if subpath_starts[i] <= index:
+			return Vector2i(subpath_starts[i], (subpath_starts[i + 1] if i < subpath_starts.size() - 1 else get_command_count()) - 1)
 	return Vector2i(-1, -1)
 
 # Check if a command is zero-length.
