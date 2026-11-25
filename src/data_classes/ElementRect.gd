@@ -100,19 +100,19 @@ func get_replacement(new_element: String) -> Element:
 
 func get_rx() -> float:
 	if has_attribute("rx"):
-		return minf(get_attribute_num("rx"), get_attribute_num("width") / 2)
+		if not has_attribute("ry") or get_attribute_num("ry") != 0:
+			return minf(get_attribute_num("rx"), get_attribute_num("width") / 2)
 	elif has_attribute("ry"):
 		return minf(get_attribute_num("ry"), get_attribute_num("width") / 2)
-	else:
-		return 0.0
+	return 0.0
 
 func get_ry() -> float:
 	if has_attribute("ry"):
-		return minf(get_attribute_num("ry"), get_attribute_num("height") / 2)
+		if not has_attribute("rx") or get_attribute_num("rx") != 0:
+			return minf(get_attribute_num("ry"), get_attribute_num("height") / 2)
 	elif has_attribute("rx"):
 		return minf(get_attribute_num("rx"), get_attribute_num("height") / 2)
-	else:
-		return 0.0
+	return 0.0
 
 
 func _get_own_default(attribute_name: String) -> String:

@@ -330,7 +330,7 @@ func _commands_draw() -> void:
 			"V": draw_numfield(rect, "y", cmd)
 	
 	# Draw subpath indicators.
-	for start_idx in path_attribute.subpath_start_indices:
+	for start_idx in path_attribute.subpath_starts:
 		var subpath_polyline_positions := PackedVector2Array()
 		var current_subpath := path_attribute.get_subpath(start_idx)
 		var subpath_start := current_subpath.x

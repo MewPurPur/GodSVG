@@ -639,15 +639,15 @@ func _move_selected(down: bool) -> void:
 			
 		var lengths := PackedInt32Array()
 		var selected := PackedInt32Array()
-		for i in pathdata.subpath_start_indices.size():
-			var start := pathdata.subpath_start_indices[i]
-			lengths.append((commands.size() if i == pathdata.subpath_start_indices.size() - 1 else pathdata.subpath_start_indices[i + 1]) - start)
+		for i in pathdata.subpath_starts.size():
+			var start := pathdata.subpath_starts[i]
+			lengths.append((commands.size() if i == pathdata.subpath_starts.size() - 1 else pathdata.subpath_starts[i + 1]) - start)
 			if start in inner_selections:
 				selected.append(i)
 		
 		# FIXME range() should really be returning Array[int]. #72762
 		var order: Array[int]
-		order.assign(range(pathdata.subpath_start_indices.size()))
+		order.assign(range(pathdata.subpath_starts.size()))
 		if down:
 			for i in range(selected.size() - 1, -1, -1):
 				var pos := order.find(selected[i])
@@ -669,7 +669,7 @@ func _move_selected(down: bool) -> void:
 		
 		var previous_original := -1
 		for subpath in order:
-			var start := pathdata.subpath_start_indices[subpath]
+			var start := pathdata.subpath_starts[subpath]
 			var end := start + lengths[subpath] - 1
 			var first_cmd: PathCommand = commands[start]
 			
@@ -715,8 +715,8 @@ func set_as_origin_selected() -> void:
 		var new_inner_selection_pivot := -1
 		
 		var start_indices_operated_on := PackedInt32Array()
-		for start_index in pathdata.subpath_start_indices.size():
-			var start := pathdata.subpath_start_indices[start_index]
+		for start_index in pathdata.subpath_starts.size():
+			var start := pathdata.subpath_starts[start_index]
 			var start_cmd := commands[start]
 			var end := pathdata.get_subpath(start).y
 			
@@ -821,7 +821,7 @@ func reverse_order_selected() -> void:
 		if is_selection_subpaths_only():
 			var new_commands: Array[PathCommand] = []
 			var new_selection_indices: Array[int] = []
-			for start in pathdata.subpath_start_indices:
+			for start in pathdata.subpath_starts:
 				var subpath := pathdata.get_subpath(start)
 				if not start in inner_selections:
 					new_commands += commands.slice(start, subpath.y + 1)
@@ -1124,7 +1124,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 							break
 					
 					var can_reverse_order := false
-					for start in pathdata.subpath_start_indices:
+					for start in pathdata.subpath_starts:
 						if not start in inner_selections:
 							continue
 						var subpath_end := pathdata.get_subpath(start).y
