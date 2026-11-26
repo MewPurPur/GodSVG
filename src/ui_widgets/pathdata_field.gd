@@ -111,7 +111,7 @@ var last_synced_value := " "  # Invalid initial string.
 
 func sync() -> void:
 	var new_value := element.get_attribute_value(attribute_name)
-	line_edit.text = new_value
+	line_edit.text = new_value.replace("\n", "")
 	setup_font_with_current_text()
 	if last_synced_value == new_value:
 		return

@@ -54,6 +54,7 @@ func get_setting_default(setting: String) -> Variant:
 		"xml_indentation_spaces": return 2
 		"pathdata_compress_numbers": return true
 		"pathdata_minimize_spacing": return true
+		"pathdata_newline_between_commands": return false
 		"pathdata_remove_consecutive_commands": return true
 		"color_primary_syntax": return PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX
 		"color_capital_hex": return false
@@ -205,6 +206,12 @@ const INDENTS_MAX = 16
 			pathdata_remove_spacing_after_flags = new_value
 			emit_changed()
 
+@export var pathdata_newline_between_commands := false:
+	set(new_value):
+		if pathdata_newline_between_commands != new_value:
+			pathdata_newline_between_commands = new_value
+			emit_changed()
+
 @export var pathdata_remove_consecutive_commands := true:
 	set(new_value):
 		if pathdata_remove_consecutive_commands != new_value:
@@ -323,6 +330,7 @@ func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 	for i in commands_arr.size():
 		var cmd := commands_arr[i]
 		var cmd_char_capitalized := cmd.command_char.to_upper()
+		
 		if not (pathdata_remove_consecutive_commands and ((cmd_char_capitalized != "M" and last_command == cmd.command_char) or\
 		(last_command == "m" and cmd.command_char == "l") or (last_command == "M" and cmd.command_char == "L"))):
 			output += cmd.command_char
@@ -394,7 +402,10 @@ func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 			"V":
 				output += num_parser.number_to_text(cmd.y - cmd.start_y if cmd.relative else cmd.y)
 			_: continue
-		if not pathdata_minimize_spacing:
+		
+		if pathdata_newline_between_commands:
+			output += "\n"
+		elif not pathdata_minimize_spacing:
 			output += " "
 	
 	output = output.rstrip(" ")
