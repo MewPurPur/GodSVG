@@ -366,6 +366,15 @@ func setup_formatting_content() -> void:
 	pathdata_remove_spacing_after_flags_root_element.insert_child(0, pathdata_remove_spacing_after_flags_path_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_remove_spacing_after_flags_root_element, true))
 	
+	current_setup_setting = "pathdata_newline_between_commands"
+	add_checkbox(Translator.translate("Add newline between commands"))
+	var pathdata_newline_between_commands_root_element := ElementRoot.new()
+	var pathdata_newline_between_commands_path_element := ElementPath.new()
+	pathdata_newline_between_commands_path_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
+	pathdata_newline_between_commands_path_element.set_attribute("fill", "plum")
+	pathdata_newline_between_commands_root_element.insert_child(0, pathdata_newline_between_commands_path_element)
+	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_newline_between_commands_root_element, true))
+	
 	current_setup_setting = "pathdata_remove_consecutive_commands"
 	add_checkbox(Translator.translate("Remove consecutive commands"))
 	var pathdata_remove_consecutive_commands_root_element := ElementRoot.new()
@@ -1065,7 +1074,7 @@ func emit_preview_changed() -> void:
 				if preview.show_only_children:
 					code_preview.text = preview.resource_bind.svg_root_children_to_markup(preview.root_element)
 				else:
-					code_preview.text = preview.resource_bind.root_to_markup(preview.root_element)
+					code_preview.text = preview.resource_bind.svg_root_to_markup(preview.root_element)
 		
 		code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
 		var text_edit_default_stylebox := code_preview.get_theme_stylebox("normal")
